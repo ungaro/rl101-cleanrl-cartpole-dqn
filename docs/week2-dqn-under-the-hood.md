@@ -113,17 +113,20 @@ even for infinite horizons.
 Two ways to measure "how good is a situation":
 
 **State-value** — how good is state $s$ under policy $\pi$?
+
 $$
 V^{\pi}(s) = \mathbb{E}_{\pi}\left[ G_t  \mid  s_t = s \right]
 $$
 
 **Action-value** — how good is taking action $a$ in state $s$ and then following $\pi$?
+
 $$
 Q^{\pi}(s, a) = \mathbb{E}_{\pi}\left[ G_t  \mid  s_t = s,  a_t = a \right]
 $$
 
 **Why $Q$ matters more for us:** once you have $Q^{\ast}$ (the optimal action-value), you
 can act greedily without knowing the environment dynamics:
+
 $$
 \pi^{\ast}(s) = \arg\max_{a} Q^{\ast}(s, a)
 $$
@@ -341,11 +344,13 @@ target from the parameters being optimised — stable targets, stable training.
 ## Two flavours of target update
 
 **Hard update (Mnih et al., 2015):**
+
 $$
 \theta^{-} \leftarrow \theta \quad \text{every } C \text{ steps}
 $$
 
 **Soft update / Polyak averaging (Lillicrap et al., 2015):**
+
 $$
 \theta^{-} \leftarrow \tau \theta + (1 - \tau) \theta^{-}, \qquad \tau \ll 1
 $$
@@ -601,7 +606,7 @@ couldn't backprop through the target (it would try to compute gradients w.r.t.
 $\theta^{-}$ which we don't want to update).
 
 Second block: target network sync. With the default $\tau = 1.0$ this is a
-complete hard copy every 500 steps. Setting $\tau < 1$ gives Polyak averaging.
+complete hard copy every 500 steps. Setting $\tau \lt 1$ gives Polyak averaging.
 
 ---
 
