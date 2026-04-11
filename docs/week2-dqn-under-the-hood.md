@@ -175,6 +175,13 @@ No model of $P$ needed. This is the entire reason value-based RL works.
 
 ## The Bellman equation
 
+> The Bellman equation is a fundamental concept in reinforcement learning
+> that breaks down the value of a state (or state-action pair) into the
+> immediate reward plus the discounted value of future states. It recursively
+> defines the optimal policy by balancing immediate gratification with
+> long-term cumulative rewards, serving as the basis for algorithms like
+> Q-learning and policy iteration.
+
 Returns are recursive: $G_t = r_t + \gamma G_{t+1}$. Pushing this through the
 expectation gives Bellman's equation for a fixed policy $\pi$:
 
