@@ -114,18 +114,18 @@ Two ways to measure "how good is a situation":
 
 **State-value** — how good is state $s$ under policy $\pi$?
 $$
-V^{\pi}(s) = \mathbb{E}_{\pi}\!\left[ G_t \;\middle|\; s_t = s \right]
+V^{\pi}(s) = \mathbb{E}_{\pi}\left[ G_t  \middle|  s_t = s \right]
 $$
 
 **Action-value** — how good is taking action $a$ in state $s$ and then following $\pi$?
 $$
-Q^{\pi}(s, a) = \mathbb{E}_{\pi}\!\left[ G_t \;\middle|\; s_t = s,\, a_t = a \right]
+Q^{\pi}(s, a) = \mathbb{E}_{\pi}\left[ G_t  \middle|  s_t = s,  a_t = a \right]
 $$
 
-**Why $Q$ matters more for us:** once you have $Q^*$ (the optimal action-value), you
+**Why $Q$ matters more for us:** once you have $Q^{*}$ (the optimal action-value), you
 can act greedily without knowing the environment dynamics:
 $$
-\pi^*(s) = \arg\max_{a} Q^*(s, a)
+\pi^{*}(s) = \arg\max_{a} Q^{*}(s, a)
 $$
 
 No model of $P$ needed. This is the entire reason value-based RL works.
@@ -138,17 +138,17 @@ Returns are recursive: $G_t = r_t + \gamma G_{t+1}$. Pushing this through the
 expectation gives Bellman's equation for a fixed policy $\pi$:
 
 $$
-Q^{\pi}(s, a) = \mathbb{E}\!\left[ r + \gamma \, Q^{\pi}(s', a') \right]
+Q^{\pi}(s, a) = \mathbb{E}\left[ r + \gamma   Q^{\pi}(s', a') \right]
 $$
 
 And for the **optimal** policy (the Bellman *optimality* equation):
 
 $$
-\boxed{\;Q^*(s, a) = \mathbb{E}\!\left[ r + \gamma \max_{a'} Q^*(s', a') \right]\;}
+\boxed{ Q^{*}(s, a) = \mathbb{E}\left[ r + \gamma \max_{a'} Q^{*}(s', a') \right] }
 $$
 
 This is the object DQN is trying to approximate. Everything that follows is
-machinery for finding $Q^*$ without having to enumerate every $(s, a)$ pair.
+machinery for finding $Q^{*}$ without having to enumerate every $(s, a)$ pair.
 
 ---
 
@@ -164,7 +164,7 @@ Suppose we already have some estimate $Q(s, a)$. We take action $a$, observe
 $(r, s')$, and now we have a **better** guess for what $Q(s, a)$ should be:
 
 $$
-y \;=\; r + \gamma \max_{a'} Q(s', a') \qquad\text{(the TD target)}
+y  =  r + \gamma \max_{a'} Q(s', a') \qquad\text{(the TD target)}
 $$
 
 If our current $Q(s, a)$ differs from $y$, we should nudge it toward $y$. That's
@@ -173,7 +173,7 @@ the whole idea of TD learning.
 **Q-learning update** (Watkins, 1989):
 
 $$
-Q(s, a) \;\leftarrow\; Q(s, a) + \alpha \big[\,\underbrace{r + \gamma \max_{a'} Q(s', a')}_{\text{TD target}} \;-\; \underbrace{Q(s, a)}_{\text{current estimate}}\,\big]
+Q(s, a)  \leftarrow  Q(s, a) + \alpha [ \underbrace{r + \gamma \max_{a'} Q(s', a')}_{\text{TD target}}  -  \underbrace{Q(s, a)}_{\text{current estimate}} ]
 $$
 
 $\alpha$ is the learning rate. The quantity in brackets is the **TD error**.
@@ -189,7 +189,7 @@ behaviour policy actually took next. We learn about the greedy policy while
 exploring with a different (e.g. $\epsilon$-greedy) one.
 
 **2. Convergence guarantee.** In the tabular case — with enough exploration and
-a decaying $\alpha$ — Q-learning is proven to converge to $Q^*$. The Bellman
+a decaying $\alpha$ — Q-learning is proven to converge to $Q^{*}$. The Bellman
 operator is a $\gamma$-contraction in the sup-norm, and the stochastic
 fixed-point iteration converges.
 
@@ -237,7 +237,7 @@ $$
 $$
 
 The reward signal has **propagated backwards one step**. After enough episodes,
-this backward propagation fills in every $(s, a)$ cell with the true $Q^*$.
+this backward propagation fills in every $(s, a)$ cell with the true $Q^{*}$.
 This is the core mechanism: *reinforcement* literally means pulling information
 backward through time along the trajectory.
 
@@ -255,7 +255,7 @@ CartPole's state space is $\mathbb{R}^4$. Even if we bucket each dimension into
 100 bins, the table has:
 
 $$
-100^4 = 10^8 \text{ cells} \;\times\; 2\text{ actions} = 2 \times 10^8 \text{ Q-values}
+100^4 = 10^8 \text{ cells}  \times  2\text{ actions} = 2 \times 10^8 \text{ Q-values}
 $$
 
 For Atari (84x84 greyscale frames) the table would have $256^{84 \cdot 84} \approx 10^{17000}$
@@ -265,7 +265,7 @@ cells. This is hopeless.
 function* that generalises across similar states:
 
 $$
-Q_{\theta}(s, a) \;\approx\; Q^*(s, a), \qquad \theta \in \mathbb{R}^n
+Q_{\theta}(s, a)  \approx  Q^{*}(s, a), \qquad \theta \in \mathbb{R}^n
 $$
 
 $\theta$ is a neural network's weights. $n \ll$ the number of possible states.
@@ -278,7 +278,7 @@ Similar states get similar Q-values "for free" — the network interpolates.
 If you just plug a neural net into the Q-learning update:
 
 $$
-\mathcal{L}(\theta) \;=\; \bigl(\,r + \gamma \max_{a'} Q_{\theta}(s', a') \;-\; Q_{\theta}(s, a)\,\bigr)^2
+\mathcal{L}(\theta)  =  ( r + \gamma \max_{a'} Q_{\theta}(s', a')  -  Q_{\theta}(s, a) )^2
 $$
 
 ...and train online, **three things go catastrophically wrong:**
@@ -319,18 +319,18 @@ just made it famous by combining it with deep nets.
 
 Keep *two* copies of the Q-network:
 - **Online network** $Q_{\theta}$ — updated every step by SGD
-- **Target network** $Q_{\theta^-}$ — a frozen snapshot used to compute the TD target
+- **Target network** $Q_{\theta^{-}}$ — a frozen snapshot used to compute the TD target
 
-Every $C$ steps (e.g. 500), copy $\theta^- \leftarrow \theta$. Between copies, the
+Every $C$ steps (e.g. 500), copy $\theta^{-} \leftarrow \theta$. Between copies, the
 target is held **stationary**.
 
 The loss becomes:
 
 $$
-\mathcal{L}(\theta) \;=\; \mathbb{E}_{(s,a,r,s') \sim \mathcal{D}}\!\left[\,\bigl(\,r + \gamma \max_{a'} Q_{\theta^-}(s', a') \;-\; Q_{\theta}(s, a)\,\bigr)^2\,\right]
+\mathcal{L}(\theta)  =  \mathbb{E}_{(s,a,r,s') \sim \mathcal{D}}\left[ ( r + \gamma \max_{a'} Q_{\theta^{-}}(s', a')  -  Q_{\theta}(s, a) )^2 \right]
 $$
 
-Note: $\theta^-$ in the target, $\theta$ in the prediction. This decouples the
+Note: $\theta^{-}$ in the target, $\theta$ in the prediction. This decouples the
 target from the parameters being optimised — stable targets, stable training.
 
 ---
@@ -339,12 +339,12 @@ target from the parameters being optimised — stable targets, stable training.
 
 **Hard update (Mnih et al., 2015):**
 $$
-\theta^- \leftarrow \theta \quad \text{every } C \text{ steps}
+\theta^{-} \leftarrow \theta \quad \text{every } C \text{ steps}
 $$
 
 **Soft update / Polyak averaging (Lillicrap et al., 2015):**
 $$
-\theta^- \leftarrow \tau \theta + (1 - \tau) \theta^-, \qquad \tau \ll 1
+\theta^{-} \leftarrow \tau \theta + (1 - \tau) \theta^{-}, \qquad \tau \ll 1
 $$
 
 **CleanRL supports both** through one knob. Our run uses the default:
@@ -375,7 +375,7 @@ $$
 We **decay** $\epsilon$ over time so the agent explores early and exploits later:
 
 $$
-\epsilon(t) = \max\!\left(\epsilon_{\text{end}},\; \epsilon_{\text{start}} + \frac{\epsilon_{\text{end}} - \epsilon_{\text{start}}}{\text{duration}} \cdot t\right)
+\epsilon(t) = \max\left(\epsilon_{\text{end}},  \epsilon_{\text{start}} + \frac{\epsilon_{\text{end}} - \epsilon_{\text{start}}}{\text{duration}} \cdot t\right)
 $$
 
 Our run: $\epsilon$ goes from **1.0 at $t=0$** to **0.05 at $t = 50{,}000$**
@@ -567,9 +567,9 @@ if global_step > args.learning_starts:
 **Line by line:**
 
 - `data = rb.sample(128)` — 128 random transitions, uncorrelated
-- `target_network(...).max(dim=1)` — $\max_{a'} Q_{\theta^-}(s', a')$, using the **target** net
+- `target_network(...).max(dim=1)` — $\max_{a'} Q_{\theta^{-}}(s', a')$, using the **target** net
 - `td_target = r + γ · max · (1 − done)` — the TD target. The `(1 - done)` zeros out the future value for terminal states, so terminal transitions reduce to $y = r$. This is the Bellman equation with a boundary condition.
-- `with torch.no_grad()` — we don't backprop through the target. Critical — this is how we freeze $\theta^-$.
+- `with torch.no_grad()` — we don't backprop through the target. Critical — this is how we freeze $\theta^{-}$.
 - `q_network(...).gather(1, data.actions)` — this is how you pick $Q_{\theta}(s_i, a_i)$ for each sample $i$ in the batch. `.gather` indexes the Q-value vector by the action we actually took.
 - `F.mse_loss(td_target, old_val)` — $\mathcal{L}(\theta) = \tfrac{1}{N}\sum_i (y_i - Q_{\theta}(s_i, a_i))^2$
 
@@ -595,7 +595,7 @@ if global_step > args.learning_starts:
 First block: standard PyTorch three-liner for a gradient step on `loss`.
 `loss.backward()` computes $\nabla_{\theta} \mathcal{L}$ — this is why we
 couldn't backprop through the target (it would try to compute gradients w.r.t.
-$\theta^-$ which we don't want to update).
+$\theta^{-}$ which we don't want to update).
 
 Second block: target network sync. With the default $\tau = 1.0$ this is a
 complete hard copy every 500 steps. Setting $\tau < 1$ gives Polyak averaging.
@@ -660,7 +660,7 @@ Should climb from ~20 (random) toward 500 (CartPole max). This is the headline.
 
 **`losses/q_values`** — average predicted $Q_{\theta}(s, a)$ for the sampled
 actions. In a well-trained CartPole agent this should rise and plateau around
-the true optimal $V^*(s) \approx 1 / (1 - \gamma) = 100$. (The max cumulative
+the true optimal $V^{*}(s) \approx 1 / (1 - \gamma) = 100$. (The max cumulative
 discounted reward from a balanced state.)
 
 **`losses/td_loss`** — MSE of the TD error. Should decrease on average. It
@@ -759,7 +759,7 @@ bootstrap-on-bootstrap instability of TD in long horizons.
 2. **The Bellman equation is the central equation of value-based RL.** Every value-based algorithm is some way of iterating toward its fixed point.
 3. **Tabular Q-learning works but doesn't scale.** The $n^d$ curse of dimensionality is real.
 4. **DQN = Q-learning + neural net + replay buffer + target network.** Those last two tricks are what make it stable enough to train.
-5. **The loss is a stale-target MSE** — $\mathbb{E}[(r + \gamma \max_{a'} Q_{\theta^-}(s', a') - Q_{\theta}(s, a))^2]$.
+5. **The loss is a stale-target MSE** — $\mathbb{E}[(r + \gamma \max_{a'} Q_{\theta^{-}}(s', a') - Q_{\theta}(s, a))^2]$.
 6. **CleanRL's `dqn.py` is ~60 lines of real logic.** You can read it end-to-end.
 7. **Hyperparameters matter but the defaults in CleanRL are sane** for the classic environments. Change them one at a time and watch TensorBoard.
 
