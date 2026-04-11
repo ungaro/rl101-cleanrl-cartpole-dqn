@@ -107,7 +107,12 @@ these are called **transitions** and they are the only thing the agent gets to l
 
 ## The MDP formalism
 
-A **Markov Decision Process** is a 5-tuple $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$:
+> A Markov decision process (MDP) is a mathematical model for sequential
+> decision making when outcomes are uncertain. It is a type of stochastic
+> decision process, and is often solved using the methods of stochastic
+> dynamic programming.
+
+Formally, a **Markov Decision Process** is a 5-tuple $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$:
 
 | Symbol | Name | CartPole example |
 |---|---|---|
