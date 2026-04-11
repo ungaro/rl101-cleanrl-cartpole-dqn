@@ -88,10 +88,26 @@ pip install \
     huggingface-hub \
     tenacity
 
-# Box2D (for LunarLander) — install separately with swig pre-built
-# to avoid build-from-source failures
-pip install swig
-pip install box2d-py || echo "WARNING: box2d-py install failed — LunarLander won't work but CartPole will."
+# Box2D (optional, for LunarLander bonus demo)
+# box2d-py builds from source via swig. The `pip install swig` package
+# is a broken shim — the real fix is the system swig binary:
+#   macOS:  brew install swig
+#   Linux:  apt install swig  (or dnf / pacman equivalent)
+# If swig isn't present, box2d-py build fails — we just warn and continue
+# since CartPole (the main demo) doesn't need it.
+if pip install box2d-py 2>/dev/null; then
+    echo "       box2d-py installed — LunarLander bonus demo will work."
+else
+    echo ""
+    echo "       WARNING: box2d-py install failed (needs system 'swig')."
+    echo "       CartPole will work fine without it. For LunarLander:"
+    case "$OS" in
+        Darwin) echo "         brew install swig && pip install box2d-py" ;;
+        Linux)  echo "         sudo apt install swig && pip install box2d-py" ;;
+        *)      echo "         install 'swig' from your package manager, then: pip install box2d-py" ;;
+    esac
+    echo ""
+fi
 
 # ---------------------------------------------------------------
 # 6. Verification
