@@ -114,18 +114,18 @@ Two ways to measure "how good is a situation":
 
 **State-value** — how good is state $s$ under policy $\pi$?
 $$
-V^{\pi}(s) = \mathbb{E}_{\pi}\left[ G_t  \middle|  s_t = s \right]
+V^{\pi}(s) = \mathbb{E}_{\pi}\left[ G_t  \mid  s_t = s \right]
 $$
 
 **Action-value** — how good is taking action $a$ in state $s$ and then following $\pi$?
 $$
-Q^{\pi}(s, a) = \mathbb{E}_{\pi}\left[ G_t  \middle|  s_t = s,  a_t = a \right]
+Q^{\pi}(s, a) = \mathbb{E}_{\pi}\left[ G_t  \mid  s_t = s,  a_t = a \right]
 $$
 
-**Why $Q$ matters more for us:** once you have $Q^{*}$ (the optimal action-value), you
+**Why $Q$ matters more for us:** once you have $Q^{\ast}$ (the optimal action-value), you
 can act greedily without knowing the environment dynamics:
 $$
-\pi^{*}(s) = \arg\max_{a} Q^{*}(s, a)
+\pi^{\ast}(s) = \arg\max_{a} Q^{\ast}(s, a)
 $$
 
 No model of $P$ needed. This is the entire reason value-based RL works.
@@ -144,11 +144,11 @@ $$
 And for the **optimal** policy (the Bellman *optimality* equation):
 
 $$
-\boxed{ Q^{*}(s, a) = \mathbb{E}\left[ r + \gamma \max_{a'} Q^{*}(s', a') \right] }
+\boxed{ Q^{\ast}(s, a) = \mathbb{E}\left[ r + \gamma \max_{a'} Q^{\ast}(s', a') \right] }
 $$
 
 This is the object DQN is trying to approximate. Everything that follows is
-machinery for finding $Q^{*}$ without having to enumerate every $(s, a)$ pair.
+machinery for finding $Q^{\ast}$ without having to enumerate every $(s, a)$ pair.
 
 ---
 
@@ -189,7 +189,7 @@ behaviour policy actually took next. We learn about the greedy policy while
 exploring with a different (e.g. $\epsilon$-greedy) one.
 
 **2. Convergence guarantee.** In the tabular case — with enough exploration and
-a decaying $\alpha$ — Q-learning is proven to converge to $Q^{*}$. The Bellman
+a decaying $\alpha$ — Q-learning is proven to converge to $Q^{\ast}$. The Bellman
 operator is a $\gamma$-contraction in the sup-norm, and the stochastic
 fixed-point iteration converges.
 
@@ -223,21 +223,24 @@ Transitions: $(S, \text{right}, 0, s_1)$ and $(s_1, \text{right}, 1, G)$.
 
 Start with $Q \equiv 0$. Apply the Q-learning rule to each transition:
 
-**Update on $(s_1, \text{right}, 1, G)$:**
+**Update on the transition $(s_1, \text{right}, 1, G)$:**
+
 $$
-Q(s_1, \text{right}) \leftarrow 0 + 0.5 \cdot [1 + 0.9 \cdot 0 - 0] = 0.5
+Q(s_1, \text{right}) \leftarrow 0 + 0.5 \cdot \left( 1 + 0.9 \cdot 0 - 0 \right) = 0.5
 $$
 
-**Update on $(S, \text{right}, 0, s_1)$:**
+**Update on the transition $(S, \text{right}, 0, s_1)$:**
+
 $$
-Q(S, \text{right}) \leftarrow 0 + 0.5 \cdot [0 + 0.9 \cdot \max_a Q(s_1, a) - 0]
+Q(S, \text{right}) \leftarrow 0 + 0.5 \cdot \left( 0 + 0.9 \cdot \max_a Q(s_1, a) - 0 \right)
 $$
+
 $$
-= 0.5 \cdot [0 + 0.9 \cdot 0.5 - 0] = 0.225
+= 0.5 \cdot \left( 0 + 0.9 \cdot 0.5 - 0 \right) = 0.225
 $$
 
 The reward signal has **propagated backwards one step**. After enough episodes,
-this backward propagation fills in every $(s, a)$ cell with the true $Q^{*}$.
+this backward propagation fills in every $(s, a)$ cell with the true $Q^{\ast}$.
 This is the core mechanism: *reinforcement* literally means pulling information
 backward through time along the trajectory.
 
@@ -265,7 +268,7 @@ cells. This is hopeless.
 function* that generalises across similar states:
 
 $$
-Q_{\theta}(s, a)  \approx  Q^{*}(s, a), \qquad \theta \in \mathbb{R}^n
+Q_{\theta}(s, a)  \approx  Q^{\ast}(s, a), \qquad \theta \in \mathbb{R}^n
 $$
 
 $\theta$ is a neural network's weights. $n \ll$ the number of possible states.
@@ -660,7 +663,7 @@ Should climb from ~20 (random) toward 500 (CartPole max). This is the headline.
 
 **`losses/q_values`** — average predicted $Q_{\theta}(s, a)$ for the sampled
 actions. In a well-trained CartPole agent this should rise and plateau around
-the true optimal $V^{*}(s) \approx 1 / (1 - \gamma) = 100$. (The max cumulative
+the true optimal $V^{\ast}(s) \approx 1 / (1 - \gamma) = 100$. (The max cumulative
 discounted reward from a balanced state.)
 
 **`losses/td_loss`** — MSE of the TD error. Should decrease on average. It
