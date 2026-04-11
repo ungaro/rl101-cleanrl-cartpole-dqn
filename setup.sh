@@ -38,10 +38,27 @@ else
 fi
 
 # ---------------------------------------------------------------
-# 3. Install PyTorch nightly for CUDA 12.8 (RTX 5090 / Blackwell)
+# 3. Install PyTorch (platform-aware)
+#    - Linux: nightly cu128 for RTX 5090 (Blackwell SM 12.0)
+#    - macOS: stable (includes MPS/Metal support on Apple Silicon)
+#    - other: stable CPU build
 # ---------------------------------------------------------------
-echo "[3/6] Installing PyTorch nightly (cu128)..."
-pip install --pre torch --index-url https://download.pytorch.org/whl/nightly/cu128
+OS="$(uname -s)"
+ARCH="$(uname -m)"
+case "$OS" in
+    Linux)
+        echo "[3/6] Installing PyTorch nightly cu128 (Linux, for RTX 5090)..."
+        pip install --pre torch --index-url https://download.pytorch.org/whl/nightly/cu128
+        ;;
+    Darwin)
+        echo "[3/6] Installing PyTorch stable (macOS $ARCH, with MPS support)..."
+        pip install torch
+        ;;
+    *)
+        echo "[3/6] Installing PyTorch stable (unknown OS '$OS')..."
+        pip install torch
+        ;;
+esac
 
 # ---------------------------------------------------------------
 # 4. Install CleanRL with --no-deps (avoids pinned torch==2.4.1)
@@ -82,18 +99,21 @@ pip install box2d-py || echo "WARNING: box2d-py install failed — LunarLander w
 echo "[6/6] Verifying installation..."
 
 echo ""
-echo "--- PyTorch / CUDA ---"
+echo "--- PyTorch / GPU ---"
 python -c "
 import torch
 print(f'PyTorch version: {torch.__version__}')
-print(f'CUDA available: {torch.cuda.is_available()}')
 if torch.cuda.is_available():
+    print(f'CUDA available: True')
     print(f'CUDA version: {torch.version.cuda}')
     print(f'GPU: {torch.cuda.get_device_name(0)}')
     cap = torch.cuda.get_device_capability(0)
     print(f'Compute capability: {cap[0]}.{cap[1]}')
+elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+    print('MPS (Apple Metal) available — Apple Silicon GPU will be used')
 else:
-    print('WARNING: CUDA not available. Training will be slow on CPU.')
+    print('No GPU detected — training will run on CPU')
+    print('(this is fine for CartPole; its Q-network is tiny)')
 "
 
 echo ""
