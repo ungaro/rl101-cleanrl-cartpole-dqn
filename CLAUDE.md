@@ -54,6 +54,9 @@ make train
 # Train DQN on LunarLander-v3 (1M timesteps, bonus demo)
 make train-lunar
 
+# Train PPO on CartPole-v1 (Week 3 — actor-critic, no model save / eval)
+make train-ppo
+
 # Evaluate a trained model with rendering
 make eval
 
