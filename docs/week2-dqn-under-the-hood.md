@@ -27,17 +27,95 @@ the pole for the full 500 steps.
 
 ---
 
-## What this presentation covers
+## The whole algorithm at a glance
 
-1. **Week 1 recap** — MDP, policy, value, Bellman (the vocabulary)
-2. **Tabular Q-learning** — the algorithm DQN generalizes
-3. **A worked gridworld example** — doing the math by hand
-4. **Why tabular fails on CartPole** — the curse of dimensionality
-5. **DQN's two tricks** — replay buffer + target network
-6. **The DQN algorithm** — pseudocode and the loss function
-7. **CleanRL's `dqn.py` line-by-line** — what each block does
-8. **Our exact run** — hyperparameters and what we saw
-9. **Transition to Week 3** — what DQN *can't* do
+The rest of this document is a 40-slide deep dive, but if you only look at one
+picture, look at this one. It's the full DQN training loop — every box maps to
+code in `cleanrl/cleanrl/dqn.py` and every section of this deck zooms into one
+of these boxes.
+
+```mermaid
+flowchart TB
+    Start(["make train"])
+    Start --> Init["Initialise online net Qθ<br/>target net Qθ⁻ ← Qθ<br/>replay buffer D (capacity 10k)"]
+    Init --> Observe["Observe state s"]
+    Observe --> Epsilon["Compute ε from linear schedule<br/>1.0 → 0.05 over first 10% of training"]
+    Epsilon --> Choose{"Explore<br/>or exploit?"}
+    Choose -->|"with prob ε"| RandAct["a = random action"]
+    Choose -->|"with prob 1-ε"| GreedyAct["a = argmax Qθ s,a"]
+    RandAct --> Env["Step environment<br/>get r, s', done"]
+    GreedyAct --> Env
+    Env --> AddBuf[("Store s,a,r,s',done<br/>in buffer D")]
+    AddBuf --> Warmup{"step &gt; 10k?<br/>learning_starts"}
+    Warmup -->|"no, fill buffer"| Next["global_step += 1"]
+    Warmup -->|"yes"| TrainCheck{"step mod 4 == 0?<br/>train_frequency"}
+    TrainCheck -->|"no"| SyncCheck
+    TrainCheck -->|"yes"| Sample["Sample minibatch<br/>128 transitions from D"]
+    Sample --> ComputeTarget["TD target<br/>y = r + γ · max Qθ⁻ s',a' · 1-done"]
+    Sample --> ComputeQ["Prediction<br/>q = Qθ s,a"]
+    ComputeTarget --> Loss["MSE loss<br/>L = mean y - q squared"]
+    ComputeQ --> Loss
+    Loss --> AdamStep["Backprop + Adam<br/>θ ← θ - η ∇L"]
+    AdamStep --> SyncCheck{"step mod 500 == 0?<br/>target_network_frequency"}
+    SyncCheck -->|"yes"| HardCopy["Hard copy<br/>θ⁻ ← θ"]
+    SyncCheck -->|"no"| Next
+    HardCopy --> Next
+    Next --> Observe
+
+    style Init fill:#e7f1ff,stroke:#0d6efd
+    style AddBuf fill:#fff3cd,stroke:#d39e00
+    style ComputeTarget fill:#f8d7da,stroke:#dc3545
+    style ComputeQ fill:#d1e7dd,stroke:#198754
+    style HardCopy fill:#e2e3e5,stroke:#6c757d
+```
+
+**Three things to notice:**
+1. **Two Q-networks.** The *online* net Qθ is what we train; the *target* net Qθ⁻ is a frozen copy used to compute stable TD targets. Every 500 steps we hard-copy online → target.
+2. **The replay buffer decouples experience collection from learning.** We add every transition, then sample random minibatches — this breaks temporal correlation and lets us re-use experience.
+3. **Learning is gated twice.** Nothing learns until `step > 10,000` (buffer warmup), and even then only one gradient step every 4 env steps. So training is ~10× cheaper than "update every step."
+
+---
+
+## Table of contents
+
+1. [Part 1 — Week 1 Recap](#part-1--week-1-recap)
+    - [The RL loop](#the-rl-loop)
+    - [The MDP formalism](#the-mdp-formalism)
+    - [Policy and return](#policy-and-return)
+    - [Value functions](#value-functions)
+    - [The Bellman equation](#the-bellman-equation)
+2. [Part 2 — Tabular Q-Learning](#part-2--tabular-q-learning)
+    - [Temporal-Difference intuition](#temporal-difference-intuition)
+    - [Why this works](#why-this-works)
+    - [Worked example — tiny gridworld](#worked-example--tiny-gridworld)
+    - [Gridworld — updates step by step](#gridworld--updates-step-by-step)
+3. [Part 3 — From Q-table to Deep Q-Network](#part-3--from-q-table-to-deep-q-network)
+    - [Why tabular Q-learning dies on CartPole](#why-tabular-q-learning-dies-on-cartpole)
+    - [The naive approach (and why it fails)](#the-naive-approach-and-why-it-fails)
+    - [DQN Trick #1 — Replay Buffer](#dqn-trick-1--replay-buffer)
+    - [DQN Trick #2 — Target Network](#dqn-trick-2--target-network)
+    - [Two flavours of target update](#two-flavours-of-target-update)
+    - [ε-greedy exploration](#ε-greedy-exploration)
+    - [The full DQN algorithm](#the-full-dqn-algorithm)
+4. [Part 4 — CleanRL's dqn.py, line by line](#part-4--cleanrls-dqnpy-line-by-line)
+    - [File structure](#file-structure-cleanrlcleanrldqnpy-250-lines)
+    - [QNetwork — the function approximator](#qnetwork--the-function-approximator)
+    - [Setup block — two networks, one optimizer](#setup-block--two-networks-one-optimizer)
+    - [The main loop — acting](#the-main-loop--acting)
+    - [The main loop — storing experience](#the-main-loop--storing-experience)
+    - [The main loop — the TD target](#the-main-loop--the-td-target)
+    - [The main loop — the gradient step and target sync](#the-main-loop--the-gradient-step-and-target-sync)
+5. [Part 5 — Our exact run](#part-5--our-exact-run)
+    - [Our hyperparameters (CartPole-v1)](#our-hyperparameters-cartpole-v1)
+    - [What the phases of training look like](#what-the-phases-of-training-look-like)
+    - [TensorBoard — the four metrics that matter](#tensorboard--the-four-metrics-that-matter)
+    - [Why CPU is faster than GPU here](#why-cpu-is-faster-than-gpu-here)
+6. [Part 6 — What DQN doesn't solve](#part-6--what-dqn-doesnt-solve)
+    - [Known failure modes of vanilla DQN](#known-failure-modes-of-vanilla-dqn)
+    - [The roadmap](#the-roadmap-from-the-course-outline)
+    - [Why move beyond Q-learning?](#why-move-beyond-q-learning)
+    - [What to take away from Week 2](#what-to-take-away-from-week-2)
+7. [References & further reading](#references--further-reading)
 
 ---
 
