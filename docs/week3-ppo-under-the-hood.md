@@ -683,9 +683,9 @@ for step in range(0, args.num_steps):                   # line 192
 Each iteration collects $128 \times 4 = 512$ transitions. With
 `total_timesteps` = 500,000 and `batch_size` = 512:
 
-$$
-\text{num\textunderscore iterations} = \frac{500{,}000}{512} \approx 976
-$$
+```math
+\text{num\_iterations} = \frac{500{,}000}{512} \approx 976
+```
 
 So we do 976 rounds of "collect 512 transitions, then update."
 
@@ -800,9 +800,9 @@ pg_loss = torch.max(pg_loss1, pg_loss2).mean()              # line 267
 Note the signs: the paper maximizes $L^{\text{CLIP}}$, but PyTorch minimizes.
 So the code negates the advantages and uses `max` instead of `min`:
 
-$$
-\texttt{pg\textunderscore loss} = \max\left(-\hat{A} \cdot r,\ -\hat{A} \cdot \text{clip}(r)\right)
-$$
+```math
+\texttt{pg\_loss} = \max\left(-\hat{A} \cdot r,\ -\hat{A} \cdot \text{clip}(r)\right)
+```
 
 Minimizing this is equivalent to maximizing the original clipped objective.
 
@@ -1079,21 +1079,21 @@ The ratio exceeds the upper bound, so it's clamped to 1.2.
 
 **Unclipped objective term** (negated for minimization):
 
-$$
-\texttt{pg\textunderscore loss1} = -\hat{A} \cdot r(\theta) = -10.93 \cdot 1.374 = -15.02
-$$
+```math
+\texttt{pg\_loss1} = -\hat{A} \cdot r(\theta) = -10.93 \cdot 1.374 = -15.02
+```
 
 **Clipped objective term:**
 
-$$
-\texttt{pg\textunderscore loss2} = -\hat{A} \cdot \text{clip}(r(\theta)) = -10.93 \cdot 1.2 = -13.12
-$$
+```math
+\texttt{pg\_loss2} = -\hat{A} \cdot \text{clip}(r(\theta)) = -10.93 \cdot 1.2 = -13.12
+```
 
 **PPO loss** (taking the max for minimization):
 
-$$
-\texttt{pg\textunderscore loss} = \max(-15.02, -13.12) = -13.12
-$$
+```math
+\texttt{pg\_loss} = \max(-15.02, -13.12) = -13.12
+```
 
 The clipped term "wins." The loss is $-13.12$ instead of $-15.02$ — the
 gradient will be computed through the **clipped** path, not the unclipped one.
