@@ -434,7 +434,7 @@ ratio = logratio.exp()                          # line 252
 **Interpretation of the ratio:**
 - $r(\theta) = 1$: new and old policies agree on this action's probability
 - $r(\theta) > 1$: new policy is *more* likely to take this action than old
-- $r(\theta) < 1$: new policy is *less* likely to take this action than old
+- $r(\theta) \lt 1$: new policy is *less* likely to take this action than old
 
 ---
 
@@ -495,10 +495,10 @@ and the value of the ratio:
 
 | Advantage | Ratio | Unclipped $r \cdot A$ | Clipped $\text{clip}(r) \cdot A$ | $\min$ selects | Effect |
 |---|---|---|---|---|---|
-| $A > 0$ (good action) | $r < 1.2$ | $r \cdot A$ | $r \cdot A$ | Either (same) | Normal gradient, push $r$ toward higher |
+| $A > 0$ (good action) | $r \lt 1.2$ | $r \cdot A$ | $r \cdot A$ | Either (same) | Normal gradient, push $r$ toward higher |
 | $A > 0$ (good action) | $r \geq 1.2$ | $r \cdot A$ (big) | $1.2 \cdot A$ (capped) | **Clipped** | Gradient stops; already moved enough |
-| $A < 0$ (bad action) | $r > 0.8$ | $r \cdot A$ | $r \cdot A$ | Either (same) | Normal gradient, push $r$ toward lower |
-| $A < 0$ (bad action) | $r \leq 0.8$ | $r \cdot A$ (big positive) | $0.8 \cdot A$ (capped) | **Clipped** | Gradient stops; already moved enough |
+| $A \lt 0$ (bad action) | $r > 0.8$ | $r \cdot A$ | $r \cdot A$ | Either (same) | Normal gradient, push $r$ toward lower |
+| $A \lt 0$ (bad action) | $r \leq 0.8$ | $r \cdot A$ (big positive) | $0.8 \cdot A$ (capped) | **Clipped** | Gradient stops; already moved enough |
 
 In both clipped cases, the policy has already moved enough in the right
 direction. Clipping prevents further movement, keeping the new policy close
@@ -681,10 +681,10 @@ for step in range(0, args.num_steps):                   # line 192
 ```
 
 Each iteration collects $128 \times 4 = 512$ transitions. With
-`total_timesteps = 500{,}000$ and `batch_size = 512`:
+`total_timesteps` = 500,000 and `batch_size` = 512:
 
 $$
-\text{num\_iterations} = \frac{500{,}000}{512} \approx 976
+\text{num\textunderscore iterations} = \frac{500{,}000}{512} \approx 976
 $$
 
 So we do 976 rounds of "collect 512 transitions, then update."
@@ -720,19 +720,19 @@ with torch.no_grad():                                   # line 218
 
 Walking through the math for a single environment:
 
-1. At the last step ($t = 127$), `lastgaelam = 0`, so the advantage is just the one-step TD error:
+**Step 1 ($t = 127$):** `lastgaelam = 0`, so the advantage is just the one-step TD error:
 
-   $$\hat{A}_{127} = \delta_{127}$$
+$$\hat{A}_{127} = \delta_{127}$$
 
-2. At $t = 126$:
+**Step 2 ($t = 126$):**
 
-   $$\hat{A}_{126} = \delta_{126} + \gamma \lambda \cdot \hat{A}_{127}$$
+$$\hat{A}_{126} = \delta_{126} + \gamma \lambda \cdot \hat{A}_{127}$$
 
-3. At $t = 125$:
+**Step 3 ($t = 125$):**
 
-   $$\hat{A}_{125} = \delta_{125} + \gamma \lambda \cdot \hat{A}_{126}$$
+$$\hat{A}_{125} = \delta_{125} + \gamma \lambda \cdot \hat{A}_{126}$$
 
-4. And so on, backwards to $t = 0$
+And so on, backwards to $t = 0$.
 
 The `nextnonterminal` factor is crucial: if the episode terminated between
 $t$ and $t+1$, we zero out the propagation. Advantages don't leak across
@@ -801,7 +801,7 @@ Note the signs: the paper maximizes $L^{\text{CLIP}}$, but PyTorch minimizes.
 So the code negates the advantages and uses `max` instead of `min`:
 
 $$
-\texttt{pg\_loss} = \max\left(-\hat{A} \cdot r,\ -\hat{A} \cdot \text{clip}(r)\right)
+\texttt{pg\textunderscore loss} = \max\left(-\hat{A} \cdot r,\ -\hat{A} \cdot \text{clip}(r)\right)
 $$
 
 Minimizing this is equivalent to maximizing the original clipped objective.
@@ -989,7 +989,7 @@ Should be moderate (0.05--0.2). Zero means the clip never fires (updates are
 tiny). Above 0.3 means the policy is changing too fast.
 
 **`losses/explained_variance`** — how well the critic predicts returns.
-$1.0$ = perfect, $0.0$ = no better than mean, $< 0$ = worse than mean.
+$1.0$ = perfect, $0.0$ = no better than mean, negative = worse than mean.
 Should increase toward 1.0 over training.
 
 ---
@@ -1080,19 +1080,19 @@ The ratio exceeds the upper bound, so it's clamped to 1.2.
 **Unclipped objective term** (negated for minimization):
 
 $$
-\texttt{pg\_loss1} = -\hat{A} \cdot r(\theta) = -10.93 \cdot 1.374 = -15.02
+\texttt{pg\textunderscore loss1} = -\hat{A} \cdot r(\theta) = -10.93 \cdot 1.374 = -15.02
 $$
 
 **Clipped objective term:**
 
 $$
-\texttt{pg\_loss2} = -\hat{A} \cdot \text{clip}(r(\theta)) = -10.93 \cdot 1.2 = -13.12
+\texttt{pg\textunderscore loss2} = -\hat{A} \cdot \text{clip}(r(\theta)) = -10.93 \cdot 1.2 = -13.12
 $$
 
 **PPO loss** (taking the max for minimization):
 
 $$
-\texttt{pg\_loss} = \max(-15.02, -13.12) = -13.12
+\texttt{pg\textunderscore loss} = \max(-15.02, -13.12) = -13.12
 $$
 
 The clipped term "wins." The loss is $-13.12$ instead of $-15.02$ — the
@@ -1121,7 +1121,7 @@ policy to increase $\pi_\theta(a_1 \mid s)$ even more.
 |---|---|---|---|
 | 1.1 | Yes | Same (unclipped) | Normal policy gradient; keep moving |
 | 1.374 | No (above 1.2) | Clipped | Zero through ratio; stop moving |
-| 0.7 (if $A < 0$) | No (below 0.8) | Clipped | Zero through ratio; stop moving |
+| 0.7 (if $A \lt 0$) | No (below 0.8) | Clipped | Zero through ratio; stop moving |
 
 This is how PPO enforces the "proximal" constraint: not through a hard KL
 penalty or second-order optimization, but through a simple gradient gate.
