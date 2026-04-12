@@ -434,7 +434,7 @@ ratio = logratio.exp()                          # line 252
 **Interpretation of the ratio:**
 - $r(\theta) = 1$: new and old policies agree on this action's probability
 - $r(\theta) > 1$: new policy is *more* likely to take this action than old
-- $r(\theta) \lt 1$: new policy is *less* likely to take this action than old
+- $r(\theta) < 1$: new policy is *less* likely to take this action than old
 
 ---
 
@@ -453,11 +453,13 @@ standard policy gradient.
 The problem: maximising $L^{\text{CPI}}$ without constraint can lead to
 $r_t(\theta)$ becoming very large — the policy changes too much in one update.
 
-Example: suppose $\hat{A}_t = +5$ for some action. Unconstrained optimization
-would keep increasing $\pi_\theta(a \mid s)$ to make $r(\theta)$ as large
-as possible. After a few gradient steps, $r(\theta)$ could be 10 or 100,
-meaning the policy has completely changed. But $\hat{A}_t$ was computed under
-the *old* policy — it's no longer valid for this radically different policy.
+Example: suppose $\hat{A}_t = +5$ for some action.
+
+Unconstrained optimization would keep increasing $\pi_\theta(a \mid s)$ to
+make $r(\theta)$ as large as possible. After a few gradient steps,
+$r(\theta)$ could be 10 or 100, meaning the policy has completely changed.
+But the advantage was computed under the *old* policy — it's no longer valid
+for this radically different policy.
 
 ---
 
@@ -493,10 +495,10 @@ and the value of the ratio:
 
 | Advantage | Ratio | Unclipped $r \cdot A$ | Clipped $\text{clip}(r) \cdot A$ | $\min$ selects | Effect |
 |---|---|---|---|---|---|
-| $A > 0$ (good action) | $r \lt 1.2$ | $r \cdot A$ | $r \cdot A$ | Either (same) | Normal gradient, push $r$ toward higher |
+| $A > 0$ (good action) | $r < 1.2$ | $r \cdot A$ | $r \cdot A$ | Either (same) | Normal gradient, push $r$ toward higher |
 | $A > 0$ (good action) | $r \geq 1.2$ | $r \cdot A$ (big) | $1.2 \cdot A$ (capped) | **Clipped** | Gradient stops; already moved enough |
-| $A \lt 0$ (bad action) | $r > 0.8$ | $r \cdot A$ | $r \cdot A$ | Either (same) | Normal gradient, push $r$ toward lower |
-| $A \lt 0$ (bad action) | $r \leq 0.8$ | $r \cdot A$ (big positive) | $0.8 \cdot A$ (capped) | **Clipped** | Gradient stops; already moved enough |
+| $A < 0$ (bad action) | $r > 0.8$ | $r \cdot A$ | $r \cdot A$ | Either (same) | Normal gradient, push $r$ toward lower |
+| $A < 0$ (bad action) | $r \leq 0.8$ | $r \cdot A$ (big positive) | $0.8 \cdot A$ (capped) | **Clipped** | Gradient stops; already moved enough |
 
 In both clipped cases, the policy has already moved enough in the right
 direction. Clipping prevents further movement, keeping the new policy close
@@ -718,10 +720,18 @@ with torch.no_grad():                                   # line 218
 
 Walking through the math for a single environment:
 
-1. At the last step ($t = 127$), `lastgaelam = 0`, so
-   $\hat{A}_{127} = \delta_{127}$ (just the one-step TD error)
-2. At $t = 126$: $\hat{A}_{126} = \delta_{126} + \gamma \lambda \cdot \hat{A}_{127}$
-3. At $t = 125$: $\hat{A}_{125} = \delta_{125} + \gamma \lambda \cdot \hat{A}_{126}$
+1. At the last step ($t = 127$), `lastgaelam = 0`, so the advantage is just the one-step TD error:
+
+   $$\hat{A}_{127} = \delta_{127}$$
+
+2. At $t = 126$:
+
+   $$\hat{A}_{126} = \delta_{126} + \gamma \lambda \cdot \hat{A}_{127}$$
+
+3. At $t = 125$:
+
+   $$\hat{A}_{125} = \delta_{125} + \gamma \lambda \cdot \hat{A}_{126}$$
+
 4. And so on, backwards to $t = 0$
 
 The `nextnonterminal` factor is crucial: if the episode terminated between
@@ -831,7 +841,11 @@ optimizer.step()                                            # line 290
 
 **Value clipping** (lines 271--280) mirrors the policy clip: the critic's
 prediction is clamped to stay within $\pm 0.2$ of the old value. This
-prevents the critic from changing too fast.
+prevents the critic from changing too fast. Note: the [37 Implementation
+Details](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/)
+paper found that value clipping does not consistently help and may slightly
+hurt performance — it's kept here for compatibility with the original PPO
+implementation.
 
 **Gradient clipping** (line 289) caps the global gradient norm at 0.5.
 Combined with the learning rate, this bounds the maximum parameter change
@@ -921,6 +935,7 @@ From `scripts/train_cartpole_ppo.py`:
 | `ent_coef` | 0.01 | Entropy bonus coefficient |
 | `vf_coef` | 0.5 | Value loss coefficient |
 | `max_grad_norm` | 0.5 | Gradient clipping threshold |
+| Adam `eps` | $10^{-5}$ | Not the PyTorch default ($10^{-8}$); see [37 Details](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/) |
 | `capture_video` | True | Record eval videos |
 
 **Derived values:**
@@ -974,7 +989,7 @@ Should be moderate (0.05--0.2). Zero means the clip never fires (updates are
 tiny). Above 0.3 means the policy is changing too fast.
 
 **`losses/explained_variance`** — how well the critic predicts returns.
-$1.0 = $ perfect, $0.0 = $ no better than mean, $\lt 0 = $ worse than mean.
+$1.0$ = perfect, $0.0$ = no better than mean, $< 0$ = worse than mean.
 Should increase toward 1.0 over training.
 
 ---
@@ -1106,7 +1121,7 @@ policy to increase $\pi_\theta(a_1 \mid s)$ even more.
 |---|---|---|---|
 | 1.1 | Yes | Same (unclipped) | Normal policy gradient; keep moving |
 | 1.374 | No (above 1.2) | Clipped | Zero through ratio; stop moving |
-| 0.7 (if $A \lt 0$) | No (below 0.8) | Clipped | Zero through ratio; stop moving |
+| 0.7 (if $A < 0$) | No (below 0.8) | Clipped | Zero through ratio; stop moving |
 
 This is how PPO enforces the "proximal" constraint: not through a hard KL
 penalty or second-order optimization, but through a simple gradient gate.
@@ -1180,21 +1195,22 @@ flowchart LR
 ## References and further reading
 
 **Papers (read in this order):**
-- Williams, *Simple Statistical Gradient-Following Algorithms for Connectionist Reinforcement Learning* (Machine Learning, 1992) — REINFORCE, the original policy gradient
-- Sutton et al., *Policy Gradient Methods for Reinforcement Learning with Function Approximation* (NeurIPS, 2000) — the policy gradient theorem
-- Schulman et al., *High-Dimensional Continuous Control Using Generalized Advantage Estimation* (ICLR, 2016) — GAE
-- Schulman et al., *Trust Region Policy Optimization* (ICML, 2015) — TRPO, PPO's predecessor
-- Schulman et al., *Proximal Policy Optimization Algorithms* (arXiv, 2017) — the PPO paper
+- Williams, [*Simple Statistical Gradient-Following Algorithms for Connectionist Reinforcement Learning*](https://link.springer.com/article/10.1007/BF00992696) (Machine Learning, 1992) — REINFORCE, the original policy gradient
+- Sutton et al., [*Policy Gradient Methods for Reinforcement Learning with Function Approximation*](https://proceedings.neurips.cc/paper/1999/hash/464d828b85b0bed98e80ade0a5c43b0f-Abstract.html) (NeurIPS, 2000) — the policy gradient theorem
+- Schulman et al., [*High-Dimensional Continuous Control Using Generalized Advantage Estimation*](https://arxiv.org/abs/1506.02438) (ICLR, 2016) — GAE
+- Schulman et al., [*Trust Region Policy Optimization*](https://arxiv.org/abs/1502.05477) (ICML, 2015) — TRPO, PPO's predecessor
+- Schulman et al., [*Proximal Policy Optimization Algorithms*](https://arxiv.org/abs/1707.06347) (arXiv, 2017) — the PPO paper
 
-**Blog posts:**
-- Huang et al., *The 37 Implementation Details of PPO* (ICLR Blog Track, 2022) — explains every design choice in CleanRL's `ppo.py`
-- Weng, *Policy Gradient Algorithms* (lilianweng.github.io, 2018) — excellent overview of the full REINFORCE-to-PPO trajectory
+**Blog posts and talks:**
+- Huang et al., [*The 37 Implementation Details of PPO*](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/) (ICLR Blog Track, 2022) — explains every design choice in CleanRL's `ppo.py`; the 13 core details (Adam eps, orthogonal init scales, advantage normalization scope, etc.) are all reflected in this presentation
+- Weng, [*Policy Gradient Algorithms*](https://lilianweng.github.io/posts/2018-04-08-policy-gradient/) (lilianweng.github.io, 2018) — excellent overview of the full REINFORCE-to-PPO trajectory
+- Schulman, [*The Nuts and Bolts of Deep RL Research*](https://www.youtube.com/watch?v=8EcdaCk9KaQ) (NIPS 2016 talk) — practical debugging tips for policy gradient methods
 
 **Textbooks:**
-- Sutton and Barto, *Reinforcement Learning: An Introduction* (2nd ed., 2018) — chapter 13 (policy gradient methods). Free PDF on author's site.
+- Sutton and Barto, [*Reinforcement Learning: An Introduction*](http://incompleteideas.net/book/the-book-2nd.html) (2nd ed., 2018) — chapter 13 (policy gradient methods). Free PDF on author's site.
 
 **Code:**
-- CleanRL's `ppo.py` — [github.com/vwxyzjn/cleanrl](https://github.com/vwxyzjn/cleanrl)
-- This repo's `scripts/train_cartpole_ppo.py` — the wrapper we ran
+- CleanRL's [`ppo.py`](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/ppo.py) — the 312-line single-file implementation we walked through
+- This repo's [`scripts/train_cartpole_ppo.py`](scripts/train_cartpole_ppo.py) — the wrapper we ran
 
 **Next week:** RLHF and reward modelling — using PPO to fine-tune models from human preferences.
