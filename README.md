@@ -23,9 +23,13 @@ make eval           # Watch the trained agent balance the pole
 | Epsilon-greedy | Balance exploration vs exploitation | `dqn.py` — action selection |
 | Target network | Stabilizes training targets | `dqn.py` — `target_network` |
 
-> **Deep dive:** for a full slide-by-slide walk-through of the math, the
-> algorithm, and CleanRL's `dqn.py` line by line, see
+> **Deep dive (Week 2 — DQN):** for a full slide-by-slide walk-through of
+> the math, the algorithm, and CleanRL's `dqn.py` line by line, see
 > [`docs/week2-dqn-under-the-hood.md`](docs/week2-dqn-under-the-hood.md).
+>
+> **Deep dive (Week 3 — PPO):** actor-critic methods, GAE, and CleanRL's
+> `ppo.py` line by line, see
+> [`docs/week3-ppo-under-the-hood.md`](docs/week3-ppo-under-the-hood.md).
 
 ## Demo Flow
 
