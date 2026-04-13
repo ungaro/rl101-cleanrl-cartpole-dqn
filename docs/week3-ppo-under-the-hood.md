@@ -60,6 +60,7 @@ each other.
     - [The update loop: 4 epochs x 4 minibatches](#the-update-loop-4-epochs-x-4-minibatches)
     - [The clipped policy loss](#the-clipped-policy-loss)
     - [Value loss, entropy, combined loss, and gradient clipping](#value-loss-entropy-combined-loss-and-gradient-clipping)
+    - [The 13 core implementation details](#the-13-core-implementation-details)
 6. [Part 6 — DQN vs PPO Side-by-Side](#part-6--dqn-vs-ppo-side-by-side)
     - [Structural comparison](#structural-comparison)
     - [When to use which](#when-to-use-which)
@@ -861,6 +862,55 @@ if args.target_kl is not None and approx_kl > args.target_kl:
 If the approximate KL divergence between old and new policy exceeds a
 threshold, stop updating early. In the default config `target_kl = None`,
 so this is disabled — we always run all 4 epochs.
+
+---
+
+## The 13 core implementation details
+
+[Huang et al. (2022)](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/)
+identified **13 implementation details** in PPO that aren't in the original
+paper but are critical for reproducing results. CleanRL's `ppo.py` implements
+all of them. Here's where each one lives in the code and in this deck:
+
+| # | Detail | `ppo.py` | This deck |
+|---|--------|----------|-----------|
+| 1 | Vectorized architecture (`SyncVectorEnv`) | 162--164 | [Rollout collection](#rollout-collection-4-envs-x-128-steps) |
+| 2 | Orthogonal init ($\sqrt{2}$ / 0.01 / 1.0) | 94--97 | [Agent class](#agent-class-actor--critic) |
+| 3 | Adam $\varepsilon = 10^{-5}$ (not default $10^{-8}$) | 168 | [Our hyperparameters](#our-hyperparameters-cartpole-v1) |
+| 4 | Learning rate annealing (linear to 0) | 187--190 | [Training phases](#training-phases-and-what-to-watch) |
+| 5 | GAE with $\lambda = 0.95$ | 218--231 | [GAE computation](#gae-computation-the-backward-loop) |
+| 6 | Mini-batch shuffle + split | 244--248 | [Update loop](#the-update-loop-4-epochs-x-4-minibatches) |
+| 7 | Advantage normalization (per minibatch) | 261--262 | [Clipped policy loss](#the-clipped-policy-loss) |
+| 8 | Clipped surrogate objective | 264--267 | [The clipped objective](#the-clipped-objective) |
+| 9 | Value loss clipping | 271--280 | [Value loss](#value-loss-entropy-combined-loss-and-gradient-clipping) |
+| 10 | Combined loss (pg $-$ entropy $+$ value) | 285 | [The combined loss](#the-combined-loss) |
+| 11 | Global gradient clipping (max norm 0.5) | 289 | [Value loss](#value-loss-entropy-combined-loss-and-gradient-clipping) |
+| 12 | Debug variables (approx KL, clipfrac) | 254--258 | [TensorBoard metrics](#tensorboard--the-seven-metrics-that-matter) |
+| 13 | Separate actor + critic networks | 100--116 | [Agent class](#agent-class-actor--critic) |
+
+**What the research found:**
+
+- **Orthogonal init** outperforms Xavier init for policy gradient methods
+  (Engstrom et al., 2020).
+- **LR annealing** provides consistent gains across environments
+  (Andrychowicz et al., 2021).
+- **Value loss clipping** (#9) does not help and may hurt — kept for
+  compatibility, not because it works (Engstrom et al., 2020).
+- **Advantage normalization** (#7) has minimal measured impact but is standard
+  practice (Andrychowicz et al., 2021).
+- **Adam $\varepsilon$** (#3) is never mentioned in the PPO paper but changing
+  it from the PyTorch default $10^{-8}$ to $10^{-5}$ affects numerical
+  stability when gradients are small early in training.
+
+The blog also documents **9 Atari-specific** details (frame stacking, reward
+clipping, Nature-CNN, etc.) and **9 continuous-control-specific** details
+(observation/reward normalization, Gaussian action distributions, etc.) — not
+needed for CartPole but essential reading if you move to harder environments.
+
+**Why this matters:** different commits of OpenAI's baselines produced wildly
+different Breakout scores (274 $\to$ 114 $\to$ 409 across three versions).
+These undocumented details collectively determine whether PPO works or fails.
+CleanRL's single-file approach makes every detail visible and reproducible.
 
 ---
 
