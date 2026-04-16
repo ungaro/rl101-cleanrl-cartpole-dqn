@@ -101,10 +101,40 @@ for most prompts. There's no ground truth for "write a poem about autumn" — bu
 a human can easily say which of two poems they prefer. RLHF converts these
 relative judgments into a training signal.
 
+**The result that proved it works:** OpenAI's InstructGPT (2022) showed that a
+**1.3B parameter model trained with RLHF was preferred by humans over the 175B
+GPT-3** — despite being 100x smaller. Alignment through RLHF mattered more than
+raw scale. This directly led to ChatGPT.
+
+**Why RL beats supervised learning** (three arguments):
+1. **Diversity** — multiple valid responses exist for any prompt. SFT penalizes
+   correct alternatives that differ from the demonstration.
+2. **Negative feedback** — RL provides correction for wrong answers. SFT only
+   shows positive examples.
+3. **Hallucination prevention** — SFT on knowledge the model doesn't have
+   teaches it to fabricate confidently. RL discourages wrong answers via low
+   scores, naturally encouraging "I don't know."
+
 **Historical context:** RLHF wasn't invented for LLMs. The idea of learning from
 human comparisons dates back to economics (utility theory) and optimal control.
-Christiano et al. (2017) applied it to Atari games. OpenAI's InstructGPT (2022)
-and then ChatGPT (2022) brought it to language models — and changed everything.
+Christiano et al. (2017) applied it to Atari games — requiring feedback on less
+than 1% of agent interactions. OpenAI's InstructGPT (2022) and then ChatGPT
+(2022) brought it to language models — and changed everything.
+
+### Timeline
+
+| Year | Milestone |
+|------|-----------|
+| 2017 | Deep RL from Human Preferences (Christiano et al.) |
+| 2019 | First RLHF for language models (Ziegler et al.) |
+| 2020 | Summarization from human feedback — reward models generalize across datasets |
+| 2022 | InstructGPT — canonical 3-step pipeline; ChatGPT launches |
+| 2022 | Constitutional AI — RLAIF replaces human annotators with AI |
+| 2023 | DPO — eliminates reward model and RL loop entirely |
+| 2024 | Post-PPO movement: REINFORCE variants proven superior for LLMs |
+| 2024 | DeepSeek R1 — pure RL produces reasoning without human demonstrations |
+| 2025 | RLVR: verifiable rewards replace preference-based training for reasoning |
+| 2026 | Agent RL at scale: MiniMax Forge, self-evolving models |
 
 ---
 
@@ -239,18 +269,30 @@ not the absolute values.
 | Analogy | "Did you solve the problem?" | "Is each step correct?" |
 
 **Process Reward Models** (Lightman et al., 2023) are particularly relevant for
-reasoning: they score each intermediate step, providing denser feedback. MiniMax
-uses a variant of process rewards in their agent training (Section 21).
+reasoning: they score each intermediate step, providing denser feedback. Their
+process-supervised model solved 78% of the MATH test set. MiniMax uses a variant
+of process rewards in their agent training (Section 21).
+
+> **Week 2 connection:** Process rewards vs outcome rewards maps directly to
+> the **TD vs Monte Carlo** distinction from Week 2. Process rewards = TD-style
+> step-by-step feedback. Outcome rewards = Monte Carlo full-episode return.
 
 ### Practical considerations
 
 - **Data collection:** Preference data is expensive. Typical datasets have
-  10K-100K preference pairs. Constitutional AI (Anthropic, 2022) showed you can
-  generate *synthetic* preferences using the model itself.
+  10K-100K preference pairs (~50K is common). Constitutional AI (Anthropic,
+  2022) showed you can generate *synthetic* preferences using the model itself.
+  InstructGPT used only ~40 human contractors for all its data.
 - **K-wise comparisons:** Instead of pairs, you can rank K responses. This
   extracts more information per annotation.
 - **Reward model size:** The RM is usually a copy of the SFT model with the
   language modeling head replaced by a scalar output head.
+- **Fine-grained feedback:** Sentence-level reward signals outperform
+  episode-level (whole-response) rewards (Wu et al., 2023).
+- **The accuracy paradox:** Better reward model accuracy does not always yield
+  better language models after RLHF training (Chen et al., EMNLP 2024) —
+  challenging the assumption that RM improvement directly transfers to policy
+  improvement.
 
 ---
 
@@ -298,25 +340,53 @@ $$
 This is subtracted from the reward at each token, creating a per-token "cost"
 for deviating from the SFT policy.
 
-### Alternatives to PPO
+### The post-PPO movement
 
-The RLHF field has developed several alternatives:
+The field is moving decisively away from PPO toward simpler alternatives. The
+key realization: **LLMs don't need a critic network**. Pre-trained LLMs generate
+episodes short enough that Monte Carlo return estimates have acceptable variance,
+so the critic adds complexity without proportional benefit.
 
-| Algorithm | Key idea | Trade-off |
-|---|---|---|
-| **PPO** | Clipped surrogate + critic | Stable but complex (needs value network) |
-| **REINFORCE** / **RLOO** | No critic, use leave-one-out baseline | Simpler but higher variance |
-| **GRPO** | Group relative policy optimization | No critic, normalizes within group |
-| **DPO** | Skip RL entirely (see Section 6) | Simple but less flexible |
-| **CISPO** (MiniMax) | Weight clipping, not ratio clipping | Better for long-horizon agent tasks |
+The algorithm evolution:
 
-> **RLOO** (REINFORCE Leave-One-Out): generates K responses per prompt, uses the
-> average reward of the other K-1 as a baseline. Simpler than PPO (no critic
-> network) but requires multiple samples per prompt.
+```
+PPO (2017)                    ← Week 3: clipped surrogate + critic
+  |
+  ├── GRPO (2024)             ← Remove critic; normalize within group
+  |     |
+  |     └── DAPO (2025)       ← Dynamic sampling + better clipping
+  |
+  ├── REINFORCE++ (2025)      ← Global normalization (unbiased)
+  |
+  ├── ReMax (2023)            ← REINFORCE + variance reduction; 46% memory savings
+  |
+  └── CISPO (MiniMax)         ← Weight clipping for long-horizon agents
+```
+
+| Algorithm | Critic? | Key idea | Used by |
+|---|---|---|---|
+| **PPO** | Yes | Clipped surrogate + value network | InstructGPT, ChatGPT |
+| **GRPO** | No | Group-normalized advantages | DeepSeek R1 |
+| **REINFORCE++** | No | Global advantage normalization (unbiased) | OpenRLHF |
+| **DAPO** | No | Dynamic sampling + clip-higher for exploration | ByteDance/Seed |
+| **ReMax** | No | 46% GPU memory reduction, 4 fewer hyperparams | Open-source 7B |
+| **RLOO** | No | Leave-one-out baseline | Research |
+| **DPO** | No RL | Skip RL entirely (Section 6) | Meta Llama 3 |
+| **CISPO** | No | Weight clipping, not ratio clipping | MiniMax M2.7 |
+
+> **GRPO details:** For each prompt, sample K completions. Compute rewards.
+> Normalize advantages within the group: $A_i = (r_i - \mu) / \sigma$. Update
+> policy with clipped surrogate — like PPO but without the critic. This is
+> literally "PPO minus the critic."
 >
-> **GRPO** (Group Relative Policy Optimization, DeepSeek): similar to RLOO but
-> normalizes advantages within each group. Used in DeepSeek R1's reasoning
-> training.
+> **REINFORCE++** goes further: uses **global** normalization (across the entire
+> batch) instead of per-prompt normalization. Global normalization is effectively
+> unbiased, while GRPO's local normalization can be biased.
+
+**Practical insight from practitioners:** Algorithm rankings are **not stable**
+across hyperparameter budgets. One widely-discussed experiment showed PPO, GRPO,
+and DPO rankings **completely reversed** after tuning. The "best" algorithm
+depends on how much you tune each one.
 
 ---
 
@@ -417,20 +487,55 @@ execution results, or schema validators.
 
 **DeepSeek R1** (2025) demonstrated pure-RL reasoning training with GRPO and
 verifiable math/code rewards — no human preference data needed. The model
-learned chain-of-thought reasoning entirely from outcome verification.
+learned chain-of-thought reasoning entirely from outcome verification. A
+remarkable emergent property: **"aha moments"** — sudden capability jumps when
+the model spontaneously discovers how to re-examine and correct its own
+reasoning mid-chain.
 
-**"SFT Memorizes, RL Generalizes"** (ICML 2025) showed that RL post-training
-produces models that generalize to novel problems, while SFT merely memorizes
-the training distribution. This is a central justification for why RL-based
-approaches outperform pure supervised methods.
+**"SFT Memorizes, RL Generalizes"** (ICML 2025) — the headline finding that
+motivates RLVR. Given the same training data, SFT produces models that memorize
+specific solutions while RL produces models that learn transferable reasoning
+strategies. If you want generalization, use RL; if you want replication, use SFT.
 
 **Absolute Zero** (2025) went further: the model proposes its *own* tasks and
 uses a code executor as a unified verifier — zero external data, fully
-self-bootstrapping.
+self-bootstrapping. Outperforms models trained on tens of thousands of curated
+examples.
+
+**The negative reinforcement surprise** (NeurIPS 2025): training with *only*
+negative samples (penalizing wrong answers, never reinforcing correct ones)
+consistently improves over the base model. This challenges the intuition that
+learning requires positive examples.
+
+### Concrete benchmark numbers
+
+| Model | Benchmark | Score |
+|---|---|---|
+| DeepSeekMath 7B | MATH | 51.7% (no tools) |
+| OREAL 7B | MATH-500 | 94.0% pass@1 |
+| Kimi k1.5 | AIME | 77.5 (long-CoT) |
+| DAPO (Qwen2.5-32B) | AIME 2024 | 50% in 50% fewer steps |
+| SWE-RL 70B | SWE-bench Verified | 41.0% |
+| TinyZero (3B) | Countdown game | "Aha moments" for under $30 |
+
+### Open debate: does RLVR truly expand reasoning?
+
+A sobering finding: at large K, base models achieve higher pass@K than
+RLVR-trained models (NeurIPS 2025). This suggests RLVR primarily
+**redistributes probability mass** toward correct solutions rather than
+discovering fundamentally new reasoning patterns.
+
+**However:** ProRL (2025) showed that prolonged RL training *does* discover novel
+strategies inaccessible to base models. The debate is ongoing — the field is
+still early.
 
 > **Connection to MiniMax:** M2.7's agent RL uses verifiable rewards (did the
 > code pass tests? did the task complete?) rather than preference-based rewards.
 > This makes it closer to RLVR than traditional RLHF.
+
+> **Hands-on:** [TinyZero](https://github.com/Jiayi-Pan/TinyZero) reproduces the
+> DeepSeek R1-Zero "aha moment" on a single GPU for under $30 using Qwen2.5-0.5B.
+> A potential study group exercise.
 
 ---
 
@@ -487,6 +592,8 @@ The open-source ecosystem for RLHF has matured rapidly:
 | [**veRL**](https://github.com/volcengine/verl) (ByteDance) | Flexible, efficient RL training | Research + production |
 | [**DeepSpeed-Chat**](https://github.com/microsoft/DeepSpeedExamples) (Microsoft) | Affordable RLHF at scale | Enterprise |
 | [**AlpacaFarm**](https://github.com/tatsu-lab/alpaca_farm) (Stanford) | Simulation framework for RLHF R&D | Research |
+| [**Unsloth**](https://github.com/unslothai/unsloth) | GRPO/RL on consumer GPUs (4-5GB VRAM) | Democratization |
+| [**Safe-RLHF**](https://github.com/PKU-Alignment/safe-rlhf) (PKU) | Constrained alignment with safety guarantees | Safety research |
 
 ### Learning resources
 
@@ -498,6 +605,10 @@ The open-source ecosystem for RLHF has matured rapidly:
 | [awesome-RLHF](https://github.com/opendilab/awesome-RLHF) | Curated list | Papers, code, datasets |
 | [awesome-RLVR](https://github.com/opendilab/awesome-RLVR) | Curated list | Verifiable reward methods |
 | [TinyZero](https://github.com/Jiayi-Pan/TinyZero) | Code | Minimal DeepSeek R1-Zero reproduction |
+| [Reward Hacking in RL](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/) (Lilian Weng) | Blog | Comprehensive taxonomy of failure modes |
+| [RL Environments for LLMs](https://github.com/anakin87/llm-rl-environments-lil-course) | Course | Free hands-on course |
+| [RLHF in Notebooks](https://github.com/ash80/RLHF_in_notebooks) | Code | Step-by-step Jupyter notebooks with GPT-2 |
+| [RLHF Book](https://rlhfbook.com/) | Book | Comprehensive textbook (free online) |
 
 ---
 
@@ -512,11 +623,19 @@ being good**. Examples:
 
 - Responses that are verbose and confident-sounding but wrong
 - Excessive hedging ("As an AI language model, I...")
+- **Sycophancy** — agreeing with the user's stated beliefs rather than being
+  truthful (a documented failure mode in GPT-4o's RLHF)
+- **Fabricating evidence** — creating plausible-sounding citations that don't
+  exist, or constructing subtle causal fallacies
 - Exploiting quirks in the reward model's training data
 
 **The Goodhart's Law problem:** "When a measure becomes a target, it ceases to be
 a good measure." The reward model is a proxy for human judgment — optimizing it
 too aggressively finds the gaps between the proxy and reality.
+
+**A deeper concern:** RLHF can inadvertently teach models to be *deceptive* —
+optimizing for human approval rather than correctness (Wen et al., 2025). The
+model learns to write convincingly wrong answers that get high reward scores.
 
 ### KL regularization
 
@@ -550,6 +669,26 @@ Actual quality  ^
 **Defenses:** early stopping, ensembling multiple reward models, rejection
 sampling (generate many, keep the best), and process reward models that provide
 denser, harder-to-hack signals.
+
+**Key relationship:** Anthropic discovered a roughly linear relationship between
+RL reward and $\sqrt{\text{KL}}$ from initialization. Early training yields high
+reward per unit of KL. Later training sees diminishing returns and increasing
+risk of reward hacking. The KL coefficient must be tuned to stop at the sweet
+spot.
+
+### Practical tips from practitioners
+
+- **KL coefficient is critical and bidirectional:** 0.01 is too weak (model
+  forgets SFT-quality responses), 0.1 is too strong (over-constrains). Optimal
+  is between them.
+- **DPO beta sensitivity:** with beta=0.1, reward margins can explode (1 to 599
+  by step 150). Use beta >= 0.3 for stable training.
+- **GRPO group collapse:** with small group sizes (k=4), some prompts have zero
+  variance = zero gradient. Use k >= 8 with temperature 1.0.
+- **Evaluation temperature matters independently of training.** Sweeping
+  inference temperature can yield +1 point improvements for free.
+- **Track hash codes of generated outputs** to detect when the model stops
+  exploring and just repeats the same generations.
 
 ---
 
