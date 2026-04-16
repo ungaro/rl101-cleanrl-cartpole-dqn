@@ -1156,9 +1156,6 @@ unit of compute*.
 - MiniMax, [*Forge: Scalable Agent RL Framework and Algorithm*](https://www.minimax.io/news/forge-scalable-agent-rl-framework-and-algorithm) (April 2026) — Forge framework and CISPO
 - Turing Post, [*Inside a Chinese AI Lab: How MiniMax Uses RL*](https://turingpost.substack.com/p/inside-a-chinese-ai-lab-how-minimax) (February 2026)
 
-**Style reference:**
-- Grootendorst, [*A Visual Guide to Gemma 4*](https://open.substack.com/pub/maartengrootendorst/p/a-visual-guide-to-gemma-4)
-
 ---
 
 *RL 101 Study Group — Week 4*
