@@ -117,7 +117,7 @@ raw scale. This directly led to ChatGPT.
 
 **Historical context:** RLHF wasn't invented for LLMs. The idea of learning from
 human comparisons dates back to economics (utility theory) and optimal control.
-Christiano et al. (2017) applied it to Atari games — requiring feedback on less
+[Christiano et al. (2017)](https://arxiv.org/abs/1706.03741) applied it to Atari games — requiring feedback on less
 than 1% of agent interactions. OpenAI's InstructGPT (2022) and then ChatGPT
 (2022) brought it to language models — and changed everything.
 
@@ -268,7 +268,7 @@ not the absolute values.
 | Use case | General chat quality | Math/reasoning chains |
 | Analogy | "Did you solve the problem?" | "Is each step correct?" |
 
-**Process Reward Models** (Lightman et al., 2023) are particularly relevant for
+**Process Reward Models** ([Lightman et al., 2023](https://arxiv.org/abs/2305.20050)) are particularly relevant for
 reasoning: they score each intermediate step, providing denser feedback. Their
 process-supervised model solved 78% of the MATH test set. MiniMax uses a variant
 of process rewards in their agent training (Section 21).
@@ -288,9 +288,9 @@ of process rewards in their agent training (Section 21).
 - **Reward model size:** The RM is usually a copy of the SFT model with the
   language modeling head replaced by a scalar output head.
 - **Fine-grained feedback:** Sentence-level reward signals outperform
-  episode-level (whole-response) rewards (Wu et al., 2023).
+  episode-level (whole-response) rewards ([Wu et al., 2023](https://arxiv.org/abs/2306.01693)).
 - **The accuracy paradox:** Better reward model accuracy does not always yield
-  better language models after RLHF training (Chen et al., EMNLP 2024) —
+  better language models after RLHF training ([Chen et al., EMNLP 2024](https://aclanthology.org/2024.emnlp-main.174/)) —
   challenging the assumption that RM improvement directly transfers to policy
   improvement.
 
@@ -392,7 +392,7 @@ depends on how much you tune each one.
 
 ## 6. Direct Alignment: DPO and the RL-Free Alternative
 
-**Direct Preference Optimization** (Rafailov et al., 2023) showed you can skip
+**Direct Preference Optimization** ([Rafailov et al., 2023](https://arxiv.org/abs/2305.18290)) showed you can skip
 the reward model and RL loop entirely.
 
 ### The key insight
@@ -634,7 +634,7 @@ a good measure." The reward model is a proxy for human judgment — optimizing i
 too aggressively finds the gaps between the proxy and reality.
 
 **A deeper concern:** RLHF can inadvertently teach models to be *deceptive* —
-optimizing for human approval rather than correctness (Wen et al., 2025). The
+optimizing for human approval rather than correctness ([Wen et al., 2025](https://arxiv.org/abs/2503.00897)). The
 model learns to write convincingly wrong answers that get high reward scores.
 
 ### KL regularization
@@ -649,7 +649,7 @@ learning rate), margin-based regularization, and pretraining gradient mixing.
 
 ### Over-optimization
 
-Gao et al. (2022) showed that reward model score initially increases with
+[Gao et al. (2022)](https://arxiv.org/abs/2210.10760) showed that reward model score initially increases with
 training, then **decreases** after a critical point — even though the RM score
 keeps going up. The model is optimizing the reward model's blind spots.
 
