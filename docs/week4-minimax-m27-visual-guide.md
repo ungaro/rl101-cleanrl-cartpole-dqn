@@ -13,11 +13,6 @@ language model into a useful, aligned, and capable agent. We cover RLHF
 (Reinforcement Learning from Human Feedback) end to end, then see how MiniMax
 applies these ideas at scale in M2.7.
 
-> **Reference text:** Nathan Lambert,
-> [*Reinforcement Learning from Human Feedback*](https://rlhfbook.com/) (2025).
-> This guide draws on Lambert's book structure — we recommend it for deeper
-> study.
-
 ---
 
 ## Table of Contents
@@ -31,32 +26,35 @@ applies these ideas at scale in M2.7.
 5. [Policy Optimization: From REINFORCE to PPO](#5-policy-optimization-from-reinforce-to-ppo)
 6. [Direct Alignment: DPO and the RL-Free Alternative](#6-direct-alignment-dpo-and-the-rl-free-alternative)
 7. [Reasoning with RL](#7-reasoning-with-rl)
-8. [The Challenges: Reward Hacking and Over-Optimization](#8-the-challenges-reward-hacking-and-over-optimization)
-9. [From RLHF to Agent RL](#9-from-rlhf-to-agent-rl)
+8. [RLVR: Reinforcement Learning with Verifiable Rewards](#8-rlvr-reinforcement-learning-with-verifiable-rewards)
+9. [Rejection Sampling and Constitutional AI](#9-rejection-sampling-and-constitutional-ai)
+10. [Tools and Frameworks for RLHF](#10-tools-and-frameworks-for-rlhf)
+11. [The Challenges: Reward Hacking and Over-Optimization](#11-the-challenges-reward-hacking-and-over-optimization)
+12. [From RLHF to Agent RL](#12-from-rlhf-to-agent-rl)
 
 ### Part II — Case Study: MiniMax M2.7 Architecture
 
-10. [Two Families, One Lab](#10-two-families-one-lab)
-11. [Mixture of Experts: 256 Specialists, 8 at a Time](#11-mixture-of-experts-256-specialists-8-at-a-time)
-12. [Why Sigmoid? The Routing Revolution](#12-why-sigmoid-the-routing-revolution)
-13. [Grouped Query Attention (GQA)](#13-grouped-query-attention-gqa)
-14. [Partial RoPE: Keeping Some Dimensions Position-Free](#14-partial-rope-keeping-some-dimensions-position-free)
-15. [Multi-Token Prediction](#15-multi-token-prediction)
+13. [Two Families, One Lab](#13-two-families-one-lab)
+14. [Mixture of Experts: 256 Specialists, 8 at a Time](#14-mixture-of-experts-256-specialists-8-at-a-time)
+15. [Why Sigmoid? The Routing Revolution](#15-why-sigmoid-the-routing-revolution)
+16. [Grouped Query Attention (GQA)](#16-grouped-query-attention-gqa)
+17. [Partial RoPE: Keeping Some Dimensions Position-Free](#17-partial-rope-keeping-some-dimensions-position-free)
+18. [Multi-Token Prediction](#18-multi-token-prediction)
 
 ### Part III — Case Study: MiniMax M2.7 RL at Scale
 
-16. [Forge: The RL Framework](#16-forge-the-rl-framework)
-17. [CISPO: Why Every Token Gets a Gradient](#17-cispo-why-every-token-gets-a-gradient)
-18. [MiniMax Reward Modeling: Three Signals](#18-minimax-reward-modeling-three-signals)
-19. [Prefix-Tree Merging: 40x Training Speedup](#19-prefix-tree-merging-40x-training-speedup)
-20. [The Self-Evolution Loop](#20-the-self-evolution-loop)
+19. [Forge: The RL Framework](#19-forge-the-rl-framework)
+20. [CISPO: Why Every Token Gets a Gradient](#20-cispo-why-every-token-gets-a-gradient)
+21. [MiniMax Reward Modeling: Three Signals](#21-minimax-reward-modeling-three-signals)
+22. [Prefix-Tree Merging: 40x Training Speedup](#22-prefix-tree-merging-40x-training-speedup)
+23. [The Self-Evolution Loop](#23-the-self-evolution-loop)
 
 ### Part IV — Results
 
-21. [Agent Teams and Skill Adherence](#21-agent-teams-and-skill-adherence)
-22. [Benchmark Performance](#22-benchmark-performance)
-23. [Real-World Applications](#23-real-world-applications)
-24. [Putting It All Together](#24-putting-it-all-together)
+24. [Agent Teams and Skill Adherence](#24-agent-teams-and-skill-adherence)
+25. [Benchmark Performance](#25-benchmark-performance)
+26. [Real-World Applications](#26-real-world-applications)
+27. [Putting It All Together](#27-putting-it-all-together)
 
 [Sources](#sources)
 
@@ -189,10 +187,10 @@ it the format.
 **Training objective:** Standard cross-entropy loss — exactly like pre-training,
 but only on the response tokens (the instruction tokens are masked).
 
-**Key insight from Lambert (Ch. 4):** SFT quality matters enormously. A small
-dataset of high-quality demonstrations (1K-10K examples) often outperforms a
-large dataset of mediocre ones. The Alpaca/Vicuna era showed that even simple
-SFT on GPT-4 outputs could dramatically improve open-source models.
+**Key insight:** SFT quality matters enormously. A small dataset of high-quality
+demonstrations (1K-10K examples) often outperforms a large dataset of mediocre
+ones. The Alpaca/Vicuna era showed that even simple SFT on GPT-4 outputs could
+dramatically improve open-source models.
 
 **Limitations:** SFT teaches the model to *imitate* demonstrations. It can't
 learn to be *better* than the demonstrations. For that, you need RL.
@@ -242,7 +240,7 @@ not the absolute values.
 
 **Process Reward Models** (Lightman et al., 2023) are particularly relevant for
 reasoning: they score each intermediate step, providing denser feedback. MiniMax
-uses a variant of process rewards in their agent training (Section 18).
+uses a variant of process rewards in their agent training (Section 21).
 
 ### Practical considerations
 
@@ -380,7 +378,7 @@ The model learns to produce reasoning patterns that lead to correct answers —
 even patterns that weren't in the training data. This is fundamentally different
 from SFT, which can only imitate existing reasoning.
 
-**Why RL works for reasoning now (Lambert, Ch. 7):**
+**Why RL works for reasoning now:**
 - Verifiable rewards (math has ground truth, code has tests)
 - Sufficient base model capability (needs strong pre-training)
 - Enough compute for long-horizon RL
@@ -399,7 +397,111 @@ automatically check correctness. This is why math and code improved first.
 
 ---
 
-## 8. The Challenges: Reward Hacking and Over-Optimization
+## 8. RLVR: Reinforcement Learning with Verifiable Rewards
+
+RLVR is an emerging paradigm that replaces subjective human preferences with
+**objective, externally verifiable signals** — unit tests, formal proofs, code
+execution results, or schema validators.
+
+### RLHF vs RLVR
+
+| | RLHF | RLVR |
+|---|---|---|
+| Reward source | Learned reward model (human preferences) | Deterministic verifier (tests, proofs) |
+| Signal quality | Noisy, subjective, hackable | Binary, tamper-proof, ground-truth |
+| Scalability | Bottlenecked by human annotation | Self-bootstrapping |
+| Domains | General preference alignment | Math, code, theorem proving |
+| Generalization | Limited by reward model | Strong extrapolation to unseen tasks |
+
+### Key RLVR results
+
+**DeepSeek R1** (2025) demonstrated pure-RL reasoning training with GRPO and
+verifiable math/code rewards — no human preference data needed. The model
+learned chain-of-thought reasoning entirely from outcome verification.
+
+**"SFT Memorizes, RL Generalizes"** (ICML 2025) showed that RL post-training
+produces models that generalize to novel problems, while SFT merely memorizes
+the training distribution. This is a central justification for why RL-based
+approaches outperform pure supervised methods.
+
+**Absolute Zero** (2025) went further: the model proposes its *own* tasks and
+uses a code executor as a unified verifier — zero external data, fully
+self-bootstrapping.
+
+> **Connection to MiniMax:** M2.7's agent RL uses verifiable rewards (did the
+> code pass tests? did the task complete?) rather than preference-based rewards.
+> This makes it closer to RLVR than traditional RLHF.
+
+---
+
+## 9. Rejection Sampling and Constitutional AI
+
+Not all alignment requires RL. Two simpler alternatives:
+
+### Rejection sampling (best-of-N)
+
+A three-step pipeline:
+1. **Generate** K completions for each prompt
+2. **Score** each with a reward model
+3. **Fine-tune** on the highest-scoring completions
+
+This avoids the complexity of PPO entirely — no critic network, no clipping, no
+advantage estimation. The trade-off is that it requires generating many
+completions (expensive) and can only select from existing model capabilities, not
+discover new ones.
+
+**Variants:** top-per-prompt (best response for each prompt) vs top-overall
+(best responses across all prompts). Top-per-prompt maintains prompt diversity;
+top-overall maximizes absolute quality.
+
+### Constitutional AI (CAI)
+
+Anthropic's approach to alignment without human preference data:
+
+1. The model generates responses
+2. The model **critiques its own responses** against a set of principles
+   (the "constitution")
+3. The model **revises** based on its own critique
+4. The revised pairs become training data for DPO/RL
+
+This creates a **self-improvement loop** — the model generates its own preference
+data. It reduces dependence on expensive human annotation while maintaining
+alignment with explicit principles.
+
+> **Connection to MiniMax:** M2.7's self-evolution loop (Section 23) takes
+> this idea further — the model doesn't just critique responses, it modifies
+> its own training infrastructure.
+
+---
+
+## 10. Tools and Frameworks for RLHF
+
+The open-source ecosystem for RLHF has matured rapidly:
+
+### Training frameworks
+
+| Framework | Key feature | Scale |
+|---|---|---|
+| [**TRL**](https://github.com/huggingface/trl) (Hugging Face) | PPO, DPO, GRPO in one library | Most popular |
+| [**OpenRLHF**](https://github.com/OpenRLHF/OpenRLHF) | 70B+ models, DeepSpeed + Ray + vLLM | Production |
+| [**veRL**](https://github.com/volcengine/verl) (ByteDance) | Flexible, efficient RL training | Research + production |
+| [**DeepSpeed-Chat**](https://github.com/microsoft/DeepSpeedExamples) (Microsoft) | Affordable RLHF at scale | Enterprise |
+| [**AlpacaFarm**](https://github.com/tatsu-lab/alpaca_farm) (Stanford) | Simulation framework for RLHF R&D | Research |
+
+### Learning resources
+
+| Resource | Type | Best for |
+|---|---|---|
+| [Illustrating RLHF](https://huggingface.co/blog/rlhf) (Hugging Face) | Blog | Visual overview |
+| [Understanding RLHF](https://wandb.ai/ayush-thakur/RLHF/reports/Understanding-Reinforcement-Learning-from-Human-Feedback-RLHF-Part-1--VmlldzoyODk5MTIx) (W&B) | Blog series | Detailed walkthrough |
+| [RLHF: Progress and Challenges](https://www.youtube.com/watch?v=hhiLw5Q_UFg) (John Schulman) | Video | From the PPO creator |
+| [awesome-RLHF](https://github.com/opendilab/awesome-RLHF) | Curated list | Papers, code, datasets |
+| [awesome-RLVR](https://github.com/opendilab/awesome-RLVR) | Curated list | Verifiable reward methods |
+| [TinyZero](https://github.com/Jiayi-Pan/TinyZero) | Code | Minimal DeepSeek R1-Zero reproduction |
+
+---
+
+## 11. The Challenges: Reward Hacking and Over-Optimization
 
 RLHF is not a free lunch. Several failure modes can derail training.
 
@@ -423,8 +525,8 @@ keeps the policy close to the SFT baseline. Too much KL penalty and the model
 barely changes. Too little and it reward-hacks.
 
 **Practical tuning:** $\beta$ is one of the most important hyperparameters in
-RLHF. Lambert (Ch. 15) covers implicit regularization, margin-based
-regularization, and the interplay between explicit KL and implicit constraints.
+RLHF. Advanced techniques include implicit regularization (early stopping, low
+learning rate), margin-based regularization, and pretraining gradient mixing.
 
 ### Over-optimization
 
@@ -446,12 +548,12 @@ Actual quality  ^
 ```
 
 **Defenses:** early stopping, ensembling multiple reward models, rejection
-sampling (Section 9 in Lambert's book), and process reward models that provide
+sampling (generate many, keep the best), and process reward models that provide
 denser, harder-to-hack signals.
 
 ---
 
-## 9. From RLHF to Agent RL
+## 12. From RLHF to Agent RL
 
 Standard RLHF trains on single-turn conversations: one prompt, one response,
 one reward. **Agent RL** extends this to multi-step interactions where the model
@@ -494,7 +596,7 @@ intervention.
 
 ---
 
-## 10. Two Families, One Lab
+## 13. Two Families, One Lab
 
 MiniMax maintains two entirely separate model architectures, and confusing them
 leads to serious misunderstandings about M2.7's capabilities.
@@ -520,7 +622,7 @@ despite carrying 230B of learned knowledge.
 
 ---
 
-## 11. Mixture of Experts: 256 Specialists, 8 at a Time
+## 14. Mixture of Experts: 256 Specialists, 8 at a Time
 
 Think of a dense language model as a single enormous restaurant where every chef
 works on every order. A Mixture-of-Experts model is a food hall with 256
@@ -549,7 +651,7 @@ sigmoid scoring — each expert's score is independent of all others.
 
 ---
 
-## 12. Why Sigmoid? The Routing Revolution
+## 15. Why Sigmoid? The Routing Revolution
 
 Most MoE models use **softmax routing**: expert scores are normalized so they sum
 to 1.0. This creates competition — if Expert A's score rises, Expert B's must
@@ -575,7 +677,7 @@ experts.
 
 ---
 
-## 13. Grouped Query Attention (GQA)
+## 16. Grouped Query Attention (GQA)
 
 M2.7 uses standard softmax self-attention across all 62 layers, but with a key
 efficiency trick: **Grouped Query Attention**. Instead of each query head having
@@ -602,7 +704,7 @@ built a fused QK RMSNorm kernel specifically for M2.7 to speed this up further.
 
 ---
 
-## 14. Partial RoPE: Keeping Some Dimensions Position-Free
+## 17. Partial RoPE: Keeping Some Dimensions Position-Free
 
 Rotary Position Embeddings (RoPE) encode sequence position by rotating query and
 key vectors. M2.7 uses a base frequency of **theta = 5,000,000** (500x the
@@ -629,7 +731,7 @@ combination lets M2.7 handle sequences up to 204,800 tokens reliably.
 
 ---
 
-## 15. Multi-Token Prediction
+## 18. Multi-Token Prediction
 
 Standard language model training predicts one token at a time. M2.7 uses
 **Multi-Token Prediction (MTP)**: three lightweight auxiliary modules
@@ -674,7 +776,7 @@ regularization) reappears here — re-engineered for 100,000+ environments and
 
 ---
 
-## 16. Forge: The RL Framework
+## 19. Forge: The RL Framework
 
 M2.7's most important training innovation is not architectural — it's the **Forge
 reinforcement learning framework**. Forge resolves what MiniMax calls the
@@ -731,7 +833,7 @@ gap small while maintaining high GPU utilization.
 
 ---
 
-## 17. CISPO: Why Every Token Gets a Gradient
+## 20. CISPO: Why Every Token Gets a Gradient
 
 Forge uses a novel RL algorithm called **CISPO** (Clipped Importance Sampling
 Policy Optimization). The problem it solves is subtle but important: in standard
@@ -777,7 +879,7 @@ model from overfitting to reward artifacts.
 
 ---
 
-## 18. MiniMax Reward Modeling: Three Signals
+## 21. MiniMax Reward Modeling: Three Signals
 
 In CartPole PPO (Week 3), the reward was simple: +1 for every step the pole
 stays up. For agent RL, designing the reward is one of the hardest problems
@@ -828,7 +930,7 @@ where improving one capability degrades another.
 
 ---
 
-## 19. Prefix-Tree Merging: 40x Training Speedup
+## 22. Prefix-Tree Merging: 40x Training Speedup
 
 Agent training generates many rollout samples that share a long common prefix —
 the same system prompt, conversation history, and retrieved context. Naive
@@ -855,7 +957,7 @@ This is what makes training across **100,000+ environments** economically viable
 
 ---
 
-## 20. The Self-Evolution Loop
+## 23. The Self-Evolution Loop
 
 The headline feature of M2.7 is that an early checkpoint operated as an
 **autonomous ML engineer** during its own RL training — monitoring pipelines,
@@ -906,7 +1008,7 @@ memory.
 
 ---
 
-## 21. Agent Teams and Skill Adherence
+## 24. Agent Teams and Skill Adherence
 
 ### Native multi-agent collaboration
 
@@ -933,7 +1035,7 @@ precise protocols.
 
 ---
 
-## 22. Benchmark Performance
+## 25. Benchmark Performance
 
 ### Headline numbers
 
@@ -973,7 +1075,7 @@ MoE architectures attractive for deployment.
 
 ---
 
-## 23. Real-World Applications
+## 26. Real-World Applications
 
 The official M2.7 release highlights several deployed capabilities:
 
@@ -994,7 +1096,7 @@ scenarios for game and creative applications.
 
 ---
 
-## 24. Putting It All Together
+## 27. Putting It All Together
 
 ### The RLHF pipeline in practice
 
@@ -1044,6 +1146,10 @@ unit of compute*.
 - Rafailov et al., [*Direct Preference Optimization*](https://arxiv.org/abs/2305.18290) (DPO, 2023)
 - Lightman et al., [*Let's Verify Step by Step*](https://arxiv.org/abs/2305.20050) (Process Reward Models, 2023)
 - Gao et al., [*Scaling Laws for Reward Model Overoptimization*](https://arxiv.org/abs/2210.10760) (2022)
+
+**Curated resource lists:**
+- [awesome-RLHF](https://github.com/opendilab/awesome-RLHF) — papers, codebases, datasets, and tutorials for RLHF
+- [awesome-RLVR](https://github.com/opendilab/awesome-RLVR) — papers and tools for RL with verifiable rewards (reasoning, code)
 
 **MiniMax sources:**
 - MiniMax, [*MiniMax M2.7*](https://www.minimax.io/news/minimax-m27-en) (April 2026) — official release blog
