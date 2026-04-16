@@ -1274,6 +1274,65 @@ unit of compute*.
 
 ---
 
+## The Story So Far
+
+Over four weeks we've built a complete picture of how RL powers modern AI:
+
+| Week | Topic | Core question | What we learned |
+|---|---|---|---|
+| 1 | MDPs and value functions | How do we formalize decision-making? | States, actions, rewards, and discounting |
+| 2 | DQN | How do we learn what's valuable? | Q-functions, replay buffers, target networks |
+| 3 | PPO | How do we learn *what to do*? | Policy gradients, clipping, GAE, actor-critic |
+| 4 | RLHF and agent RL | How do we align models with human intent? | Reward models, RLVR, DPO, and scaling RL to 100K+ environments |
+
+The thread connecting all four weeks: **the reward signal drives everything**.
+In Week 2, the reward came from the game. In Week 3, from the environment. In
+Week 4, from humans (RLHF), from verifiers (RLVR), or from task completion
+(agent RL). The algorithms evolved — DQN to PPO to GRPO to CISPO — but the
+fundamental loop remained: *act, observe reward, improve*.
+
+---
+
+## Next Week Preview: World Models
+
+**Week 5 — World Model RL: How AI Imagines Outcomes Before Taking Action**
+
+Every RL agent we've studied so far learns by *doing* — taking actions in the
+real environment and observing what happens. But what if the agent could
+*imagine* the consequences of its actions before committing to them?
+
+**World models** learn a predictive model of the environment: given a state and
+action, predict the next state and reward. The agent then "dreams" — planning
+by simulating thousands of trajectories *inside its own head* without ever
+touching the real environment.
+
+```
+Traditional RL:         act → observe → learn (expensive, slow)
+
+World Model RL:         imagine → plan → act (cheap, fast)
+                        ┌──────────────────┐
+                        │  World Model     │
+                        │  s, a → s', r    │
+                        │  (learned)       │
+                        └────────┬─────────┘
+                                 │
+                        simulate 1000s of
+                        trajectories in
+                        imagination
+                                 │
+                        pick the best plan
+                                 │
+                        execute 1 real action
+```
+
+We'll cover:
+- **Dyna** — the original hybrid: learn from real experience *and* imagined experience
+- **MuZero** — DeepMind's world model that mastered Go, chess, and Atari without knowing the rules
+- **Dreamer** — learning continuous control entirely in imagination
+- **How world models connect to LLMs** — are language models already world models? Can they predict the consequences of code changes before running them?
+
+---
+
 ## Sources
 
 **Books and courses:**
