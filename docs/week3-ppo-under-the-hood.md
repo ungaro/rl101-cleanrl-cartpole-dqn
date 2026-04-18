@@ -1120,6 +1120,102 @@ two independent CNNs.
 Notice the **clip coefficient drops to 0.1** for Atari — tighter clipping for
 a harder problem where destructive policy updates are more costly.
 
+### The 9 Atari-specific PPO optimizations
+
+CleanRL's `ppo_atari.py` applies 9 optimizations on top of vanilla PPO that are
+**essential** for Atari performance. Without these, PPO fails to learn. Each one
+maps to a specific line in the code:
+
+**1. Shared CNN backbone** (lines 120-132)
+
+In CartPole, actor and critic have fully separate networks. In Atari, they
+**share** a convolutional feature extractor (Nature-CNN) and only split at the
+final linear head. This avoids running two expensive CNNs.
+
+```
+CartPole:  obs → [actor MLP] → logits
+           obs → [critic MLP] → value    (completely separate)
+
+Atari:     obs → [shared CNN → 512] → [actor head] → logits
+                                     → [critic head] → value
+```
+
+**2. Pixel normalization** (lines 135, 138)
+
+Raw pixels are `uint8` in [0, 255]. The network divides by 255.0 to scale
+to [0, 1]. Without this, the CNN's initial weights produce enormous
+activations that destabilize training.
+
+```python
+hidden = self.network(x / 255.0)    # line 138
+```
+
+**3. Frame stacking** (line 105, `FrameStack(env, 4)`)
+
+A single frame has no velocity information — you can't tell which direction
+the ball is moving. Stacking the last 4 frames as channels gives the CNN
+access to motion. The input becomes `(4, 84, 84)` instead of `(1, 84, 84)`.
+
+**4. Frame skipping** (line 98, `MaxAndSkipEnv(env, skip=4)`)
+
+The agent only acts every 4th frame, repeating its action for the skipped
+frames. Rewards accumulate across skipped frames. This effectively gives the
+agent 4x more "thinking time" per decision and reduces the effective episode
+length by 4x. The `max` of the last 2 frames prevents flickering artifacts
+from Atari's alternating-sprite rendering.
+
+**5. Reward clipping** (line 102, `ClipRewardEnv(env)`)
+
+All rewards are clipped to {-1, 0, +1} via `sign()`. This prevents games
+with large score values (like Breakout, where bricks are worth different
+amounts) from dominating the gradient. The trade-off: the agent can't
+distinguish between a 1-point and a 100-point brick.
+
+**6. Episodic life** (line 99, `EpisodicLifeEnv(env)`)
+
+In games with multiple lives (Breakout has 5), losing a life triggers a
+"done" signal even though the game continues. This makes credit assignment
+easier — the agent learns "that action lost me a life" rather than needing
+to connect the action to the eventual game-over many steps later. The GAE
+computation (Week 3, Part 3) uses `done` to zero out advantage propagation,
+so this directly affects which actions get credit.
+
+**7. No-op reset** (line 97, `NoopResetEnv(env, noop_max=30)`)
+
+Each episode starts with 1-30 random no-op actions, creating diverse
+starting states. Without this, the agent memorizes a fixed opening sequence
+rather than learning general strategies.
+
+**8. Fire on reset** (lines 100-101, `FireResetEnv(env)`)
+
+Some Atari games (like Breakout) require pressing FIRE to start. This
+wrapper auto-presses FIRE after reset so the agent doesn't need to learn
+this uninteresting action.
+
+**9. Grayscale + resize** (lines 103-104)
+
+Convert 210x160 RGB to 84x84 grayscale. This reduces the observation from
+100,800 values to 7,056 — a 14x reduction. Color rarely matters for Atari
+game mechanics.
+
+### Why these matter
+
+Without these wrappers, here's what happens:
+
+| Missing optimization | Consequence |
+|---|---|
+| No frame stacking | Agent can't perceive motion; learns static patterns |
+| No frame skipping | 4x more decisions per episode; training is 4x slower |
+| No reward clipping | Gradient dominated by high-value games; unstable |
+| No episodic life | Credit assignment fails; agent doesn't learn from deaths |
+| No pixel normalization | Exploding activations in first conv layer |
+| No grayscale/resize | 14x larger input; CNN takes forever to train |
+
+These optimizations were discovered empirically over years of Atari RL research
+(Mnih et al., 2013-2015) and are now standard. The [37 implementation details
+blog](https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/)
+documents each one with ablation results.
+
 ### Example: Breakout
 
 In Breakout, the agent controls a paddle to bounce a ball and break bricks:
