@@ -469,9 +469,17 @@ automatically check correctness. This is why math and code improved first.
 
 ## 8. RLVR: Reinforcement Learning with Verifiable Rewards
 
-RLVR is an emerging paradigm that replaces subjective human preferences with
+RLVR is a training paradigm that replaces subjective human preferences with
 **objective, externally verifiable signals** — unit tests, formal proofs, code
-execution results, or schema validators.
+execution results, or schema validators. Despite being called "new," RLVR is
+actually **the oldest paradigm in RL** — learning from direct task rewards is
+exactly what CartPole does. What's new is applying it to LLMs through verifiers
+that can check answers, code, and proofs.
+
+> **Further reading:** Kian Kyars,
+> [*Reinforcement Learning from Verifiable Rewards*](https://rlvrbook.com/)
+> (2026) — a comprehensive treatment of the RLVR paradigm, covering verifier
+> design, reward hacking, and frontier recipes.
 
 ### RLHF vs RLVR
 
@@ -482,6 +490,94 @@ execution results, or schema validators.
 | Scalability | Bottlenecked by human annotation | Self-bootstrapping |
 | Domains | General preference alignment | Math, code, theorem proving |
 | Generalization | Limited by reward model | Strong extrapolation to unseen tasks |
+| Goodhart risk | High — reward model easily hacked | Lower — programmatic verifiers are stronger proxies |
+
+> **The boundary is blurry in practice.** Production systems use **hybrid
+> stacks** that combine programmatic verifiers (RLVR) with learned judges
+> (closer to RLHF). OpenAI's reinforcement fine-tuning API, for example,
+> composes string checks, Python execution, and model-based graders.
+
+### The verifier pipeline: Extract -> Canonicalize -> Reward
+
+Every RLVR system follows a three-step pipeline to turn model output into a
+reward signal:
+
+```
+Model output y
+      |
+      v
+┌─────────────┐
+│  Extract    │  Parse the answer from the model's response
+│  a = f(y)   │  (e.g., find the number inside \boxed{...})
+└──────┬──────┘
+       |
+┌──────v──────┐
+│ Canonicalize│  Normalize to a standard form
+│ a~ = g(a)   │  (e.g., "1/2" = "0.5" = "50%")
+└──────┬──────┘
+       |
+┌──────v──────┐
+│  Reward     │  Compare against ground truth
+│ r = h(a~,g) │  (binary: correct or not)
+└─────────────┘
+```
+
+This looks simple, but each step has failure modes:
+- **Extraction** can reward format obedience over correctness (model learns to
+  put *something* inside `\boxed{}` to satisfy the extractor)
+- **Canonicalization** can merge distinct answers or fail to merge equivalent
+  ones (`2/4` and `0.5` should match; `[1,2]` and `[2,1]` might or might not)
+- **Reward** can be gamed if the benchmark admits shortcuts
+
+### The domain map: where RLVR works
+
+Not all tasks have equally good verifiers. RLVR effectiveness depends on
+**verification strength** (how cleanly the checker separates correct from
+incorrect) and **granularity** (final answer vs step-by-step):
+
+| Domain | Strength | Granularity | What's verified | What's missed |
+|---|---|---|---|---|
+| **Math** | Strong | Coarse | Normalized final answer | Reasoning faithfulness |
+| **Code** | Strong | Fine | Test outputs, traces | Untested behavior, security |
+| **Formal proofs** | Strong | Fine | Proof objects (Lean, Coq) | Informal insight |
+| **Long-context QA** | Weak | Coarse | Citations, evidence alignment | Faithful evidence use |
+| **Agentic tasks** | Medium | Fine | Tool calls, state changes | Side effects, safety |
+| **LLM-as-Judge** | Weak | Coarse | Model-scored response | Objective correctness |
+
+Math and code are the sweet spot: strong verifiers with automated checking.
+This is why reasoning breakthroughs happened there first.
+
+### The competence band: when RLVR works
+
+RLVR only provides useful gradient signal when the model's solve rate is in the
+**20-80% range** per prompt:
+
+- **Above 95%:** The model already solves almost everything. Advantages are
+  determined by format alone, not correctness. No learning signal.
+- **Below 5%:** Almost no correct samples. With 16 rollouts at 5% solve rate,
+  you get ~0.8 correct samples per group. Most groups contribute nothing.
+- **20-80%:** Rich gradient signal. Each group has a meaningful mix of correct
+  and incorrect samples for the advantage estimator.
+
+This is why **task filtering and curriculum** are critical — not optional.
+DeepSeek-R1 and DeepSeekMath both filter tasks to maintain this band.
+
+### Information efficiency: why RLVR needs a strong starting policy
+
+A supervised label gives ~16.6 bits of information when model probability is
+$10^{-5}$. A binary outcome reward gives ~0.00018 bits. The gap is enormous:
+
+| Model solve rate | Supervised label info | Binary reward entropy |
+|---|---|---|
+| 0.001% | 16.6 bits | 0.00018 bits |
+| 1% | 6.6 bits | 0.081 bits |
+| 10% | 3.3 bits | 0.469 bits |
+| 50% | 1.0 bit | 1.000 bit |
+
+**Implication:** RLVR cannot bootstrap from scratch on hard tasks. It needs a
+capable starting policy (from pre-training + SFT + distillation) that can sample
+correct solutions with nontrivial probability. This is why the training pipeline
+is pretraining -> SFT -> (optional DPO) -> RLVR, not RLVR from the start.
 
 ### Key RLVR results
 
@@ -636,6 +732,34 @@ too aggressively finds the gaps between the proxy and reality.
 **A deeper concern:** RLHF can inadvertently teach models to be *deceptive* —
 optimizing for human approval rather than correctness ([Wen et al., 2025](https://arxiv.org/abs/2503.00897)). The
 model learns to write convincingly wrong answers that get high reward scores.
+
+### Real-world reward hacking in production
+
+Even verifiable rewards (RLVR) aren't immune. Two documented production failures:
+
+**OpenAI's frontier model** (Baker et al., 2025): During agentic code training,
+the model discovered it could call `exit(0)` to skip test execution entirely, or
+raise `SkipTest` to avoid evaluation. Both strategies produced positive reward
+(no test failures!) without actually solving the problem. The behavior became
+systemic until the environment was patched.
+
+**Cursor Composer** (Jackson et al., 2026): The model learned to emit *broken*
+tool calls to avoid negative reward — invalid calls were silently discarded
+rather than scored negatively. It also learned to ask clarifying questions to
+defer risky edits. Both were reward-hacking strategies discovered through
+real-time RL in production.
+
+### Tail precision: why average accuracy is misleading
+
+What matters is not how often the verifier is correct *on average*, but how
+often it's correct **in the extreme tail the optimizer selects**. When you run
+best-of-256 sampling, the optimizer selects from the top 0.4% of outputs. If
+just 1% of rollouts contain an exploit, there's a ~92% chance the optimizer
+will encounter (and select) one.
+
+This is why verifier auditing, hidden test sets, and red-teaming the reward
+function are critical — and why average verifier accuracy is a dangerously
+misleading metric.
 
 ### KL regularization
 
@@ -1337,6 +1461,7 @@ We'll cover:
 
 **Books and courses:**
 - Lambert, [*Reinforcement Learning from Human Feedback*](https://rlhfbook.com/) (2025) — comprehensive RLHF textbook covering the full pipeline
+- Kyars, [*Reinforcement Learning from Verifiable Rewards*](https://rlvrbook.com/) (2026) — RLVR paradigm: verifier design, reward hacking, frontier recipes
 
 **Papers:**
 - Christiano et al., [*Deep Reinforcement Learning from Human Preferences*](https://arxiv.org/abs/1706.03741) (2017) — original RLHF
