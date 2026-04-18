@@ -19,42 +19,42 @@ applies these ideas at scale in M2.7.
 
 ### Part I — RLHF Foundations
 
-1. [What is RLHF?](#1-what-is-rlhf)
-2. [The Training Pipeline](#2-the-training-pipeline)
-3. [Instruction Fine-Tuning (SFT)](#3-instruction-fine-tuning-sft)
-4. [Reward Models: Learning What Humans Want](#4-reward-models-learning-what-humans-want)
-5. [Policy Optimization: From REINFORCE to PPO](#5-policy-optimization-from-reinforce-to-ppo)
-6. [Direct Alignment: DPO and the RL-Free Alternative](#6-direct-alignment-dpo-and-the-rl-free-alternative)
-7. [Reasoning with RL](#7-reasoning-with-rl)
-8. [RLVR: Reinforcement Learning with Verifiable Rewards](#8-rlvr-reinforcement-learning-with-verifiable-rewards)
-9. [Rejection Sampling and Constitutional AI](#9-rejection-sampling-and-constitutional-ai)
-10. [Tools and Frameworks for RLHF](#10-tools-and-frameworks-for-rlhf)
-11. [The Challenges: Reward Hacking and Over-Optimization](#11-the-challenges-reward-hacking-and-over-optimization)
-12. [From RLHF to Agent RL](#12-from-rlhf-to-agent-rl)
+1. [What is RLHF?](#1-what-is-rlhf) — history, why RL beats SFT, timeline
+2. [The Training Pipeline](#2-the-training-pipeline) — pretraining -> SFT -> RM -> PPO -> agent RL
+3. [Instruction Fine-Tuning (SFT)](#3-instruction-fine-tuning-sft) — format learning, quality vs quantity
+4. [Reward Models: Learning What Humans Want](#4-reward-models-learning-what-humans-want) — Bradley-Terry, ORM vs PRM, accuracy paradox
+5. [Policy Optimization: From REINFORCE to PPO](#5-policy-optimization-from-reinforce-to-ppo) — the RLHF objective, KL penalty, post-PPO movement (GRPO, REINFORCE++, DAPO)
+6. [Direct Alignment: DPO and the RL-Free Alternative](#6-direct-alignment-dpo-and-the-rl-free-alternative) — closed-form derivation, DPO vs PPO tradeoffs
+7. [Reasoning with RL](#7-reasoning-with-rl) — o1/R1 paradigm, verifiable rewards for reasoning
+8. [RLVR: Reinforcement Learning with Verifiable Rewards](#8-rlvr-reinforcement-learning-with-verifiable-rewards) — verifier pipeline, domain map, competence band, information efficiency, key results
+9. [Rejection Sampling and Constitutional AI](#9-rejection-sampling-and-constitutional-ai) — best-of-N, RLAIF self-improvement
+10. [Tools and Frameworks for RLHF](#10-tools-and-frameworks-for-rlhf) — TRL, OpenRLHF, veRL, Unsloth, learning resources
+11. [The Challenges: Reward Hacking and Over-Optimization](#11-the-challenges-reward-hacking-and-over-optimization) — Goodhart's Law, sycophancy, production exploits (exit(0), broken tool calls), tail precision, practical tips
+12. [From RLHF to Agent RL](#12-from-rlhf-to-agent-rl) — what changes at scale, the bridge to MiniMax
 
 ### Part II — Case Study: MiniMax M2.7 Architecture
 
-13. [Two Families, One Lab](#13-two-families-one-lab)
-14. [Mixture of Experts: 256 Specialists, 8 at a Time](#14-mixture-of-experts-256-specialists-8-at-a-time)
-15. [Why Sigmoid? The Routing Revolution](#15-why-sigmoid-the-routing-revolution)
-16. [Grouped Query Attention (GQA)](#16-grouped-query-attention-gqa)
-17. [Partial RoPE: Keeping Some Dimensions Position-Free](#17-partial-rope-keeping-some-dimensions-position-free)
-18. [Multi-Token Prediction](#18-multi-token-prediction)
+13. [Two Families, One Lab](#13-two-families-one-lab) — M1 vs M2 family comparison
+14. [Mixture of Experts: 256 Specialists, 8 at a Time](#14-mixture-of-experts-256-specialists-8-at-a-time) — MoE routing, top-8 selection
+15. [Why Sigmoid? The Routing Revolution](#15-why-sigmoid-the-routing-revolution) — sigmoid vs softmax routing
+16. [Grouped Query Attention (GQA)](#16-grouped-query-attention-gqa) — 6:1 KV cache reduction
+17. [Partial RoPE: Keeping Some Dimensions Position-Free](#17-partial-rope-keeping-some-dimensions-position-free) — p=0.5, theta=5M
+18. [Multi-Token Prediction](#18-multi-token-prediction) — 4x gradient signal, speculative decoding
 
 ### Part III — Case Study: MiniMax M2.7 RL at Scale
 
-19. [Forge: The RL Framework](#19-forge-the-rl-framework)
-20. [CISPO: Why Every Token Gets a Gradient](#20-cispo-why-every-token-gets-a-gradient)
-21. [MiniMax Reward Modeling: Three Signals](#21-minimax-reward-modeling-three-signals)
-22. [Prefix-Tree Merging: 40x Training Speedup](#22-prefix-tree-merging-40x-training-speedup)
-23. [The Self-Evolution Loop](#23-the-self-evolution-loop)
+19. [Forge: The RL Framework](#19-forge-the-rl-framework) — 3-layer architecture, 4-interface middleware, windowed FIFO
+20. [CISPO: Why Every Token Gets a Gradient](#20-cispo-why-every-token-gets-a-gradient) — weight clipping vs ratio clipping, PPO comparison
+21. [MiniMax Reward Modeling: Three Signals](#21-minimax-reward-modeling-three-signals) — process rewards, completion time, reward-to-go
+22. [Prefix-Tree Merging: 40x Training Speedup](#22-prefix-tree-merging-40x-training-speedup) — shared prefix optimization
+23. [The Self-Evolution Loop](#23-the-self-evolution-loop) — autonomous ML engineer, 30% gain over 100+ rounds
 
 ### Part IV — Results
 
-24. [Agent Teams and Skill Adherence](#24-agent-teams-and-skill-adherence)
-25. [Benchmark Performance](#25-benchmark-performance)
-26. [Real-World Applications](#26-real-world-applications)
-27. [Putting It All Together](#27-putting-it-all-together)
+24. [Agent Teams and Skill Adherence](#24-agent-teams-and-skill-adherence) — 97% skill compliance, 4 pillars
+25. [Benchmark Performance](#25-benchmark-performance) — full benchmark table, cost efficiency
+26. [Real-World Applications](#26-real-world-applications) — live debugging, office tools, financial modeling
+27. [Putting It All Together](#27-putting-it-all-together) — course summary, Week 5 preview (world models)
 
 [Sources](#sources)
 
