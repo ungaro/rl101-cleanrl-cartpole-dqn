@@ -68,13 +68,17 @@ each other.
     - [Our hyperparameters (CartPole-v1)](#our-hyperparameters-cartpole-v1)
     - [Training phases and what to watch](#training-phases-and-what-to-watch)
     - [TensorBoard — the seven metrics that matter](#tensorboard--the-seven-metrics-that-matter)
-8. [Part 8 — Pen and Paper Walkthrough](#part-8--pen-and-paper-walkthrough)
+8. [Part 8 — PPO Beyond CartPole: Atari and Continuous Control](#part-8--ppo-beyond-cartpole-atari-and-continuous-control)
+    - [Atari: from pixels to policy](#atari-from-pixels-to-policy)
+    - [Continuous control: MuJoCo](#continuous-control-mujoco)
+    - [What changes, what stays the same](#what-changes-what-stays-the-same)
+9. [Part 9 — Pen and Paper Walkthrough](#part-9--pen-and-paper-walkthrough)
     - [Setup: a single state, two actions](#setup-a-single-state-two-actions)
     - [Step 1: sample and observe](#step-1-sample-and-observe)
     - [Step 2: compute ratio, clipped ratio, and the loss](#step-2-compute-ratio-clipped-ratio-and-the-loss)
     - [Step 3: the update direction](#step-3-the-update-direction)
-9. [Part 9 — The Whole Algorithm at a Glance](#part-9--the-whole-algorithm-at-a-glance)
-10. [References and further reading](#references-and-further-reading)
+10. [Part 10 — The Whole Algorithm at a Glance](#part-10--the-whole-algorithm-at-a-glance)
+11. [References and further reading](#references-and-further-reading)
 
 ---
 
@@ -1044,7 +1048,191 @@ Should increase toward 1.0 over training.
 
 ---
 
-## Part 8 — Pen and Paper Walkthrough
+## Part 8 — PPO Beyond CartPole: Atari and Continuous Control
+
+CartPole is a great teaching environment — small, fast, easy to debug. But PPO's
+real power shows on much harder problems. Here's how the same algorithm scales
+from a toy task to Atari games and robot control.
+
+---
+
+## Atari: from pixels to policy
+
+In Atari, the agent sees **raw pixel frames** (210x160 RGB images) and must
+learn to play games like Breakout, Pong, and Space Invaders. The same PPO
+algorithm applies, but the architecture and preprocessing change significantly.
+
+### Preprocessing pipeline (the 9 Atari-specific details)
+
+Raw Atari frames go through a standard preprocessing stack before reaching the
+policy network:
+
+| Step | What it does | Why |
+|---|---|---|
+| **NoopReset** | Start each episode with 1-30 random no-ops | Diverse initial states |
+| **MaxAndSkip** | Repeat each action for 4 frames, take max of last 2 | Reduce flickering artifacts |
+| **WarpFrame** | Convert to grayscale, resize 210x160 to 84x84 | Reduce input dimensionality |
+| **FrameStack** | Stack last 4 frames as channels | Give the agent velocity/direction |
+| **ClipReward** | Map all rewards to {-1, 0, +1} | Stabilise training across games |
+| **EpisodicLife** | Treat loss-of-life as episode end | Faster credit assignment |
+
+### The Nature-CNN architecture
+
+Instead of the simple 64-64 MLP we used for CartPole, Atari PPO uses a
+**convolutional neural network** (the "Nature-CNN" from the original DQN paper):
+
+```
+Input: 4 x 84 x 84 (4 stacked grayscale frames)
+  │
+  ├── Conv2d(4, 32, 8x8, stride=4)  → 32 x 20 x 20
+  ├── ReLU
+  ├── Conv2d(32, 64, 4x4, stride=2) → 64 x 9 x 9
+  ├── ReLU
+  ├── Conv2d(64, 64, 3x3, stride=1) → 64 x 7 x 7
+  ├── ReLU
+  ├── Flatten → 3136
+  ├── Linear(3136, 512)
+  ├── ReLU
+  │
+  ├── Actor head: Linear(512, num_actions)   → policy logits
+  └── Critic head: Linear(512, 1)            → state value
+```
+
+**Key difference from CartPole:** actor and critic **share** the convolutional
+backbone (unlike CartPole where they have separate networks). Sharing makes
+sense when feature extraction from pixels is expensive — you don't want to run
+two independent CNNs.
+
+### Atari PPO hyperparameters
+
+| Parameter | CartPole | Atari |
+|---|---|---|
+| Observation | 4 floats | 4 x 84 x 84 frames |
+| Network | 64-64 MLP (separate) | Nature-CNN (shared) |
+| `num_envs` | 4 | 8 |
+| `num_steps` | 128 | 128 |
+| `learning_rate` | 2.5e-4 | 2.5e-4 |
+| `clip_coef` | 0.2 | 0.1 |
+| `ent_coef` | 0.01 | 0.01 |
+| `total_timesteps` | 500K | 10M |
+| Training time | ~5 min | ~2-3 hours |
+
+Notice the **clip coefficient drops to 0.1** for Atari — tighter clipping for
+a harder problem where destructive policy updates are more costly.
+
+### Example: Breakout
+
+In Breakout, the agent controls a paddle to bounce a ball and break bricks:
+
+- **Early training (0-2M steps):** Random flailing. Returns ~1-5. The agent
+  hasn't learned that the paddle exists.
+- **Mid training (2-5M steps):** The agent discovers the ball-paddle
+  relationship. Returns climb to 50-100. It can sustain rallies but doesn't
+  aim.
+- **Late training (5-10M steps):** The agent learns to tunnel the ball behind
+  the bricks for maximum scoring. Returns reach 300-400+. This is an emergent
+  strategy — not programmed, discovered by the policy gradient.
+
+### Example: Pong
+
+Pong is one of the easiest Atari games for RL — PPO solves it in ~1M steps:
+
+- **The opponent is deterministic**, making credit assignment easier.
+- The agent quickly learns to return the ball, then discovers that angled
+  shots are harder for the opponent to reach.
+- Final score: +21 (maximum) within 1-2M timesteps.
+
+### Example: Space Invaders
+
+Space Invaders is harder — the agent must balance offense and defense:
+
+- **Offense:** shoot aliens to score points.
+- **Defense:** hide behind shields to avoid return fire.
+- PPO learns to prioritize the bottom rows (worth more points and more
+  dangerous) and to use shields strategically.
+- Returns vary widely between runs — the stochastic policy naturally
+  explores different strategies.
+
+---
+
+## Continuous control: MuJoCo
+
+PPO's other superpower: **continuous action spaces**. In MuJoCo (physics
+simulation), the agent controls torques on robot joints — actions are continuous
+floats, not discrete choices.
+
+### What changes for continuous actions
+
+| | Discrete (CartPole, Atari) | Continuous (MuJoCo) |
+|---|---|---|
+| Action | Integer index (e.g., left/right) | Vector of floats (e.g., joint torques) |
+| Policy output | Logits $\to$ Categorical distribution | Mean $\mu$ + log-std $\to$ Gaussian |
+| `log_prob` | Log of softmax probability | Log of Gaussian PDF |
+| Entropy | $-\sum p \log p$ | $\frac{1}{2}\log(2\pi e \sigma^2)$ |
+| Exploration | Built into sampling from Categorical | Built into sampling from Gaussian |
+
+The actor network outputs a **mean vector** $\mu$ for each action dimension.
+The standard deviation $\sigma$ is a **learned parameter** (not state-dependent)
+initialized to 1.0. Actions are sampled from $\mathcal{N}(\mu, \sigma^2)$.
+
+### Example environments
+
+| Environment | What the robot does | Obs dim | Act dim |
+|---|---|---|---|
+| **HalfCheetah** | Run forward as fast as possible | 17 | 6 |
+| **Walker2d** | Walk forward without falling | 17 | 6 |
+| **Hopper** | Hop forward on one leg | 11 | 3 |
+| **Humanoid** | Walk with a full humanoid body | 376 | 17 |
+| **Ant** | Walk with a 4-legged ant body | 111 | 8 |
+
+### Continuous-control-specific details
+
+9 additional implementation details matter for MuJoCo (from the 37 details
+blog):
+
+| Detail | What it does |
+|---|---|
+| Gaussian action distribution | Actions sampled from $\mathcal{N}(\mu, \sigma^2)$ |
+| State-independent log-std | $\log \sigma$ is a learned scalar, not network output |
+| Independent action components | Multi-dim actions treated as probabilistically independent |
+| Separate actor/critic MLPs | Two independent 64-64 Tanh networks (same as CartPole) |
+| Observation normalization | Running mean/variance normalization of observations |
+| Observation clipping | Clip normalized observations to [-10, 10] |
+| Reward scaling | Divide rewards by running std of discounted return |
+| Reward clipping | Clip scaled rewards to [-10, 10] |
+| Action clipping | Clip sampled actions to valid range |
+
+**Observation and reward normalization** are the most critical — without them,
+MuJoCo training is extremely unstable. CartPole doesn't need them because its
+observations are already small and well-scaled.
+
+---
+
+## What changes, what stays the same
+
+The remarkable thing about PPO is how much stays identical across these very
+different domains:
+
+**Always the same:**
+- Clipped surrogate objective
+- GAE advantage estimation
+- Mini-batch shuffling and multi-epoch updates
+- Combined loss (policy + value + entropy)
+- Gradient clipping
+
+**Changes per domain:**
+- Network architecture (MLP / CNN / shared / separate)
+- Action distribution (Categorical / Gaussian)
+- Preprocessing (frame stacking / observation normalization)
+- Hyperparameters (clip coefficient, number of environments)
+
+This generality is why PPO became the default RL algorithm. The same code
+structure works for balancing a pole, playing Breakout, walking a humanoid,
+and fine-tuning an LLM.
+
+---
+
+## Part 9 — Pen and Paper Walkthrough
 
 ### One PPO update step, computed by hand
 
@@ -1178,7 +1366,7 @@ penalty or second-order optimization, but through a simple gradient gate.
 
 ---
 
-## Part 9 — The Whole Algorithm at a Glance
+## Part 10 — The Whole Algorithm at a Glance
 
 Every box in this flowchart maps to code in `cleanrl/cleanrl/ppo.py` and every
 previous section of this deck zooms into one of them. If you only take one
