@@ -1,4 +1,4 @@
-.PHONY: setup random train train-lunar train-ppo eval eval-lunar tensorboard demo help
+.PHONY: setup random train train-lunar train-ppo train-breakout train-pong train-spaceinvaders eval eval-lunar tensorboard demo help
 
 # Run commands inside the `rl101` conda env automatically so users don't
 # need to `conda activate rl101` first. --no-capture-output preserves
@@ -23,6 +23,15 @@ train-lunar: ## Train DQN on LunarLander-v3 (1M steps, bonus)
 
 train-ppo: ## Train PPO on CartPole-v1 (Week 3 — actor-critic)
 	$(CONDA_RUN) python scripts/train_cartpole_ppo.py
+
+train-breakout: ## Train PPO on Breakout (Atari, 10M steps)
+	$(CONDA_RUN) python scripts/train_atari_ppo.py --game breakout
+
+train-pong: ## Train PPO on Pong (Atari, 5M steps)
+	$(CONDA_RUN) python scripts/train_atari_ppo.py --game pong
+
+train-spaceinvaders: ## Train PPO on Space Invaders (Atari, 10M steps)
+	$(CONDA_RUN) python scripts/train_atari_ppo.py --game spaceinvaders
 
 eval: ## Evaluate latest CartPole model
 	@MODEL=$$(find runs -name "dqn.cleanrl_model" -path "*CartPole*" 2>/dev/null | sort | tail -1); \

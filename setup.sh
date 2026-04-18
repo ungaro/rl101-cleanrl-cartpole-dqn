@@ -88,6 +88,20 @@ pip install \
     huggingface-hub \
     tenacity
 
+# Atari (optional, for Week 3 Atari PPO demos)
+# ale-py provides the Atari Learning Environment; autorom downloads the ROMs.
+if pip install "gymnasium[atari]==0.29.1" "autorom[accept-rom-license]" opencv-python-headless 2>/dev/null; then
+    echo "       Atari deps installed — Breakout/Pong/SpaceInvaders demos will work."
+    # Import ROMs so gymnasium can find them
+    python -c "import ale_py" 2>/dev/null || true
+else
+    echo ""
+    echo "       WARNING: Atari deps install failed."
+    echo "       CartPole will work fine without them. For Atari games:"
+    echo "         pip install 'gymnasium[atari]==0.29.1' 'autorom[accept-rom-license]'"
+    echo ""
+fi
+
 # Box2D (optional, for LunarLander bonus demo)
 # box2d-py builds from source via swig. The `pip install swig` package
 # is a broken shim — the real fix is the system swig binary:
