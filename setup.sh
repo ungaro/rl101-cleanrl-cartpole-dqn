@@ -90,7 +90,7 @@ pip install \
 
 # Atari (optional, for Week 3 Atari PPO demos)
 # ale-py provides the Atari Learning Environment; autorom downloads the ROMs.
-if pip install "gymnasium[atari]==0.29.1" "autorom[accept-rom-license]" 2>/dev/null; then
+if pip install "gymnasium[atari]==0.29.1" "autorom[accept-rom-license]" opencv-python-headless 2>/dev/null; then
     echo "       Atari deps installed — Breakout/Pong/SpaceInvaders demos will work."
     # Import ROMs so gymnasium can find them
     python -c "import ale_py" 2>/dev/null || true

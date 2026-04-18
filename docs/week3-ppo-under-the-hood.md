@@ -1208,6 +1208,73 @@ observations are already small and well-scaled.
 
 ---
 
+## Running the Atari demos
+
+### Quick start
+
+```bash
+# Install Atari dependencies (one-time, or re-run make setup)
+pip install "gymnasium[atari]==0.29.1" "autorom[accept-rom-license]" opencv-python-headless
+
+# Train on Breakout (default, 10M steps, ~2-3 hours)
+make train-breakout
+
+# Train on Pong (5M steps, ~1-2 hours — easiest Atari game)
+make train-pong
+
+# Train on Space Invaders (10M steps, ~2-3 hours)
+make train-spaceinvaders
+
+# Quick demo run (1M steps, ~15-20 min — enough to see learning start)
+conda activate rl101
+python scripts/train_atari_ppo.py --game pong --short
+```
+
+### Watching the trained agent
+
+**Option 1: Captured videos (no display needed)**
+
+Training with `--capture-video` (the default) automatically records evaluation
+episodes as `.mp4` files:
+
+```bash
+# Videos land in the project root under videos/
+ls videos/BreakoutNoFrameskip-v4__ppo_atari__*/
+
+# Open in Windows Explorer from WSL:
+explorer.exe "$(wslpath -w videos/)"
+
+# Or on native Linux:
+xdg-open videos/
+```
+
+The first video (`rl-video-episode-0.mp4`) is the agent at the start of
+training (random). Later videos show progressive improvement.
+
+**Option 2: TensorBoard**
+
+```bash
+make tensorboard    # then open http://localhost:6006
+```
+
+TensorBoard shows:
+- `charts/episodic_return` — the main metric. Breakout: aim for 300+. Pong:
+  aim for +21 (max score).
+- The Images tab embeds captured videos so you can scrub through them.
+
+### What to expect
+
+| Game | Short run (1M steps) | Full run (5-10M steps) |
+|---|---|---|
+| **Pong** | Starts returning some shots | Wins consistently (+21) |
+| **Breakout** | Learns to hit the ball | Discovers tunneling (300+) |
+| **Space Invaders** | Random shooting | Strategic play (500+) |
+
+Pong is the best starting point — it's the easiest Atari game for PPO and
+shows clear learning within a short 1M-step run.
+
+---
+
 ## What changes, what stays the same
 
 The remarkable thing about PPO is how much stays identical across these very

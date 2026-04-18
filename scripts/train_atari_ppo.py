@@ -13,6 +13,7 @@ Pass --short for a quick 1M-step demo run instead of the full 10M.
 """
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -93,8 +94,13 @@ def main():
     print("=" * 60)
 
     # ppo_atari.py imports from cleanrl_utils which lives under cleanrl/
+    # Set PYTHONPATH so it can find cleanrl_utils, but run from project root
+    # so videos/ and runs/ land in the project directory.
     cleanrl_root = PPO_ATARI_SCRIPT.parent.parent
-    subprocess.run(cmd, check=True, cwd=str(cleanrl_root))
+    project_root = Path(__file__).resolve().parent.parent
+    env = dict(os.environ)
+    env["PYTHONPATH"] = str(cleanrl_root) + os.pathsep + env.get("PYTHONPATH", "")
+    subprocess.run(cmd, check=True, cwd=str(project_root), env=env)
 
 
 if __name__ == "__main__":
