@@ -1536,26 +1536,24 @@ previous section of this deck zooms into one of them. If you only take one
 picture with you from Week 3, take this one.
 
 ```mermaid
-flowchart LR
+flowchart TB
     Start(["make train-ppo"])
-    Start --> Init["Initialise<br/>actor pi_theta<br/>critic V_phi<br/>Adam optimizer"]
-    Init --> AnnealLR["Anneal learning rate<br/>(linear decay)"]
+    Start --> Init["Initialise<br/>actor pi_theta, critic V_phi<br/>Adam optimizer"]
+    Init --> AnnealLR["Anneal learning rate (linear decay)"]
     AnnealLR --> Rollout
 
     subgraph Rollout ["Rollout Collection (128 steps x 4 envs = 512)"]
-        direction TB
-        Obs["Observe state s"] --> Act["a, log_prob, value<br/>= agent(s)"]
-        Act --> Step["env.step(a)<br/>get r, s', done"]
-        Step --> Store["Store s, a, log_prob,<br/>r, done, value<br/>in rollout buffer"]
-        Store --> More{"128 steps<br/>done?"}
+        Obs["Observe state s"] --> Act["a, log_prob, value = agent(s)"]
+        Act --> Step["env.step(a) → r, s', done"]
+        Step --> Store["Store s, a, log_prob, r, done, value"]
+        Store --> More{"128 steps done?"}
         More -->|"no"| Obs
     end
 
     More -->|"yes"| GAE
 
     subgraph GAE ["GAE Computation (backward pass)"]
-        direction TB
-        Boot["Bootstrap V(s_last)"] --> Loop["for t = 127 down to 0:<br/>delta = r + gamma V(s') - V(s)<br/>A_t = delta + gamma lambda A_{t+1}"]
+        Boot["Bootstrap V(s_last)"] --> Loop["for t = 127 down to 0:<br/>delta = r + γV(s') - V(s)<br/>A_t = delta + γλ A_{t+1}"]
         Loop --> Ret["returns = advantages + values"]
     end
 
@@ -1563,15 +1561,14 @@ flowchart LR
     Flatten --> Update
 
     subgraph Update ["Policy and Value Update (4 epochs x 4 minibatches)"]
-        direction TB
         Shuffle["Shuffle indices"] --> MB["For each minibatch of 128"]
         MB --> Recompute["Recompute log_prob, entropy, value<br/>with CURRENT policy"]
         Recompute --> Ratio["ratio = exp(new_logprob - old_logprob)"]
-        Ratio --> Clip["Clipped policy loss<br/>max(-A*r, -A*clip(r))"]
-        Clip --> VLoss["Value loss<br/>0.5 * MSE(V, returns)"]
+        Ratio --> Clip["Clipped policy loss: max(-A·r, -A·clip(r))"]
+        Clip --> VLoss["Value loss: 0.5 · MSE(V, returns)"]
         VLoss --> Ent["Entropy bonus"]
-        Ent --> Combined["loss = pg + 0.5*vf - 0.01*entropy"]
-        Combined --> Grad["Backprop + clip grad norm<br/>+ Adam step"]
+        Ent --> Combined["loss = pg + 0.5·vf - 0.01·entropy"]
+        Combined --> Grad["Backprop + clip grad norm + Adam step"]
     end
 
     Grad --> Done{"All iterations<br/>done?"}
