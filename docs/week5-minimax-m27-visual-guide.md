@@ -1,9 +1,9 @@
-# Week 4: RLHF and the Path to Agent RL
+# Week 5: RLHF and the Path to Agent RL
 
 *From human preferences to autonomous ML engineers — the full post-training
 stack, explained with a MiniMax M2.7 case study.*
 
-**Week 4 — RL 101 Study Group**
+**Week 5 — RL 101 Study Group**
 
 ---
 
@@ -54,7 +54,7 @@ applies these ideas at scale in M2.7.
 24. [Agent Teams and Skill Adherence](#24-agent-teams-and-skill-adherence) — 97% skill compliance, 4 pillars
 25. [Benchmark Performance](#25-benchmark-performance) — full benchmark table, cost efficiency
 26. [Real-World Applications](#26-real-world-applications) — live debugging, office tools, financial modeling
-27. [Putting It All Together](#27-putting-it-all-together) — course summary, Week 5 preview (world models)
+27. [Putting It All Together](#27-putting-it-all-together) — course summary, Week 6 preview (world models)
 
 [Sources](#sources)
 
@@ -1407,11 +1407,12 @@ Over four weeks we've built a complete picture of how RL powers modern AI:
 | 1 | MDPs and value functions | How do we formalize decision-making? | States, actions, rewards, and discounting |
 | 2 | DQN | How do we learn what's valuable? | Q-functions, replay buffers, target networks |
 | 3 | PPO | How do we learn *what to do*? | Policy gradients, clipping, GAE, actor-critic |
-| 4 | RLHF and agent RL | How do we align models with human intent? | Reward models, RLVR, DPO, and scaling RL to 100K+ environments |
+| 4 | *(new topic — TBD)* | | |
+| 5 | RLHF and agent RL | How do we align models with human intent? | Reward models, RLVR, DPO, and scaling RL to 100K+ environments |
 
-The thread connecting all four weeks: **the reward signal drives everything**.
+The thread connecting all five weeks: **the reward signal drives everything**.
 In Week 2, the reward came from the game. In Week 3, from the environment. In
-Week 4, from humans (RLHF), from verifiers (RLVR), or from task completion
+Week 5, from humans (RLHF), from verifiers (RLVR), or from task completion
 (agent RL). The algorithms evolved — DQN to PPO to GRPO to CISPO — but the
 fundamental loop remained: *act, observe reward, improve*.
 
@@ -1419,7 +1420,7 @@ fundamental loop remained: *act, observe reward, improve*.
 
 ## Next Week Preview: World Models
 
-**Week 5 — World Model RL: How AI Imagines Outcomes Before Taking Action**
+**Week 6 — World Model RL: How AI Imagines Outcomes Before Taking Action**
 
 Every RL agent we've studied so far learns by *doing* — taking actions in the
 real environment and observing what happens. But what if the agent could
@@ -1481,5 +1482,5 @@ We'll cover:
 
 ---
 
-*RL 101 Study Group — Week 4*
+*RL 101 Study Group — Week 5*
 *Colby Ziyu Wang @ SparkCraft*
