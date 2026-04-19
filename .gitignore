@@ -29,3 +29,6 @@ env/
 .DS_Store
 Thumbs.db
 research/
+
+# Claude Code (local state, memory — never commit)
+.claude/
