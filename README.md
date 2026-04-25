@@ -173,4 +173,5 @@ Run `make tensorboard` and watch:
 
 ---
 
-*RL 101 Study Group — Colby Ziyu Wang @ SparkCraft*
+*RL 101 Study Group — Colby Ziyu Wang @ SparkCraft / Hosted by AI Scholars*
+*Notes: Alp Guneysel*
