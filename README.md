@@ -49,7 +49,10 @@ make train          # Train DQN on CartPole-v1 (~5 min, 500K steps)
 make eval           # Watch the trained agent balance the pole
 
 # Week 3 — PPO
-make train-ppo      # Train PPO on CartPole-v1
+make train-ppo            # Train PPO on CartPole-v1
+make train-breakout       # Train PPO on Atari Breakout (10M steps)
+make train-pong           # Train PPO on Atari Pong (5M steps)
+make train-spaceinvaders  # Train PPO on Atari Space Invaders (10M steps)
 ```
 
 ## Weeks at a Glance
@@ -72,6 +75,11 @@ Demo flow: `make random` (random agent fails in ~20 steps) → `make train` →
 Builds on Week 2 with a policy network alongside the value network, plus
 Generalized Advantage Estimation (GAE) and PPO's clipped surrogate objective.
 The deep dive walks through CleanRL's `ppo.py` line by line.
+
+Beyond CartPole, Week 3 also includes PPO training on classic Atari
+environments (`make train-breakout`, `make train-pong`,
+`make train-spaceinvaders`) so you can watch the same algorithm scale
+from a 4-dimensional control task to pixel-input arcade games.
 
 ### Week 4 — Agent RL with MiniMax Forge
 
@@ -131,16 +139,19 @@ make tensorboard       # then open http://localhost:6006
 ## Commands
 
 ```
-make help           # Show all available commands
-make setup          # Install everything
-make random         # Random agent baseline
-make train          # Train CartPole DQN (Week 2)
-make train-lunar    # Train LunarLander DQN (bonus)
-make train-ppo      # Train CartPole PPO (Week 3)
-make eval           # Evaluate trained CartPole DQN
-make eval-lunar     # Evaluate trained LunarLander model
-make tensorboard    # Launch TensorBoard
-make demo           # Full demo: random → train → eval
+make help                # Show all available commands
+make setup               # Install everything
+make random              # Random agent baseline
+make train               # Train CartPole DQN (Week 2)
+make train-lunar         # Train LunarLander DQN (bonus)
+make train-ppo           # Train CartPole PPO (Week 3)
+make train-breakout      # Train PPO on Atari Breakout (Week 3, 10M steps)
+make train-pong          # Train PPO on Atari Pong (Week 3, 5M steps)
+make train-spaceinvaders # Train PPO on Atari Space Invaders (Week 3, 10M steps)
+make eval                # Evaluate trained CartPole DQN
+make eval-lunar          # Evaluate trained LunarLander model
+make tensorboard         # Launch TensorBoard
+make demo                # Full demo: random → train → eval
 ```
 
 ## TensorBoard Metrics
