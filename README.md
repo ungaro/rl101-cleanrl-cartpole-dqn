@@ -1,6 +1,6 @@
 # RL 101 — Study Group Notes & Code
 
-Hands-on notes and code for the **RL 101** study group (Colby Ziyu Wang @ SparkCraft).
+Hands-on notes and code for the **RL 101** study group (Colby Ziyu Wang @ SparkCraft, hosted by AI Scholars).
 Each week pairs runnable demos (built on [CleanRL](https://github.com/vwxyzjn/cleanrl)
 and [Gymnasium](https://gymnasium.farama.org/)) with a deep-dive write-up that walks
 through the math, the algorithm, and the source code line by line.
