@@ -122,7 +122,7 @@ max length.
 
 **Two consequences this framing has that often go un-noticed**:
 
-1. **Action space is enormous.** Vocab $|V| \approx 32$K–256K. CartPole had
+1. **Action space is enormous.** Vocab $|V| \approx 32\text{K}\text{–}256\text{K}$. CartPole had
    $|A| = 2$. Exploration via ε-greedy or random sampling is much harder.
 2. **Reward is sparse and terminal.** You usually get one scalar reward at
    end-of-sequence ("how good was the whole response?"), not per-token
@@ -920,10 +920,11 @@ RLHF aligns to *averaged labeler preferences*, which is not the same thing as "w
 
 ## 30. What the Community Is Debating Right Now
 
-A snapshot of what r/reinforcementlearning, r/LocalLLaMA, r/MachineLearning,
-and r/LocalLLM are actively discussing in the months around this lecture
-(Apr–May 2026). The doc above explains the algorithms; this section is the
-*community state* you're stepping into when you go ship something.
+A snapshot of what r/reinforcementlearning, r/LocalLLaMA, and
+r/MachineLearning are actively discussing in the months around this
+lecture (Apr–May 2026). The doc above explains the algorithms; this
+section is the *community state* you're stepping into when you go ship
+something.
 
 ### Cross-cutting themes that map directly to this course
 
@@ -944,8 +945,6 @@ and r/LocalLLM are actively discussing in the months around this lecture
 **r/LocalLLaMA** — model-release-driven (Qwen 3.6, Gemma 4, MiniMax M2.7), with a strong sub-current of *uncensoring / abliteration* as the inverse of RLHF. The [MiniMax M2.7 release thread](https://reddit.com/r/LocalLLaMA/comments/1sj0dm3/) (675 pts) and [the license discussion](https://reddit.com/r/LocalLLaMA/comments/1skabyf/) are direct Week 4–5 reading. The community here mostly *uses* fine-tuned models rather than training them.
 
 **r/MachineLearning** — meta-debates dominate: [conference lottery culture](https://reddit.com/r/MachineLearning/comments/1t0mct7/), [reproducibility crises](https://reddit.com/r/MachineLearning/comments/1sml5fo/). On topic, [Studying Sutton & Barto and its connections to RL for LLMs](https://reddit.com/r/MachineLearning/comments/1sgknct/) is *exactly* the bridge this course builds. [DeepSeek V4 FP4 QAT details](https://reddit.com/r/MachineLearning/comments/1t7yrvr/) is the other thread to read.
-
-**r/LocalLLM** — dominated by hardware-picking and model-recommendation threads; very few RL/RLHF discussions. Useful for the deployment side but not the training side.
 
 ### High-signal reading list (8 threads)
 
@@ -1037,11 +1036,33 @@ school in this area, your thesis is somewhere in here.
 
 ## 34. Communities and Staying Sharp
 
-### Subreddits worth following (mapped in §30)
+### Subreddits worth following
+
+The four mapped in §30 are the main ones; here's the broader landscape.
+
+**Primary (highest signal for RL101 topics):**
 
 - **r/reinforcementlearning** — best signal-to-noise for pure RL.
 - **r/MachineLearning** — broader, but the long-form discussion threads are valuable.
 - **r/LocalLLaMA** — model releases, deployment, fine-tuning gotchas. The "ground truth" of what's actually shipping.
+
+**Secondary (worth checking weekly):**
+
+- **r/learnmachinelearning** — entry-level RL/ML questions; useful when you're learning a new technique and want to see how others got stuck.
+- **r/deeplearning** — broader deep-learning topics; some RL but mostly architectures and optimization.
+- **r/huggingface** — TRL-specific issues, fine-tuning gotchas, dataset announcements.
+- **r/singularity** — frontier-model news; high noise, but breaks paper releases fast.
+- **r/AgenticAI** / **r/AIagents** — small but growing; agent-RL specific (Week 4 territory).
+
+**Specialized:**
+
+- **r/EleutherAI** — research-heavy, low-volume; great for open-source training discussion.
+- **r/StableDiffusion** — different domain (image), but useful cross-pollination on RLHF/DPO applied to diffusion (DRaFT, DPOK, etc.).
+- **r/MLQuestions** — Q&A format; sometimes finds answers to specific debugging issues faster than r/MachineLearning.
+- **r/ChatGPTPro**, **r/ClaudeAI**, **r/OpenAI** — product-focused; training discussions surface occasionally.
+- **r/Anthropic** — small, focused on Claude internals when employees post.
+
+**Not worth following for RL101 topics**: r/artificial (very general), r/PromptEngineering (application-side, not training).
 
 ### Newsletters & blogs
 
@@ -1059,6 +1080,35 @@ school in this area, your thesis is somewhere in here.
 - **NeurIPS, ICML, ICLR** — the big three. NeurIPS in Dec, ICML in Jul, ICLR in May. Watch arXiv 2 weeks before submission deadlines.
 - **RLC (Reinforcement Learning Conference)** — new dedicated RL venue, started 2024. Lower noise than NeurIPS for pure RL.
 - **COLM (Conference on Language Modeling)** — language-model-specific venue, started 2024.
+
+### Tracking new arxiv papers
+
+The cs.LG and cs.CL arxiv listings are firehose-velocity — ~200 RL-and-LLM
+papers per week. The trick is to use a curated layer.
+
+**Best curated feeds (start here):**
+
+- **HuggingFace Daily Papers** — [huggingface.co/papers](https://huggingface.co/papers). Community-voted, updated daily, most relevant for LLM-RL work. Good signal-to-noise.
+- **alphaXiv** — [alphaxiv.org](https://www.alphaxiv.org/). Interactive arxiv with comments and trending feeds.
+- **arxiv-sanity-lite** — [arxiv-sanity-lite.com](https://arxiv-sanity-lite.com/). Karpathy's project; lets you save custom keyword filters (e.g., "RLHF", "GRPO", "DPO", "RLVR") and get a personalized feed.
+- **Papers with Code** — [paperswithcode.com](https://paperswithcode.com/). Trending papers with associated code; great for practical RL.
+
+**Direct arxiv searches (bookmark these):**
+
+- [arxiv RL+LLM recent (cs.LG)](https://arxiv.org/list/cs.LG/recent) — raw cs.LG listing.
+- [arxiv search: RLHF OR GRPO OR DPO OR RLVR](https://arxiv.org/search/?searchtype=all&query=RLHF+OR+GRPO+OR+DPO+OR+RLVR&start=0) — saved keyword search.
+- [arxiv cs.CL recent](https://arxiv.org/list/cs.CL/recent) — language-model papers.
+
+**Live discussion:**
+
+- **HuggingFace Discord** (very active, many paper authors lurking) and **EleutherAI Discord** (research-heavy) — papers usually get discussed within hours of release.
+- Twitter/X researchers (see list above) — most papers are tweet-announced.
+
+**A practical workflow** that doesn't burn you out:
+1. Daily glance at HF Papers (5 min) — note titles only.
+2. Weekly: skim arxiv-sanity-lite custom feed (15 min).
+3. Monthly: read Lambert's *Interconnects* roundup (the curation work he does is worth its weight).
+4. Quarterly: pick *one* paper that's been cited a lot, read it deeply (3-pass method below).
 
 ### How to read papers
 
