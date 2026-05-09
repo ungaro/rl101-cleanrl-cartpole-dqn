@@ -34,6 +34,7 @@ building block on the path toward AGI.
 | 3 | **Actor-Critic — PPO** on CartPole-v1 | [RL 103](https://docs.google.com/presentation/d/1CIc8_FcSSqFgSLbFoP_RbD-_gUrqKUuMkXxtKVeb3mc/edit?usp=sharing) | [`docs/week3-ppo-under-the-hood.md`](docs/week3-ppo-under-the-hood.md) | `make train-ppo` |
 | 4 | **From Algorithms to Real Systems — MiniMax Forge** | [RL 104](https://docs.google.com/presentation/d/1rcNfBS_MB04ANML4LDUeL67zJBKltBzvP6fk0y6-aJM/edit?usp=sharing) | [`docs/week4-agent-rl-forge.md`](docs/week4-agent-rl-forge.md) | (docs only) |
 | 5 | **RLHF and the Path to Agent RL — MiniMax M2.7** | — | [`docs/week5-minimax-m27-visual-guide.md`](docs/week5-minimax-m27-visual-guide.md) | (docs only) |
+| 6 | **Reinforcement Fine-Tuning & RLHF Under the Hood** | [RL 105 (PDF)](docs/slides/RL105.pdf) | [`docs/week6-rlhf-and-rft-under-the-hood.md`](docs/week6-rlhf-and-rft-under-the-hood.md) | (docs only) |
 
 Each deep-dive renders both as a normal Markdown document on GitHub and as
 slides via [marp-cli](https://github.com/marp-team/marp-cli).
@@ -93,6 +94,17 @@ and the **PPO → GRPO → DAPO → CISPO** algorithmic lineage.
 The post-training pipeline end to end: SFT → reward modeling (Bradley-Terry,
 ORM vs PRM) → PPO/GRPO/DAPO → DPO → RLVR → reasoning RL. Concludes with a
 MiniMax M2.7 case study tying the pieces together.
+
+### Week 6 — Reinforcement Fine-Tuning & RLHF Under the Hood
+
+Slide-by-slide companion to Colby's RL 105 lecture: re-derives the
+Bradley-Terry preference loss, the KL-constrained RLHF objective, and the
+PPO-RLHF actor/critic/RM/ref topology. Followed by a research appendix on
+the post-DPO landscape (KTO, IPO, ORPO, SimPO), the post-PPO landscape
+(GRPO, DAPO, CISPO), and **RLVR** — the verifier-based shift behind o1
+and DeepSeek-R1. Closes with a curated reading/watching list (papers,
+Karpathy's State of GPT, Sebastian Raschka's RLHF surveys, HuggingFace
+TRL, OpenRLHF).
 
 ## Watching the Trained Agent (Week 2)
 
