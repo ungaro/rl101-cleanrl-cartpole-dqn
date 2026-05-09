@@ -3,7 +3,7 @@ marp: true
 theme: default
 paginate: true
 header: "RL 101 — Week 6 — RLHF & Reinforcement Fine-Tuning Under the Hood"
-footer: "rl101-cleanrl-cartpole-dqn"
+footer: "rl101-crash-course"
 math: katex
 ---
 
@@ -72,10 +72,29 @@ RL-algorithm view. This doc is the math + literature spine.
 23. [Reasoning RL: o1, R1, and the New Paradigm](#23-reasoning-rl-o1-r1-and-the-new-paradigm)
 24. [Synthesis: RLHF → RLVR → Agent RL](#24-synthesis-rlhf--rlvr--agent-rl)
 
-### Part III — Resources
+### Part III — Common Questions Across All Weeks
 
-25. [Papers, Books, Videos, Code](#25-papers-books-videos-code)
-26. [Key Takeaways](#26-key-takeaways)
+25. [Q&A — Foundations and Value Methods (Weeks 1–2)](#25-qa--foundations-and-value-methods-weeks-12)
+26. [Q&A — PPO and Actor-Critic (Week 3)](#26-qa--ppo-and-actor-critic-week-3)
+27. [Q&A — Agent RL and Systems (Week 4)](#27-qa--agent-rl-and-systems-week-4)
+28. [Q&A — RLHF, DPO, RLVR (Weeks 5–6)](#28-qa--rlhf-dpo-rlvr-weeks-56)
+29. [Q&A — Practical and Big Picture](#29-qa--practical-and-big-picture)
+
+### Part IV — Community Pulse
+
+30. [What the Community Is Debating Right Now](#30-what-the-community-is-debating-right-now)
+
+### Part V — Where to Go from Here
+
+31. [Specialization Tracks](#31-specialization-tracks)
+32. [Hands-On Milestones](#32-hands-on-milestones)
+33. [Open Research Questions](#33-open-research-questions)
+34. [Communities and Staying Sharp](#34-communities-and-staying-sharp)
+
+### Part VI — Resources
+
+35. [Papers, Books, Videos, Code](#35-papers-books-videos-code)
+36. [Key Takeaways](#36-key-takeaways)
 
 ---
 
@@ -93,12 +112,12 @@ In Weeks 2–3 our policies were tiny networks mapping CartPole's 4-D state to
 transformer mapping a prompt $x$ to a token-level distribution over the
 vocabulary $V$:
 
-$$
-\pi_\theta(y \mid x) = \prod_{t=1}^{|y|} \pi_\theta(y_t \mid x, y_{<t})
-$$
+```math
+\pi_\theta(y \mid x) = \prod_{t=1}^{|y|} \pi_\theta(y_t \mid x, y_{\lt t})
+```
 
 Each token $y_t$ is an action. The state at step $t$ is the prompt plus
-the tokens generated so far: $s_t = (x, y_{<t})$. The episode ends at EOS or
+the tokens generated so far: $s_t = (x, y_{\lt t})$. The episode ends at EOS or
 max length.
 
 **Two consequences this framing has that often go un-noticed**:
@@ -281,9 +300,9 @@ The translation table:
 
 | Standard RL | RLHF |
 |-------------|------|
-| State $s$ | Prompt + tokens generated so far $(x, y_{<t})$ |
+| State $s$ | Prompt + tokens generated so far $(x, y_{\lt t})$ |
 | Action $a$ | Next token $y_t$ |
-| Policy $\pi(a \mid s)$ | Token distribution $\pi_\theta(y_t \mid x, y_{<t})$ |
+| Policy $\pi(a \mid s)$ | Token distribution $\pi_\theta(y_t \mid x, y_{\lt t})$ |
 | Trajectory | Full response $y = (y_1, \dots, y_T)$ |
 | Reward | $r_\phi(x, y)$ at end of sequence (sparse!) |
 
@@ -291,9 +310,9 @@ One subtlety: most RLHF implementations apply the *terminal* reward at the
 last token but distribute the KL penalty per-token (§12). So the per-token
 "reward" for PPO is:
 
-$$
-\tilde r_t = \begin{cases} -\beta \log \frac{\pi_\theta(y_t \mid s_t)}{\pi_{\text{ref}}(y_t \mid s_t)} & t < T \\ r_\phi(x, y) - \beta \log \frac{\pi_\theta(y_T \mid s_T)}{\pi_{\text{ref}}(y_T \mid s_T)} & t = T \end{cases}
-$$
+```math
+\tilde r_t = \begin{cases} -\beta \log \frac{\pi_\theta(y_t \mid s_t)}{\pi_{\text{ref}}(y_t \mid s_t)} & t \lt T \\ r_\phi(x, y) - \beta \log \frac{\pi_\theta(y_T \mid s_T)}{\pi_{\text{ref}}(y_T \mid s_T)} & t = T \end{cases}
+```
 
 This is how PPO sees the credit assignment — terminal RM reward, per-token
 KL.
@@ -324,9 +343,9 @@ coefficient — a critical hyperparameter, usually 0.01–0.2.
 
 **Closed-form optimum** (this is the lemma DPO weaponizes — see §19):
 
-$$
-\pi^*(\cdot \mid x) = \frac{1}{Z(x)} \pi_{\text{ref}}(\cdot \mid x) \exp\!\left( \frac{1}{\beta} r_\phi(x, \cdot) \right)
-$$
+```math
+\pi^{\ast}(\cdot \mid x) = \frac{1}{Z(x)} \pi_{\text{ref}}(\cdot \mid x) \exp\!\left( \frac{1}{\beta} r_\phi(x, \cdot) \right)
+```
 
 So the optimal policy is the reference distribution *re-weighted* by an
 exponential of the reward. The partition function $Z(x)$ is intractable
@@ -530,11 +549,20 @@ reward model cancels out.
 
 ### DPO derivation (one paragraph)
 
-Start from $\pi^*(y \mid x) = \frac{1}{Z(x)} \pi_{\text{ref}}(y \mid x) \exp(r(x,y)/\beta)$.
+Start with the closed-form optimum from §11:
+
+```math
+\pi^{\ast}(y \mid x) = \frac{1}{Z(x)} \pi_{\text{ref}}(y \mid x) \exp(r(x,y)/\beta)
+```
+
 Solve for the *implicit reward*:
-$r(x, y) = \beta \log \frac{\pi^*(y \mid x)}{\pi_{\text{ref}}(y \mid x)} + \beta \log Z(x)$.
+
+```math
+r(x, y) = \beta \log \frac{\pi^{\ast}(y \mid x)}{\pi_{\text{ref}}(y \mid x)} + \beta \log Z(x)
+```
+
 Plug into the Bradley-Terry loss; $\log Z(x)$ cancels because it appears
-identically in both terms. Replace $\pi^*$ with $\pi_\theta$:
+identically in both terms. Replace $\pi^{\ast}$ with $\pi_\theta$:
 
 $$
 \mathcal{L}_{\text{DPO}}(\theta) = -\mathbb{E}_{(x, y_w, y_l)}\!\left[ \log \sigma\!\left( \beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{\text{ref}}(y_w \mid x)} - \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\text{ref}}(y_l \mid x)} \right) \right]
@@ -767,11 +795,292 @@ rewards got harder to specify.
 
 ---
 
-# Part III — Resources
+# Part III — Common Questions Across All Weeks
+
+These are the questions that come up over and over when people first work
+through this material. Answers are deliberately short — for full
+treatments, follow the §-references back into the doc.
 
 ---
 
-## 25. Papers, Books, Videos, Code
+## 25. Q&A — Foundations and Value Methods (Weeks 1–2)
+
+**Q1. Why does RL need a discount factor $\gamma$ if my episodes are short?**
+$\gamma < 1$ does two things even on short episodes: (i) makes the infinite-horizon sum mathematically finite, and (ii) gives the agent a "preference for now" — a bird in the hand vs. two in the bush. On CartPole specifically you can almost get away with $\gamma=1$ because episodes terminate in ≤500 steps; in practice $\gamma=0.99$ is just a smoother gradient signal.
+
+**Q2. On-policy vs. off-policy — what's the actual difference and why does it matter?**
+On-policy = you can only learn from data sampled by the *current* policy (PPO). Off-policy = you can learn from data sampled by *any* policy (DQN, GRPO with replay). Off-policy is sample-efficient (re-use old data) but unstable (importance sampling ratios blow up). On-policy is stable but wasteful — every gradient step throws away the rollout. The post-PPO algorithms in §20 are all attempts to soften this trade.
+
+**Q3. Is the Bellman equation a definition or a theorem?**
+A definition. $Q(s,a) = \mathbb{E}[r + \gamma \max_{a'} Q(s',a')]$ is just unrolling the value function one step. The *useful* claim is that the iteration $Q_{k+1} = T Q_k$ (where $T$ is the Bellman operator) is a contraction in $\ell_\infty$ norm — that's the theorem, and it's why value iteration converges.
+
+**Q4. Why does DQN need a target network?**
+Because without one, you're regressing $Q_\theta(s,a)$ toward a target that's *also computed from* $Q_\theta$. The target moves every gradient step. The target network is a stale copy of $Q_\theta$ updated every $N$ steps (usually 500–10K) so the target stays still long enough for the regression to converge before it shifts.
+
+**Q5. Can I use DQN on LLMs?**
+In principle yes — actions are tokens, $|A| = |V|$. In practice no: the action space is 50–250K, $\max_a Q(s,a)$ is a 50K-way max at every step, and Q-functions over discrete tokens are hard to learn at that scale. Policy gradient methods (PPO, GRPO) sample from $\pi_\theta$ directly and bypass the max.
+
+---
+
+## 26. Q&A — PPO and Actor-Critic (Week 3)
+
+**Q6. Why does PPO clip instead of using a trust region like TRPO?**
+TRPO solves a constrained optimization at every step ($\mathrm{KL} \le \delta$) using conjugate gradient and a line search. PPO approximates the same idea with a clip — much simpler to implement, almost as good in practice. PPO's clip is a *first-order* surrogate for TRPO's exact trust region.
+
+**Q7. Why doesn't PPO use a replay buffer like DQN?**
+PPO is on-policy. The clipped surrogate's correctness depends on the data being sampled from $\pi_{\text{old}}$, which is at most a few gradient steps stale. A replay buffer breaks that assumption. PPO does re-use rollouts within an "update epoch" (usually 4–10 epochs per rollout) — that's the closest it gets.
+
+**Q8. What does GAE actually buy over Monte Carlo returns?**
+A bias-variance knob. Pure Monte Carlo ($\lambda=1$) is unbiased but high variance. Pure 1-step TD ($\lambda=0$) is low variance but biased. GAE's $\lambda \in [0,1]$ blends them. $\lambda=0.95$ is the standard PPO default — empirically a sweet spot.
+
+**Q9. Is $\epsilon=0.2$ in PPO theory or empirical?**
+Empirical. The original PPO paper swept it; 0.2 was best on Atari/Mujoco. Some modern variants like DAPO use asymmetric clips ($\epsilon_{\text{low}}=0.2$, $\epsilon_{\text{high}}=0.28$) to give entropy room — see §20.
+
+---
+
+## 27. Q&A — Agent RL and Systems (Week 4)
+
+**Q10. Why does agent RL need 100K+ environments — can't we just have one good one?**
+One environment over-fits. The whole point of the diversity is that the policy generalizes across tasks, tools, and contexts. CartPole-RL teaches you "balance the pole." Agent-RL teaches you "use any tool." That requires variety the same way pretraining requires variety.
+
+**Q11. What does "200K-token context" mean for the actor — is it loaded once?**
+Once per rollout. The actor sees the full prompt + tool-call history + responses as it generates. The KV cache holds the entire context during decode; this is why RL on long-context LLMs is memory-bound, not compute-bound. Hence prefix-tree training (Magi Attention) and PD disaggregation in Week 4.
+
+**Q12. Why does CISPO stop-gradient the IS ratio — isn't that information loss?**
+Yes — and that's the point. The IS ratio explodes when $\pi_\theta$ and $\pi_{\text{old}}$ disagree heavily on a single token (which happens constantly in MoE-RL because the router routes the *same* token to different experts at different steps). Stop-gradient keeps the *magnitude* of the gradient sane while preserving the gradient *direction* through $\log \pi_\theta$. It's a variance-reduction trick at the cost of a small bias.
+
+**Q13. Can I do agent RL on a 7B model, or is this strictly a frontier-lab thing?**
+Yes, you can. Tülu 3 ships an 8B variant. Several open frameworks (TRL's GRPO trainer, OpenRLHF, verl) work on a single 80GB H100 with LoRA. The frontier-lab thing is *long-context* agent RL with hundreds of tools — that needs the systems work in Week 4. Plain GRPO on math/code with a 7B model is hobbyist-tier in 2025–2026.
+
+---
+
+## 28. Q&A — RLHF, DPO, RLVR (Weeks 5–6)
+
+**Q14. Why a reward model — can't humans just label every response during training?**
+Two reasons. Speed: PPO updates 100K+ times; humans can't label that fast. Cost: a labeler costs ~\$50/hr; an RM forward pass costs ~\$0.0001. The RM is a *learned approximation* of human preferences that scales.
+
+**Q15. Why does the RM output a scalar instead of a distribution?**
+Because the Bradley-Terry preference model only requires a scalar utility per response — see §9. A distribution would over-specify the problem; we don't ask "how good with what uncertainty?" we ask "did humans prefer A or B?" The pairwise margin is enough.
+
+**Q16. Why does the KL penalty target the SFT model specifically and not pretraining?**
+Two reasons. (1) Pretraining has the wrong format — it doesn't follow instructions. The SFT model is the closest "fluent + on-task" anchor. (2) KL to pretraining is huge; you'd need an enormous $\beta$ to bound it, killing learning. SFT is the natural reference for "stay in this neighborhood while improving."
+
+**Q17. If DPO is so much simpler than PPO-RLHF, why is anyone still using PPO?**
+Three reasons: (i) DPO is offline — it can't generate new samples, so it's bottlenecked by the dataset's coverage; (ii) PPO can use richer reward signals (rule-based + RM + verifiable mixed); (iii) at frontier scale, PPO-RLHF still slightly outperforms DPO on hard preference tasks where the response distribution moves a lot during training.
+
+**Q18. How do I pick between DPO / IPO / KTO / ORPO / SimPO?**
+Quick decision tree (see §19 for detail):
+- *Just paired preferences, want simplest baseline*: DPO
+- *Paired preferences, want best results*: SimPO (reference-free)
+- *Paired preferences, near-deterministic*: IPO (avoids the DPO over-fit)
+- *Only thumbs up/down (no pairs)*: KTO
+- *Want SFT + preference in one stage*: ORPO
+- *Production stack*: SimPO for the broad pass, KTO for off-policy "bad example" pinning
+
+**Q19. Why does RLVR work for math but not creative writing?**
+Verifiability. A math answer is right or wrong; a code unit test passes or fails. "Was this story good?" has no verifier. RLVR is bounded to the 5–10% of tasks that have a binary correctness criterion. Outside that band, you still need preference data.
+
+---
+
+## 29. Q&A — Practical and Big Picture
+
+**Q20. How do I debug an RL run that's diverging?**
+Standard checklist:
+1. Plot per-step KL divergence — sudden spikes mean reward hacking.
+2. Plot reward distribution — if it saturates or collapses to a few modes, your RM/policy is degenerate.
+3. Plot entropy — if it crashes, the policy is over-committing.
+4. Lower learning rate by 3×, then 10×.
+5. Check chat template / tokenizer is identical between policy and reference. (This breaks more runs than any algorithm bug — see §30.)
+6. Verify reward direction (sign flips happen).
+7. Re-check that gradient norms aren't blowing up.
+
+**Q21. How do I pick the KL coefficient $\beta$?**
+$\beta$ controls a trade-off: higher $\beta$ → stays close to SFT, slower learning; lower $\beta$ → faster learning, more reward hacking. Standard range: 0.01–0.2. Start at 0.05, watch the KL/reward ratio. If reward grows faster than KL, you can lower $\beta$. If KL outpaces reward, raise $\beta$. Some recipes (DAPO) drop the explicit penalty entirely and rely on the clip alone.
+
+**Q22. What's the smallest model I can do RLHF on?**
+You can run DPO on a 350M-1B model on a single 24GB GPU with LoRA. Full PPO-RLHF (4 model copies) starts being practical at 7B on an 80GB H100. RLVR / GRPO is the cheapest variant — DeepSeek-R1's 1.5B and 7B distilled checkpoints were trained on small clusters.
+
+**Q23. How do I evaluate an RLHF model — automated benchmarks aren't enough, are they?**
+Right, they're not. Use a stack: (i) automated benchmarks (MMLU, GSM8K, IFEval) for sanity; (ii) Arena-Hard / AlpacaEval 2 / MTBench for LLM-judged head-to-heads; (iii) **a held-out human eval set** for what you actually care about; (iv) red-team prompts for safety. Skipping (iii) is the most common mistake — automated metrics over-fit fast.
+
+**Q24. Is RL on LLMs just curve fitting in disguise?**
+Half-true. RLVR on a base model mostly *re-weights* trajectories the model could already produce (the "faster, not smarter" finding, §21) — that *is* curve fitting. But when the policy actually generates novel reasoning chains and gets rewarded for them (R1-Zero's "Aha moments"), you're past pure interpolation. The honest answer: closer to curve fitting than people pretend, but not entirely.
+
+**Q25. Will reasoning RL scale like pretraining did, or hit a wall?**
+Open question. Pretraining had clean scaling laws because loss is smooth. RLVR has bumpier dynamics — reward hacking, mode collapse, capability ceilings tied to the base. Early scaling results are encouraging but extrapolation is much shakier than for pretraining. Watch papers like *RLVR scaling laws* (2025) for the actual curves.
+
+**Q26. What's the strongest argument that RLHF doesn't actually align models?**
+RLHF aligns to *averaged labeler preferences*, which is not the same thing as "what is good." If labelers consistently prefer hedging language, your RM rewards hedging, and your policy hedges — even when the user wants a direct answer. Plus reward hacking is provably present at scale (see Anthropic's *Capacity for Moral Self-Correction* and OpenAI's reward-hacking studies). RLHF is a useful *approximation* to alignment, not alignment.
+
+---
+
+# Part IV — Community Pulse
+
+---
+
+## 30. What the Community Is Debating Right Now
+
+A snapshot of what r/reinforcementlearning, r/LocalLLaMA, r/MachineLearning,
+and r/LocalLLM are actively discussing in the months around this lecture
+(Apr–May 2026). The doc above explains the algorithms; this section is the
+*community state* you're stepping into when you go ship something.
+
+### Cross-cutting themes that map directly to this course
+
+1. **"PPO vs. GRPO vs. DPO ranking depends entirely on hyperparameter tuning."** The canonical thread is [I implemented PPO, GRPO, and DPO from scratch and the ranking completely reversed after hyperparameter tuning](https://reddit.com/r/reinforcementlearning/comments/1sc9d0y/). This is the single most important practical lesson and reinforces §28 Q18: there is no universal winner; algorithms differ in *what they tolerate*, not in absolute quality.
+
+2. **Chat-template and tokenizer hygiene silently destroys fine-tunes.** Recurring posts: [PSA: Qwen3.6 ships with `preserve_thinking` — make sure you have it on](https://reddit.com/r/LocalLLaMA/comments/1sne4gh/) (413 pts), [it's time to update your Gemma 4 GGUFs (chat template fixed)](https://reddit.com/r/LocalLLaMA/comments/1t3dfvp/). This is the single most common reason DPO/RLHF runs collapse in practice — the policy and reference disagree on prompt formatting, KL explodes, training diverges. Always verify template equality before you debug the algorithm. (See §29 Q20 step 5.)
+
+3. **Reward shaping / reward hacking is the universal RL pain point.** Spans pure-RL ([PPO rewards crashing mid-training on Pendulum](https://reddit.com/r/reinforcementlearning/comments/1t4lbl3/), [Reward STD collapse](https://reddit.com/r/reinforcementlearning/comments/1t2ykr5/)) to RLHF (reward-model over-optimization, [Heretic / abliteration ecosystem](https://reddit.com/r/LocalLLaMA/comments/1sw77p0/) as the post-RLHF safety reversal). RLVR is the community's escape hatch where it applies; outside that band you live with reward shaping.
+
+4. **Agent / RL framework sprawl.** The active debate of "which stack do I use" resolves to: *TRL (HuggingFace)* for prototyping, *verl (ByteDance)* for production-scale RL, *OpenRLHF* for high-throughput Ray + vLLM rollouts, *SGLang* or *vLLM* for inference. See [What standard RL frameworks do people use these days?](https://reddit.com/r/reinforcementlearning/comments/1szkr2m/) for the working consensus. We list these in §35.
+
+5. **"Is X still worth it in 2026?" identity crises.** [Is DQN still worth in 2026?](https://reddit.com/r/reinforcementlearning/comments/1srpz6h/), questions about value of ML PhDs, whether local LLMs are worth running. Frame: nothing in this course is dead — DQN is still the cleanest way to *learn* value-based RL, even if frontier deployment uses GRPO.
+
+### Per-subreddit highlights
+
+**r/reinforcementlearning** — heavily focused on practical pain (reward shaping, PPO instability, framework choice) and the RL-meets-LLM-agents transition ([How RL fits into tool-using LLM agents](https://reddit.com/r/reinforcementlearning/comments/1sjpho5/), [Project: I gave an LLM memory of its own mistakes](https://reddit.com/r/reinforcementlearning/comments/1t46tyy/)). Single-author serialized projects (like a [3-Mac-Mini GRPO experiment](https://reddit.com/r/reinforcementlearning/comments/1t49nlz/)) are popular.
+
+**r/LocalLLaMA** — model-release-driven (Qwen 3.6, Gemma 4, MiniMax M2.7), with a strong sub-current of *uncensoring / abliteration* as the inverse of RLHF. The [MiniMax M2.7 release thread](https://reddit.com/r/LocalLLaMA/comments/1sj0dm3/) (675 pts) and [the license discussion](https://reddit.com/r/LocalLLaMA/comments/1skabyf/) are direct Week 4–5 reading. The community here mostly *uses* fine-tuned models rather than training them.
+
+**r/MachineLearning** — meta-debates dominate: [conference lottery culture](https://reddit.com/r/MachineLearning/comments/1t0mct7/), [reproducibility crises](https://reddit.com/r/MachineLearning/comments/1sml5fo/). On topic, [Studying Sutton & Barto and its connections to RL for LLMs](https://reddit.com/r/MachineLearning/comments/1sgknct/) is *exactly* the bridge this course builds. [DeepSeek V4 FP4 QAT details](https://reddit.com/r/MachineLearning/comments/1t7yrvr/) is the other thread to read.
+
+**r/LocalLLM** — dominated by hardware-picking and model-recommendation threads; very few RL/RLHF discussions. Useful for the deployment side but not the training side.
+
+### High-signal reading list (8 threads)
+
+If you read nothing else from these subreddits, read these:
+
+1. [I implemented PPO, GRPO, and DPO from scratch — ranking completely reversed after hyperparameter tuning](https://reddit.com/r/reinforcementlearning/comments/1sc9d0y/) — the canonical "algorithms < hyperparameters" thread. **Weeks 3–6.**
+2. [Why is PPO still the de facto RL algorithm for LLM training?](https://reddit.com/r/reinforcementlearning/comments/1mo9guy/) — 26 nuanced takes from practitioners. **Weeks 5–6.**
+3. [Is DQN still worth in 2026?](https://reddit.com/r/reinforcementlearning/comments/1srpz6h/) — direct Week 2 community pulse.
+4. [What standard RL frameworks do people use these days? (TRL/verl/openRLHF/sglang)](https://reddit.com/r/reinforcementlearning/comments/1szkr2m/) — Week 4 stack-picking guide.
+5. [How RL fits into tool-using LLM agents](https://reddit.com/r/reinforcementlearning/comments/1sjpho5/) — clean Week 4 framing question.
+6. [Studying Sutton & Barto and its connections to RL for LLMs](https://reddit.com/r/MachineLearning/comments/1sgknct/) — the exact bridge this course is.
+7. [PSA: Qwen3.6 ships with `preserve_thinking`](https://reddit.com/r/LocalLLaMA/comments/1sne4gh/) — the cautionary tale on chat-template hygiene.
+8. [Heretic plagiarism / abliteration ecosystem](https://reddit.com/r/LocalLLaMA/comments/1sw77p0/) — entry point to the post-RLHF "uncensoring" debate, which is its own ethics rabbit hole.
+
+---
+
+# Part V — Where to Go from Here
+
+This is the last lecture of the series. Six weeks ago we were balancing a
+pole. Today we're at the frontier of how every modern AI system gets
+trained. Here's how to keep going.
+
+---
+
+## 31. Specialization Tracks
+
+Pick one of these based on what energized you most. *Don't try to do all
+three at once* — depth in one is more valuable than shallow coverage of
+all.
+
+### Track A — Classical RL (if Weeks 2–3 hit hardest)
+
+The deepening path:
+- **Sutton & Barto chapters 6–13** — TD methods, function approximation, policy gradient theorem.
+- **CleanRL's full algorithm zoo** — DDPG, TD3, SAC for continuous control; PPO-LSTM for partial observability; the Atari PPO variant for high-dim observations.
+- **OpenAI Spinning Up** — [spinningup.openai.com](https://spinningup.openai.com/) — the canonical hands-on tutorial.
+- **Hands-on**: solve LunarLanderContinuous-v3, then BipedalWalker-v3, then a custom task in Mujoco / Isaac Gym.
+- **Frontier**: world-model RL (DreamerV3, MuZero, V-JEPA-2), offline RL (CQL, IQL, AWAC), exploration (RND, ICM, NoisyNets).
+
+### Track B — Agent / LLM RL (if Week 4 hit hardest)
+
+The deepening path:
+- **Read the primary papers in full**: MiniMax-M1 (Forge/CISPO), DeepSeek-R1, Tülu 3, DAPO. These are dense; budget 2 hours each.
+- **Code tour**: TRL's `GRPOTrainer`, OpenRLHF's PPO trainer, verl's DAPO implementation. Read the actual training loop, line by line.
+- **Hands-on**: Run GRPO on a 1.5B base model with TRL on GSM8K (math, ~\$30 of cloud compute). Then add a code-execution verifier and re-run on HumanEval.
+- **Frontier**: agentic RL with tool-use, partial rollouts, multi-agent coordination, world models for agents.
+
+### Track C — RLHF / Alignment (if Weeks 5–6 hit hardest)
+
+The deepening path:
+- **Nathan Lambert's RLHF book** — [rlhfbook.com](https://rlhfbook.com/) — the only end-to-end textbook on this topic. Read it.
+- **Anthropic's Alignment Science** posts and **Alignment Forum** for the philosophical / safety side.
+- **Hands-on**: train a reward model on UltraFeedback, then run DPO with TRL on a 1B SFT base. Compare your DPO-tuned model to the SFT base on Arena-Hard.
+- **Frontier**: scalable oversight (debate, weak-to-strong generalization), interpretability for RM bias, Constitutional AI variants.
+
+---
+
+## 32. Hands-On Milestones
+
+Pick three of these you haven't done and ship them in the next three months.
+
+1. **Train DQN on CartPole** (Week 2 — `make train`) ✅ if you ran the demo.
+2. **Train PPO on Atari Breakout** (Week 3 — `make train-breakout`). Watch the eval video — it learns to break bricks.
+3. **Train DPO on a 350M–1B SFT model** with [UltraFeedback](https://huggingface.co/datasets/openbmb/UltraFeedback) using TRL. Should cost ~\$50 in cloud compute.
+4. **Train GRPO on GSM8K with verifiable rewards** using TRL's `GRPOTrainer`. Should cost ~\$30. Demonstrates the R1 paradigm at small scale.
+5. **Build a tiny agent RL environment** — wrap a search tool + a calculator, define a reward that incentivizes correct numerical answers, run GRPO.
+6. **Reproduce the "ranking reverses with HP tuning" finding** from the Reddit thread (§30 #1). Run all three of PPO-RLHF, DPO, GRPO on the same model + dataset. Internalize the lesson.
+7. **Read one paper a week from §35** for 8 weeks straight.
+
+---
+
+## 33. Open Research Questions
+
+These are what 2026 papers are actively trying to answer. If you go to grad
+school in this area, your thesis is somewhere in here.
+
+- **How do you scale RLVR beyond verifiable domains?** Most useful tasks aren't math/code. What's the verifiable proxy for "good writing"?
+- **Can RL-on-LLMs become sample-efficient enough for consumer hardware?** GRPO on a 1.5B model still needs 80GB. What breaks the bottleneck?
+- **What's the right base for agent RL — pretrained, SFT'd, or post-RLHF?** R1-Zero's "no SFT" finding suggests pretrained-base RL might be optimal. But for agents?
+- **Does reasoning RL learn transferable reasoning, or memorize templates?** The "faster, not smarter" finding (§21) says it might be the latter.
+- **How do you align a model that's smarter than its labelers?** This is the "scalable oversight" problem and it's the central frontier alignment question.
+- **What's the right reward function for multi-turn agentic tasks?** Single-turn reward (final answer correct) doesn't credit-assign across long tool-use chains.
+- **Can reasoning RL replace SFT entirely?** If R1-Zero works, why do we need SFT at all? Answer is unclear and worth ~10 papers in the next two years.
+- **Will RL hit a "data wall" like pretraining?** RLVR needs verifiable problems. Is there enough verifiable signal in the universe to train a frontier model?
+- **What's the right RM architecture for long-context reasoning?** Current RMs are scalar-output classifiers; do we need step-level or rationale-aware RMs?
+- **How does post-training compose?** SFT → DPO → RLVR → RLHF — what's the optimal order, and does it actually compose, or do later stages undo earlier ones?
+
+---
+
+## 34. Communities and Staying Sharp
+
+### Subreddits worth following (mapped in §30)
+
+- **r/reinforcementlearning** — best signal-to-noise for pure RL.
+- **r/MachineLearning** — broader, but the long-form discussion threads are valuable.
+- **r/LocalLLaMA** — model releases, deployment, fine-tuning gotchas. The "ground truth" of what's actually shipping.
+
+### Newsletters & blogs
+
+- **Nathan Lambert — Interconnects** ([interconnects.ai](https://www.interconnects.ai/)) — the best for tracking the post-RLHF research front.
+- **Sebastian Raschka — Magazine** ([magazine.sebastianraschka.com](https://magazine.sebastianraschka.com/)) — monthly deep dives on training tricks.
+- **Lilian Weng — Lil'Log** ([lilianweng.github.io](https://lilianweng.github.io/)) — encyclopedic explainers.
+- **Anthropic Alignment Research** — the alignment-side counterpart.
+
+### People to follow on X / Twitter
+
+@karpathy, @NathanLambert, @sebastienbubeck, @hardmaru, @ylecun (sometimes spicy), @lmsysorg (Arena-Hard), @ctjlewis, @sidharthramachandran, @jxmnop.
+
+### Conferences & venues
+
+- **NeurIPS, ICML, ICLR** — the big three. NeurIPS in Dec, ICML in Jul, ICLR in May. Watch arXiv 2 weeks before submission deadlines.
+- **RLC (Reinforcement Learning Conference)** — new dedicated RL venue, started 2024. Lower noise than NeurIPS for pure RL.
+- **COLM (Conference on Language Modeling)** — language-model-specific venue, started 2024.
+
+### How to read papers
+
+First pass for the idea (intro + figures + conclusion); second pass for
+the math (equations + experimental setup); third pass only if you're going
+to implement or critique. The vast majority of arxiv papers don't deserve
+the full third pass.
+
+### Stay sharp without burning out
+
+The RL/LLM literature is firehose-velocity. The trick is not to read
+*everything* — pick one community or person whose taste you trust, and
+read what they recommend. Lambert's Interconnects + Raschka's Magazine +
+the curated arxiv-sanity list is enough.
+
+---
+
+# Part VI — Resources
+
+---
+
+## 35. Papers, Books, Videos, Code
 
 ### Foundational papers (read these in order)
 
@@ -833,7 +1142,7 @@ rewards got harder to specify.
 
 ---
 
-## 26. Key Takeaways
+## 36. Key Takeaways
 
 1. **An LLM is a policy.** Tokens are actions. Sequences are trajectories. Everything from Week 2 onward applies; the only thing that scales is the action space and the cost of one rollout.
 2. **The RLHF objective is KL-constrained reward maximization.** The KL penalty is what keeps reward hacking bounded. The closed-form optimum of this objective is what DPO weaponizes.
@@ -845,6 +1154,23 @@ rewards got harder to specify.
 8. **Reasoning RL (o1, R1) is the current frontier.** Long chain-of-thought + RLVR on the final answer. Surprisingly, reasoning emerges from RL on a base model with no SFT (R1-Zero).
 9. **The trajectory of post-training: human → RM → DPO → verifier → environment.** Each step removes a labeling bottleneck and lets compute scale further.
 10. **Modern LLM alignment is reinforcement learning in disguise.** And increasingly, *not* in disguise.
+11. **Algorithms differ in what they tolerate, not in absolute quality.** The Reddit pulse (§30) is right: PPO, DPO, GRPO are within hyperparameter tuning of each other. Pick the one whose failure modes you can debug.
+12. **Chat-template hygiene matters more than algorithm choice.** The most common reason RLHF runs collapse is the policy and the reference disagreeing on prompt formatting. Always verify equality before debugging the loss.
+
+---
+
+## A final word
+
+You started six weeks ago balancing a pole. You finish today knowing —
+mathematically, architecturally, and culturally — how every model you
+talk to gets trained.
+
+The math, in the end, is small: a Bellman recursion, a clipped surrogate,
+a Bradley-Terry log-sigmoid, a KL penalty. The hard part was never the
+equations. It was knowing which hyperparameter to look at when the run
+diverges, which framework to pick, which reward signal won't get hacked.
+
+That's what you have now. Go build something with it.
 
 ---
 

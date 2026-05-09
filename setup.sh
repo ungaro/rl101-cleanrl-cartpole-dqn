@@ -2,7 +2,7 @@
 set -euo pipefail
 
 echo "============================================================"
-echo "cleanrl-cartpole-dqn — Setup"
+echo "rl101-crash-course — Setup"
 echo "============================================================"
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"

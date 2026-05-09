@@ -3,7 +3,7 @@ marp: true
 theme: default
 paginate: true
 header: "RL 101 — Week 3 — PPO Under the Hood"
-footer: "cleanrl-cartpole-dqn"
+footer: "rl101-crash-course"
 math: katex
 ---
 

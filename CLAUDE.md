@@ -1,9 +1,13 @@
-# cleanrl-cartpole-dqn
+# rl101-crash-course
 
-Week 2 DQN homework demo for the **RL 101** study group (Colby Ziyu Wang @ SparkCraft).
+Multi-week notes and code for the **RL 101** study group (Colby Ziyu Wang
+@ SparkCraft, hosted by AI Scholars).
 
-Demonstrates Deep Q-Networks on CartPole-v1 using CleanRL — the simplest way to see
-value-based RL in action.
+Started as a Week 2 DQN demo on CartPole-v1 using CleanRL; grew with the
+course into a full 6-week study group repository: DQN (Week 2), PPO and
+Atari (Week 3), agent RL with MiniMax Forge (Week 4), RLHF and the M2.7
+case study (Week 5), and Reinforcement Fine-Tuning + RLHF deep dive
+(Week 6).
 
 ## Tech Stack
 
