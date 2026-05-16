@@ -35,7 +35,7 @@ building block on the path toward AGI.
 | 4 | **From Algorithms to Real Systems — MiniMax Forge** | [RL 104](https://docs.google.com/presentation/d/1rcNfBS_MB04ANML4LDUeL67zJBKltBzvP6fk0y6-aJM/edit?usp=sharing) | [`docs/week4-agent-rl-forge.md`](docs/week4-agent-rl-forge.md) | (docs only) |
 | 5 | **RLHF and the Path to Agent RL — MiniMax M2.7** | — | [`docs/week5-minimax-m27-visual-guide.md`](docs/week5-minimax-m27-visual-guide.md) | (docs only) |
 | 6 | **Reinforcement Fine-Tuning & RLHF Under the Hood** | [RL 105 (PDF)](docs/slides/RL105.pdf) | [`docs/week6-rlhf-and-rft-under-the-hood.md`](docs/week6-rlhf-and-rft-under-the-hood.md) | (docs only) |
-| 7 | **World Models for LLM Agents — RWML** | [RL 106 (PDF)](docs/slides/RL106.pdf) | `docs/week7-world-models-and-rwml-under-the-hood.md` *(coming)* | (docs only) |
+| 7 | **World Models for LLM Agents — RWML** | [RL 106 (PDF)](docs/slides/RL106.pdf) | [`docs/week7-world-models-and-rwml-under-the-hood.md`](docs/week7-world-models-and-rwml-under-the-hood.md) | (docs only) |
 
 Each deep-dive renders both as a normal Markdown document on GitHub and as
 slides via [marp-cli](https://github.com/marp-team/marp-cli).
@@ -113,9 +113,10 @@ Companion to Colby's RL 106 lecture. Picks up where RLVR (Week 6) ends:
 *if reality can verify a math answer, can the agent learn to predict
 reality itself?* Introduces **Reinforcement World Model Learning (RWML)**
 — a self-supervised setup where the environment replaces the human
-labeler / reward model / verifier. Examples on ALFWorld and Tau²Bench
-plus the model-based RL lineage (Dreamer V3, MuZero, V-JEPA, Genie 2).
-*(Doc in progress.)*
+labeler / reward model / verifier. Slide-by-slide companion, a research
+appendix on the model-based RL lineage (Dreamer V3, MuZero, V-JEPA 2,
+Genie 2), and a bridge back to ALFWorld / Tau²Bench (Week 4) and the
+RLHF → RLVR → RWML reward-source arc.
 
 ## Watching the Trained Agent (Week 2)
 
