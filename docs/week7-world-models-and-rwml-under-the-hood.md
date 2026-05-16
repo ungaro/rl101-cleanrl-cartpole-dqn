@@ -399,18 +399,38 @@ prediction is essentially correct (slight rephrasing, same content); the
 second is nonsensical.
 
 How do you compute this in practice? The lecture doesn't get into
-implementation, but the standard approaches are:
+implementation, but **the Yu et al. (2026) RWML paper does**. Their
+reward is a hard-threshold cosine similarity on sentence embeddings:
 
-1. **Embedding similarity** — embed prediction and ground truth, score
-   with cosine similarity.
-2. **Token overlap with smoothing** — BLEU, ROUGE, or chrF style metrics.
-3. **LLM-as-judge** — a separate LLM grades "did the prediction capture
-   what actually happened?" on a Likert scale or pairwise.
-4. **Entailment-style** — does the prediction entail / get entailed by
+```math
+r_t = \mathbb{1}\!\left[\cos\big(E(\hat s_{t+1}),\, E(s_{t+1})\big) > \tau\right]
+```
+
+Where $E(\cdot)$ is a frozen sentence encoder, $\hat s_{t+1}$ is the
+agent's prediction, $s_{t+1}$ is the actual next observation, and
+$\tau$ is a tunable threshold. The reward is binary: 1 if the prediction
+is semantically close enough to reality, 0 otherwise. The paper calls
+this the "sim-to-real gap" reward.
+
+The binary formulation is deliberate — it sidesteps reward-hacking
+problems an LLM-judge would invite (the judge can be fooled by
+syntactic fluency) and avoids the brittleness of soft scores
+(small embedding-similarity differences produce noisy gradients).
+With group-relative advantage (§12), the binary reward gets *normalized
+within each group* into a useful signal anyway.
+
+Other approaches you'd see in adjacent literature, but not the canonical
+RWML recipe:
+
+1. **Token overlap** — BLEU, ROUGE, chrF.
+2. **LLM-as-judge** — a separate LLM grades "did the prediction capture
+   what actually happened?"
+3. **Entailment-style** — does the prediction entail / get entailed by
    the ground truth?
 
-In practice production systems usually combine 2 and 3: token-overlap
-for cheap pre-filtering, LLM-judge for the final reward.
+These show up in surrounding work (e.g., RAP, WebDreamer) but the Yu
+et al. paper specifically argues that the *binary embedding threshold*
+is more robust than either token overlap or LLM-judges.
 
 The deeper reason this works: the policy-gradient loss only ever uses
 *reward differences*, not absolute rewards. As long as more-correct
@@ -573,12 +593,12 @@ effects). Showing gains on both is the steel-man argument for RWML.
 
 ## 15. The Results — +19.6 and +7.9 Without Experts (Slide 17)
 
-The headline numbers:
+The headline numbers — pure self-supervised RWML vs. base model:
 
-| Benchmark | RWML improvement |
-|-----------|------------------|
-| ALFWorld | **+19.6** |
-| Tau²Bench | **+7.9** |
+| Benchmark | Base model | RWML vs. base |
+|-----------|-----------|---------------|
+| ALFWorld | Qwen2.5-7B-Instruct | **+19.6** (to 32.6 avg) |
+| τ²-Bench | Qwen3-8B | **+7.9** (to 38.8 avg) |
 
 And the killer-app properties — these gains came **without**:
 
@@ -605,11 +625,31 @@ The agent learned from "interaction + consequences" alone. The lecture's
 phrasing — that the agent "touched grass in the environment" — is funny
 but precise. The world itself was the supervisor.
 
-A caveat the lecture doesn't dwell on: +19.6 and +7.9 are *deltas* over
-a base policy, not absolute scores. The base matters a lot. RWML
-amplifies what the base model could partially do; it doesn't conjure
-capability out of nowhere. (This is the same "faster, not smarter"
-caveat from Week 6 §21 about RLVR on base models.)
+### Two number sets that confuse first-time readers
+
+The lecture cites **+19.6 / +7.9**. The arXiv abstract leads with
+**+6.9 / +5.7**. Both numbers come from the same paper — they're just
+measuring different things:
+
+| What's being compared | ALFWorld | τ²-Bench |
+|-----------------------|----------|----------|
+| **Pure self-supervised RWML vs. base model** (the lecture's number) | +19.6 (32.6 vs. ~13) | +7.9 (38.8 vs. ~31) |
+| **RWML + policy-RL vs. direct task-success-RL** (the abstract's number) | +6.9 (87.9 vs. 81.0) | +5.7 (43.7 vs. 38.0) |
+
+The first row is the "RWML on its own, no task-success reward at all"
+ablation. The second is "RWML as a pre-training step before standard
+task-success RL." Both are real; they highlight different properties.
+
+The paper also reports that RWML + policy-RL **matches the performance
+of expert-data training** despite using no expert data — that's the
+practical headline.
+
+### Caveat the lecture doesn't dwell on
+
+These are *deltas* over a base policy, not absolute scores. The base
+matters a lot. RWML amplifies what the base model could partially do; it
+doesn't conjure capability out of nowhere. (This is the same "faster,
+not smarter" caveat from Week 6 §21 about RLVR on base models.)
 
 ---
 
@@ -941,7 +981,27 @@ foundation-model literature.
 
 ## 25. How RWML Fits Into This Lineage
 
-Quick reference map:
+### The actual RWML paper
+
+The lecture introduces RWML without citing a paper, but it's traceable:
+
+> **Yu et al., *Reinforcement World Model Learning for LLM-based Agents***,
+> arXiv:[2602.05842](https://arxiv.org/abs/2602.05842), Feb 2026 (v1 Feb 5, v2 Feb 9).
+
+Authors: Xiao Yu, Baolin Peng, Ruize Xu, Yelong Shen, Pengcheng He,
+Suman Nath, Nikhil Singh, Jianfeng Gao, Zhou Yu. Submitted to ICML.
+No public code repo as of v2.
+
+Concrete specifics from the paper (not in the slides):
+
+- **Base models**: Qwen2.5-7B-Instruct (ALFWorld), Qwen3-8B (τ²-Bench).
+- **Reward**: binary cosine-similarity threshold on sentence embeddings
+  (the "sim-to-real gap" reward — see §10 above).
+- **Algorithm**: GRPO (group-relative advantage, no critic).
+- **Headline result**: matches expert-data training despite using
+  zero expert data.
+
+### Quick reference map
 
 | Method | Year | Predicts in | Loss signal | Domain |
 |--------|------|-------------|-------------|--------|
@@ -949,16 +1009,19 @@ Quick reference map:
 | World Models (Ha & S.) | 2018 | Latent (VAE) | Reconstruction | Pixel envs |
 | MuZero | 2019 | Hidden state | Reward + value | Board games, Atari |
 | Dreamer V3 | 2023 | Latent (RSSM) | Reconstruction + reward | Atari, Minecraft |
-| V-JEPA 2 | 2024 | Embedding | Embedding similarity | Video |
-| Genie 2 | 2024 | Pixels | Generative loss | Open-domain video |
-| **RWML** | 2025-ish | **Tokens (text)** | **Semantic reward** | **LLM agents** |
+| Dreamer 4 | 2025 | Latent (RSSM) | Offline imagination | Minecraft offline |
+| V-JEPA 2 | 2025 | Embedding | Embedding similarity | Video, robotics |
+| Genie 2 / 3 | 2024–25 | Pixels | Generative loss | Open-domain video |
+| WebDreamer | 2024 | Tokens | Plan-rollout (LLM-as-world-model) | Web agents |
+| **RWML (Yu et al.)** | **2026** | **Tokens (text)** | **Binary cosine-sim reward** | **LLM agents** |
 
 What RWML brings to the table that's distinctively new:
 
 - **Token-space prediction** — the world model is just the LLM, with no
   separate encoder/decoder.
-- **Semantic reward, not reconstruction loss** — you don't need
-  pixel-level fidelity; you need meaning-level correctness.
+- **Embedding-space reward, not reconstruction loss** — meaning-level
+  correctness, with a binary threshold to avoid LLM-judge reward
+  hacking.
 - **GRPO as the policy update** — group-relative comparison, no critic.
 - **Direct compatibility with LLM-agent infrastructure** — you can run
   this on top of any existing RLHF/RLVR pipeline.
@@ -970,6 +1033,37 @@ What RWML borrows:
   forever).
 - Curriculum / surprise filtering (active learning, hard-example mining).
 - GRPO (DeepSeek, Week 6 §20).
+
+### Parallel and contemporary work on LLM-agent world models
+
+RWML is not alone in its niche. The closest neighbors as of mid-2026:
+
+- **WebDreamer** (Gu et al., 2024, [arXiv:2411.06559](https://arxiv.org/abs/2411.06559))
+  — uses an LLM as a Dreamer-style world model for web agents.
+  "Simulate the click before clicking" via LLM rollouts. Direct
+  intellectual cousin; same idea, different domain. Code:
+  [github.com/OSU-NLP-Group/WebDreamer](https://github.com/OSU-NLP-Group/WebDreamer).
+- **RAP — Reasoning with Language Model is Planning with World Model**
+  (Hao et al., EMNLP 2023, [arXiv:2305.14992](https://arxiv.org/abs/2305.14992))
+  — LLM plays both the world model and the planner via MCTS. The
+  foundational text for the "LLM-as-world-model" idea.
+- **LAW — Language Models, Agent Models, and World Models**
+  ([arXiv:2312.05230](https://arxiv.org/abs/2312.05230)) — LeCun-adjacent
+  position paper unifying the three. Conceptual companion piece.
+- **Imagine-then-Plan** ([arXiv:2601.08955](https://arxiv.org/abs/2601.08955))
+  — concurrent (Jan 2026) work on adaptive-lookahead world-model
+  rollouts for LLM agents. Useful contrast to RWML.
+- **RLVR-World** ([OpenReview](https://openreview.net/forum?id=jpiSagi8aV))
+  — train a world model with verifiable rewards, but in vision/control
+  rather than text-agent settings. The closest non-text cousin.
+- **SIMA 2** (DeepMind, Dec 2025, [arXiv:2512.04797](https://arxiv.org/abs/2512.04797))
+  — embodied agent that self-improves via Gemini-generated rewards.
+  Same "no human supervision" spirit, different mechanism.
+
+The pattern across these papers: in 2024–2026, the *idea* of giving
+LLM agents an internal world model has crystallized; the *open
+question* is which loss + which architecture + which environment-class
+combination scales best. RWML is one specific answer.
 
 ---
 
@@ -1146,12 +1240,15 @@ If you want to actually try RWML-style training:
    is the canonical agent-RL benchmark. [github.com/alfworld/alfworld](https://github.com/alfworld/alfworld).
 3. **Replicate the simplest possible RWML loop on ALFWorld**:
    - Run a base LLM agent on ALFWorld, log all transitions.
-   - Train a separate small LLM to predict next observations from
-     transitions.
-   - Score the predictions with chrF + LLM-judge.
-   - Run GRPO with that reward on the prediction model.
+   - Train (or just prompt) the same LLM to predict next observations
+     from transition history + action.
+   - Score the predictions with **binary cosine-similarity on sentence
+     embeddings** (e.g. `sentence-transformers/all-MiniLM-L6-v2`) at a
+     tunable threshold $\tau$ — this is the Yu et al. recipe.
+   - Run GRPO with that reward on the prediction model
+     ([TRL GRPOTrainer](https://huggingface.co/docs/trl/en/grpo_trainer)).
    - Measure: does the agent get better at ALFWorld when fine-tuned with
-     this signal?
+     this signal? Compare with and without the surprise filter (§13).
 4. **Compare to a pure RLVR baseline** on the same environment. The
    question to answer for yourself: how much of the gain is "RL on agent
    trajectories" and how much is specifically "world modeling"?
@@ -1196,73 +1293,201 @@ These are the questions Week 7 leaves unanswered:
 
 ## 34. Papers, Videos, Code
 
+### The RWML paper itself
+
+- **Yu, Peng, Xu, Shen, He, Nath, Singh, Gao, Yu — *Reinforcement World Model Learning for LLM-based Agents*** (Feb 2026) — [arXiv:2602.05842](https://arxiv.org/abs/2602.05842). The source paper for this lecture. ICML submission. Action-conditioned next-state prediction with binary cosine-similarity reward + GRPO. Base models: Qwen2.5-7B-Instruct (ALFWorld), Qwen3-8B (τ²-Bench).
+- **EmergentMind — RWML explainer page** — [emergentmind.com/topics/reinforcement-world-model-learning-rwml](https://www.emergentmind.com/topics/reinforcement-world-model-learning-rwml). Independent TL;DR before reading the paper.
+- **Alan Hou — RWML walkthrough (EN/zh)** — [alanhou.org/blog/arxiv-rwml-world-model-agents/](https://alanhou.org/blog/arxiv-rwml-world-model-agents/). Step-by-step explainer.
+- **HuggingFace Papers page** — [huggingface.co/papers/2602.05842](https://huggingface.co/papers/2602.05842). Discussion thread.
+
 ### Foundational world-model papers (read in order)
 
-1. **Ha & Schmidhuber 2018** — *World Models* — [arxiv:1803.10122](https://arxiv.org/abs/1803.10122). The origin. Short, readable, historically important.
-2. **Schrittwieser et al. 2019** — *MuZero: Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model* — [arxiv:1911.08265](https://arxiv.org/abs/1911.08265).
-3. **Hafner et al. 2019** — *Dreamer V1: Dream to Control* — [arxiv:1912.01603](https://arxiv.org/abs/1912.01603).
-4. **Hafner et al. 2020** — *Dreamer V2: Mastering Atari with Discrete World Models* — [arxiv:2010.02193](https://arxiv.org/abs/2010.02193).
-5. **Hafner et al. 2023** — *Dreamer V3: Mastering Diverse Domains through World Models* — [arxiv:2301.04104](https://arxiv.org/abs/2301.04104). The Minecraft-diamond paper.
+1. **Sutton 1990** — *Dyna* — original "interleave real and imagined updates" architecture. [ACM:122344.122377](https://dl.acm.org/doi/abs/10.1145/122344.122377). Every modern world-model agent is a Dyna descendant.
+2. **Deisenroth & Rasmussen 2011** — *PILCO* — [PDF](https://www.mlg.eng.cam.ac.uk/pub/pdf/DeiRas11.pdf). Gaussian-process world model; canonical "data-efficient model-based RL" reference. Solves cart-pole swing-up in 17.5 seconds of real interaction.
+3. **Ha & Schmidhuber 2018** — *World Models* — [arXiv:1803.10122](https://arxiv.org/abs/1803.10122). Interactive page: [worldmodels.github.io](https://worldmodels.github.io/). The paper that popularized the term. Trains an agent entirely inside a learned dream of CarRacing/Doom.
+4. **Silver et al. 2016** — *AlphaGo* (Nature) — [nature.com/articles/nature16961](https://www.nature.com/articles/nature16961). Policy + value nets + MCTS.
+5. **Silver et al. 2017** — *AlphaZero* — [arXiv:1712.01815](https://arxiv.org/abs/1712.01815). Self-play; the bridge to MuZero.
+6. **Schrittwieser et al. 2019** — *MuZero: Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model* — [arXiv:1911.08265](https://arxiv.org/abs/1911.08265). Nature 2020: [s41586-020-03051-4](https://www.nature.com/articles/s41586-020-03051-4). DeepMind blog: [muzero-mastering-go-chess-shogi-and-atari-without-rules](https://deepmind.google/blog/muzero-mastering-go-chess-shogi-and-atari-without-rules/).
+7. **Hafner et al. 2019** — *Dreamer V1: Dream to Control* — [arXiv:1912.01603](https://arxiv.org/abs/1912.01603). Cleanest pedagogical Dreamer.
+8. **Hafner et al. 2020** — *Dreamer V2: Mastering Atari with Discrete World Models* — [arXiv:2010.02193](https://arxiv.org/abs/2010.02193). ICLR 2021. First world-model agent to beat human Atari benchmarks.
+9. **Hafner et al. 2023** — *Dreamer V3: Mastering Diverse Domains through World Models* — [arXiv:2301.04104](https://arxiv.org/abs/2301.04104). Project page: [danijar.com/project/dreamerv3/](https://danijar.com/project/dreamerv3/). The Minecraft-diamond paper. Default citation for "general world-model agent."
+10. **Hafner, Yan, Lillicrap 2025** — *Dreamer 4: Training Agents Inside of Scalable World Models* — [arXiv:2509.24527](https://arxiv.org/abs/2509.24527). First to obtain Minecraft diamonds from a purely offline dataset.
 
-### Predictive-architecture line
+### Predictive-architecture line (LeCun's bet)
 
-6. **LeCun 2022** — *A Path Towards Autonomous Machine Intelligence* — [openreview](https://openreview.net/forum?id=BZ5a1r-kVsf). The JEPA manifesto.
-7. **Bardes et al. 2024** — *V-JEPA 2* (Meta AI) — search "V-JEPA 2" on arxiv (preprint released 2024–2025). Predictive embedding architecture for video.
+11. **LeCun 2022** — *A Path Towards Autonomous Machine Intelligence* — [OpenReview:BZ5a1r-kVsf](https://openreview.net/forum?id=BZ5a1r-kVsf). The JEPA manifesto. Introduces the configurator / world-model / critic architecture.
+12. **Bardes et al. 2024** — *V-JEPA: Revisiting Feature Prediction for Learning Visual Representations from Video* — [arXiv:2404.08471](https://arxiv.org/abs/2404.08471). Code: [github.com/facebookresearch/jepa](https://github.com/facebookresearch/jepa). Meta blog: [v-jepa-yann-lecun-ai-model-video](https://ai.meta.com/blog/v-jepa-yann-lecun-ai-model-video-joint-embedding-predictive-architecture/).
+13. **Assran et al. 2025** — *V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning* — [arXiv:2506.09985](https://arxiv.org/abs/2506.09985). Project: [ai.meta.com/research/vjepa](https://ai.meta.com/research/vjepa/). Scales to >1M hours of video; adds V-JEPA 2-AC for zero-shot Franka-arm robot control.
 
 ### Generative world models
 
-8. **Bruce et al. 2024** — *Genie: Generative Interactive Environments* (DeepMind). The original Genie paper, [arxiv:2402.15391](https://arxiv.org/abs/2402.15391). Genie 2 is the follow-up (blog post, Dec 2024).
+14. **Bruce et al. 2024** — *Genie: Generative Interactive Environments* (DeepMind, ICML 2024 best paper) — [arXiv:2402.15391](https://arxiv.org/abs/2402.15391). 11B-parameter foundation world model with a latent action model.
+15. **Genie 2** (DeepMind, Dec 2024) — blog only, no paper: [genie-2-a-large-scale-foundation-world-model](https://deepmind.google/discover/blog/genie-2-a-large-scale-foundation-world-model/). 3D action-controllable worlds.
+16. **Genie 3** (DeepMind, Aug 2025) — [genie-3-a-new-frontier-for-world-models](https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/). Interactive 24 fps 720p world generation.
 
-### LLM-agent environments
+### LLM-agent world models (the niche RWML lives in)
 
-9. **Shridhar et al. 2021** — *ALFWorld: Aligning Text and Embodied Environments for Interactive Learning* — [arxiv:2010.03768](https://arxiv.org/abs/2010.03768).
-10. **τ-Bench / τ²-Bench** — search "tau-bench" on arxiv. Customer-service tool-use benchmark from Sierra.
+17. **Hao et al. 2023** — *Reasoning with Language Model is Planning with World Model* (RAP, EMNLP 2023) — [arXiv:2305.14992](https://arxiv.org/abs/2305.14992). Foundational text for the "LLM-as-world-model" idea. LLM plays both world model and planner via MCTS.
+18. **LeCun-adjacent 2023** — *Language Models, Agent Models, and World Models: The LAW for Machine Reasoning and Planning* — [arXiv:2312.05230](https://arxiv.org/abs/2312.05230). Conceptual unification.
+19. **Gu, Zheng, Koh, Salakhutdinov, Fried, Su et al. 2024** — *Is Your LLM Secretly a World Model of the Internet? Model-Based Planning for Web Agents* (WebDreamer, TMLR 2025) — [arXiv:2411.06559](https://arxiv.org/abs/2411.06559). Code + Dreamer-7B model: [github.com/OSU-NLP-Group/WebDreamer](https://github.com/OSU-NLP-Group/WebDreamer). Closest existing prior art to RWML in spirit.
+20. **Imagine-then-Plan** (Jan 2026) — [arXiv:2601.08955](https://arxiv.org/abs/2601.08955). Concurrent work on adaptive-lookahead world-model rollouts for LLM agents.
+21. **RLVR-World** — [OpenReview:jpiSagi8aV](https://openreview.net/forum?id=jpiSagi8aV). Train a world model with verifiable rewards in vision/control rather than text.
+22. **SIMA 2** (DeepMind, Dec 2025) — [arXiv:2512.04797](https://arxiv.org/abs/2512.04797). Gemini-backed embodied agent that self-improves via Gemini-generated rewards.
 
-### Related Week 6 reading (RLVR / GRPO)
+### Surveys (good orientation reads)
 
-11. **DeepSeekMath / GRPO** — [arxiv:2402.03300](https://arxiv.org/abs/2402.03300).
-12. **DeepSeek-R1** — [arxiv:2501.12948](https://arxiv.org/abs/2501.12948). RLVR + GRPO; the algorithmic backbone RWML reuses.
+23. **Zhang et al. 2025** — *The Landscape of Agentic Reinforcement Learning for LLMs: A Survey* (TMLR Jan 2026) — [arXiv:2509.02547](https://arxiv.org/abs/2509.02547). 500+ papers; the canonical agentic-RL survey.
+24. **Liu et al. 2024** — *Understanding World or Predicting Future? A Comprehensive Survey of World Models* — [arXiv:2411.14499](https://arxiv.org/abs/2411.14499).
+25. **OpenMOSS — Awesome-WAM** (curated reading list, World Action Models) — [github.com/OpenMOSS/Awesome-WAM](https://github.com/OpenMOSS/Awesome-WAM). Constantly updated.
+
+### Benchmark environments
+
+26. **Shridhar et al. 2019** — *ALFRED: A Benchmark for Interpreting Grounded Instructions for Everyday Tasks* — [arXiv:1912.01734](https://arxiv.org/abs/1912.01734). Parent of ALFWorld.
+27. **Shridhar et al. 2021** — *ALFWorld: Aligning Text and Embodied Environments for Interactive Learning* (ICLR 2021) — [arXiv:2010.03768](https://arxiv.org/abs/2010.03768). Code: [github.com/alfworld/alfworld](https://github.com/alfworld/alfworld). The text-agent workhorse benchmark.
+28. **Yao et al. (Sierra) 2024** — *τ-Bench: A Benchmark for Tool-Agent-User Interaction* — [arXiv:2406.12045](https://arxiv.org/abs/2406.12045). Code: [github.com/sierra-research/tau-bench](https://github.com/sierra-research/tau-bench). GPT-4o pass@1 < 50%; introduces pass^k metric.
+29. **Barres et al. (Sierra) 2025** — *τ²-Bench* — [arXiv:2506.07982](https://arxiv.org/abs/2506.07982). Code: [github.com/sierra-research/tau2-bench](https://github.com/sierra-research/tau2-bench). Adds telecom domain, dual-control, voice-eval support. **Note**: Sierra has now released τ³-Bench (banking + voice); the RWML paper uses τ², new readers may land on τ³.
+30. **AgentGym-RL** — [arXiv:2509.08755](https://arxiv.org/abs/2509.08755). Project: [agentgym-rl.github.io](https://agentgym-rl.github.io/). Multi-turn PPO/GRPO/RLOO across WebArena / RAG / TextCraft. Closest open implementation of an RWML-style training pipeline.
+
+### Related Week 4 / Week 6 reading
+
+31. **DeepSeekMath / GRPO** — [arXiv:2402.03300](https://arxiv.org/abs/2402.03300). The GRPO update that RWML uses.
+32. **DeepSeek-R1** — [arXiv:2501.12948](https://arxiv.org/abs/2501.12948). RLVR + GRPO at scale.
+33. **MiniMax-M1 / CISPO** — [arXiv:2506.13585](https://arxiv.org/abs/2506.13585). Week 4 lineage.
+
+---
 
 ### Blogs and explainers
 
-- **Danijar Hafner — Dreamer blog post** — [danijar.com/dreamer/](https://danijar.com/dreamer/). The Dreamer line is mostly his work; his blog is the best entry point.
-- **Yann LeCun on world models** — search his recent talks; the *Autonomous Machine Intelligence* talks from 2022–2024 are the most-cited.
-- **DeepMind Genie 2 announcement** — [deepmind.google/discover/blog/genie-2-a-large-scale-foundation-world-model/](https://deepmind.google/discover/blog/genie-2-a-large-scale-foundation-world-model/).
+**The RWML / LLM-world-model debate:**
 
-### Videos
+- **Melanie Mitchell — *LLMs and World Models, Part 1*** (Feb 2025) — [aiguide.substack.com/p/llms-and-world-models-part-1](https://aiguide.substack.com/p/llms-and-world-models-part-1). Two-part series on whether LLMs have genuine world models or just statistical shortcuts. Mitchell synthesizes Sutskever's "compressed abstract representations" claim vs. LeCun's "approximate retrieval" view. The right starting point for the *philosophical* question Week 7 sidesteps.
+- **AJ Maren — *World Models: Five Competing Approaches*** (Jan 2026, Themesis) — [themesis.com/2026/01/07/world-models-five-competing-approaches/](https://themesis.com/2026/01/07/world-models-five-competing-approaches/). Compares Genie 3, World Labs' Marble (Fei-Fei Li), VL-JEPA/LeJEPA, Verses.ai's AXIOM (Friston/active-inference), and neuro-symbolic approaches. The cleanest map of the *non-LLM* world-model landscape.
+- **Graison Thomas — *World Models: The Next Leap Beyond LLMs*** — [Medium](https://medium.com/@graison/world-models-the-next-leap-beyond-llms-012504a9c1e7). Survey-style; explicitly draws Dreamer → LLM-agent lineage.
+- **Graison Thomas — *World Models Reading List: The Papers You Actually Need in 2025*** — [Medium](https://medium.com/@graison/world-models-reading-list-the-papers-you-actually-need-in-2025-882f02d758a9). Annotated reading list comparing implicit LLM world-modeling to Dreamer-style explicit latent imagination.
+- **Richard Cornelius Suwandi — *No World Model, No General AI*** (2025) — [richardcsuwandi.github.io/blog/2025/agents-world-models/](https://richardcsuwandi.github.io/blog/2025/agents-world-models/). Short opinion piece tying LLM-agent failures to absence of internal world model.
+- **deepsense.ai — *From Token Prediction to World Models: The Architectural Evolution After LLMs*** — [deepsense.ai/blog/from-token-prediction-to-world-models](https://deepsense.ai/blog/from-token-prediction-to-world-models-the-architectural-evolution-after-llms/). Industry-blog framing of the transition.
 
-- **Andrej Karpathy — Deep Dive into LLMs (2024)** — [youtube.com/watch?v=7xTGNNLPyMI](https://www.youtube.com/watch?v=7xTGNNLPyMI). Covers RLVR; sets up the world-model discussion in context.
+**Newsletter / curation (overlap with Week 6 but updated):**
+
+- **Sebastian Raschka — *The State of Reinforcement Learning for LLM Reasoning*** (Apr 2025) — [magazine.sebastianraschka.com](https://magazine.sebastianraschka.com/p/the-state-of-llm-reasoning-model-training). 15-paper survey of the PPO/GRPO landscape.
+- **Sebastian Raschka — *The State of LLMs 2025*** (Dec 2025) — [magazine.sebastianraschka.com](https://magazine.sebastianraschka.com/p/state-of-llms-2025). Frames 2025 as the RLVR + GRPO year.
+- **Nathan Lambert — *Get Good at Agents*** — [interconnects.ai](https://www.interconnects.ai/p/get-good-at-agents).
+- **Nathan Lambert — *The AI Agent Spectrum*** (Dec 2024) — [interconnects.ai/p/the-ai-agent-spectrum](https://www.interconnects.ai/p/the-ai-agent-spectrum). Taxonomy; treats RL as "lowly optimizer" for agents.
+- **Nathan Lambert — *2025 Year in Review*** — [interconnects.ai/p/2025-interconnects-year-in-review](https://www.interconnects.ai/p/2025-interconnects-year-in-review).
+- **Lilian Weng — *Reward Hacking in Reinforcement Learning*** (Nov 2024) — [lilianweng.github.io/posts/2024-11-28-reward-hacking/](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/). Directly relevant — RWML's binary embedding reward is explicitly designed to resist the hacking modes Weng catalogs.
+- **Lilian Weng — *Why We Think*** (May 2025) — [lilianweng.github.io/posts/2025-05-01-thinking/](https://lilianweng.github.io/posts/2025-05-01-thinking/). Test-time compute & reasoning context.
+
+**Industry blogs (model releases):**
+
+- **DeepMind — *MuZero: Mastering Go, chess, shogi and Atari without rules*** — [deepmind.google/blog/muzero-...](https://deepmind.google/blog/muzero-mastering-go-chess-shogi-and-atari-without-rules/).
+- **DeepMind — *Genie 2: A Large-Scale Foundation World Model*** (Dec 2024) — [deepmind.google/discover/blog/genie-2-...](https://deepmind.google/discover/blog/genie-2-a-large-scale-foundation-world-model/).
+- **DeepMind — *Genie 3: A New Frontier for World Models*** (Aug 2025) — [deepmind.google/blog/genie-3-...](https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/).
+- **Danijar Hafner — Dreamer V3 project page** — [danijar.com/project/dreamerv3/](https://danijar.com/project/dreamerv3/). Author's own primer with Minecraft videos.
+- **Meta AI — *V-JEPA: Next Step Toward Advanced Machine Intelligence*** — [ai.meta.com/blog/v-jepa-...](https://ai.meta.com/blog/v-jepa-yann-lecun-ai-model-video-joint-embedding-predictive-architecture/).
+- **HuggingFace — *Forge: Scalable Agent RL Framework (MiniMax)*** (Feb 2026) — [huggingface.co/blog/MiniMax-AI/forge-scalable-agent-rl-framework-and-algorithm](https://huggingface.co/blog/MiniMax-AI/forge-scalable-agent-rl-framework-and-algorithm). Direct Week 4 companion piece updated.
+- **HuggingFace — *Unlocking Agentic RL Training for GPT-OSS*** (Jan 2026, LinkedIn) — [huggingface.co/blog/LinkedIn/gpt-oss-agentic-rl](https://huggingface.co/blog/LinkedIn/gpt-oss-agentic-rl).
+- **HuggingFace — *When LLMs Grow Hands and Feet: How to Design Agentic RL Systems*** — [huggingface.co/blog/AmberLJC/agentic-rl-systems](https://huggingface.co/blog/AmberLJC/agentic-rl-systems).
+
+---
+
+### Videos / talks
+
+**RWML and LLM world-models specifically:**
+
+- **Andrej Karpathy — *Deep Dive into LLMs like ChatGPT*** (3h31m, Feb 2025) — covers RLHF / RLVR / DeepSeek-R1 sections. Linked from [@karpathy](https://x.com/karpathy/status/1887211193099825254).
+- **Andrej Karpathy — *From Vibe Coding to Agentic Engineering*** (Sequoia AI Ascent) — [youtube.com/watch?v=96jN2OCOfLs](https://www.youtube.com/watch?v=96jN2OCOfLs).
+- **Andrej Karpathy on Dwarkesh — *We're summoning ghosts, not building animals*** — [youtube.com/watch?v=lXUZvyajciY](https://www.youtube.com/watch?v=lXUZvyajciY).
+- **Sebastian Raschka — *State of LLMs 2026: RLVR, GRPO, Inference Scaling*** — [youtube.com/watch?v=K5WPr5dtne0](https://www.youtube.com/watch?v=K5WPr5dtne0).
+
+**JEPA / LeCun:**
+
+- **Yann LeCun — *Self-Supervised Learning, JEPA, World Models, and the Future of AI*** (Sept 2025, NYU/Meta) — [youtube.com/watch?v=yUmDRxV0krg](https://www.youtube.com/watch?v=yUmDRxV0krg).
+- **Yann LeCun — *Special Lecture on AI and World Models*** — [youtube.com/watch?v=vJKC31YpA8c](https://www.youtube.com/watch?v=vJKC31YpA8c).
+- **Yannic Kilcher — *V-JEPA explained*** — [youtube.com/watch?v=7UkJPwz_N_0](https://www.youtube.com/watch?v=7UkJPwz_N_0).
+
+**Dreamer / model-based RL:**
+
+- **Danijar Hafner on TalkRL — *Dreamer V4*** (Nov 2025) — [talkrl.com/episodes/danijar-hafner-on-dreamer-v4](https://www.talkrl.com/episodes/danijar-hafner-on-dreamer-v4) (transcript available).
+- **Danijar Hafner on TalkRL — Dreamer V3 episode** — [talkrl.com/episodes/danijar-hafner-2/transcript](https://www.talkrl.com/episodes/danijar-hafner-2/transcript).
+- **Yannic Kilcher — *Dreamer V2 explained*** — [youtube.com/watch?v=o75ybZ-6Uu8](https://www.youtube.com/watch?v=o75ybZ-6Uu8). RSSM, discrete latents, actor-critic in dream space.
+- **Yannic Kilcher — *EfficientZero*** — [youtube.com/watch?v=NJCLUzkn-sA](https://www.youtube.com/watch?v=NJCLUzkn-sA). Data-efficient MuZero variant.
+
+**Genie / generative world models:**
+
+- **DeepMind CEO demonstrates Genie 2** — [youtube.com/watch?v=qUbx5RC8ro4](https://www.youtube.com/watch?v=qUbx5RC8ro4). Hassabis showcase.
+
+**Academic lectures:**
+
+- **Pieter Abbeel — *Foundations of Deep RL* L6: Model-Based RL** — [youtube.com/watch?v=2o1yrkbpcUk](https://www.youtube.com/watch?v=2o1yrkbpcUk). 90-min single-lecture overview.
+- **Berkeley CS285 (Sergey Levine)** — [rail.eecs.berkeley.edu/deeprlcourse/](https://rail.eecs.berkeley.edu/deeprlcourse/). Lectures 11–12 (model-based RL) + 15 (advanced) are canonical.
+
+**Conferences:**
+
+- **ICLR 2025 — *Workshop on World Models: Understanding, Modelling and Scaling*** — [iclr.cc/virtual/2025/workshop/24000](https://iclr.cc/virtual/2025/workshop/24000) / [worldmodel-iclr2025](https://sites.google.com/view/worldmodel-iclr2025/). Tim Rocktäschel + Jack Parker-Holder on Genie. Schmidhuber surprise panel.
+- **ICML 2025 — *Assessing World Models: Methods and Metrics*** — [icml.cc/virtual/2025/workshop/39967](https://icml.cc/virtual/2025/workshop/39967).
 - **AI Scholars — RL 101 Past Sessions** — [YouTube playlist](https://www.youtube.com/watch?v=4e0laDA7jlM&list=PLte0_KfXCwoh2EX7KRmooLU-Jyn-y8BQZ).
 
-### Code
+---
 
-- **Dreamer V3 (official)** — [github.com/danijar/dreamerv3](https://github.com/danijar/dreamerv3).
-- **MuZero (open implementation)** — [github.com/werner-duvaud/muzero-general](https://github.com/werner-duvaud/muzero-general).
-- **ALFWorld** — [github.com/alfworld/alfworld](https://github.com/alfworld/alfworld).
-- **TRL (GRPO trainer)** — [github.com/huggingface/trl](https://github.com/huggingface/trl). The GRPO update used by RWML lives here.
-- **verl** (ByteDance) — [github.com/volcengine/verl](https://github.com/volcengine/verl). DAPO/GRPO implementations.
+### Tutorials / hands-on
+
+**GRPO training (the algorithm RWML uses):**
+
+- **TRL — GRPO Trainer docs** — [huggingface.co/docs/trl/en/grpo_trainer](https://huggingface.co/docs/trl/en/grpo_trainer). TRL v1.0 (Apr 2026) added explicit agent support.
+- **HF Cookbook — *Post-training an LLM for reasoning with GRPO in TRL*** — [huggingface.co/learn/cookbook/en/fine_tuning_llm_grpo_trl](https://huggingface.co/learn/cookbook/en/fine_tuning_llm_grpo_trl).
+- **HF LLM Course — *Implementing GRPO in TRL*** — [huggingface.co/learn/llm-course/en/chapter12/4](https://huggingface.co/learn/llm-course/en/chapter12/4).
+- **HF Cookbook — *Post-training a VLM with GRPO*** — [huggingface.co/learn/cookbook/en/fine_tuning_vlm_grpo_trl](https://huggingface.co/learn/cookbook/en/fine_tuning_vlm_grpo_trl).
+- **Modal — *Train a model to solve coding problems with GRPO + TRL*** — [modal.com/docs/examples/grpo_trl](https://modal.com/docs/examples/grpo_trl).
+
+**Benchmark environments:**
+
+- **τ²-Bench setup** — [github.com/sierra-research/tau2-bench](https://github.com/sierra-research/tau2-bench). Getting started: [docs/getting-started.md](https://github.com/sierra-research/tau2-bench/blob/main/docs/getting-started.md).
+- **τ-Bench (original, now superseded)** — [github.com/sierra-research/tau-bench](https://github.com/sierra-research/tau-bench).
+- **ALFWorld** — [github.com/alfworld/alfworld](https://github.com/alfworld/alfworld) + [alfworld.github.io](https://alfworld.github.io/). Install: `pip install alfworld[full]`, then `alfworld-download`.
+
+**Frameworks for building your own RWML loop:**
+
+- **AgentGym-RL** — [github.com/WooooDyy/AgentGym-RL](https://github.com/WooooDyy/AgentGym-RL). Multi-turn PPO/GRPO/RLOO across WebArena/RAG/TextCraft. The closest existing scaffold for an RWML-style pipeline.
+- **TRL (full library)** — [github.com/huggingface/trl](https://github.com/huggingface/trl). GRPO trainer + reference implementations.
+- **verl** (ByteDance) — [github.com/volcengine/verl](https://github.com/volcengine/verl). DAPO/GRPO at scale.
+- **OpenRLHF** — [github.com/OpenRLHF/OpenRLHF](https://github.com/OpenRLHF/OpenRLHF). Ray + vLLM rollouts.
+
+**Reference implementations of world-model RL:**
+
+- **Dreamer V3 (official, Hafner)** — [github.com/danijar/dreamerv3](https://github.com/danijar/dreamerv3).
+- **MuZero (community implementation)** — [github.com/werner-duvaud/muzero-general](https://github.com/werner-duvaud/muzero-general).
+- **V-JEPA (Meta, official)** — [github.com/facebookresearch/jepa](https://github.com/facebookresearch/jepa).
+- **WebDreamer (LLM-as-world-model)** — [github.com/OSU-NLP-Group/WebDreamer](https://github.com/OSU-NLP-Group/WebDreamer). Dreamer-7B on HF: [huggingface.co/osunlp/Dreamer-7B](https://huggingface.co/osunlp/Dreamer-7B).
+
+**Textbook chapters:**
+
+- **Sutton & Barto, *RL: An Introduction*, 2nd ed.** — Ch. 8 (Planning and Learning with Tabular Methods) is the Dyna-Q chapter; Ch. 17 (Frontiers) covers options / temporal abstraction.
+- **OpenAI Spinning Up — *Part 2: Kinds of RL Algorithms*** — [spinningup.openai.com/.../rl_intro2](https://spinningup.openai.com/en/latest/spinningup/rl_intro2.html). Brief model-based RL taxonomy.
+
+---
 
 ### Companion docs in this repo
 
-- **Week 4** — [`docs/week4-agent-rl-forge.md`](week4-agent-rl-forge.md) — ALFWorld / Tau²Bench environments, GRPO→DAPO→CISPO lineage.
+- **Week 4** — [`docs/week4-agent-rl-forge.md`](week4-agent-rl-forge.md) — ALFWorld / τ²-Bench environments, GRPO → DAPO → CISPO lineage.
 - **Week 6** — [`docs/week6-rlhf-and-rft-under-the-hood.md`](week6-rlhf-and-rft-under-the-hood.md) — full GRPO derivation, RLVR explanation, the reward-source arc.
 
 ---
 
 ## 35. Key Takeaways
 
-1. **RWML replaces the reward with the environment itself.** No experts, no stronger teachers, no human labels, no task-success signal — just "did your prediction match what happened next?"
+1. **RWML replaces the reward with the environment itself.** Yu et al., 2026 ([arXiv:2602.05842](https://arxiv.org/abs/2602.05842)). No experts, no stronger teachers, no human labels, no task-success signal — just "did your prediction match what happened next?"
 2. **The pipeline is a five-step loop.** Rollout → collect transitions → predict next state → compare with reality → GRPO update. Each step is borrowed from existing machinery.
 3. **The world model is the LLM itself.** No separate encoder, no latent space, no separate dynamics network. Just predict the next observation in token space.
-4. **Semantic reward, not token match.** The reward function rewards meaning-preserving predictions. Implementation is open: chrF + LLM-judge is the common recipe.
+4. **Reward is a binary embedding-similarity threshold.** $r = \mathbb{1}[\cos(E(\hat s), E(s)) > \tau]$. Hard threshold dodges LLM-judge reward hacking; GRPO normalization makes the binary signal usable.
 5. **GRPO is the update step.** Group-relative advantage, no critic — same algorithm as DeepSeek-R1, repurposed for state prediction. Algorithm reuse across Weeks 4, 6, and 7 is the meta-lesson.
 6. **Surprise filtering is the operational secret.** Drop transitions the agent already gets right; train on the hard ones. Same principle as DAPO's dynamic sampling and prioritized experience replay.
-7. **ALFWorld +19.6 and Tau²Bench +7.9** without expert demos, stronger teachers, task-success signals, or human annotations.
+7. **Two number sets:** **+19.6 / +7.9** on ALFWorld / τ²-Bench is *pure self-supervised RWML vs. base model*. **+6.9 / +5.7** is *RWML + policy-RL vs. direct task-success-RL*. The latter matches expert-data training. Both are in the same paper.
 8. **RWML preserves prior capabilities better than SFT.** Reward-weighted updates don't flow where the model is already correct, so old skills don't get overwritten.
 9. **The reward source arc completes here.** Human → RM → DPO (no RM) → verifier (RLVR) → **environment (RWML)**. Each step removes a labeling bottleneck.
 10. **RL on LLMs is now mostly reward engineering.** GRPO is stable; the design question is what *signal* you train on. Weeks 5–7 are three different answers to that one question.
 11. **World models matter because prediction enables planning.** With a world model in hand, you can do MCTS-style search at decision time — the natural next step the lecture hints at but doesn't develop.
 12. **The autoregressive bet is live.** LeCun argues next-token prediction is structurally limited for world modeling. RWML argues the architecture is fine; the loss is the problem. Both bets have results; neither has won.
+13. **RWML isn't alone.** WebDreamer (Gu et al., 2024), RAP (Hao et al., 2023), Imagine-then-Plan (Jan 2026), and RLVR-World are all neighbors. The *idea* of LLM-agent world models has crystallized in 2024–2026; the *best instantiation* is still open.
 
 ---
 
