@@ -963,9 +963,11 @@ If you read nothing else from these subreddits, read these:
 
 # Part V — Where to Go from Here
 
-This is the last lecture of the series. Six weeks ago we were balancing a
-pole. Today we're at the frontier of how every modern AI system gets
-trained. Here's how to keep going.
+This section is for when you want to deepen the RLHF / post-training
+material on your own. The course continues — Week 7 picks up with world
+models (RL 106) and the agent-RL question shifts from "verify the
+answer" to "predict the environment" — but the deepening paths below
+stand on their own regardless of what's covered next.
 
 ---
 
@@ -1209,18 +1211,12 @@ the curated arxiv-sanity list is enough.
 
 ---
 
-## A final word
+## Looking ahead
 
-You started six weeks ago balancing a pole. You finish today knowing —
-mathematically, architecturally, and culturally — how every model you
-talk to gets trained.
-
-The math, in the end, is small: a Bellman recursion, a clipped surrogate,
-a Bradley-Terry log-sigmoid, a KL penalty. The hard part was never the
-equations. It was knowing which hyperparameter to look at when the run
-diverges, which framework to pick, which reward signal won't get hacked.
-
-That's what you have now. Go build something with it.
+Week 6 closes the RLHF arc: preferences → RM → PPO / DPO / GRPO → RLVR.
+Week 7 picks up where RLVR ends — *if reality can verify a math answer,
+can the agent learn to predict reality itself?* That's the world-model
+question, and it's the next step in this same direction.
 
 ---
 
