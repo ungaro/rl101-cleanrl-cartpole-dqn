@@ -31,6 +31,13 @@ gave us the algorithms (DQN, PPO, GRPO); this week gives us the
 **environments those algorithms train in** when the target is a physical
 robot.
 
+> **Runnable companion:** [`docs/week8-demos.md`](week8-demos.md) ships
+> the same ideas as a session-friendly demo guide — Unitree G1 spin kick
+> (mjlab + pretrained ONNX), ANYmal-D rough terrain (Isaac Lab, live PPO
+> ~10–15 min), and the "humanoid in 15 minutes" recipe (Holosoma, FastSAC
+> on Unitree G1). Use this file for the math and lineage; use that one
+> when you want to actually press play.
+
 ---
 
 ## How this doc relates to other weeks
@@ -1013,6 +1020,13 @@ default in 2026.**
 
 ## Part VI — Hands-on starting points
 
+The snippets in this section are intentionally minimal — load a model,
+step physics, train one task. For a curated, session-ready demo
+sequence with copy-pasteable commands, expected wall-clock per step,
+and a 90-minute lesson plan that wires three demos together, see the
+**companion run guide:**
+[`docs/week8-demos.md`](week8-demos.md).
+
 ### 22. Minimal MuJoCo: load, step, render
 
 A complete script that loads a humanoid, steps it for 30 seconds, and
@@ -1518,3 +1532,7 @@ Whatever you build next — locomotion, manipulation, agent RL, RLHF — the
 core ideas (Bellman, actor–critic, advantage estimation, KL constraints,
 verifier-based rewards) carry over. The simulators just give us cheap,
 fast, reproducible playgrounds in which to use them.*
+
+*Ready to press play? Continue to [`docs/week8-demos.md`](week8-demos.md)
+for the runnable companion — three demos, three Unitree robots, one
+RTX 5090, ninety minutes.*
