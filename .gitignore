@@ -1,6 +1,9 @@
 # CleanRL (cloned dependency)
 cleanrl/
 
+# Week 8 demo external repos (cloned by `make setup-spinkick` etc.)
+external/
+
 # Training outputs
 runs/
 videos/

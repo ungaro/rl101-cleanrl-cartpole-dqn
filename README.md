@@ -6,8 +6,9 @@ and [Gymnasium](https://gymnasium.farama.org/)) with a deep-dive write-up that w
 through the math, the algorithm, and the source code line by line.
 
 The repo started as a Week 2 DQN demo and grew with the course. The runnable
-demos cover Weeks 2–3 (classic deep RL); Weeks 4–5 are documentation deep-dives
-on agent RL and the post-training stack.
+demos cover Weeks 2–3 (classic deep RL) and Week 8 (robotics simulation —
+mjlab, Isaac Lab, Holosoma); Weeks 4–7 are documentation deep-dives on agent
+RL, the post-training stack, and world models for LLM agents.
 
 ## About the Study Group
 
@@ -36,7 +37,7 @@ building block on the path toward AGI.
 | 5 | **RLHF and the Path to Agent RL — MiniMax M2.7** | — | [`docs/week5-minimax-m27-visual-guide.md`](docs/week5-minimax-m27-visual-guide.md) | (docs only) |
 | 6 | **Reinforcement Fine-Tuning & RLHF Under the Hood** | [RL 105 (PDF)](docs/slides/RL105.pdf) | [`docs/week6-rlhf-and-rft-under-the-hood.md`](docs/week6-rlhf-and-rft-under-the-hood.md) | (docs only) |
 | 7 | **World Models for LLM Agents — RWML** | [RL 106 (PDF)](docs/slides/RL106.pdf) | [`docs/week7-world-models-and-rwml-under-the-hood.md`](docs/week7-world-models-and-rwml-under-the-hood.md) | (docs only) |
-| 8 | **Robotics Simulation RL — Isaac Sim & MuJoCo** | — | [`docs/week8-sim-environments.md`](docs/week8-sim-environments.md) | (docs only) |
+| 8 | **Robotics Simulation RL — Isaac Sim & MuJoCo** | — | [`docs/week8-sim-environments.md`](docs/week8-sim-environments.md) + [demos](docs/week8-demos.md) | `make demos-help` |
 
 Each deep-dive renders both as a normal Markdown document on GitHub and as
 slides via [marp-cli](https://github.com/marp-team/marp-cli).
@@ -133,6 +134,18 @@ distillation, system identification), the 2024–2026 humanoid wins
 15 minutes" recipe, Figure / 1X / Apptronik), the NVIDIA foundation-model
 stack (GR00T, Cosmos), and how it all reconnects to PPO from Week 3.
 
+Pairs with a runnable demo guide in
+[`docs/week8-demos.md`](docs/week8-demos.md):
+
+- **Demo 1 — Unitree G1 double spin kick** (mjlab + pretrained ONNX,
+  instant replay in the MuJoCo viewer).
+- **Demo 2 — ANYmal-D rough terrain** (Isaac Lab, live PPO training
+  ~10–15 min on a 5090).
+- **Demo 3 — "Humanoid in 15 minutes"** (Holosoma + FastSAC, live
+  training of a Unitree G1 walking policy from scratch).
+
+`make demos-help` prints the full setup and run sequence.
+
 ## Watching the Trained Agent (Week 2)
 
 After `make train` finishes there are **three ways** to see the trained agent:
@@ -191,6 +204,27 @@ make eval                # Evaluate trained CartPole DQN
 make eval-lunar          # Evaluate trained LunarLander model
 make tensorboard         # Launch TensorBoard
 make demo                # Full demo: random → train → eval
+```
+
+### Week 8 visual demos
+
+```
+make demos-help          # Overview + run sequence (see docs/week8-demos.md)
+
+# Demo 1 — MuJoCo, pretrained replay
+make setup-mjlab         # install uv + run mjlab demo sanity check
+make setup-spinkick      # clone g1_spinkick_example into external/
+make demo-spinkick       # play the pretrained Unitree G1 spin kick
+
+# Demo 2 — Isaac Lab, live PPO ~10-15 min
+make setup-isaaclab      # guided install (needs Python 3.11 env)
+make demo-anymal         # train ANYmal-D rough terrain
+make demo-anymal-play    # visualize the trained policy
+
+# Demo 3 — Holosoma, live SAC ~15 min
+make setup-holosoma      # clone + setup_mujoco_via_uv.sh
+make demo-humanoid-15min # train Unitree G1 walking from scratch
+make demo-humanoid-play  # visualize the trained G1
 ```
 
 ## TensorBoard Metrics
