@@ -36,6 +36,7 @@ building block on the path toward AGI.
 | 5 | **RLHF and the Path to Agent RL — MiniMax M2.7** | — | [`docs/week5-minimax-m27-visual-guide.md`](docs/week5-minimax-m27-visual-guide.md) | (docs only) |
 | 6 | **Reinforcement Fine-Tuning & RLHF Under the Hood** | [RL 105 (PDF)](docs/slides/RL105.pdf) | [`docs/week6-rlhf-and-rft-under-the-hood.md`](docs/week6-rlhf-and-rft-under-the-hood.md) | (docs only) |
 | 7 | **World Models for LLM Agents — RWML** | [RL 106 (PDF)](docs/slides/RL106.pdf) | [`docs/week7-world-models-and-rwml-under-the-hood.md`](docs/week7-world-models-and-rwml-under-the-hood.md) | (docs only) |
+| 8 | **Robotics Simulation RL — Isaac Sim & MuJoCo** | — | [`docs/week8-sim-environments.md`](docs/week8-sim-environments.md) | (docs only) |
 
 Each deep-dive renders both as a normal Markdown document on GitHub and as
 slides via [marp-cli](https://github.com/marp-team/marp-cli).
@@ -117,6 +118,20 @@ labeler / reward model / verifier. Slide-by-slide companion, a research
 appendix on the model-based RL lineage (Dreamer V3, MuZero, V-JEPA 2,
 Genie 2), and a bridge back to ALFWorld / Tau²Bench (Week 4) and the
 RLHF → RLVR → RWML reward-source arc.
+
+### Week 8 — Robotics Simulation RL (Isaac Sim & MuJoCo)
+
+The Extra Special Week. Closes the course by returning to physical
+robots — the place RL started before it pivoted to games and then LLMs.
+Walks through the two simulators that dominate modern robotics RL —
+**MuJoCo / MJX / Playground** (the DeepMind, JAX-friendly, smooth-contact
+lineage) and **NVIDIA Isaac Sim / Isaac Lab** (the GPU-parallel,
+PhysX-5, photoreal stack that replaced Isaac Gym in Feb 2025). Covers
+the sim-to-real workflow (domain randomization, RMA, teacher–student
+distillation, system identification), the 2024–2026 humanoid wins
+(Berkeley Humanoid, ASAP on Unitree G1, Booster Gym, the "humanoid in
+15 minutes" recipe, Figure / 1X / Apptronik), the NVIDIA foundation-model
+stack (GR00T, Cosmos), and how it all reconnects to PPO from Week 3.
 
 ## Watching the Trained Agent (Week 2)
 
