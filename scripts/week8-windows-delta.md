@@ -11,7 +11,7 @@ Tested on: Windows 11 (build 26200), RTX 5090 32 GB, NVIDIA Driver 591.74, CUDA 
 | 1a. mjlab sanity (`uvx demo`) | Works with workarounds | Missing scipy dep, cp1252 emoji crash |
 | 1b. G1 spin kick replay | Partially blocked | W&B artifacts private to `gcbc_researchers` |
 | 2. Isaac Lab ANYmal-D | Works with workarounds | flatdict build-isolation bug, env var setup |
-| 3. Holosoma G1 FastSAC | Works with workarounds | Setup script Linux-only, Triton missing, bfloat16 bug, version conflicts, ~4x slower than documented |
+| 3. Holosoma G1 FastSAC | Partially blocked | Setup script Linux-only, Triton missing, bfloat16 bug, emoji crash, version conflicts, NaN rewards (mujoco-warp 0.0.2 tensor bug), eval viewer CPU-only |
 
 ---
 
@@ -181,17 +181,56 @@ python src/holosoma/holosoma/train_agent.py \
 8. **Training speed: ~4x slower than documented**
    Docs say ~15 min for a walking gait. On Windows with `mujoco-warp==0.0.2` + `warp-lang==1.10.0`, training runs at ~3.5 it/s with ETA of ~4 hours. The `mujoco-warp==0.0.2` version is older and likely less optimized. This is the biggest practical gap.
 
-   Episode length did improve from 47 to 608 in the portion that was run, and some reward terms showed NaN values, suggesting the older mujoco-warp version has numerical issues.
+   Episode length did improve from 19 to 75 over ~4000 iterations, and some reward terms showed NaN values. The root cause is the `penalty_action_rate` reward term producing NaN due to a Warp→PyTorch zero-copy tensor conversion issue in `mujoco-warp==0.0.2`. This NaN poisons the total reward, causing `actor_loss=nan`, `qf_loss=nan`, and `actor_grad_norm=0.0` — meaning the policy network never actually learns. The physics simulation itself works correctly (other reward terms compute fine).
 
-### Working command (Windows)
+   **Workarounds** (untested):
+   - Disable the action_rate penalty: `--reward.penalties.action_rate.weight=0`
+   - Run in WSL/Linux where the Warp tensor conversion may work correctly
+   - Patch `penalty_action_rate()` in `managers/reward/terms/locomotion.py` to use `torch.nan_to_num()`
 
-A wrapper script is at `scripts/holosoma_train_win.py`. Run with:
+9. **Emoji crash in `print_mujoco_model_tree()`**
+   Holosoma prints emoji characters (📊, 🏗️, etc.) during model loading. The default Windows console codepage (cp1252) cannot encode them, crashing both training and eval. The `PYTHONIOENCODING=utf-8` env var alone is insufficient because W&B's `console_capture.py` intercepts stdout before the encoding takes effect.
+
+   **Fix**: Set encoding early AND wrap stdout/stderr:
+   ```python
+   os.environ["PYTHONIOENCODING"] = "utf-8"
+   if sys.stdout.encoding != "utf-8":
+       import io
+       sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+       sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+   ```
+
+10. **Eval viewer: mass randomization unsupported on CPU backend**
+    Running `eval_agent.py` with `simulator:mujoco` (CPU) crashes with `RandomizerNotSupportedError: Mass randomization not supported for simulator type 'MuJoCo'`.
+
+    **Fix**: Add `--randomization.ignore_unsupported=True` to the eval command.
+
+11. **Eval viewer: mjwarp backend crashes with shape mismatch**
+    Running `eval_agent.py` with `simulator:mjwarp` (GPU) crashes with `ValueError: could not broadcast input array from shape (0,35) into shape (0,)` in `mujoco_warp/_src/io.py`. This is a bug in mujoco-warp 0.0.2's `get_render_data()`.
+
+    **Fix**: Use `simulator:mujoco` (CPU) for eval/visualization instead. Physics runs on CPU but policy inference still uses GPU.
+
+### Working commands (Windows)
+
+**Training** — wrapper script at `scripts/holosoma_train_win.py`:
 ```powershell
 $env:TORCHDYNAMO_DISABLE = "1"
+$env:PYTHONIOENCODING = "utf-8"
 E:\rl101-crash-course\external\holosoma\.venv\hsmujoco\Scripts\python.exe `
     scripts\holosoma_train_win.py `
     exp:g1-29dof-fast-sac simulator:mjwarp --training.seed 1
 ```
+
+**Eval/visualization** — wrapper script at `scripts/holosoma_eval_win.py`:
+```powershell
+$env:TORCHDYNAMO_DISABLE = "1"
+$env:PYTHONIOENCODING = "utf-8"
+E:\rl101-crash-course\external\holosoma\.venv\hsmujoco\Scripts\python.exe `
+    scripts\holosoma_eval_win.py `
+    --checkpoint logs\hv-g1-manager\<run>\model_XXXX.pt `
+    simulator:mujoco --randomization.ignore_unsupported=True
+```
+Note: eval must use `simulator:mujoco` (CPU) because `simulator:mjwarp` crashes in `get_render_data()`.
 
 ---
 
@@ -246,6 +285,7 @@ Add Windows-specific entries:
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/holosoma_train_win.py` | Wraps holosoma training with Triton disable + bfloat16 validation fix |
+| `scripts/holosoma_train_win.py` | Wraps holosoma training with Triton disable + bfloat16 validation fix + emoji encoding fix |
+| `scripts/holosoma_eval_win.py` | Wraps holosoma eval/visualization with same Windows workarounds |
 | `scripts/train_anymal_win.bat` | Sets Isaac Sim env vars and runs ANYmal-D training |
 | `scripts/install_isaaclab.bat` | Attempted batch install (superseded by manual approach) |
