@@ -42,11 +42,25 @@ than replace it.
 | 2. ANYmal-D (train + play) | ~12 GB | 10–15 min train, instant play | none after install |
 | 3. Holosoma G1 (train + play) | ~12 GB | ~15 min train | optional W&B logging |
 
-**WSL2 / Windows note.** mjlab and Holosoma work on Linux + WSL2.
-NVIDIA does **not** officially support Isaac Sim under WSL2; for the
-ANYmal-D demo specifically, expect either to use native Windows or to
-accept the community WSL2 path with its known gotchas (see the
-troubleshooting section at the end).
+### Platform notes
+
+**Linux / WSL2** is the primary-tested path. All three demos work on
+Ubuntu 22.04+ and WSL2 with the caveats below.
+
+**Native Windows** works for all three demos with the workarounds
+documented in each section below. Each demo section has a **Windows**
+callout with platform-specific commands and fixes.
+
+- **Demo 1 (mjlab)** — works on Linux, WSL2, and native Windows
+  (Windows needs an encoding fix and an extra `--with scipy` flag).
+- **Demo 2 (Isaac Lab)** — NVIDIA does **not** officially support
+  Isaac Sim under WSL2; use native Windows or accept the community
+  WSL2 path with its known gotchas (see Troubleshooting). On native
+  Windows, use `isaaclab.bat` instead of `isaaclab.sh`.
+- **Demo 3 (Holosoma)** — works on Linux, WSL2, and native Windows.
+  The setup script is Linux-only; Windows users follow the manual
+  steps below. Training is ~4× slower on Windows due to the
+  mujoco-warp version pinning required to avoid version conflicts.
 
 ---
 
@@ -62,6 +76,8 @@ checkpoint is loaded and replayed.
 rest of the day. Audiences immediately get the answer to "what does a
 trained humanoid policy look like?" before any training happens. It
 also doubles as a sanity check that the GPU and viewer plumbing work.
+
+![G1 spin kick — sim and real side-by-side](https://github.com/mujocolab/g1_spinkick_example/raw/main/assets/teaser.gif)
 
 [spinkick]: https://github.com/mujocolab/g1_spinkick_example
 
@@ -80,6 +96,16 @@ local clone:
 
 ```bash
 uvx --from mjlab --refresh demo
+```
+
+**Windows:** mjlab prints emoji characters that crash on the default
+Windows console codepage (cp1252), and scipy is not pulled in
+transitively on a clean Windows install. Set the encoding and add the
+missing dependency:
+
+```powershell
+$env:PYTHONIOENCODING = "utf-8"
+uvx --from mjlab --with scipy --refresh demo
 ```
 
 That command downloads mjlab into a temporary uv cache, opens the
@@ -115,6 +141,11 @@ uv run play \
 
 (`<run-id>` is the 8-character identifier from the report's run
 overview. Substitute your own if you trained one.)
+
+> **Note:** The W&B artifacts for this run are scoped to the
+> `gcbc_researchers` team. If you are not a member, the download will
+> fail with a permissions error. Use the RoboJuDo offline path below
+> instead.
 
 For a fully-offline replay using a downloaded ONNX file, place it at
 `assets/models/g1/beyondmimic/spinkick_safe.onnx` and use the
@@ -188,6 +219,47 @@ cd IsaacLab
 ./isaaclab.sh --install rsl_rl
 ```
 
+**Windows:** Use `isaaclab.bat` instead of `isaaclab.sh`. On Windows
+you will likely hit a `flatdict` build-isolation bug
+(`ModuleNotFoundError: No module named 'pkg_resources'`). Pre-install
+it, then install the source extensions manually:
+
+```powershell
+conda activate rl101-isaac
+
+# Work around flatdict build-isolation bug
+pip install flatdict==4.0.1 --no-build-isolation
+
+# Install each Isaac Lab source extension
+$extensions = Get-ChildItem "source" -Directory
+foreach ($ext in $extensions) {
+    pip install --editable $ext.FullName
+}
+pip install -e "source\isaaclab_rl[rsl_rl]"
+```
+
+If you installed Isaac Sim from the standalone binary (not via pip),
+you must set environment variables so Python can find it:
+
+```powershell
+$env:PYTHONPATH = "C:\isaac-sim\site"
+$env:ISAAC_PATH = "C:\isaac-sim"
+$env:CARB_APP_PATH = "C:\isaac-sim\kit"
+$env:EXP_PATH = "C:\isaac-sim\apps"
+$env:RESOURCE_NAME = "IsaacSim"
+```
+
+If the Isaac Lab install needs a symlink to Isaac Sim and
+`New-Item -ItemType SymbolicLink` fails without admin, use a directory
+junction instead (no admin required):
+
+```cmd
+cmd /c mklink /J _isaac_sim C:\isaac-sim
+```
+
+A helper batch script that sets all of this up is at
+`scripts/train_anymal_win.bat`.
+
 Reserve **~25 GB** of disk for the install + extension cache.
 
 ### Run the training demo
@@ -199,6 +271,14 @@ From inside `IsaacLab/`:
 ./isaaclab.sh -p scripts/reinforcement_learning/rsl_rl/train.py \
     --task Isaac-Velocity-Rough-Anymal-D-v0 \
     --headless
+```
+
+**Windows:** Replace `./isaaclab.sh -p` with `isaaclab.bat -p`, or
+run Python directly (after setting the env vars above):
+
+```powershell
+python scripts\reinforcement_learning\rsl_rl\train.py `
+    --task Isaac-Velocity-Rough-Anymal-D-v0 --headless
 ```
 
 Wall-clock guideline on a single RTX 5090:
@@ -217,6 +297,8 @@ For a tight session demo, run for ~12 minutes and switch to play mode.
     --task Isaac-Velocity-Rough-Anymal-D-Play-v0 \
     --num_envs 32
 ```
+
+**Windows:** Same substitution — `isaaclab.bat -p` or `python` directly.
 
 `--num_envs 32` is what the audience watches: 32 ANYmal-D robots
 spawning together, all running the same trained policy across
@@ -266,6 +348,11 @@ accessible" moment. The Week 8 deep dive (§20) calls this out as the
 2025 turning point — Holosoma is the public Apache-2.0 codebase that
 ships the recipe.
 
+**Real-world deployment videos** (click to play):
+[G1 Locomotion](https://youtu.be/YYMgj5BDIMI) ·
+[T1 Locomotion](https://youtu.be/Q6rNHJZ2a6Y) ·
+[G1 Dancing](https://youtu.be/ouPk69_eFfE)
+
 ### Setup
 
 Holosoma supports four backends; the **MJWarp** (MuJoCo Warp) path is
@@ -283,13 +370,50 @@ The script creates a local environment and installs MuJoCo Warp,
 PyTorch, and Holosoma's own dependencies. ~5–10 minutes on a fast
 connection.
 
+**Windows:** The setup script is Linux-only. Set up manually with uv
+and Python 3.12 (Python 3.13 is incompatible due to missing `open3d`
+wheels):
+
+```powershell
+cd holosoma
+uv venv --python 3.12 .venv\hsmujoco
+.venv\hsmujoco\Scripts\activate
+
+# Pin mujoco-warp 0.0.2 to avoid warp-lang version conflict
+# (holosoma pins warp-lang==1.10.0; newer mujoco-warp needs >=1.13.0)
+uv pip install mujoco mujoco-python-viewer
+uv pip install "mujoco-warp==0.0.2"
+uv pip install "numpy>=1.23.5,<2"
+
+# CUDA PyTorch — pip default is CPU-only
+uv pip install torch==2.10.0 --index-url https://download.pytorch.org/whl/cu128
+
+uv pip install -e src/holosoma
+```
+
+Triton is not available on Windows, so `torch.compile` will fail.
+Disable it and apply a bfloat16 validation workaround:
+
+```powershell
+$env:TORCHDYNAMO_DISABLE = "1"
+```
+
+A wrapper script that handles both fixes is at
+`scripts/holosoma_train_win.py`.
+
+> **Performance note:** With `mujoco-warp==0.0.2` (the version
+> required to avoid the warp-lang conflict), training is **~4× slower**
+> than the paper's documented 15 minutes. Expect ~60 minutes for a
+> walking gait on Windows. The policy still converges — it just takes
+> longer.
+
 ### Run the training demo
 
 ```bash
 # Train Unitree G1 with FastSAC on the MJWarp backend (no W&B login needed)
 python src/holosoma/holosoma/train_agent.py \
     exp:g1-29dof-fast-sac \
-    simulator:mujoco_warp \
+    simulator:mjwarp \
     --training.seed 1
 ```
 
@@ -310,7 +434,7 @@ opens the MuJoCo viewer:
 ```bash
 python src/holosoma/holosoma/play_agent.py \
     exp:g1-29dof-fast-sac \
-    simulator:mujoco_warp \
+    simulator:mjwarp \
     --checkpoint runs/latest/checkpoint.pt
 ```
 
@@ -417,6 +541,49 @@ Common causes:
   curriculum *should* ramp difficulty automatically; if it stays
   hard, try the flat-terrain variant first.
 
+### "flatdict / pkg_resources build failure" (Windows)
+
+`flatdict==4.0.1` imports `pkg_resources` in its `setup.py`. Pip's
+build isolation creates a temp virtualenv where modern setuptools no
+longer bundles `pkg_resources`, causing
+`ModuleNotFoundError: No module named 'pkg_resources'`. Fix:
+
+```powershell
+pip install flatdict==4.0.1 --no-build-isolation
+```
+
+Then re-run the Isaac Lab install.
+
+### "Emoji crash / UnicodeEncodeError on Windows"
+
+mjlab prints emoji characters that the default Windows console
+codepage (cp1252) cannot encode. Set the encoding before running:
+
+```powershell
+$env:PYTHONIOENCODING = "utf-8"
+```
+
+### "Triton / torch.compile fails on Windows"
+
+Triton is Linux-only. On Windows, disable `torch.compile` by setting:
+
+```powershell
+$env:TORCHDYNAMO_DISABLE = "1"
+```
+
+Holosoma's `scripts/holosoma_train_win.py` wrapper does this
+automatically.
+
+### "Symlink requires admin on Windows"
+
+Isaac Lab may need a symlink to the Isaac Sim install directory.
+`New-Item -ItemType SymbolicLink` requires admin privileges on
+Windows. Use a directory junction instead (no admin required):
+
+```cmd
+cmd /c mklink /J _isaac_sim C:\isaac-sim
+```
+
 ---
 
 ## Resources
@@ -433,6 +600,13 @@ Common causes:
   [github.com/amazon-far/holosoma](https://github.com/amazon-far/holosoma)
   (Apache-2.0, paper arXiv:2512.01996, project page
   [younggyo.me/fastsac-humanoid](https://younggyo.me/fastsac-humanoid)).
+
+**Windows helper scripts** (in this repo's `scripts/` directory):
+
+- `scripts/holosoma_train_win.py` — wraps Holosoma training with
+  Triton disable + bfloat16 validation fix for Windows.
+- `scripts/train_anymal_win.bat` — sets Isaac Sim env vars and runs
+  ANYmal-D training on native Windows.
 
 **Background reading from this course.**
 

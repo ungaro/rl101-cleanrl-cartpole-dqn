@@ -94,8 +94,11 @@ make demo-humanoid-15min   # train Unitree G1 from scratch
 make demo-humanoid-play    # visualize
 ```
 
-Full run guide: `docs/week8-demos.md`. External repos are cloned into
-`external/` (gitignored). Demos 2 and 3 need separate conda envs:
+Full run guide: `docs/week8-demos.md`. Windows helper scripts:
+`scripts/holosoma_train_win.py` (Holosoma + Triton/bfloat16 fixes) and
+`scripts/train_anymal_win.bat` (Isaac Lab env var setup). External
+repos are cloned into `external/` (gitignored). Demos 2 and 3 need
+separate conda envs:
 
 - **`rl101-isaac`** — Python 3.11, Isaac Sim 5.1.0, PyTorch 2.7.0+cu128.
 - Holosoma's `setup_mujoco_via_uv.sh` creates its own uv-managed env
