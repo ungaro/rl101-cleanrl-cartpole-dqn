@@ -183,6 +183,8 @@ This is offered as homework, not as a live-demo step.
 
 ## Demo 2 — ANYmal-D rough terrain (Isaac Lab)
 
+![ANYmal-D quadrupeds training on randomized rough terrain in Isaac Lab](images/week8-anymal-d-isaac-lab.png)
+
 **What the audience sees.** Up to 4096 ANYmal-D quadrupeds spawned on
 randomly generated rough terrain (stairs, slopes, gravel), all
 training in parallel. Reward and gait quality plot live. After ~10–15
