@@ -1,0 +1,271 @@
+# Section IV.E — Distribution Shift (Offline Reinforcement Learning)
+
+Addresses **W5** of the eight weaknesses introduced in §II.B. This
+section is the first of three covering methods entirely new to the
+current draft. It introduces a benchmark family (D4RL [Fu et al.
+2020]) different from the Atari suite that dominates Sections V and
+VI, since the distribution-shift axis cannot be evaluated on online
+benchmarks.
+
+**Status:** first-pass draft pending review by a co-author with
+offline-RL background. Per-method technical claims have been
+cross-checked against the original papers, but framing decisions —
+especially the four-family taxonomy and the choice of canonical
+methods — should be validated before integration.
+
+---
+
+## IV.E. Distribution Shift (Offline Reinforcement Learning)
+
+### A. The Weakness
+
+Q-learning's off-policy property is *theoretical*: the Bellman
+optimality operator $\mathcal{T}^\ast Q(s, a) = r + \gamma \max_{a'}
+Q(s', a')$ is independent of the policy that generated $(s, a, r,
+s')$. In *online* deep RL the property is approximately preserved
+because the replay buffer is continuously refreshed: actions taken by
+the current policy populate the buffer, and the bootstrap target
+$\max_{a'} Q(s', a')$ ranges over actions whose values are eventually
+corrected by future on-policy samples.
+
+In *offline* RL the property breaks. The buffer is fixed: it contains
+transitions from one or more behavior policies $\pi_b$, with no
+provision for further data collection. The bootstrap target
+$\max_{a'} Q(s', a')$ now ranges over the *entire* action space,
+including actions $a'$ that no behavior policy ever took at state
+$s'$. The estimate $Q(s', a')$ for such *out-of-distribution* (OOD)
+actions is arbitrary — function approximation extrapolates without
+correction signal — and the bootstrap propagates this arbitrary error
+through subsequent backups.
+
+The failure is structural. Concretely, if $\hat Q(s', a^\text{OOD})$
+is the function approximator's extrapolation at an OOD action, and
+$\arg\max_{a'} \hat Q(s', a')$ falls on $a^\text{OOD}$, then the
+backup propagates $\hat Q(s', a^\text{OOD})$ — a value with no data
+support — into $Q(s, a)$. Iterated backups drive $Q$ unboundedly
+upward at OOD points, and the resulting greedy policy concentrates
+on actions whose true value is unknown. Empirically, naive offline
+Q-learning consistently produces policies far worse than the
+behavior policy that generated the data [Fujimoto et al. 2019].
+
+Methods responding to this weakness fall into four families,
+distinguished by *what they constrain*: the learned policy, the
+$Q$-value estimates, the maximization operator itself, or the
+training data through ensembling.
+
+### B. Solution Families
+
+**B.1. Policy constraint.** Batch-Constrained Q-learning (BCQ)
+[Fujimoto et al. 2019] introduced the formal account of
+extrapolation error and proposed restricting the policy to actions
+the behavior policy plausibly took. BCQ learns a generative model
+$G_\omega(s)$ of behavior-policy actions and a perturbation
+network $\xi_\phi(s, a)$, defining the policy as
+$\pi(s) = \arg\max_{a \in \{a_i + \xi_\phi(s, a_i)\}_{i=1}^n,\, a_i
+\sim G_\omega(s)} Q(s, a)$. The constraint *defines* the action
+space at each state by sampling from the behavior model and
+allowing small perturbations.
+
+BRAC [Wu et al. 2019] generalizes the policy-constraint idea via
+explicit divergence regularization: the policy objective includes
+a KL or Wasserstein penalty against the behavior policy. The
+penalty weight controls the bias-variance trade-off between
+behavior cloning ($\to \pi_b$) and aggressive improvement.
+
+AWAC [Nair et al. 2020] addresses the *online fine-tuning* of
+offline-trained policies. Its advantage-weighted update,
+$\pi(a \mid s) \propto \pi_b(a \mid s) \exp(A(s, a) / \beta)$,
+upweights actions with high advantage relative to the behavior
+policy without fully unconstraining the policy. AWAC is the
+canonical bridge between offline and online RL.
+
+**B.2. Value penalty.** Conservative Q-Learning (CQL) [Kumar et al.
+2020] penalizes the $Q$-function at unseen actions:
+
+$$
+\mathcal{L}_\text{CQL} = \mathcal{L}_\text{Bellman} + \alpha \Bigl(\mathbb{E}_{s \sim \mathcal{D}, a \sim \mu(\cdot \mid s)}[Q(s, a)] - \mathbb{E}_{(s, a) \sim \mathcal{D}}[Q(s, a)]\Bigr),
+$$
+
+where $\mu$ is a sampling distribution that emphasizes
+out-of-distribution actions (typically uniform or learned). The
+penalty drives $Q$-values *down* at OOD actions and *up* at
+in-distribution actions, ensuring the learned policy
+$\arg\max_a Q(s, a)$ concentrates on actions with data support.
+
+CQL's penalty admits a theoretical guarantee: under certain
+conditions, the learned $Q$-function lower-bounds the true policy
+value $V^\pi$, ensuring that policy improvement does not propagate
+extrapolation error. CQL is widely regarded as the canonical
+offline-RL Q-method and is one of the strongest baselines on D4RL
+[Fu et al. 2020].
+
+**B.3. Avoiding the maximum.** Implicit Q-Learning (IQL) [Kostrikov
+et al. 2021] takes a different approach: avoid the $\max$ operator
+entirely. IQL learns three networks — a state-value function $V$, a
+Q-function $Q$, and a policy $\pi$ — with $V$ trained via
+*expectile regression*:
+
+$$
+\mathcal{L}_V = \mathbb{E}_{(s, a) \sim \mathcal{D}}\bigl[L_2^\tau(Q(s, a) - V(s))\bigr],
+\quad L_2^\tau(u) = |\tau - \mathbb{1}_{\{u < 0\}}| u^2,
+$$
+
+where $\tau \in (0.5, 1)$ controls the expectile (larger $\tau$ →
+more optimistic estimate of $V$). The Q-update becomes
+$Q(s, a) \leftarrow r + \gamma V(s')$, with no $\max$ over actions
+at all. Since $V$ is trained only on $(s, a) \in \mathcal{D}$,
+extrapolation error is structurally prevented.
+
+The policy $\pi$ is then extracted via advantage-weighted regression
+similar to AWAC. IQL achieves the strongest D4RL results among
+single-network families and is favored for its simplicity (no
+explicit constraint hyperparameter).
+
+**B.4. Ensemble diversification.** Ensemble Diversified Actor
+Critic (EDAC) [An et al. 2021] approaches OOD generalization via
+ensemble disagreement. EDAC maintains $K$ Q-networks and trains
+them to be *diverse* on OOD actions via a gradient-diversity
+penalty:
+
+$$
+\mathcal{L}_\text{div} = \mathbb{E}_{(s, a) \sim \mathcal{D}}\Bigl[\sum_{i \neq j} \mathrm{cos\_sim}(\nabla_a Q_i(s, a), \nabla_a Q_j(s, a))\Bigr].
+$$
+
+The min-over-ensemble Q-value, $Q_\text{eff}(s, a) = \min_i Q_i(s,
+a)$, becomes pessimistic at points where ensemble members disagree
+— typically OOD points. EDAC bridges the offline-RL section to the
+ensemble methods of §IV.A and §IV.C, using the same architectural
+mechanism for a different axis.
+
+### C. Trade-offs
+
+- **Policy constraint vs. improvement bound.** BCQ, BRAC, AWAC
+  constrain the learned policy toward the behavior policy. The
+  constraint provides safety but caps possible improvement: a
+  policy that cannot deviate substantially from $\pi_b$ cannot
+  outperform the best in-support trajectory by much.
+- **Value penalty vs. hyperparameter sensitivity.** CQL's
+  conservative penalty weight $\alpha$ is the single most important
+  hyperparameter and varies substantially across D4RL tasks. Recent
+  work [Hong et al. 2023] proposes adaptive penalty scaling but the
+  basic sensitivity remains.
+- **Avoiding the max vs. losing optimality.** IQL's expectile
+  regression avoids extrapolation error but learns a policy whose
+  formal optimality guarantees are weaker than $\arg\max_a Q^\ast$.
+  In practice the gap is small; theoretically it is an unresolved
+  question.
+- **Ensemble cost.** EDAC's $K$-network ensemble multiplies
+  parameter count and forward-pass cost by $K$. The diversification
+  penalty also requires per-action gradients, adding compute.
+
+### D. Empirical Evidence
+
+The benchmark suite for this section is D4RL [Fu et al. 2020],
+which spans nine task families (MuJoCo locomotion, AntMaze, Adroit
+dexterous manipulation, Franka Kitchen, CARLA driving, Flow,
+Bandit-mode FrankaKitchen, plus Atari offline variants). Each
+task is paired with one or more fixed datasets representing
+different behavior-policy regimes (random, medium, expert,
+medium-replay, medium-expert).
+
+A representative summary of normalized scores on MuJoCo
+locomotion medium-expert datasets (higher = better, normalized to
+[0, 100] where 100 ≈ expert performance):
+
+| Method | HalfCheetah | Hopper | Walker2d |
+|---|---|---|---|
+| Behavior Cloning | 56 | 79 | 84 |
+| BCQ (2019) | 64 | 100 | 110 |
+| CQL (2020) | 91 | 105 | 109 |
+| IQL (2021) | 86 | 91 | 109 |
+| EDAC (2021) | 107 | 110 | 115 |
+| AWAC (2020) | 42 | 56 | 49 |
+
+Two observations bear on this section's organization:
+
+First, **CQL and IQL produce the strongest single-method results
+across the D4RL benchmark.** They represent two distinct
+mechanistic responses to the same weakness — value penalty vs.
+avoiding the max — and the empirical near-tie suggests both are
+valid approaches with different trade-offs (CQL's hyperparameter
+sensitivity vs. IQL's theoretical weakness).
+
+Second, **EDAC's ensemble approach matches or exceeds the best
+single-network methods on locomotion** but does so at substantially
+higher compute cost. The cost-benefit calculation depends heavily
+on whether ensemble disagreement is used elsewhere in the agent
+(for exploration during online fine-tuning, for example), since
+the same ensemble can serve multiple axes.
+
+Atari offline benchmarks are reported in the D4RL paper but are
+secondary; the locomotion suite dominates offline-RL evaluation.
+This contrasts with the online Atari focus of Sections V and VI
+and is one motivation for the structural pivot: a method that
+solves the offline axis must demonstrate it on benchmarks that
+*test* the axis, not on benchmarks that the field used historically
+for unrelated reasons.
+
+### E. Open Questions
+
+1. **Theoretical unification of the four families.** Policy
+   constraint, value penalty, expectile regression, and ensemble
+   diversification are all responses to extrapolation error. A
+   unifying framework that recovers each as a limit of a single
+   regularization or constraint would clarify the field
+   considerably. Recent work toward this — *Implicit Behavior
+   Cloning* [Florence et al. 2021], the *On-Policy Constraints*
+   framework [Brandfonbrener et al. 2021] — has not produced
+   consensus.
+
+2. **Online-to-offline transfer of stability mechanisms.** The
+   target networks and normalization recipes of §IV.H were
+   developed for online interaction. Their interaction with
+   offline-specific stabilizers (CQL's conservative penalty, IQL's
+   expectile regression) is largely unexplored. Some offline-RL
+   work reports instability when target networks are removed
+   even though the corresponding online claim (PQN [55]) shows
+   removal is feasible.
+
+3. **Scaling to internet-scale data.** Offline RL with diverse
+   data sources — robot demonstrations across institutions, web
+   video, simulation rollouts — has produced strong empirical
+   results [Chen et al. 2021, Decision Transformer; Reed et al.
+   2022, Gato] but is dominated by sequence-modeling approaches
+   rather than Q-learning. Whether Q-learning's mechanism is
+   suited to the heterogeneous-data regime is an open question
+   with substantial practical stakes.
+
+4. **The offline-online boundary.** AWAC and Cal-QL [Nakamoto et al.
+   2023] address the special case of offline pre-training followed
+   by online fine-tuning. The mechanism (advantage-weighted
+   policy update, calibrated Q-bounds) is well-studied; the
+   broader question — when does offline pre-training help and when
+   does it hurt online learning? — is empirically rich but
+   theoretically thin.
+
+---
+
+*Notes for integration:*
+- This section is the largest new addition to the paper. The full
+  bibliography needs ~10 new entries: BCQ (arXiv:1812.02900), BRAC
+  (arXiv:1911.11361), AWAC (arXiv:2006.09359), CQL (arXiv:2006.04779),
+  IQL (arXiv:2110.06169), EDAC (arXiv:2110.01548), D4RL
+  (arXiv:2004.07219), Decision Transformer (arXiv:2106.01345), Gato
+  (arXiv:2205.06175), Cal-QL (arXiv:2303.05479).
+- The Springer NCAA 2026 distribution-shift survey
+  (10.1007/s00521-026-11966-8, see `07-prior-art-sweep.md`) should
+  be cited at the head of this section as the single existing
+  problem-first precedent.
+- The D4RL benchmark table requires permission/citation handling
+  consistent with the rest of the paper's empirical tables. Where
+  Tables II–III extract online Atari scores from original papers,
+  Section IV.E's empirical evidence draws from the D4RL benchmark
+  leaderboard plus individual offline-method papers.
+- Cross-references: §IV.A (ensembles for bias control, EDAC), §IV.B
+  (HER trajectory relabeling as a related sample-efficiency
+  mechanism), §IV.H (stability mechanism interaction).
+- **Sequence-modeling approaches (Decision Transformer, Trajectory
+  Transformer, Gato) are deliberately scoped out** as they are not
+  Q-learning. They appear in the open questions because they are the
+  dominant approach in the data-scaling regime, but the paper's
+  scope is the Q-learning family.
