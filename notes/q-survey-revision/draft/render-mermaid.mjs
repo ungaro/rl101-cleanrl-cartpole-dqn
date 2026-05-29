@@ -44,6 +44,53 @@ async function loadModules() {
 
 const SUPPORTED_RX = /^\s*(flowchart|graph|stateDiagram|sequenceDiagram|classDiagram|erDiagram|xychart-beta)\b/m;
 
+// beautiful-mermaid's SVG references CSS custom properties and uses
+// color-mix() to derive shades — neither is supported by resvg/libvips
+// (which sharp uses for SVG → PNG). So we pre-resolve all var(--xxx)
+// references to concrete hex colors before handing the SVG to sharp.
+
+function hexToRgb(h) {
+  const s = h.replace('#', '');
+  return [parseInt(s.slice(0, 2), 16), parseInt(s.slice(2, 4), 16), parseInt(s.slice(4, 6), 16)];
+}
+
+function rgbToHex([r, g, b]) {
+  return '#' + [r, g, b].map(n => Math.round(n).toString(16).padStart(2, '0')).join('');
+}
+
+function mix(fg, bg, t) {
+  const [r1, g1, b1] = hexToRgb(fg);
+  const [r2, g2, b2] = hexToRgb(bg);
+  return rgbToHex([r1 * t + r2 * (1 - t), g1 * t + g2 * (1 - t), b1 * t + b2 * (1 - t)]);
+}
+
+function colorMap(theme) {
+  const { bg, fg } = theme;
+  return {
+    '--bg':            bg,
+    '--fg':            fg,
+    '--_text':         fg,
+    '--_text-sec':     mix(fg, bg, 0.60),
+    '--_text-muted':   mix(fg, bg, 0.40),
+    '--_text-faint':   mix(fg, bg, 0.25),
+    '--_line':         mix(fg, bg, 0.50),
+    '--_arrow':        mix(fg, bg, 0.85),
+    '--_node-fill':    mix(fg, bg, 0.03),
+    '--_node-stroke':  mix(fg, bg, 0.20),
+    '--_group-fill':   bg,
+    '--_group-hdr':    mix(fg, bg, 0.05),
+    '--_inner-stroke': mix(fg, bg, 0.12),
+    '--_key-badge':    mix(fg, bg, 0.10),
+  };
+}
+
+function resolveSvgColors(svg, theme) {
+  const map = colorMap(theme);
+  // Substitute every var(--name) reference — the fallback inside (a
+  // color-mix() expression) becomes irrelevant once the var resolves.
+  return svg.replace(/var\((--[\w-]+)(?:\s*,[^)]*)?\)/g, (m, name) => map[name] || m);
+}
+
 async function main() {
   const input = process.argv[2];
   if (!input) {
@@ -71,7 +118,7 @@ async function main() {
   for (const b of blocks) {
     if (fs.existsSync(b.png)) continue;
     try {
-      const svg = beautiful.renderMermaidSVG(b.code, THEME);
+      const svg = resolveSvgColors(beautiful.renderMermaidSVG(b.code, THEME), THEME);
       // Sharp wants width >= 1; we render at 2x to keep edges crisp.
       await sharp(Buffer.from(svg), {density: 192}).png().toFile(b.png);
     } catch (e) {
