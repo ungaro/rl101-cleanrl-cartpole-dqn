@@ -224,6 +224,50 @@ admit multiple interpretations; this is one.
    mechanism subsumes or complements target networks is an open
    question.
 
+### F. Comparison summary
+
+| Method (year) | Legacy category | Mechanism | Primary cost | Best at | Empirical anchor |
+|---|---|---|---|---|---|
+| Target Network (Nature DQN, 2015) | Q-Function Comp. | Frozen copy of $Q$ for bootstrap target | Target staleness ($C$ steps) | Foundational deep-RL stability | Atari DQN baseline |
+| Dueling DQN (2016)* | Q-Function Comp. | $V(s) + (A(s,a) - \bar A)$ decomposition | Architectural complexity | Many-action states | Rainbow ablation: smallest impact |
+| MeDQN consolidation (2023) | Memory/Replay | Past-$Q$ distillation loss | $\lambda$ hyperparameter | Catastrophic forgetting | + memory efficiency |
+| PQN (2025) | Pure Q-Learning | LayerNorm + $n$-step + parallel envs; no target net | Compute structure shift | Modern stability recipe | 50× wall-clock, matches Rainbow |
+| Munchausen DQN (2020)† | Q-Function Comp. | $\tilde r_t = r_t + \alpha \tau \log \pi(a_t \mid s_t)$ | $\tau$ hyperparameter | Implicit KL regularization | Atari competitive |
+
+*Dueling DQN is relocated from §IV.B; the re-interpretation as a
+stability mechanism (rather than a value-estimation mechanism) is
+the load-bearing claim of subsection B.2.
+
+†Munchausen DQN is added in the revised paper; not in original
+draft.
+
+**2D positioning (classical → modern recipe × sample efficiency):**
+
+```mermaid
+quadrantChart
+    title Stability methods — recipe modernity × sample efficiency at fixed compute
+    x-axis "Classical (target net + replay)" --> "Modern (norm-only)"
+    y-axis "Low sample efficiency" --> "High sample efficiency"
+    quadrant-1 "Modern, sample-efficient"
+    quadrant-2 "Classical, sample-efficient"
+    quadrant-3 "Classical, inefficient"
+    quadrant-4 "Modern, inefficient"
+    "Vanilla DQN (no stabilization)": [0.05, 0.05]
+    "Target Network (Nature DQN)": [0.15, 0.35]
+    "Dueling DQN": [0.25, 0.45]
+    "MeDQN consolidation": [0.35, 0.55]
+    "Munchausen DQN": [0.45, 0.60]
+    "PQN (norm-only recipe)": [0.85, 0.80]
+```
+
+The classical recipe (target network + replay) sits in the middle:
+foundational but compute-inefficient at scale. The modern recipe
+(PQN's normalization-based approach) reaches comparable
+performance with substantially better sample efficiency at fixed
+compute. The interior of the chart contains hybrid methods —
+MeDQN and Munchausen DQN add stabilization mechanisms to the
+classical recipe rather than replacing it.
+
 ---
 
 *Notes for integration:*

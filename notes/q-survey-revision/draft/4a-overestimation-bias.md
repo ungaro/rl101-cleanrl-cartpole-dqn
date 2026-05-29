@@ -220,6 +220,53 @@ Three questions on this axis remain underexplored:
    ad hoc; a unifying framework that recovers both as limits of a
    single inequality would clarify the field considerably.
 
+### F. Comparison summary
+
+The methods of this section, summarized in one table:
+
+| Method (year) | Legacy category | Mechanism | Primary cost | Best at | Empirical anchor |
+|---|---|---|---|---|---|
+| Double Q-Learning (2010) | Q-Function Comp. | Two estimators, swapped action/eval | None vs. vanilla Q | Tabular discrete MDPs | GridWorld: lower bias, higher reward |
+| Double DQN (2016) | Q-Function Comp. | Online net selects, target net evaluates | Free (uses existing target net) | Most Atari games | Q*bert: 14,875 (vs. 10,596 DQN) |
+| Dueling DQN (2016)* | Q-Function Comp. | V(s) + centered A(s,a) decomposition | Modest architectural | Many-action states | Atari median: incremental |
+| EBQL (2021) | Ensemble-Based | $K$-ensemble, target = avg of $K-1$ others | $K\times$ compute, $K\times$ memory | Bias-variance calibration | 11 Atari > Double DQN |
+| Maximin Q (2020)† | Q-Function Comp. | $\min$ over $k$ Q-estimators | $k\times$ compute | Pure under-estimation pressure | Tabular MDPs |
+| REDQ (2021)† | Ensemble-Based | $\min$ of $M$ random ensemble members | $K\times$ compute, deliberately under-biased | Continuous-control SAC | MuJoCo locomotion |
+
+*Dueling DQN's primary section is §IV.H (stability); listed here as
+incidental contributor to bias control.
+
+†Maximin Q and REDQ are added in the revised paper; not in original
+draft.
+
+**2D positioning (bias × cost):**
+
+```mermaid
+quadrantChart
+    title Overestimation methods — bias direction × compute cost
+    x-axis "Heavily under-estimated" --> "Heavily over-estimated"
+    y-axis "Low compute (1x DQN)" --> "High compute (K-ensemble)"
+    quadrant-1 "Over-bias, expensive"
+    quadrant-2 "Under-bias, expensive"
+    quadrant-3 "Under-bias, cheap"
+    quadrant-4 "Over-bias, cheap"
+    "Vanilla DQN": [0.88, 0.10]
+    "Double DQN": [0.42, 0.12]
+    "Double Q-Learning": [0.40, 0.10]
+    "Dueling DQN": [0.65, 0.18]
+    "EBQL K=5": [0.45, 0.55]
+    "EBQL K=10": [0.40, 0.75]
+    "REDQ min-of-2": [0.18, 0.65]
+    "Maximin Q k=5": [0.22, 0.55]
+```
+
+The lower-right (cheap, over-biased) is the unmitigated baseline.
+The upper-left (expensive, under-biased) is the explicit
+under-estimation pressure of REDQ and Maximin. Double DQN sits in
+the lower-middle: cheap and lightly under-biased — the canonical
+"free improvement" point. EBQL fills the middle band: calibratable
+bias at proportional compute cost.
+
 ---
 
 *This section: ~1600 words, including LaTeX. Estimated final length in

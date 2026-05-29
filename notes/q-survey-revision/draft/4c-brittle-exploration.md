@@ -242,6 +242,51 @@ would substantially change the visual story of the table.
    via learned latent representations is an active research
    direction at the time of writing.
 
+### F. Comparison summary
+
+| Method (year) | Legacy category | Mechanism | Primary cost | Best at | Empirical anchor |
+|---|---|---|---|---|---|
+| Parameter Space Noise (2017) | Statistical | Per-episode $\theta$ perturbation | Layer norm requirement | Episode-consistent exploration | Atari mixed |
+| NoisyNet (2018) | Statistical | Per-pass weight noise with learned $\sigma$ | Per-pass 2× forward | Adaptive exploration | +48% Atari median |
+| Bootstrapped DQN (2016) | Ensemble-Based | $K$-head ensemble, sample head per episode | $K\times$ memory | Episode-coherent exploration | Human-level 30% faster |
+| UCB Q-Ensemble (2018) | Ensemble-Based | $Q_\mu + \lambda \sigma$ from $K$-ensemble | $K\times$ compute | Uncertainty-aware action | 30/49 Atari max |
+| CBDQ (2025) | Q-Function Comp. | Belief distribution over actions | Clustering overhead | Classic control + driving | LunarLander, MetaDrive |
+| Posterior Sampling DQN (2023) | Model-Based | Sample $Q$ from posterior per episode | Approximate posterior | Cyclic environments | 5-state chain |
+| RND (2018)* | Statistical | Random network distillation intrinsic bonus | Bonus scale hyperparameter | Sparse-reward Atari | Montezuma ≈10,000 |
+| Go-Explore (2019/2021)* | Memory/Replay (archive) | Archive + return-then-explore | Discrete state hashing | Hardest Atari exploration | Montezuma > 1,000,000 |
+
+*RND and Go-Explore are added in the revised paper; not in original
+draft.
+
+**2D positioning (adaptivity × Montezuma effectiveness):**
+
+```mermaid
+quadrantChart
+    title Exploration methods — temporal adaptivity × Montezuma effectiveness
+    x-axis "Per-step adaptive" --> "Per-episode consistent"
+    y-axis "Zero Montezuma" --> "Solves Montezuma"
+    quadrant-1 "Episode-consistent, effective"
+    quadrant-2 "Per-step, effective"
+    quadrant-3 "Per-step, ineffective"
+    quadrant-4 "Episode-consistent, ineffective"
+    "epsilon-greedy DQN": [0.20, 0.05]
+    "Param Space Noise": [0.80, 0.10]
+    "NoisyNet": [0.30, 0.15]
+    "Bootstrapped DQN": [0.75, 0.20]
+    "UCB Q-Ensemble": [0.50, 0.18]
+    "CBDQ": [0.40, 0.12]
+    "Posterior Sampling DQN": [0.80, 0.25]
+    "RND": [0.55, 0.65]
+    "Go-Explore": [0.85, 0.95]
+```
+
+The upper-half of the chart contains the methods that actually
+solve the diagnostic exploration problem. Go-Explore's
+archive-based approach lands top-right; RND's intrinsic motivation
+lands middle-upper. Most ensemble and noise-injection methods
+cluster in the lower bands — useful improvements over $\epsilon$-greedy
+but not transformative on the hardest exploration games.
+
 ---
 
 *Notes for integration:*

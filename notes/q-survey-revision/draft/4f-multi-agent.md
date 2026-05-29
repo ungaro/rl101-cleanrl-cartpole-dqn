@@ -236,6 +236,29 @@ on the newer benchmarks with broadly consistent rankings.
    necessarily produce coordinated joint behavior. This is one of
    the cleanest cross-axis open problems in the field.
 
+### F. Comparison summary
+
+All methods in this section are new content (not in the original
+draft).
+
+| Method (year) | Mechanism | Constraint type | Expressiveness | Trainability | SMAC anchor (test win %) |
+|---|---|---|---|---|---|
+| VDN (2018) | Additive: $Q_\text{tot} = \sum_i Q_i$ | Strict additivity | Lowest | Highest | 3m: 97 / 2c_vs_64zg: 5 |
+| QMIX (2018) | Monotonic mixer + hypernetwork on $\mathbf{s}$ | $\partial Q_\text{tot}/\partial Q_i \geq 0$ | Medium | High | 2c_vs_64zg: 60 / MMM2: 78 |
+| QPLEX (2020) | Duplex dueling on advantage stream | IGM-preserving via decomposition | High | Medium | MMM2: 92 / 6h_vs_8z: 47 |
+| QTRAN (2019) | Unconstrained $Q$ + auxiliary IGM-enforcing losses | None structural; loss-enforced | Maximum | Lowest | Underperforms QMIX across SMAC |
+
+The methods do not occupy a clean 2D positioning grid because
+*expressiveness and trainability are not independent* in this
+literature — higher expressiveness reliably reduces training
+stability. The progression VDN → QMIX → QPLEX → QTRAN traces a
+single Pareto curve on which choice depends on the SMAC scenario
+difficulty: VDN suffices for easy scenarios; QMIX and QPLEX for
+hard/super-hard; QTRAN's theoretical advantage does not realize
+empirically. The comparison table alone captures the relevant
+information; a 2D positioning grid would force the methods onto a
+single line.
+
 ---
 
 *Notes for integration:*

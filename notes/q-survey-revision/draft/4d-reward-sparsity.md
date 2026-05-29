@@ -223,6 +223,43 @@ performance drop among the six components, second only to PER.
    action selection — and how the resulting policies compare to
    risk-neutral baselines — is largely unexplored.
 
+### F. Comparison summary
+
+| Method (year) | Legacy category | Mechanism | Primary cost | Best at | Empirical anchor |
+|---|---|---|---|---|---|
+| Multi-Step Q-Learning (1996) | Pure Q-Learning | $n$-step bootstrapped returns + eligibility traces | Variance penalty under off-policy | Long-horizon credit assignment | Rainbow ablation: 2nd-largest contributor |
+| C51 (2017) | Statistical | 51 fixed atoms over $[V_\text{min}, V_\text{max}]$ | Bounded support pre-specified | Atari mean + median | Q*bert: 23,784 |
+| QR-DQN (2018) | Statistical | $N$ fixed-probability quantile values | Projection-free but quantile loss | Dense + strategic Atari | Q*bert: 572,510 |
+| IQN (2018) | Statistical | Runtime-sampled $\tau \sim U(0,1)$ | Cosine embedding for $\phi(\tau)$ | Standalone Rainbow-comparable | Matches Rainbow without other 5 components |
+| FQF (2019) | Statistical | Fully parameterized quantile fractions + values | +20% compute vs. IQN | Highest median Atari | 44/55 Atari > human |
+
+**2D positioning (distributional resolution × compute):**
+
+```mermaid
+quadrantChart
+    title Reward-sparsity methods — distributional resolution × compute
+    x-axis "No distribution (scalar)" --> "Learned-fraction distribution"
+    y-axis "Cheap (1x DQN)" --> "Expensive (+20% per FQF)"
+    quadrant-1 "Distributional, expensive"
+    quadrant-2 "Learned-fraction, expensive"
+    quadrant-3 "Scalar, cheap"
+    quadrant-4 "Distributional, cheap"
+    "Vanilla DQN": [0.10, 0.10]
+    "Multi-step Q": [0.18, 0.20]
+    "C51 (51 atoms)": [0.45, 0.50]
+    "QR-DQN (200 quantiles)": [0.62, 0.55]
+    "IQN (runtime tau)": [0.75, 0.55]
+    "FQF (learned fractions)": [0.92, 0.78]
+```
+
+The progression C51 → QR-DQN → IQN → FQF traces a diagonal of
+increasing distributional flexibility against increasing compute.
+The diagonal is monotonic in performance for the empirical regime
+tested (Atari median), but the per-game pattern is non-monotonic —
+QR-DQN's Q*bert peak (572,510) is not matched by FQF despite FQF's
+higher median. Multi-step Q occupies the lower-left as the
+non-distributional credit-assignment baseline.
+
 ---
 
 *Notes for integration:*

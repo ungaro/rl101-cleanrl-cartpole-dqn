@@ -283,6 +283,50 @@ Atari-scale benchmarks has not occurred.
    Factory) but the formal characterization of when each
    architecture is preferred remains incomplete.
 
+### F. Comparison summary
+
+| Method (year) | Legacy category | Mechanism | Primary cost | Best at | Empirical anchor |
+|---|---|---|---|---|---|
+| DRQN (2015)* | Q-Function Comp. (relocated) | LSTM head over DQN | Recurrent BPTT | Partial observability | Flickering Pong robust |
+| Ape-X (2018)† | New — Distributed | Async actors + centralized learner + PER | Multi-machine infrastructure | 50× wall-clock speedup | 434% median Atari HNS |
+| R2D2 (2019)† | New — Distributed + Recurrent | Ape-X + LSTM + replay burn-in | Recurrent replay infrastructure | Memory-demanding tasks | 1920% median Atari HNS |
+| Agent57 (2020)† | New — Distributed + Meta-policy | R2D2 + NGU + bandit policy portfolio | Massive compute (78B frames) | All 57 Atari at human level | 4766% median Atari HNS |
+| MAML-Q / Meta-Q (2017+)† | New — Meta-RL | Meta-train initialization across task distribution | Inner + outer-loop compute | Few-shot transfer | MetaWorld benchmarks |
+| PQN (2025) | Pure Q-Learning (cross-ref to §IV.H) | Synchronous vectorized envs + LayerNorm | Single-machine compute structure | Compute-efficient Atari | 220% median at 200M frames |
+
+*DRQN is relocated from the original draft's §IV.B; the
+reinterpretation as a contextual-adaptation method is the
+load-bearing claim of this section.
+
+†Ape-X, R2D2, Agent57, and MAML-Q are added in the revised paper;
+not in original draft.
+
+**Compute–performance positioning (log frames × performance):**
+
+```mermaid
+quadrantChart
+    title Scaling methods — compute scale × Atari median HNS
+    x-axis "200M frames" --> "78B frames"
+    y-axis "Below human" --> "Far above human"
+    quadrant-1 "High compute, high perf"
+    quadrant-2 "Low compute, high perf"
+    quadrant-3 "Low compute, low perf"
+    quadrant-4 "High compute, low perf"
+    "Nature DQN": [0.05, 0.10]
+    "Rainbow": [0.05, 0.30]
+    "PQN": [0.05, 0.30]
+    "Ape-X": [0.45, 0.55]
+    "R2D2": [0.55, 0.80]
+    "Agent57": [0.95, 0.95]
+```
+
+The PQN/Rainbow co-located point at the same low-compute regime is
+the visual case against pure compute scaling: algorithmic
+sophistication and minimalism plus normalization reach the same
+performance level at the same compute budget. The
+Ape-X → R2D2 → Agent57 progression then traces the compute axis as
+an orthogonal contributor.
+
 ---
 
 *Notes for integration:*

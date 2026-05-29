@@ -198,6 +198,23 @@ Three questions on this axis remain open:
    General-purpose goal relabeling for non-decomposable rewards
    would substantially expand the method's applicability.
 
+### F. Comparison summary
+
+| Method (year) | Legacy category | Mechanism | Primary cost | Best at | Empirical anchor |
+|---|---|---|---|---|---|
+| DQN replay buffer (2013) | Memory/Replay | Uniform sampling from buffer | Memory | Off-policy stability baseline | Atari first DQN |
+| PER (2016) | Memory/Replay | Sample $\propto |\delta_i|^\alpha$, IS-corrected | IS bias, prioritization $\alpha$ | Rare high-info transitions | 41/49 Atari > DQN |
+| DQfD (2018) | Memory/Replay | Augment buffer with expert demonstrations | Demonstration availability | Sparse-reward Atari | Private Eye: 42,457 |
+| MeDQN (2023) | Memory/Replay | Consolidation loss compresses buffer | $\lambda$ hyperparameter | Memory-constrained training | Atari 7GB → 0.7GB |
+| HER (2017)* | Memory/Replay | Goal relabeling for synthetic reward | Goal-conditioned only | Robotic manipulation | OpenAI Fetch ≈100% |
+
+*HER is added in the revised paper; not in original draft.
+
+The methods on this axis do not occupy a clean 2D trade-off; the
+relevant trade-offs are categorical (memory vs. compute vs.
+demonstration availability vs. environment structure). The
+comparison table alone suffices.
+
 ---
 
 *Notes for integration:*

@@ -25,7 +25,48 @@ present raw per-game scores under each paper's original evaluation
 protocol; Figure F-B2 (if included) provides an axis-stratified
 visual summary.
 
-### A. Task category stratification
+### A. Table structure and dual-view organization
+
+Tables II and III are structured on two axes simultaneously, and
+both groupings are load-bearing.
+
+**Row grouping (the legacy six-category taxonomy).** Methods are
+grouped into six rows: *Statistical Methods*, *Q-Function
+Computation*, *Memory/Replay*, *Ensemble-Based*, *Model-Based*, and
+*Pure Q-Learning*. This grouping is preserved from the original
+draft and matches the method-type taxonomy of prior Q-learning
+surveys [12]–[15]. The revised paper retains this row organization
+in Tables II/III as a presentation device, because (a) it lets
+readers familiar with the conventional taxonomy navigate the
+empirical data without translation; (b) it preserves the
+within-family comparability that the original draft worked to
+establish; and (c) the six-category grouping makes the modern-RL
+absences (§IV.E offline, §IV.F multi-agent, §IV.G distributed)
+visually salient — entire columns of the matrix that the legacy
+taxonomy has no row to hold.
+
+**Column grouping (task categories).** Atari games are grouped into
+seven task categories — Reaction-Time Control, Strategic Planning,
+Sparse Rewards, Dense Rewards, Large Observation Space, Partially
+Observable Environments, Stochastic Environments. This grouping is
+also preserved from the original draft.
+
+**Axis annotation (new).** A new rightmost column or footnote
+appended to each table maps each method's row to its primary §IV
+axis. The annotation does not change the table's structure; it
+provides a third lens. Readers can read Table II as
+"method-family × task-category" (the original draft's view) or as
+"primary-axis × task-category" (the revised view) by attending to
+either the row grouping or the new axis column.
+
+This dual-view organization is itself a contribution. Reviewers
+arriving with the catalogue-style expectation see the familiar
+six-category structure; reviewers seeking analytical synthesis read
+the prose subsection-by-subsection below and the new axis column.
+Neither audience needs to translate the empirical data to align
+with their reading.
+
+### B. Task category stratification
 
 The current draft's Tables II and III group Atari games into seven
 categories — Reaction-Time Control, Strategic Planning, Sparse
@@ -54,7 +95,7 @@ excel on the diagnostic category for $W_i$ and remain at baseline
 elsewhere. Tables II and III, read through this lens, support the
 claim.
 
-### B. Patterns by axis
+### C. Patterns by axis
 
 **Brittle exploration (W3, §IV.C).** The sparse-reward category
 (Montezuma's Revenge, Pitfall!, Private Eye) is where the axis
@@ -96,7 +137,7 @@ abundant under uniform sampling, the PER advantage is small. The
 ablation pattern from Rainbow (PER is the largest single contributor)
 is consistent with this category-stratified picture.
 
-### C. The reporting gaps as evidence
+### D. The reporting gaps as evidence
 
 Dashes ("---") in Tables II and III indicate that the original paper
 did not report a score for that game under the stated evaluation
@@ -122,7 +163,7 @@ performance profile undefined. The dashes are honest about reporting
 scope; reading them as evidence is internally consistent with the
 authors' own treatment of their methods.
 
-### D. The "improvement ladder" and its limits
+### E. The "improvement ladder" and its limits
 
 Within several axes — particularly W1 (overestimation) and W4
 (credit assignment) — a consistent chronological improvement
@@ -135,7 +176,7 @@ the top of the W4 ladder (FQF) does not necessarily improve on W3
 an axis* and a weak frame *across axes* — which is the central
 empirical argument for the structural pivot.
 
-### E. Why we do not produce a leaderboard
+### F. Why we do not produce a leaderboard
 
 Earlier surveys [13]–[15] bold or italicize the "best" result per
 game. This presentation implicitly invites comparison across methods

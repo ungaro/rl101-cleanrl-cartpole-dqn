@@ -243,6 +243,68 @@ for unrelated reasons.
    does it hurt online learning? — is empirically rich but
    theoretically thin.
 
+### F. Comparison summary
+
+All methods in this section are new content (not in the original
+draft).
+
+| Method (year) | Family | Mechanism | Primary cost | Best at | D4RL anchor (HalfCheetah med-expert) |
+|---|---|---|---|---|---|
+| BCQ (2019) | Policy constraint | Generative behavior model + perturbation | Generator quality | Narrow-support data | 64 |
+| BRAC (2019) | Policy constraint | KL/Wasserstein divergence penalty | Divergence weight tuning | Diverse offline data | Competitive across D4RL |
+| AWAC (2020) | Policy constraint | Advantage-weighted offline → online | $\beta$ hyperparameter | Offline-to-online bridge | 42 (offline-only) |
+| CQL (2020) | Value penalty | Penalize $Q$ at OOD actions | $\alpha$ hyperparameter sensitivity | Random/medium data | 91 |
+| IQL (2021) | Avoid the max | Expectile $V$, $Q$ backed up via $V(s')$ | $\tau$ hyperparameter | Single-network simplicity | 86 |
+| EDAC (2021) | Ensemble + diversity | Min over $K$-ensemble + gradient diversification | $K\times$ compute | Locomotion strongest | 107 |
+
+**2D positioning (behavior similarity × data-quality robustness):**
+
+```mermaid
+quadrantChart
+    title Offline RL methods — policy similarity to behavior × robustness to low-quality data
+    x-axis "Tightly constrained to behavior" --> "Unconstrained from behavior"
+    y-axis "Brittle on random data" --> "Robust on random data"
+    quadrant-1 "Unconstrained, robust"
+    quadrant-2 "Constrained, robust"
+    quadrant-3 "Constrained, brittle"
+    quadrant-4 "Unconstrained, brittle"
+    "Behavior Cloning": [0.05, 0.10]
+    "BCQ": [0.20, 0.40]
+    "BRAC": [0.30, 0.45]
+    "AWAC": [0.35, 0.30]
+    "CQL": [0.60, 0.80]
+    "IQL": [0.55, 0.75]
+    "EDAC": [0.70, 0.90]
+```
+
+Lower-left contains the behavior-cloning baseline. Policy-constraint
+methods (BCQ, BRAC, AWAC) cluster middle-left: constrained to
+behavior, modest robustness. Value-penalty and avoid-max methods
+(CQL, IQL) sit middle-right with strong robustness. EDAC's
+ensemble-diversification approach pushes farthest into the
+upper-right quadrant.
+
+**Method-selection decision tree:**
+
+```mermaid
+flowchart TD
+    Start[Offline data available?]
+    Start -->|No| Online[Use online methods — §IV.B]
+    Start -->|Yes| Quality{Data quality?}
+    Quality -->|Expert-only| BC[Behavior Cloning]
+    Quality -->|Medium-expert| IQL_AWAC[IQL or AWAC for online bridge]
+    Quality -->|Medium / Medium-replay| CQL[CQL value penalty]
+    Quality -->|Random / low-quality| EDAC[EDAC ensemble diversification]
+    IQL_AWAC --> Followup{Fine-tune online?}
+    Followup -->|Yes| AWAC_select[AWAC advantage-weighted]
+    Followup -->|No| IQL_select[IQL single-network]
+```
+
+The decision tree captures the typical practitioner heuristic: data
+quality is the dominant input to method selection in offline RL.
+For the offline-to-online setting specifically, AWAC and its
+calibrated extensions (Cal-QL) are the preferred bridge.
+
 ---
 
 *Notes for integration:*
