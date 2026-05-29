@@ -199,22 +199,25 @@ implementation" tags.
 
 ## Strategic recommendation
 
-Run **B + C this week**, in parallel; pitch **A as the next phase**.
+The original strategic call was to run B + C immediately and pitch A
+as the next phase. A and B have since been executed; C is the only
+outstanding action item.
 
-- **B (genealogy figure)** is the lowest-risk synthesis artifact and is
-  worth a week of one person's time on its own merits.
-- **C (repo spin-off)** is ~1 day of work and converts a Conclusion
-  bullet into a concrete deliverable. It also keeps momentum visible
-  to reviewers.
-- **A (structural pivot)** is the right intellectual move but is a 2–4
-  week multi-author exercise. Pitch it as the work for the next
-  revision cycle, with the genealogy figure as the framing artifact
-  that the structural pivot will operationalize.
-
-If the team has only enough bandwidth for one of these, do **B** —
-the figure is the single artifact that most directly addresses
-reviewer points 1 and 2, and it can be inserted into the draft with
-minimal prose disruption.
+- **A (structural pivot) — done.** All eight axis-sections plus §I,
+  §II, §III, §IV overview, §V–§VIII, and Appendix A are drafted in
+  `draft/`. See `00-README.md` for the full status map.
+- **B (genealogy figure) — done.** Design source in
+  `06-genealogy-figure.md`; mermaid renderings inserted into
+  `draft/4-overview.md` (master genealogy + modern-RL subgraph) and
+  `draft/4c-brittle-exploration.md` (exploration branch). Mermaid
+  `quadrantChart` 2D positioning grids inserted per-section in §IV.A,
+  §IV.C, §IV.D, §IV.E, §IV.H. Final TikZ/PGF rendering for the IEEE
+  template is the only pending sub-item.
+- **C (repo spin-off) — pending.** Promoted from a future-work
+  bullet to a named deliverable in `draft/8-conclusion.md` with four
+  design priorities and a prioritized roadmap (nine methods absent
+  from all six surveyed repositories per Table VII). The repository
+  itself is not yet stood up — that's the remaining concrete action.
 
 ---
 
