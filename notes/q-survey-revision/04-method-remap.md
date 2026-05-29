@@ -143,9 +143,9 @@ This remap is a *plan*. It does not validate that:
 - The new IV.E/F/G sections can be written to journal-quality depth in
   the time available (domain owners gating)
 - Every cross-reference resolves cleanly without prose contortions
-  (the worked example in `05-worked-section-overestimation.md` is the
+  (the worked example in `draft/4a-overestimation-bias.md` is the
   smoke test for this)
 - The bibliography-style claim "this is the *physician's* taxonomy" is
-  defensible (a 30-min lit search for other 2024-26 Q-learning surveys
-  using a similar axis would be cheap insurance — see the open
-  question at the end of `01-pitch-analysis.md`)
+  defensible — confirmed by the 2024–2026 prior-art sweep in
+  `07-prior-art-sweep.md`; no competing problem-first organization
+  found

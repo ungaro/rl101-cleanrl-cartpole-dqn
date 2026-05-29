@@ -255,5 +255,6 @@ explicitly* — and the reviewers asked for the rearrangement.
 
 *Companion files:*
 - `04-method-remap.md` — every method, current section vs. new axis (the spine)
-- `05-worked-section-overestimation.md` — IV.A written end-to-end as proof of concept
+- `draft/4a-overestimation-bias.md` — IV.A written end-to-end as proof of concept
+- `draft/1-introduction.md`, `draft/2-background.md` — revised §I and §II
 - `06-genealogy-figure.md` — ASCII genealogy visual

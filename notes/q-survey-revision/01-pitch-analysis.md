@@ -282,6 +282,7 @@ Full findings, borderline cases, and follow-up checks in
 
 - `03-new-outline.md` — proposed problem-first table of contents
 - `04-method-remap.md` — every method mapped to its new axis-section
-- `05-worked-section-overestimation.md` — Section IV.A written end-to-end as proof of concept
+- `draft/4a-overestimation-bias.md` — Section IV.A written end-to-end as proof of concept
+- `draft/1-introduction.md`, `draft/2-background.md` — revised §I and §II drafted in the new structure
 - `06-genealogy-figure.md` — ASCII genealogy figure draft
 - `07-prior-art-sweep.md` — 2024–2026 competing-surveys check
