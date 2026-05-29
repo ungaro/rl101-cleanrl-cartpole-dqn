@@ -199,25 +199,21 @@ implementation" tags.
 
 ## Strategic recommendation
 
-The original strategic call was to run B + C immediately and pitch A
-as the next phase. A and B have since been executed; C is the only
-outstanding action item.
-
 - **A (structural pivot) — done.** All eight axis-sections plus §I,
   §II, §III, §IV overview, §V–§VIII, and Appendix A are drafted in
   `draft/`. See `00-README.md` for the full status map.
 - **B (genealogy figure) — done.** Design source in
-  `06-genealogy-figure.md`; mermaid renderings inserted into
+  `06-genealogy-figure.md`; mermaid renderings in
   `draft/4-overview.md` (master genealogy + modern-RL subgraph) and
   `draft/4c-brittle-exploration.md` (exploration branch). Mermaid
-  `quadrantChart` 2D positioning grids inserted per-section in §IV.A,
-  §IV.C, §IV.D, §IV.E, §IV.H. Final TikZ/PGF rendering for the IEEE
-  template is the only pending sub-item.
-- **C (repo spin-off) — pending.** Promoted from a future-work
-  bullet to a named deliverable in `draft/8-conclusion.md` with four
-  design priorities and a prioritized roadmap (nine methods absent
-  from all six surveyed repositories per Table VII). The repository
-  itself is not yet stood up — that's the remaining concrete action.
+  `quadrantChart` 2D positioning grids in §IV.A, §IV.C, §IV.D,
+  §IV.E, §IV.H. Final TikZ/PGF rendering for the IEEE template is
+  the only pending sub-item.
+- **C (repo spin-off) — pending.** A named deliverable in
+  `draft/8-conclusion.md` with four design priorities and a
+  prioritized roadmap (nine methods absent from all six surveyed
+  repositories per Table VII). The repository itself is not yet
+  stood up — that's the remaining concrete action.
 
 ---
 
