@@ -111,7 +111,7 @@ sampled task produce a good task-specific Q-function. The
 meta-objective is
 
 $$
-\theta_0^\ast = \arg\min_{\theta_0} \mathbb{E}_{\mathcal{T} \sim p(\mathcal{T})}\bigl[\mathcal{L}_\mathcal{T}(\theta_0 - \alpha \nabla_{\theta_0} \mathcal{L}_\mathcal{T}(\theta_0))\bigr],
+\theta_0^\ast = \arg\min_{\theta_0} \mathbb{E}_{\mathcal{T} \sim p(\mathcal{T})}\bigl[\mathcal{L}_{\mathcal{T}}(\theta_0 - \alpha \nabla_{\theta_0} \mathcal{L}_{\mathcal{T}}(\theta_0))\bigr],
 $$
 
 requiring second-order gradients through the inner-loop adaptation.

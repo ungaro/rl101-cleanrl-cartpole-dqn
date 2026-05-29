@@ -35,13 +35,13 @@ in $N$ and is intractable beyond a handful of agents.
 The fundamental difficulty is the **Individual-Global-Max (IGM)
 property**. For decentralized execution, each agent must be able to
 select its action greedily from a local Q-function. For coherent
-optimization, the joint greedy action $\arg\max_\mathbf{a}
+optimization, the joint greedy action $\arg\max_{\mathbf{a}}
 Q_\text{tot}$ must coincide with the per-agent greedy actions
 $\{\arg\max_{a_i} Q_i\}$. A factorization $Q_\text{tot} = f(Q_1,
 \dots, Q_N)$ satisfies IGM if and only if
 
 $$
-\arg\max_\mathbf{a} Q_\text{tot}(\mathbf{s}, \mathbf{a}) = \bigl(\arg\max_{a_1} Q_1(o_1, a_1), \dots, \arg\max_{a_N} Q_N(o_N, a_N)\bigr).
+\arg\max_{\mathbf{a}} Q_\text{tot}(\mathbf{s}, \mathbf{a}) = \bigl(\arg\max_{a_1} Q_1(o_1, a_1), \dots, \arg\max_{a_N} Q_N(o_N, a_N)\bigr).
 $$
 
 Methods in this section impose structural constraints on $f$ that

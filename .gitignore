@@ -35,3 +35,15 @@ research/
 
 # Claude Code (local state, memory — never commit)
 .claude/
+
+# Q-survey PDF build artifacts (only paper.pdf is committed)
+notes/q-survey-revision/draft/mermaid-filter.err
+notes/q-survey-revision/draft/*.png
+notes/q-survey-revision/draft/*.svg
+notes/q-survey-revision/draft/mermaid-images/
+notes/q-survey-revision/draft/paper.md
+notes/q-survey-revision/draft/*.tex
+notes/q-survey-revision/draft/*.aux
+notes/q-survey-revision/draft/*.log
+notes/q-survey-revision/draft/*.out
+notes/q-survey-revision/draft/*.toc
