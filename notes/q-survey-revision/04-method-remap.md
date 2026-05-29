@@ -147,4 +147,5 @@ This remap is a *plan*. It does not validate that:
   smoke test for this)
 - The bibliography-style claim "this is the *physician's* taxonomy" is
   defensible (a 30-min lit search for other 2024-26 Q-learning surveys
-  using a similar axis would be cheap insurance — see Q in `02`)
+  using a similar axis would be cheap insurance — see the open
+  question at the end of `01-pitch-analysis.md`)
