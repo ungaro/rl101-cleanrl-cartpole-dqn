@@ -1,39 +1,5 @@
 # Q-Learning Survey — Direction Analysis
 
-Working notes for shaping this week's discussion. Based on the
-`RL_Project_Pitch_Q_Survey.pdf` deck (24 slides) and the full 20-page
-draft (`IEEE_AI_Journal_on_Q_Learning_New_Version.pdf`, May 29 2026)
-with its five-point IEEE TAI reviewer summary.
-
-This was the **direction-setting note**. The three suggestions below
-have been substantially executed; this file is preserved as the "why"
-record. See `00-README.md` for current overall status and
-`03-new-outline.md` for the per-section build status.
-
-## Status snapshot (suggestion-by-suggestion)
-
-- **Suggestion A — problem-first structural pivot:** Drafted in full.
-  See `draft/1-introduction.md`, `draft/2-background.md`, and all
-  eight `draft/4*.md` axis-sections. Differentiation against 2024–2026
-  prior art confirmed in `07-prior-art-sweep.md`.
-- **Suggestion B — centerpiece figure:** Genealogy figure design
-  drafted as ASCII + mermaid in `06-genealogy-figure.md`; mermaid
-  quadrantChart 2D positioning grids drafted per-section in §IV.A,
-  §IV.C, §IV.D, §IV.E, §IV.H. Final TikZ/PGF rendering for the paper
-  itself is pending.
-- **Suggestion C — Q-learning repo spin-off:** Promoted to a named
-  deliverable in `draft/8-conclusion.md` with four design priorities
-  and a prioritized roadmap (nine methods absent from all six
-  surveyed repositories per Table VII). **Repository stub not yet
-  stood up** — this is the one outstanding action item.
-
-The rest of this file is preserved as the analytical record that led
-to the structural pivot. Skip to "Strategic recommendation" if you
-need only the conclusion; the per-suggestion content is now stale as a
-plan but useful as the rationale.
-
----
-
 ## The core read of the reviewer feedback
 
 The five reviewer points (algorithms feel isolated; need conceptual
@@ -303,9 +269,34 @@ Full findings, borderline cases, and follow-up checks in
 
 *Companion files (all on `alp/q-survey-revision-prep`, not merged to main):*
 
-- `03-new-outline.md` — proposed problem-first table of contents
-- `04-method-remap.md` — every method mapped to its new axis-section
-- `draft/4a-overestimation-bias.md` — Section IV.A written end-to-end as proof of concept
-- `draft/1-introduction.md`, `draft/2-background.md` — revised §I and §II drafted in the new structure
-- `06-genealogy-figure.md` — ASCII genealogy figure draft
+- `03-new-outline.md` — problem-first table of contents
+- `04-method-remap.md` — working notes for the legacy ↔ axis mapping; canonical version is `draft/A-legacy-indexer.md`
+- `06-genealogy-figure.md` — genealogy figure design source (ASCII + mermaid)
 - `07-prior-art-sweep.md` — 2024–2026 competing-surveys check
+- `08-figure-proposals.md` — figure / comparison artifact catalogue
+- `09-section-notes.md` — per-section material notes (bibliography, citations, scope decisions)
+- `draft/` — the paper itself, one file per section
+
+---
+
+## Status snapshot (suggestion-by-suggestion)
+
+- **Suggestion A — problem-first structural pivot:** Drafted in full.
+  See `draft/1-introduction.md`, `draft/2-background.md`, all eight
+  `draft/4*.md` axis-sections, `draft/4-overview.md`,
+  `draft/5-atari-benchmarks.md`, `draft/6-tabular-empirical.md`,
+  `draft/7-repositories.md`, `draft/8-conclusion.md`, and
+  `draft/A-legacy-indexer.md`. Differentiation against 2024–2026
+  prior art confirmed in `07-prior-art-sweep.md`.
+- **Suggestion B — centerpiece figure:** Genealogy figure design
+  drafted in `06-genealogy-figure.md`; mermaid renderings inserted
+  into `draft/4-overview.md` (master genealogy + modern-RL branches)
+  and `draft/4c-brittle-exploration.md` (exploration branch). Mermaid
+  `quadrantChart` 2D positioning grids inserted per-section in §IV.A,
+  §IV.C, §IV.D, §IV.E, §IV.H. Final TikZ/PGF rendering for the paper
+  itself is pending.
+- **Suggestion C — Q-learning repo spin-off:** Promoted to a named
+  deliverable in `draft/8-conclusion.md` with four design priorities
+  and a prioritized roadmap (nine methods absent from all six
+  surveyed repositories per Table VII). Repository stub not yet
+  stood up — outstanding action item.

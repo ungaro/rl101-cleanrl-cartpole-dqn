@@ -1,16 +1,4 @@
-# Section VIII — Conclusion and Future Work (revised draft)
-
-Reframes the Conclusion as a summary organized around the eight
-weakness axes, with the Q-learning–specific repository promoted from
-a future-work bullet to a named deliverable with a roadmap.
-
-~700 words. The summary subsection (VIII.A) is the only section of
-the entire revised paper that is *primarily summary* rather than
-analysis; everything before it is structured argument.
-
----
-
-## VIII. CONCLUSION AND FUTURE WORK
+# VIII. Conclusion and Future Work
 
 ### A. Summary
 
@@ -142,25 +130,3 @@ admit new mechanisms. The problem-first organization is intended
 to be extensible: new methods slot into existing axes, and new
 axes can be added as the field recognizes them. The framework's
 value is precisely that it survives those additions.
-
----
-
-*Notes for integration:*
-- The "Summary" subsection (§VIII.A) is the longest summary
-  passage in the paper. Earlier sections do not summarize
-  themselves; the summary is concentrated here.
-- The repository proposal in §VIII.B is the named deliverable that
-  the current draft's Conclusion only promises. If the repository
-  stub is stood up before submission (cf. `01-pitch-analysis.md`
-  Suggestion C), the URL can be cited inline; if not, the
-  description here suffices as future-work commitment.
-- §VIII.C deliberately does not enumerate every open question from
-  the per-section §E subsections — that would be redundant. The
-  three cross-axis directions highlighted are the ones most
-  visible only from the cross-axis viewpoint of this paper's
-  structure.
-- The closing paragraph (§VIII.D) makes the framework's *
-  extensibility* claim explicit. Reviewers asking "what about
-  Method X that you didn't cover" can be answered by pointing to
-  the axis-extensibility argument — the framework accommodates
-  additions without restructuring.

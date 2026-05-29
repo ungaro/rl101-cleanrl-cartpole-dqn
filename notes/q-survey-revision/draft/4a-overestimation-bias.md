@@ -1,21 +1,4 @@
-# Worked Example: Section IV.A — Overestimation Bias
-
-This is one fully-written axis-section in the proposed problem-first
-style — the smoke test for whether the new format works as prose.
-
-The structure matches the template specified in `03-new-outline.md`:
-(A) the weakness, (B) solution families, (C) trade-offs, (D) empirical
-evidence, (E) open questions.
-
-The prose is journal-grade-but-draft: it would still need an editing
-pass for tone and citation polish, but it is meant to give the team a
-concrete sense of *how much rewriting* the structural pivot requires.
-Spoiler: most existing per-method paragraphs survive nearly verbatim;
-what changes is the *connective tissue* around them.
-
----
-
-## IV.A. Overestimation Bias
+# IV.A. Overestimation Bias
 
 ### A. The Weakness
 
@@ -230,14 +213,11 @@ The methods of this section, summarized in one table:
 | Double DQN (2016) | Q-Function Comp. | Online net selects, target net evaluates | Free (uses existing target net) | Most Atari games | Q*bert: 14,875 (vs. 10,596 DQN) |
 | Dueling DQN (2016)* | Q-Function Comp. | V(s) + centered A(s,a) decomposition | Modest architectural | Many-action states | Atari median: incremental |
 | EBQL (2021) | Ensemble-Based | $K$-ensemble, target = avg of $K-1$ others | $K\times$ compute, $K\times$ memory | Bias-variance calibration | 11 Atari > Double DQN |
-| Maximin Q (2020)† | Q-Function Comp. | $\min$ over $k$ Q-estimators | $k\times$ compute | Pure under-estimation pressure | Tabular MDPs |
-| REDQ (2021)† | Ensemble-Based | $\min$ of $M$ random ensemble members | $K\times$ compute, deliberately under-biased | Continuous-control SAC | MuJoCo locomotion |
+| Maximin Q (2020) | Q-Function Comp. | $\min$ over $k$ Q-estimators | $k\times$ compute | Pure under-estimation pressure | Tabular MDPs |
+| REDQ (2021) | Ensemble-Based | $\min$ of $M$ random ensemble members | $K\times$ compute, deliberately under-biased | Continuous-control SAC | MuJoCo locomotion |
 
 *Dueling DQN's primary section is §IV.H (stability); listed here as
 incidental contributor to bias control.
-
-†Maximin Q and REDQ are added in the revised paper; not in original
-draft.
 
 **2D positioning (bias × cost):**
 
@@ -266,12 +246,3 @@ under-estimation pressure of REDQ and Maximin. Double DQN sits in
 the lower-middle: cheap and lightly under-biased — the canonical
 "free improvement" point. EBQL fills the middle band: calibratable
 bias at proportional compute cost.
-
----
-
-*This section: ~1600 words, including LaTeX. Estimated final length in
-the IEEE template: 2.5–3 pages, comparable to current section IV.B but
-denser in cross-references and trade-off analysis. The existing draft's
-per-method paragraphs were repurposed nearly verbatim; the substantial
-new writing is the framing (A), trade-offs (C), and open-question (E)
-subsections. ~70% of the existing draft text survives the move.*

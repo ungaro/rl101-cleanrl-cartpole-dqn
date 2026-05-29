@@ -1,21 +1,9 @@
-# Section IV.E — Distribution Shift (Offline Reinforcement Learning)
+# IV.E. Distribution Shift (Offline Reinforcement Learning)
 
-Addresses **W5** of the eight weaknesses introduced in §II.B. This
-section is the first of three covering methods entirely new to the
-current draft. It introduces a benchmark family (D4RL [Fu et al.
-2020]) different from the Atari suite that dominates Sections V and
-VI, since the distribution-shift axis cannot be evaluated on online
-benchmarks.
-
-**Status:** first-pass draft pending review by a co-author with
-offline-RL background. Per-method technical claims have been
-cross-checked against the original papers, but framing decisions —
-especially the four-family taxonomy and the choice of canonical
-methods — should be validated before integration.
-
----
-
-## IV.E. Distribution Shift (Offline Reinforcement Learning)
+Addresses **W5** of the eight weaknesses introduced in §II.B. The
+section introduces the D4RL benchmark family [Fu et al. 2020], used
+in place of the Atari suite of Sections V and VI because the
+distribution-shift axis cannot be evaluated on online benchmarks.
 
 ### A. The Weakness
 
@@ -245,9 +233,6 @@ for unrelated reasons.
 
 ### F. Comparison summary
 
-All methods in this section are new content (not in the original
-draft).
-
 | Method (year) | Family | Mechanism | Primary cost | Best at | D4RL anchor (HalfCheetah med-expert) |
 |---|---|---|---|---|---|
 | BCQ (2019) | Policy constraint | Generative behavior model + perturbation | Generator quality | Narrow-support data | 64 |
@@ -304,30 +289,3 @@ The decision tree captures the typical practitioner heuristic: data
 quality is the dominant input to method selection in offline RL.
 For the offline-to-online setting specifically, AWAC and its
 calibrated extensions (Cal-QL) are the preferred bridge.
-
----
-
-*Notes for integration:*
-- This section is the largest new addition to the paper. The full
-  bibliography needs ~10 new entries: BCQ (arXiv:1812.02900), BRAC
-  (arXiv:1911.11361), AWAC (arXiv:2006.09359), CQL (arXiv:2006.04779),
-  IQL (arXiv:2110.06169), EDAC (arXiv:2110.01548), D4RL
-  (arXiv:2004.07219), Decision Transformer (arXiv:2106.01345), Gato
-  (arXiv:2205.06175), Cal-QL (arXiv:2303.05479).
-- The Springer NCAA 2026 distribution-shift survey
-  (10.1007/s00521-026-11966-8, see `07-prior-art-sweep.md`) should
-  be cited at the head of this section as the single existing
-  problem-first precedent.
-- The D4RL benchmark table requires permission/citation handling
-  consistent with the rest of the paper's empirical tables. Where
-  Tables II–III extract online Atari scores from original papers,
-  Section IV.E's empirical evidence draws from the D4RL benchmark
-  leaderboard plus individual offline-method papers.
-- Cross-references: §IV.A (ensembles for bias control, EDAC), §IV.B
-  (HER trajectory relabeling as a related sample-efficiency
-  mechanism), §IV.H (stability mechanism interaction).
-- **Sequence-modeling approaches (Decision Transformer, Trajectory
-  Transformer, Gato) are deliberately scoped out** as they are not
-  Q-learning. They appear in the open questions because they are the
-  dominant approach in the data-scaling regime, but the paper's
-  scope is the Q-learning family.

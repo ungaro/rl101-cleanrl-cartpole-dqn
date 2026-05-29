@@ -1,18 +1,4 @@
-# Section VII — Repository Comparison (revised draft)
-
-Preserves Tables VII and VIII structurally. Reframes the
-surrounding prose to:
-(a) annotate repository coverage by axis rather than by method type;
-(b) distinguish this paper's taxonomic analysis from Hundal et al.
-2025's empirical PPO audit (per `07-prior-art-sweep.md`);
-(c) cross-reference each "absent from all repositories" method to
-its axis-section in §IV.
-
-~700 words.
-
----
-
-## VII. COMPARATIVE ANALYSIS OF DEEP Q-LEARNING REPOSITORIES
+# VII. Comparative Analysis of Deep Q-Learning Repositories
 
 This section analyzes algorithmic coverage of Q-learning variants
 across six widely-used open-source deep RL repositories — Tianshou
@@ -106,8 +92,7 @@ Q-learning–specific repository.
 
 ### D. Design trade-offs across repositories
 
-Table VIII (preserved from the current draft) summarizes the design
-priorities of each repository:
+Table VIII summarizes the design priorities of each repository:
 
 - **Tianshou** and **XuanCe** prioritize coverage breadth across
   methods at the cost of single-method depth or reproducibility
@@ -149,18 +134,3 @@ Hundal et al. as a release-quality gate.
 
 Section VIII discusses this proposal as the paper's principal
 forward-looking deliverable.
-
----
-
-*Notes for integration:*
-- Tables VII and VIII are preserved structurally from the current
-  draft. The axis-aware annotation of Table VII (§VII.B) is new
-  framing prose; the table itself does not need modification.
-- The Hundal et al. (2025) citation, introduced in §I, is the
-  centerpiece of §VII.A. One paragraph clearly distinguishing
-  taxonomic vs. empirical-reproducibility analysis covers the
-  defensive citation work required by `07-prior-art-sweep.md`.
-- The "absent from all six repositories" table in §VII.C is the
-  bridge to §VIII's repository spin-off proposal. The list also
-  serves as a roadmap: the first eight methods the proposed
-  community repository should implement are the eight in §VII.C.

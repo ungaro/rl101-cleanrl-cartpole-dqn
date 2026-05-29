@@ -1,19 +1,13 @@
-# Section IV.H — Function-Approximation Instability
+# IV.H. Function-Approximation Instability
 
 Addresses **W8** of the eight weaknesses introduced in §II.B. Methods
 here modify the *training recipe* — target networks, normalization,
 architectural decomposition — to damp the instability that arises
 when Q-learning is combined with off-policy bootstrapping and
-function approximation.
-
-This section also serves as the natural home for "remove components
-that previously stabilized training" methods like PQN, which argue
-that the standard recipe is unnecessarily complex when the right
-normalization and regularization are applied.
-
----
-
-## IV.H. Function-Approximation Instability
+function approximation. The section also covers methods that
+*remove* components previously thought essential for stabilization
+(notably PQN, which argues the standard recipe is unnecessarily
+complex when the right normalization and regularization are applied).
 
 ### A. The Weakness
 
@@ -232,14 +226,7 @@ admit multiple interpretations; this is one.
 | Dueling DQN (2016)* | Q-Function Comp. | $V(s) + (A(s,a) - \bar A)$ decomposition | Architectural complexity | Many-action states | Rainbow ablation: smallest impact |
 | MeDQN consolidation (2023) | Memory/Replay | Past-$Q$ distillation loss | $\lambda$ hyperparameter | Catastrophic forgetting | + memory efficiency |
 | PQN (2025) | Pure Q-Learning | LayerNorm + $n$-step + parallel envs; no target net | Compute structure shift | Modern stability recipe | 50× wall-clock, matches Rainbow |
-| Munchausen DQN (2020)† | Q-Function Comp. | $\tilde r_t = r_t + \alpha \tau \log \pi(a_t \mid s_t)$ | $\tau$ hyperparameter | Implicit KL regularization | Atari competitive |
-
-*Dueling DQN is relocated from §IV.B; the re-interpretation as a
-stability mechanism (rather than a value-estimation mechanism) is
-the load-bearing claim of subsection B.2.
-
-†Munchausen DQN is added in the revised paper; not in original
-draft.
+| Munchausen DQN (2020) | Q-Function Comp. | $\tilde r_t = r_t + \alpha \tau \log \pi(a_t \mid s_t)$ | $\tau$ hyperparameter | Implicit KL regularization | Atari competitive |
 
 **2D positioning (classical → modern recipe × sample efficiency):**
 
@@ -267,24 +254,3 @@ performance with substantially better sample efficiency at fixed
 compute. The interior of the chart contains hybrid methods —
 MeDQN and Munchausen DQN add stabilization mechanisms to the
 classical recipe rather than replacing it.
-
----
-
-*Notes for integration:*
-- Dueling DQN is relocated from §IV.B (Q-Function Computation) to
-  §IV.H. The re-interpretation as a stability mechanism is the
-  load-bearing claim and may attract reviewer pushback. The
-  argument cites the Rainbow ablation as evidence.
-- Munchausen DQN (Vieillard et al. 2020, NeurIPS) is new content.
-  Bibliography entry: arXiv:2007.14430. Suggested placement near
-  the Rainbow reference.
-- Nature DQN's overall coverage is split: target network goes here
-  (§IV.H); the broader DQN architecture as the foundational
-  deep-learning recipe stays in the new §V. The split reflects the
-  separation of "what makes DQN *deep*" (CNN architecture, replay,
-  joint optimization) from "what makes DQN *stable*" (target
-  networks).
-- Cross-references: §IV.A (dueling's overestimation aspect), §IV.B
-  (MeDQN as consolidation, PQN's replay-replacement argument),
-  §IV.D ($n$-step interaction with target staleness), §IV.E
-  (offline-RL stability), §IV.G (PQN's parallelism for scaling).

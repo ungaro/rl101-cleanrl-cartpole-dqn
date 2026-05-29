@@ -1,12 +1,8 @@
-# Section IV.B — Sample Inefficiency
+# IV.B. Sample Inefficiency
 
 Addresses **W2** of the eight weaknesses introduced in §II.B. Methods
 here modify *how transitions are stored, sampled, or augmented* to
 extract more learning signal per environment interaction.
-
----
-
-## IV.B. Sample Inefficiency
 
 ### A. The Weakness
 
@@ -112,9 +108,8 @@ under a synthetic goal, densifying the reward signal at no
 environmental cost.
 
 HER is the method that unlocked sample-efficient Q-learning for
-sparse-reward robotic manipulation tasks. It does not appear in
-the current draft and represents one of the largest single
-sample-efficiency advances of the past decade.
+sparse-reward robotic manipulation tasks and represents one of the
+largest single sample-efficiency advances of the past decade.
 
 ### C. Trade-offs
 
@@ -206,25 +201,9 @@ Three questions on this axis remain open:
 | PER (2016) | Memory/Replay | Sample $\propto |\delta_i|^\alpha$, IS-corrected | IS bias, prioritization $\alpha$ | Rare high-info transitions | 41/49 Atari > DQN |
 | DQfD (2018) | Memory/Replay | Augment buffer with expert demonstrations | Demonstration availability | Sparse-reward Atari | Private Eye: 42,457 |
 | MeDQN (2023) | Memory/Replay | Consolidation loss compresses buffer | $\lambda$ hyperparameter | Memory-constrained training | Atari 7GB → 0.7GB |
-| HER (2017)* | Memory/Replay | Goal relabeling for synthetic reward | Goal-conditioned only | Robotic manipulation | OpenAI Fetch ≈100% |
-
-*HER is added in the revised paper; not in original draft.
+| HER (2017) | Memory/Replay | Goal relabeling for synthetic reward | Goal-conditioned only | Robotic manipulation | OpenAI Fetch ≈100% |
 
 The methods on this axis do not occupy a clean 2D trade-off; the
 relevant trade-offs are categorical (memory vs. compute vs.
 demonstration availability vs. environment structure). The
 comparison table alone suffices.
-
----
-
-*Notes for integration:*
-- HER (Andrychowicz et al. 2017) is new content; the bibliography
-  needs the citation: "Hindsight Experience Replay," NeurIPS 2017,
-  arXiv:1707.01495. Recommended placement near the DQfD reference.
-- The DQfD writeup is shortened from the current draft's ~400-word
-  treatment to ~150 words. The recovery is in framing density, not
-  in lost detail; the per-game results in Tables II–III carry the
-  load.
-- Cross-references: §IV.A (Rainbow), §IV.C (Private Eye exploration),
-  §IV.E (offline RL transfer), §IV.G (distributed training), §IV.H
-  (MeDQN consolidation loss).

@@ -1,21 +1,4 @@
-# Section II — Background and Problem Setup (revised draft)
-
-Expands the current §II from a half-page MDP setup to a ~3-page
-section that introduces the MDP formalism and then formally states
-the eight weaknesses that structure the rest of the paper.
-
-The MDP subsection is preserved nearly verbatim from the current
-draft. The new subsection — "Eight Weaknesses of Vanilla Q-Learning"
-— is the conceptual spine. Each weakness is named, formally stated
-in 2–4 lines of math, given an empirical illustration in one
-paragraph, and forward-referenced to the Section IV subsection where
-the response methods are surveyed.
-
-~1500 words. Math uses LaTeX-ready notation throughout.
-
----
-
-## II. BACKGROUND AND PROBLEM SETUP
+# II. Background and Problem Setup
 
 ### II.A. Markov Decision Processes
 
@@ -184,25 +167,3 @@ respectively; $\pi$ denotes a policy; $\alpha$ a learning rate; $\gamma$
 a discount factor; $\mathcal{D}$ a replay buffer; and $\epsilon$ either
 an exploration rate or a noise variable, disambiguated by context.
 Deviations from this convention are explicitly flagged in each section.
-
----
-
-*Notes for integration:*
-
-- The MDP subsection (II.A) is preserved nearly verbatim from the
-  current draft; only minor wording polish and the value-function
-  definitions have been added.
-- The eight-weaknesses subsection (II.B) is new and load-bearing —
-  every Section IV subsection forward-references it. Recommend a
-  careful review pass with co-authors before integration, since the
-  exact formulation of each weakness will shape the §IV prose.
-- Two citations referenced in II.B that may need to be added to the
-  bibliography if not already present: Thrun & Schwartz 1993 ("Issues
-  in using function approximation for reinforcement learning"), and
-  Sutton & Barto 2018 ("Reinforcement Learning: An Introduction," 2nd
-  ed., for the deadly-triad framing).
-- The notation conventions subsection (II.C) is new and shared by
-  every subsequent section — it removes the need for each Section IV
-  subsection to redefine $\theta, \theta^-, \alpha$, etc.
-- Length estimate: II.A ~0.5 pages, II.B ~2.5 pages, II.C ~0.5 pages
-  → ~3.5 pages total in IEEE template.

@@ -1,25 +1,15 @@
-# Section IV.F — Multi-Agent Coordination
+# IV.F. Multi-Agent Coordination
 
-Addresses **W6** of the eight weaknesses introduced in §II.B. This
+Addresses **W6** of the eight weaknesses introduced in §II.B. The
 section covers cooperative multi-agent Q-learning via *value
 decomposition*: factorizations of the joint Q-function that scale to
 many agents while preserving the property that agents can act
 greedily according to their local Q without coordinated optimization
 at execution time.
 
-**Status:** first-pass draft pending review by a co-author with
-multi-agent RL background. The four-method coverage (VDN, QMIX,
-QPLEX, QTRAN) is canonical but the literature has expanded rapidly
-since 2020; coverage decisions should be validated before
-integration.
-
 The benchmark for this section is SMAC (StarCraft Multi-Agent
 Challenge) [Samvelyan et al. 2019]. Atari is not multi-agent and
 plays no role in this section.
-
----
-
-## IV.F. Multi-Agent Coordination
 
 ### A. The Weakness
 
@@ -238,9 +228,6 @@ on the newer benchmarks with broadly consistent rankings.
 
 ### F. Comparison summary
 
-All methods in this section are new content (not in the original
-draft).
-
 | Method (year) | Mechanism | Constraint type | Expressiveness | Trainability | SMAC anchor (test win %) |
 |---|---|---|---|---|---|
 | VDN (2018) | Additive: $Q_\text{tot} = \sum_i Q_i$ | Strict additivity | Lowest | Highest | 3m: 97 / 2c_vs_64zg: 5 |
@@ -258,25 +245,3 @@ hard/super-hard; QTRAN's theoretical advantage does not realize
 empirically. The comparison table alone captures the relevant
 information; a 2D positioning grid would force the methods onto a
 single line.
-
----
-
-*Notes for integration:*
-- This is the second of the three modern-RL additions. The
-  bibliography needs ~5 new entries: VDN (arXiv:1706.05296), QMIX
-  (arXiv:1803.11485), QPLEX (arXiv:2008.01062), QTRAN
-  (arXiv:1905.05408), SMAC (arXiv:1902.04043).
-- The SMAC results table is drawn from QPLEX's reported numbers,
-  which use the standard SMAC evaluation protocol. Independent
-  replication results (e.g., [Hu et al. 2021], "Rethinking the
-  Implementation Tricks and Monotonicity Constraint in
-  Cooperative MARL") report different absolute numbers but
-  consistent relative rankings.
-- The section deliberately scopes out *competitive* multi-agent
-  RL (Nash Q-learning, opponent modeling) and *mixed*
-  cooperative-competitive settings. The paper's scope is
-  cooperative value decomposition; broader multi-agent treatments
-  are a natural sibling but separate undertaking.
-- Cross-references: §IV.E (offline + multi-agent cross-axis open
-  question), §IV.H (multi-agent function-approximation
-  instability inheritance).

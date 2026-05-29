@@ -1,18 +1,13 @@
-# Section IV.D — Reward Sparsity and Credit Assignment
+# IV.D. Reward Sparsity and Credit Assignment
 
 Addresses **W4** of the eight weaknesses introduced in §II.B. Methods
 here modify *what the return signal represents* — its temporal
 extent, its distributional form, or both — to extract richer credit-
 assignment information from each trajectory.
 
-The most consequential framing decision in this section: distributional
-RL is treated as a *credit-assignment* method rather than an
-*uncertainty* method. The case for this re-interpretation is made in
-the per-method paragraphs and the open-questions subsection.
-
----
-
-## IV.D. Reward Sparsity and Credit Assignment
+Distributional RL is treated as a *credit-assignment* method rather
+than an *uncertainty* method. The case for this reading is developed
+in the per-method paragraphs and the open-questions subsection.
 
 ### A. The Weakness
 
@@ -259,20 +254,3 @@ tested (Atari median), but the per-game pattern is non-monotonic —
 QR-DQN's Q*bert peak (572,510) is not matched by FQF despite FQF's
 higher median. Multi-step Q occupies the lower-left as the
 non-distributional credit-assignment baseline.
-
----
-
-*Notes for integration:*
-- The distributional methods (C51, QR-DQN, IQN, FQF) are relocated
-  from the draft's §IV.A (Statistical Methods) to §IV.D. The
-  re-interpretation as a credit-assignment family rather than an
-  uncertainty family is the load-bearing claim of this section;
-  reviewers may push back. The argument is made in subsection A and
-  reinforced in the open-question on compositional gains.
-- Multi-step Q-Learning relocates from §IV.F (Pure Q-Learning /
-  Minimal Extensions) to §IV.D, with foundational coverage
-  (Watkins / SARSA / NFQ) remaining in the new §V.
-- Cross-references: §IV.A (Rainbow's ablation), §IV.B (PER as the
-  other major Rainbow contributor), §IV.C (the
-  exploration-vs.-credit-assignment empirical separation), §IV.E
-  (distributional methods in offline RL — EDAC, IQL).

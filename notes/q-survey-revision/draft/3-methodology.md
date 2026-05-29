@@ -1,17 +1,4 @@
-# Section III — Methodology (revised draft)
-
-Trimmed from the current Methodology section. Removes the
-"six-category preamble" (the old taxonomy, now relegated to
-Appendix A as a legacy indexer) and adds a brief account of the
-problem-first organization methodology.
-
-~400 words. The Table I contribution comparison (now extended with
-Ghasemi 2024/2025 per `07-prior-art-sweep.md`) is referenced but
-preserved structurally from the current draft.
-
----
-
-## III. METHODOLOGY
+# III. Methodology
 
 This review surveys Q-learning algorithms spanning over three decades
 of development, from foundational tabular approaches to recent deep
@@ -101,17 +88,3 @@ contribution: the literature analysis demonstrates methodological
 diversity, the controlled experiments isolate algorithmic from
 architectural effects, and the repository analysis maps the
 practical landscape of available implementations.
-
----
-
-*Notes for integration:*
-- Table I update needed: add a fifth comparator column for Ghasemi
-  et al. 2024/2025 (arXiv:2411.18892). Check-mark pattern preserved
-  per `07-prior-art-sweep.md`.
-- The "six categories" preamble in the current draft's
-  §III is removed in favor of the eight-weakness framing of §II.B.
-  The mapping from the old categories to the new axes is preserved
-  in Appendix A.
-- Source-selection criteria here formalize what was implicit in the
-  current draft. Inclusion is not exhaustive; the criteria provide
-  defense against reviewer pushback on omissions.

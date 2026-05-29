@@ -1,20 +1,4 @@
-# Section V — Atari Benchmark Analysis (revised draft)
-
-Reframes the prose around Tables II and III to use task-category
-stratification as evidence for the axis-stratified claim. Replaces
-the current apologetic framing of reporting gaps with an analytical
-one in which the gaps themselves carry information.
-
-Tables II and III are preserved structurally; the surrounding prose
-is rewritten. ~800 words.
-
-The optional grouped-bar figure proposed in `08-figure-proposals.md`
-(F-B2) would sit naturally inside this section as a visual complement
-to Tables II/III.
-
----
-
-## V. ATARI BENCHMARK ANALYSIS
+# V. Atari Benchmark Analysis
 
 This section synthesizes Atari benchmark performance reported across
 the methods of §IV. Because third-party implementations often diverge
@@ -30,52 +14,42 @@ visual summary.
 Tables II and III are structured on two axes simultaneously, and
 both groupings are load-bearing.
 
-**Row grouping (the legacy six-category taxonomy).** Methods are
-grouped into six rows: *Statistical Methods*, *Q-Function
+**Row grouping (the conventional six-category taxonomy).** Methods
+are grouped into six rows: *Statistical Methods*, *Q-Function
 Computation*, *Memory/Replay*, *Ensemble-Based*, *Model-Based*, and
-*Pure Q-Learning*. This grouping is preserved from the original
-draft and matches the method-type taxonomy of prior Q-learning
-surveys [12]–[15]. The revised paper retains this row organization
-in Tables II/III as a presentation device, because (a) it lets
-readers familiar with the conventional taxonomy navigate the
-empirical data without translation; (b) it preserves the
-within-family comparability that the original draft worked to
-establish; and (c) the six-category grouping makes the modern-RL
-absences (§IV.E offline, §IV.F multi-agent, §IV.G distributed)
-visually salient — entire columns of the matrix that the legacy
-taxonomy has no row to hold.
+*Pure Q-Learning*. This grouping matches the method-type taxonomy
+used by prior Q-learning surveys [12]–[15]. We retain it in Tables
+II/III as a presentation device, because (a) it lets readers familiar
+with the conventional taxonomy navigate the empirical data without
+translation; (b) it preserves within-family comparability across
+the historical literature; and (c) the six-category grouping makes
+the modern-RL families (§IV.E offline, §IV.F multi-agent, §IV.G
+distributed) visually salient as absences — there is no
+six-category row for them to occupy.
 
 **Column grouping (task categories).** Atari games are grouped into
 seven task categories — Reaction-Time Control, Strategic Planning,
 Sparse Rewards, Dense Rewards, Large Observation Space, Partially
-Observable Environments, Stochastic Environments. This grouping is
-also preserved from the original draft.
+Observable Environments, Stochastic Environments.
 
-**Axis annotation (new).** A new rightmost column or footnote
-appended to each table maps each method's row to its primary §IV
-axis. The annotation does not change the table's structure; it
-provides a third lens. Readers can read Table II as
-"method-family × task-category" (the original draft's view) or as
-"primary-axis × task-category" (the revised view) by attending to
-either the row grouping or the new axis column.
+**Axis annotation.** A rightmost column or footnote on each table
+maps each method's row to its primary §IV axis. The annotation does
+not change the table's structure; it provides a third lens. Readers
+can read Table II as "method-family × task-category" by attending to
+the row grouping, or as "primary-axis × task-category" by attending
+to the axis column.
 
-This dual-view organization is itself a contribution. Reviewers
-arriving with the catalogue-style expectation see the familiar
-six-category structure; reviewers seeking analytical synthesis read
-the prose subsection-by-subsection below and the new axis column.
+The dual-view organization is itself a contribution. Readers
+arriving with the catalogue-style expectation find the familiar
+six-category structure; readers seeking analytical synthesis follow
+the prose subsection-by-subsection below and the axis column.
 Neither audience needs to translate the empirical data to align
 with their reading.
 
 ### B. Task category stratification
 
-The current draft's Tables II and III group Atari games into seven
-categories — Reaction-Time Control, Strategic Planning, Sparse
-Rewards, Dense Rewards, Large Observation Space, Partially Observable
-Environments, and Stochastic Environments. These categories were
-introduced to provide a structured view of where methods excel; in
-the revised paper they take on additional load-bearing significance.
-**Each task category preferentially tests one or two of the eight
-weaknesses introduced in §II.B**:
+**Each Atari task category preferentially tests one or two of the
+eight weaknesses introduced in §II.B**:
 
 | Task category | Diagnoses weakness(es) |
 |---|---|
@@ -140,10 +114,10 @@ is consistent with this category-stratified picture.
 ### D. The reporting gaps as evidence
 
 Dashes ("---") in Tables II and III indicate that the original paper
-did not report a score for that game under the stated evaluation
-protocol. The current draft notes that "absence of data does not
-imply poor performance"; this is true but understates the
-information content of the gaps.
+introducing the method did not report a score for that game under
+the stated evaluation protocol. Absence of data does not imply poor
+performance — but the gap *pattern* is itself diagnostic and carries
+more information than is sometimes assumed.
 
 **For most methods, the gap pattern is itself diagnostic.** A method
 that reports comprehensively on dense-reward games and skips sparse-
@@ -187,18 +161,3 @@ strength of comparisons. We refrain from highlighting per-cell
 best-results in Tables II/III; the axis-stratified narrative above
 substitutes evaluation against the *diagnostic categories* for the
 weaker comparison against per-game best.
-
----
-
-*Notes for integration:*
-- Tables II and III are preserved structurally; only the surrounding
-  prose changes. The current "Several caveats and trends" bulleted
-  list is replaced by the §V.A-E structure above.
-- If figure F-B2 (`08-figure-proposals.md`) is added, it sits
-  naturally between §V.A (the category-to-axis mapping table) and
-  §V.B (the patterns subsection). The figure visualizes the
-  category-stratification claim quantitatively.
-- The "improvement ladder" framing in §V.D is a sharpening of the
-  current draft's "Improvement ladder" bullet but explicitly notes
-  the ladder's axis-locality — the central caveat that distinguishes
-  the new framing from the old.

@@ -1,16 +1,4 @@
-# Section VI — Tabular Empirical Evaluation (revised draft)
-
-Mostly preserved from the current draft. Tables IV–VI (FrozenLake,
-Taxi, CliffWalking) carry as-is. The framing is updated to tie each
-algorithm back to the axis-section under which it appears in §IV
-and to explicitly motivate the tabular setting as an axis-isolation
-tool.
-
-~600 words.
-
----
-
-## VI. EMPIRICAL EVALUATION OF TABULAR Q-LEARNING VARIANTS
+# VI. Empirical Evaluation of Tabular Q-Learning Variants
 
 To complement the literature analysis of §IV and the Atari extraction
 of §V, we conduct controlled experiments in tabular environments
@@ -55,7 +43,7 @@ approximation by construction.
 Tables IV, V, and VI report final-episode performance per
 environment, averaged across seeds.
 
-[Tables IV, V, VI preserved from the current draft.]
+[Tables IV, V, VI here.]
 
 ### C. Interpretation by axis
 
@@ -118,21 +106,4 @@ Taxi, is the same mechanism that drives §IV.A's bias-variance
 discussion in the deep setting — but in the tabular setting it can
 be observed cleanly. The convergence of tabular and deep evidence on
 the same mechanistic claims, when present, is one of the stronger
-methodological supports for the structural pivot.
-
----
-
-*Notes for integration:*
-- Tables IV, V, VI are preserved as-is from the current draft. Only
-  the surrounding prose changes.
-- The axis-attribution interpretation in §VI.C is new. It connects
-  each tabular result to the corresponding axis-section in §IV.
-- The methodological motivation in §VI.A ("isolating algorithmic
-  design from architectural confound") is new and should be
-  surfaced in the abstract or §I if not already.
-- One additional algorithm worth adding to the tabular evaluation if
-  bandwidth allows: a simple offline-RL baseline (FQE — Fitted Q
-  Evaluation) on a fixed FrozenLake dataset, to provide tabular
-  evidence for the §IV.E distribution-shift axis. The current draft
-  does not include this; if added, it strengthens the
-  axis-attribution claim.
+methodological supports for the problem-first organization.

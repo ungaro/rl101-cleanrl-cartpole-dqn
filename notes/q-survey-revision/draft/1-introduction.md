@@ -1,18 +1,4 @@
-# Section I — Introduction (revised draft)
-
-Replaces the current Introduction. The pivot from "we built a unified
-taxonomy" to "we reorganize Q-learning around the *problems* its
-variants were designed to solve" is the key framing change. The five
-distinguishing contributions are preserved but reframed.
-
-Drafted for the IEEE TAI template — paragraph density matches the
-current draft. ~700 words. Citations use the existing reference
-numbers where possible; new entries (Ghasemi 2024/2025) need to be
-added to the bibliography.
-
----
-
-## I. INTRODUCTION
+# I. Introduction
 
 Reinforcement Learning (RL) and Deep Reinforcement Learning (DRL) have
 emerged as powerful paradigms for solving complex sequential
@@ -113,19 +99,3 @@ the repository comparison. Section VIII concludes with future
 directions, including a planned community-maintained Q-learning
 repository whose roadmap is informed by the gaps identified in
 Section VII.
-
----
-
-*Notes for integration:*
-
-- The Ghasemi 2024/2025 citation needs to be added to the
-  bibliography. Suggested placement: alongside existing [12]–[15].
-- Table I in the current draft compares against four pre-2023
-  surveys. Add Ghasemi 2024/2025 as a fifth column; the check-mark
-  pattern stays favorable.
-- The closing summary of section organization assumes the renumbering
-  in `03-new-outline.md` (Section IV becomes the problem-axis review).
-  Update accordingly if the team prefers different numbering.
-- One sentence in §VII will need to distinguish our taxonomic
-  repository analysis from Hundal et al. (2025)'s empirical PPO
-  audit; see `07-prior-art-sweep.md`.

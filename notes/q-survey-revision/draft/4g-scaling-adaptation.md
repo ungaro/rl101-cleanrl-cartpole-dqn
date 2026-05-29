@@ -1,22 +1,14 @@
-# Section IV.G — Scaling and Slow Adaptation
+# IV.G. Scaling and Slow Adaptation
 
-Addresses **W7** of the eight weaknesses introduced in §II.B. This
+Addresses **W7** of the eight weaknesses introduced in §II.B. The
 section covers two related directions: distributed and parallel
 architectures that increase sample throughput by orders of magnitude,
 and meta-learning approaches that produce policies adapting quickly
 to new tasks. The two directions are unified by the shared diagnosis
 that *per-task, single-learner Q-learning is fundamentally
-sample-bottlenecked*.
-
-**Status:** first-pass draft pending review by a co-author with
-distributed-systems or meta-RL background. Coverage emphasizes
-canonical methods; the rapidly-evolving distributed-RL landscape
-(IMPALA, SEED RL, Sample Factory, Podracer) is touched only at
-cross-references.
-
----
-
-## IV.G. Scaling and Slow Adaptation
+sample-bottlenecked*. Coverage emphasizes canonical methods; the
+rapidly-evolving distributed-RL landscape (IMPALA, SEED RL, Sample
+Factory, Podracer) is touched only at cross-references.
 
 ### A. The Weakness
 
@@ -287,19 +279,12 @@ Atari-scale benchmarks has not occurred.
 
 | Method (year) | Legacy category | Mechanism | Primary cost | Best at | Empirical anchor |
 |---|---|---|---|---|---|
-| DRQN (2015)* | Q-Function Comp. (relocated) | LSTM head over DQN | Recurrent BPTT | Partial observability | Flickering Pong robust |
-| Ape-X (2018)† | New — Distributed | Async actors + centralized learner + PER | Multi-machine infrastructure | 50× wall-clock speedup | 434% median Atari HNS |
-| R2D2 (2019)† | New — Distributed + Recurrent | Ape-X + LSTM + replay burn-in | Recurrent replay infrastructure | Memory-demanding tasks | 1920% median Atari HNS |
-| Agent57 (2020)† | New — Distributed + Meta-policy | R2D2 + NGU + bandit policy portfolio | Massive compute (78B frames) | All 57 Atari at human level | 4766% median Atari HNS |
-| MAML-Q / Meta-Q (2017+)† | New — Meta-RL | Meta-train initialization across task distribution | Inner + outer-loop compute | Few-shot transfer | MetaWorld benchmarks |
+| DRQN (2015) | Q-Function Comp. | LSTM head over DQN | Recurrent BPTT | Partial observability | Flickering Pong robust |
+| Ape-X (2018) | Distributed | Async actors + centralized learner + PER | Multi-machine infrastructure | 50× wall-clock speedup | 434% median Atari HNS |
+| R2D2 (2019) | Distributed + Recurrent | Ape-X + LSTM + replay burn-in | Recurrent replay infrastructure | Memory-demanding tasks | 1920% median Atari HNS |
+| Agent57 (2020) | Distributed + Meta-policy | R2D2 + NGU + bandit policy portfolio | Massive compute (78B frames) | All 57 Atari at human level | 4766% median Atari HNS |
+| MAML-Q / Meta-Q (2017+) | Meta-RL | Meta-train initialization across task distribution | Inner + outer-loop compute | Few-shot transfer | MetaWorld benchmarks |
 | PQN (2025) | Pure Q-Learning (cross-ref to §IV.H) | Synchronous vectorized envs + LayerNorm | Single-machine compute structure | Compute-efficient Atari | 220% median at 200M frames |
-
-*DRQN is relocated from the original draft's §IV.B; the
-reinterpretation as a contextual-adaptation method is the
-load-bearing claim of this section.
-
-†Ape-X, R2D2, Agent57, and MAML-Q are added in the revised paper;
-not in original draft.
 
 **Compute–performance positioning (log frames × performance):**
 
@@ -326,31 +311,3 @@ sophistication and minimalism plus normalization reach the same
 performance level at the same compute budget. The
 Ape-X → R2D2 → Agent57 progression then traces the compute axis as
 an orthogonal contributor.
-
----
-
-*Notes for integration:*
-- This is the third and largest modern-RL addition. The
-  bibliography needs ~6 new entries: Ape-X (arXiv:1803.00933), R2D2
-  (DeepMind blog + ICLR 2019), Agent57 (arXiv:2003.13350), NGU
-  (arXiv:2002.06038), MAML (arXiv:1703.03400), DRQN
-  (arXiv:1507.06527, already cited).
-- DRQN is relocated from §IV.B (Q-Function Computation
-  Innovations) to §IV.G. The re-interpretation as a
-  contextual-adaptation method rather than an architectural
-  variant is the load-bearing claim of subsection B.4.
-- The cross-axis nature of Agent57 is the strongest empirical
-  argument for the problem-first organization. Agent57 deliberately
-  composes mechanisms from §IV.B (sample efficiency via
-  distributed replay), §IV.C (exploration via bandit-controlled
-  policy portfolio + NGU intrinsic motivation), and this section
-  (slow adaptation via implicit task-distribution training).
-  Frontier agents are increasingly cross-axis; this section makes
-  the pattern visible.
-- IMPALA, SEED RL, Sample Factory, Podracer are mentioned only at
-  cross-reference; full coverage of the distributed-RL architecture
-  literature would substantially expand the section. Defer to
-  domain owner judgment on whether to include.
-- Cross-references: §IV.B (PER at distributed scale), §IV.C
-  (exploration heterogeneity), §IV.H (PQN's synchronous
-  parallelism).

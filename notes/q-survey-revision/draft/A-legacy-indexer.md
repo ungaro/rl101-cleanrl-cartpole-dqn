@@ -1,13 +1,12 @@
-# Appendix A — Legacy Indexer (Six Categories ↔ Eight Axes)
+# Appendix A. Legacy Indexer (Six Categories ↔ Eight Axes)
 
 This appendix supports readers approaching the paper through the
 conventional method-type taxonomy used in prior Q-learning surveys
-[12]–[15] and in the original draft of this paper. The eight-axis
-problem-first organization of §IV is the analytical spine of the
-revised paper, but the six-category taxonomy is preserved as a
-secondary indexing system — in Tables II/III row groupings, in
-Appendix A's mapping below, and in inline tags within each §IV
-subsection.
+[12]–[15]. The eight-axis problem-first organization of §IV is the
+analytical spine of this paper, but the six-category taxonomy is
+preserved as a secondary indexing system — in Tables II/III row
+groupings, in this appendix's mapping below, and in inline tags
+within each §IV subsection.
 
 A reader interested in *all distributional methods* (a method-type
 view) can navigate via the *Statistical Methods* row of Table II
@@ -22,10 +21,11 @@ neither is privileged for navigation.
 
 For each method covered in §IV, the table below shows:
 
-- **Original legacy category** — the row grouping in the original
-  draft's §III and Tables II/III. Six categories: *Statistical
-  Methods*, *Q-Function Computation*, *Memory/Replay*,
-  *Ensemble-Based*, *Model-Based*, *Pure Q-Learning (Minimal)*.
+- **Legacy category** — the row grouping in the conventional method-type
+  taxonomy used by prior Q-learning surveys and reflected in the row
+  spine of Tables II/III: *Statistical Methods*, *Q-Function
+  Computation*, *Memory/Replay*, *Ensemble-Based*, *Model-Based*,
+  *Pure Q-Learning (Minimal)*.
 - **Primary axis** — the weakness $W_i$ from §II.B that the method's
   contribution principally addresses. The axis-section in §IV
   where the method receives full treatment.
@@ -66,13 +66,14 @@ For each method covered in §IV, the table below shows:
 | Neural Fitted Q (NFQ, 2005) | Pure Q-Learning | §V foundations | §IV.B (batch updates) |
 | Parallel Q Learning (PQN, 2025) | Pure Q-Learning | §IV.H (W8) | §IV.G (parallelism) |
 
-## A.2. Methods added in the revised paper
+## A.2. Methods outside the legacy six-category structure
 
-The revised paper adds eighteen methods that have no row in the
-original draft. These methods do not appear in Tables II/III
-(which are preserved structurally) but receive treatment in §IV
-under the new axes. For navigation, the table below maps them to
-the legacy taxonomy as they *would* have been classified.
+Eighteen methods covered in §IV have no row in the conventional
+six-category taxonomy and do not appear in Tables II/III. They are
+treated in §IV under the new axes; for navigation, the table below
+maps them to the legacy taxonomy as they *would* have been
+classified if the conventional categories were extended to admit
+them.
 
 | Method (year) | Would-be legacy category | Primary axis |
 |---|---|---|
@@ -133,24 +134,8 @@ Three patterns are visible from the inverted view:
    axis view distinguishes them; the legacy view does not.
 3. *Statistical Methods* fragments into noise-based exploration
    (§IV.C) and distributional credit-assignment (§IV.D), the
-   sharpest single demonstration of why the original taxonomy
-   conflated mechanisms with effects.
+   sharpest single demonstration of why the conventional method-type
+   taxonomy conflates mechanism with effect.
 
-These patterns are the data backing the structural pivot. The
-appendix exists to let readers verify the claim themselves
-method-by-method.
-
----
-
-*Notes for integration:*
-- This appendix is new content. It is the artifact that makes the
-  structural pivot defensible — a reader who suspects the
-  reorganization has cost something can check the indexer and find
-  every method still present, just under a different organizing
-  principle.
-- Recommended placement: as Appendix A, before any other
-  appendices. It is the most likely reference for readers
-  cross-checking against the original taxonomy.
-- The "Reverse view" subsection (A.3) is the analytical payload of
-  the appendix. The forward-view (A.1) is reference; the
-  reverse-view (A.3) is argument.
+These patterns are the data backing the problem-first organization.
+The appendix lets readers verify the claim method-by-method.

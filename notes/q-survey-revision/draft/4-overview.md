@@ -1,17 +1,4 @@
-# Section IV — Overview (revised draft)
-
-This is the §IV introduction. It bridges §II.B (the eight weaknesses
-of vanilla Q-learning) and §IV.A–§IV.H (the eight axis-sections that
-follow). The structural figures of the paper — the method genealogy
-and the axis × mechanism-family matrix — live here, where they frame
-the rest of §IV.
-
-~500 words of framing prose, plus the genealogy figures and the
-matrix.
-
----
-
-## IV. RELATED WORKS
+# IV. Related Works
 
 Over the past three decades, Q-learning and its deep variants have
 evolved through a long sequence of mechanism-level innovations.
@@ -80,14 +67,13 @@ single-axis lineage compared to most other branches, reflecting the
 field's progressive refinement of distributional Q-learning under
 the credit-assignment weakness (W4).
 
-### B. The modern-RL branches
+### B. Branches outside the conventional taxonomy
 
-The genealogy above captures the methods covered in the original
-draft. Figure 2 below shows the three branches that emerged outside
-the conventional six-category taxonomy — the families that respond
-to weaknesses (distribution shift, multi-agent coordination,
-distributed scale and meta-adaptation) that the legacy taxonomy
-has no row to hold. These are the methods that motivate §IV.E,
+Figure 2 below shows three Q-learning branches that emerged outside
+the conventional six-category mechanism taxonomy — families that
+respond to weaknesses (distribution shift, multi-agent coordination,
+distributed scale and meta-adaptation) that the legacy taxonomy has
+no category to hold. These are the methods that motivate §IV.E,
 §IV.F, and §IV.G.
 
 ```mermaid
@@ -178,23 +164,7 @@ The remainder of §IV proceeds axis by axis:
   losses.
 
 Each subsection ends with **F. Comparison summary**: a uniform
-six-column table (method / legacy category / mechanism / cost /
+six-column table (method / mechanism category / mechanism / cost /
 best-at / empirical anchor) and, where the trade-off is naturally
 two-dimensional, a 2D positioning grid. §IV.E additionally provides
 a method-selection decision tree for practitioner use.
-
----
-
-*Notes for integration:*
-- The two mermaid figures here are *design renderings* for review.
-  Final paper figures will be TikZ/PGF; the genealogy in particular
-  should be a single landscape half-page figure rather than two
-  vertical ones.
-- The axis × mechanism-family matrix is the single visual most
-  central to the paper's thesis. It is referenced from §I, §II.B,
-  and each axis-section's F-comparison subsection. If only one
-  paper-level figure is rendered for the final paper, prioritize
-  this matrix.
-- Subsection labels (W1–W8) tie back to §II.B's eight-weakness
-  formal statement. Section IV.A–IV.H subsection labels follow the
-  same ordering for navigational consistency.

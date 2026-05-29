@@ -1,13 +1,9 @@
-# Section IV.C — Brittle Exploration
+# IV.C. Brittle Exploration
 
 Addresses **W3** of the eight weaknesses introduced in §II.B. Methods
 here replace ε-greedy's undirected randomness with structured
 exploration that scales to environments where reward is sparse,
 delayed, or behind narrow state-space passages.
-
----
-
-## IV.C. Brittle Exploration
 
 ### A. The Weakness
 
@@ -55,8 +51,8 @@ flowchart TD
     DQNE -->|archive return-then-explore NEW| GE[Go-Explore 2019/21]
 ```
 
-The methods marked NEW (RND and Go-Explore) are added in the
-revised paper and are not in the original draft.
+The methods marked NEW (RND and Go-Explore) are intrinsic-motivation
+and archival approaches that extend the families above.
 
 **B.1. Noise injection.** Two methods inject zero-mean noise during
 action selection but at different layers of the network.
@@ -158,9 +154,8 @@ Go-Explore was the first method to solve Montezuma's Revenge
 fully (achieving the maximum possible score) and Pitfall! at
 super-human level.
 
-RND and Go-Explore do not appear in the current draft. They are the
-modern state-of-the-art on the Atari games that motivate this entire
-section, and their absence is one of the more substantive omissions.
+RND and Go-Explore represent the modern state-of-the-art on the
+Atari games that motivate this entire section.
 
 ### C. Trade-offs
 
@@ -227,11 +222,12 @@ gap quantifies the "exploration vs. demonstration" trade-off
 (§IV.B): demonstrations are currently the most effective way to
 side-step deep exploration on the hardest Atari games.
 
-Empirical evidence for RND (~10,000+ on Montezuma without
-demonstrations) and Go-Explore (>1 million on Montezuma, full
-solution) is not in Tables II–III because those methods were not
-included in the current draft's Atari extraction. Their inclusion
-would substantially change the visual story of the table.
+RND reports ~10,000+ on Montezuma without demonstrations, and
+Go-Explore achieves full solutions exceeding 1 million points on
+Montezuma. These results sit outside the comparison Tables II–III
+because they use evaluation protocols incompatible with the
+extraction methodology, but they bound the achievable performance
+on the diagnostic exploration games.
 
 ### E. Open Questions
 
@@ -270,10 +266,7 @@ would substantially change the visual story of the table.
 | CBDQ (2025) | Q-Function Comp. | Belief distribution over actions | Clustering overhead | Classic control + driving | LunarLander, MetaDrive |
 | Posterior Sampling DQN (2023) | Model-Based | Sample $Q$ from posterior per episode | Approximate posterior | Cyclic environments | 5-state chain |
 | RND (2018)* | Statistical | Random network distillation intrinsic bonus | Bonus scale hyperparameter | Sparse-reward Atari | Montezuma ≈10,000 |
-| Go-Explore (2019/2021)* | Memory/Replay (archive) | Archive + return-then-explore | Discrete state hashing | Hardest Atari exploration | Montezuma > 1,000,000 |
-
-*RND and Go-Explore are added in the revised paper; not in original
-draft.
+| Go-Explore (2019/2021) | Memory/Replay (archive) | Archive + return-then-explore | Discrete state hashing | Hardest Atari exploration | Montezuma > 1,000,000 |
 
 **2D positioning (adaptivity × Montezuma effectiveness):**
 
@@ -303,19 +296,3 @@ archive-based approach lands top-right; RND's intrinsic motivation
 lands middle-upper. Most ensemble and noise-injection methods
 cluster in the lower bands — useful improvements over $\epsilon$-greedy
 but not transformative on the hardest exploration games.
-
----
-
-*Notes for integration:*
-- RND (Burda et al. 2018, arXiv:1810.12894) and Go-Explore (Ecoffet
-  et al. 2019/2021, *Nature* 2021) are new content. Bibliography
-  entries needed.
-- Agent57 (Badia et al. 2020, ICML) is forward-referenced from §IV.G;
-  this section just flags the connection.
-- Posterior Sampling DQN is relocated here from the draft's §IV.E
-  (Model-Based Methods); the posterior-sampling argument is
-  fundamentally about directed exploration via Thompson sampling,
-  not about learning a model of the environment.
-- Cross-references: §IV.A (EBQL ensemble sharing), §IV.B (DQfD
-  demonstration trade-off), §IV.D (distributional methods on the
-  exploration diagonal), §IV.G (Agent57).
