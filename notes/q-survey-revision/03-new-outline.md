@@ -62,7 +62,13 @@ The eight weaknesses (this is the spine of the paper):
 What is cut from the current Methodology:
 - The "six categories" preamble (now an appendix indexer)
 
-### IV. Related Works (eight axis-sections)
+### IV. Related Works (eight axis-sections) — overview ✓ — [`draft/4-overview.md`](draft/4-overview.md)
+
+The §IV overview holds the paper's two structural figures (master
+genealogy + modern-RL subgraph, both mermaid) plus the axis ×
+mechanism-family matrix. It frames the eight axis-sections that
+follow.
+
 Each section follows the same five-part template:
 
 > **A. The Weakness**

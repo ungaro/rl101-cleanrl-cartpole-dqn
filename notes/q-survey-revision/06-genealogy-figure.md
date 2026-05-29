@@ -20,6 +20,15 @@ edge-annotation design reference. The mermaid version (immediately
 below) renders natively on GitHub and is what reviewers will see in
 the markdown preview. Final paper figure will be TikZ.
 
+**Note:** the mermaid versions have also been inserted directly into
+the draft files where they belong in the final paper:
+- Master genealogy + modern-RL subgraph → `draft/4-overview.md` (§IV intro)
+- Exploration-branch subgraph → `draft/4c-brittle-exploration.md` (start of §IV.C.B)
+
+This file remains the design-source-of-truth for edge annotations
+and the eventual TikZ rendering; the draft files contain the actual
+paper-position visualizations.
+
 ---
 
 ## Mermaid genealogy (renders on GitHub)

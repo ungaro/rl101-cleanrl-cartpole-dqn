@@ -39,7 +39,24 @@ direct exploration toward states whose value remains uncertain.
 Four mechanisms recur, distinguished by *how the posterior or
 exploration bonus is induced*: through parameter perturbations,
 ensemble disagreement, learned belief models, or intrinsic-reward
-signals.
+signals. The figure below shows the genealogy of methods covered in
+this section.
+
+```mermaid
+flowchart TD
+    DQNE[DQN / Nature DQN<br/>§IV.B / §IV.H]
+    DQNE -->|noise injection| NoisyNet[NoisyNet 2018]
+    DQNE -->|parameter-space noise| PSN[Parameter Space Noise 2017]
+    DQNE -->|ensemble disagreement| Boot[Bootstrapped DQN 2016]
+    Boot -->|UCB-style scoring| UCBQ[UCB Q-Ensemble 2018]
+    DQNE -->|posterior sampling| PSDQN[Posterior Sampling DQN 2023]
+    DQNE -->|belief modulation| CBDQ[CBDQ 2025]
+    DQNE -->|intrinsic motivation NEW| RND[RND 2018]
+    DQNE -->|archive return-then-explore NEW| GE[Go-Explore 2019/21]
+```
+
+The methods marked NEW (RND and Go-Explore) are added in the
+revised paper and are not in the original draft.
 
 **B.1. Noise injection.** Two methods inject zero-mean noise during
 action selection but at different layers of the network.

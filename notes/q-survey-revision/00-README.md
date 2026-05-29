@@ -45,6 +45,7 @@ notes/q-survey-revision/
     ├── 1-introduction.md       (§I)
     ├── 2-background.md         (§II + 8 weaknesses)
     ├── 3-methodology.md        (§III)
+    ├── 4-overview.md            (§IV intro — genealogy + axis × family matrix)
     ├── 4a-overestimation-bias.md  (§IV.A, W1)
     ├── 4b-sample-inefficiency.md  (§IV.B, W2)
     ├── 4c-brittle-exploration.md  (§IV.C, W3)
@@ -72,6 +73,7 @@ Totals: ~15,500 words of paper prose across 16 draft files;
 | §I Introduction | drafted |
 | §II Background + 8 Weaknesses | drafted |
 | §III Methodology | drafted |
+| §IV Overview (genealogy + axis × family matrix) | drafted (`draft/4-overview.md`) |
 | §IV.A–H (all eight axis-sections) | drafted (with per-section comparison artifacts) |
 | §V Atari benchmarks | drafted (preserves legacy row grouping) |
 | §VI Tabular empirical | drafted (preserves Tables IV–VI) |
