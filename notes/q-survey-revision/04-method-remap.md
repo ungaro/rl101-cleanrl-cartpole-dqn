@@ -1,8 +1,15 @@
-# Method → Axis Remap
+# Method → Axis Remap (working notes)
 
 Every method in the current draft (plus the modern-RL methods we
-propose adding) mapped to its new axis-section in the proposed
-problem-first structure (`03-new-outline.md`).
+propose adding) mapped to its new axis-section in the problem-first
+structure of `03-new-outline.md`.
+
+**Status:** this file was the working-notes scratchpad for the
+remap. The canonical version of the mapping is now
+[`draft/A-legacy-indexer.md`](draft/A-legacy-indexer.md), which adds
+a reverse view (legacy category → axis distribution) and treats the
+new methods consistently. Prefer Appendix A for handoff to the team;
+this file is preserved as the design notes that informed it.
 
 The "Old §" column points to the current draft section. The "New §"
 column points to the proposed new section. The "Secondary axes" column

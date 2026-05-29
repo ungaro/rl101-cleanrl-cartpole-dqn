@@ -1,9 +1,9 @@
-# Genealogy Figure — ASCII First Pass
+# Genealogy Figure — Design Draft
 
-This is the visual companion to the structural pivot. The eventual
-paper figure would be a clean TikZ or hand-drawn rendering; this is
-the *layout and edge annotation* draft, suitable for circulating to
-the team and converting downstream.
+The visual companion to the structural pivot. The eventual paper
+figure will be a clean TikZ rendering; this file is the *layout and
+edge annotation* design source, suitable for circulating to the team
+and converting downstream.
 
 Each node is a method (year). Each edge is labeled with the **weakness
 of the parent that the child method addresses**. Edges crossing into
@@ -12,7 +12,75 @@ new axis-sections introduced by the structural pivot are marked with
 
 The figure is wider than it is tall — when typeset it should sit
 landscape, ~half-page, with method nodes color-coded by axis-section
-(IV.A–IV.H).
+(§IV.A–§IV.H).
+
+**Status:** this file has two visual representations of the same
+genealogy. The ASCII version (below, §"Master genealogy") is the
+edge-annotation design reference. The mermaid version (immediately
+below) renders natively on GitHub and is what reviewers will see in
+the markdown preview. Final paper figure will be TikZ.
+
+---
+
+## Mermaid genealogy (renders on GitHub)
+
+```mermaid
+flowchart TD
+    Q[Q-Learning Watkins 1992<br/>tabular ε-greedy single estimator]
+    Q -->|overestimation via max| DoubleQ[Double Q-Learning 2010<br/>§IV.A]
+    Q -->|on-policy| SARSA[SARSA 1994<br/>§V foundations]
+    Q -->|credit assignment| MultiStep[Multi-step Q 1996<br/>§IV.D]
+    Q -->|function approximation| NFQ[NFQ 2005<br/>§V foundations]
+    NFQ -->|replay + targets| DQN[DQN 2013<br/>replay buffer + CNN<br/>§IV.B]
+    DQN -->|target network for stability| NatureDQN[Nature DQN 2015<br/>§IV.H]
+    NatureDQN -->|partial observability| DRQN[DRQN 2015<br/>§IV.G]
+    NatureDQN -->|deep RL + decoupled| DoubleDQN[Double DQN 2016<br/>§IV.A]
+    NatureDQN -->|V/A decomposition| Dueling[Dueling DQN 2016<br/>§IV.H stab/decomp]
+    NatureDQN -->|TD-error sampling| PER[Prioritized ER 2016<br/>§IV.B]
+    DoubleDQN -->|k-estimator generalization| EBQL[EBQL 2021<br/>§IV.A ensemble bias ctrl]
+    EBQL -->|push toward under-est| REDQ[REDQ 2021<br/>§IV.A min-of-M]
+    DoubleDQN --> Rainbow[Rainbow 2018<br/>Double + PER + Dueling + n-step<br/>+ Distributional + NoisyNet<br/>§IV.B primary]
+    PER --> Rainbow
+    Dueling --> Rainbow
+    PER -->|demonstrations| DQfD[DQfD 2018<br/>§IV.B]
+    PER -->|memory-efficient| MeDQN[MeDQN 2023<br/>§IV.B + §IV.H]
+    DQN -->|richer return signal| C51[C51 2017<br/>§IV.D]
+    C51 -->|adjustable quantiles| QRDQN[QR-DQN 2018<br/>§IV.D]
+    QRDQN -->|continuous τ| IQN[IQN 2018<br/>§IV.D]
+    IQN -->|learnable τ| FQF[FQF 2019<br/>§IV.D]
+```
+
+```mermaid
+flowchart TD
+    DQNE[DQN / Nature DQN<br/>§IV.B / §IV.H]
+    DQNE -->|noise injection| NoisyNet[NoisyNet 2018<br/>§IV.C]
+    DQNE -->|param-space noise| PSN[Parameter Space Noise 2017<br/>§IV.C]
+    DQNE -->|ensemble disagreement| Boot[Bootstrapped DQN 2016<br/>§IV.C]
+    Boot -->|UCB-style scoring| UCBQ[UCB Q-Ensemble 2018<br/>§IV.C]
+    DQNE -->|posterior sampling| PSDQN[Posterior Sampling DQN 2023<br/>§IV.C]
+    DQNE -->|belief modulation| CBDQ[CBDQ 2025<br/>§IV.C]
+    DQNE -->|intrinsic motivation NEW| RND[RND 2018<br/>§IV.C added]
+    DQNE -->|archive return-then-explore NEW| GE[Go-Explore 2019/21<br/>§IV.C added]
+```
+
+```mermaid
+flowchart TD
+    NDQN[Nature DQN 2015]
+    NDQN -->|offline data only NEW §IV.E| BCQ[BCQ 2019]
+    BCQ --> CQL[CQL 2020]
+    CQL --> IQL[IQL 2021]
+    NDQN -->|multiple cooperating agents NEW §IV.F| VDN[VDN 2018]
+    VDN --> QMIX[QMIX 2018]
+    QMIX --> QPLEX[QPLEX 2020]
+    NDQN -->|massive scale NEW §IV.G| ApeX[Ape-X 2018]
+    ApeX --> R2D2[R2D2 2019]
+    R2D2 --> Agent57[Agent57 2020]
+    NDQN -->|meta/fast adapt NEW §IV.G| MAML[MAML-Q / Meta-Q]
+```
+
+The three mermaid subgraphs (main genealogy, exploration branch,
+modern-RL branches) are split for GitHub readability — a single
+graph would be too wide. The TikZ paper figure can combine them.
 
 ---
 

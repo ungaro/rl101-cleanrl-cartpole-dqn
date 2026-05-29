@@ -5,9 +5,32 @@ Working notes for shaping this week's discussion. Based on the
 draft (`IEEE_AI_Journal_on_Q_Learning_New_Version.pdf`, May 29 2026)
 with its five-point IEEE TAI reviewer summary.
 
-This is a **direction-setting note**, not polished output. Goal: a few
-concrete moves the team can rally around, plus the reasoning so the
-team can argue with it.
+This was the **direction-setting note**. The three suggestions below
+have been substantially executed; this file is preserved as the "why"
+record. See `00-README.md` for current overall status and
+`03-new-outline.md` for the per-section build status.
+
+## Status snapshot (suggestion-by-suggestion)
+
+- **Suggestion A — problem-first structural pivot:** Drafted in full.
+  See `draft/1-introduction.md`, `draft/2-background.md`, and all
+  eight `draft/4*.md` axis-sections. Differentiation against 2024–2026
+  prior art confirmed in `07-prior-art-sweep.md`.
+- **Suggestion B — centerpiece figure:** Genealogy figure design
+  drafted as ASCII + mermaid in `06-genealogy-figure.md`; mermaid
+  quadrantChart 2D positioning grids drafted per-section in §IV.A,
+  §IV.C, §IV.D, §IV.E, §IV.H. Final TikZ/PGF rendering for the paper
+  itself is pending.
+- **Suggestion C — Q-learning repo spin-off:** Promoted to a named
+  deliverable in `draft/8-conclusion.md` with four design priorities
+  and a prioritized roadmap (nine methods absent from all six
+  surveyed repositories per Table VII). **Repository stub not yet
+  stood up** — this is the one outstanding action item.
+
+The rest of this file is preserved as the analytical record that led
+to the structural pivot. Skip to "Strategic recommendation" if you
+need only the conclusion; the per-suggestion content is now stale as a
+plan but useful as the rationale.
 
 ---
 

@@ -14,6 +14,31 @@ visual that captures "what to take away from this section in 30
 seconds." The format need not be an x/y chart — a comparison table,
 capability matrix, or 2D positioning grid is often more informative.
 
+## Status summary
+
+| Artifact | Status | Where it lives |
+|---|---|---|
+| A.1 Comparison table per section | **drafted in all 8 axis-sections** | `draft/4a` through `draft/4h`, subsection F |
+| A.2 2D positioning grid (mermaid quadrantChart) | **drafted for 5 sections** | §IV.A, §IV.C, §IV.D, §IV.E, §IV.H |
+| A.3 Decision tree (mermaid flowchart) | **drafted for §IV.E** | `draft/4e-distribution-shift.md` |
+| B.1 Axis × method-family matrix | **design drafted** (markdown table); TikZ rendering pending | `06-genealogy-figure.md` § axis matrix |
+| B.2 Axis-stratified Atari grouped bars | ⊘ pending — data assembly needed | proposed only |
+| B.3 TikZ genealogy | **design drafted** (ASCII + mermaid); TikZ rendering pending | `06-genealogy-figure.md` |
+| B.4 Complexity vs. performance Pareto scatter | ⊘ pending — component-count list needed | proposed only |
+| C.1 Compute log-log for §IV.G | **drafted as mermaid quadrantChart** | `draft/4g-scaling-adaptation.md` F |
+| C.2 D4RL degradation curve for §IV.E | ⊘ pending — D4RL data extraction needed | proposed only |
+| C.3 Per-game spread within axis | ⊘ pending — seed-level variance not always reported | proposed only |
+| C.4 Distributional resolution vs. performance | **partially drafted as mermaid quadrantChart in §IV.D F** | `draft/4d-reward-sparsity.md` |
+
+**Net:** the per-section comparison artifacts (Part A) are fully
+in place; the paper-level figures (Part B) have design drafts but
+need final rendering; the per-section evidence charts (Part C)
+have two of four drafted as mermaid quadrantCharts.
+
+Remaining design-heavy work: TikZ rendering of B.1 and B.3 for the
+paper proper. Remaining data-heavy work: assembling component-count
+lists for B.4 and D4RL benchmark extraction for C.2.
+
 ---
 
 ## Part A — Per-section comparison artifacts
