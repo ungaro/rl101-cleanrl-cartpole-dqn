@@ -1,4 +1,4 @@
-# IV.F. Multi-Agent Coordination
+# IV.F. Multi-Agent Coordination {#sec-iv-f}
 
 Addresses **W6** of the eight weaknesses introduced in §II.B. The
 section covers cooperative multi-agent Q-learning via *value

@@ -1,4 +1,4 @@
-# IV.A. Overestimation Bias
+# IV.A. Overestimation Bias {#sec-iv-a}
 
 ### A. The Weakness
 
@@ -222,6 +222,7 @@ incidental contributor to bias control.
 **2D positioning (bias × cost):**
 
 ```mermaid
+%% caption: Overestimation-bias methods positioned by bias direction (x) and compute cost (y).
 quadrantChart
     title Overestimation methods — bias direction × compute cost
     x-axis "Heavily under-estimated" --> "Heavily over-estimated"

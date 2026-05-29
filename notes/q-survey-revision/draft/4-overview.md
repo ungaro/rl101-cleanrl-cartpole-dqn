@@ -1,4 +1,4 @@
-# IV. Related Works
+# IV. Related Works {#sec-iv}
 
 Over the past three decades, Q-learning and its deep variants have
 evolved through a long sequence of mechanism-level innovations.
@@ -32,6 +32,7 @@ targeted responses rather than a chronological accumulation of
 techniques.
 
 ```mermaid
+%% caption: Method genealogy of Q-learning and its deep variants. Edges are labeled by the weakness of the parent that the child method addresses.
 flowchart TD
     Q[Q-Learning<br/>Watkins 1992<br/>tabular ε-greedy single estimator]
     Q -->|overestimation via max| DoubleQ[Double Q-Learning 2010<br/>§IV.A]
@@ -77,6 +78,7 @@ no category to hold. These are the methods that motivate §IV.E,
 §IV.F, and §IV.G.
 
 ```mermaid
+%% caption: Q-learning branches outside the conventional six-category mechanism taxonomy — offline RL (§IV.E), multi-agent value decomposition (§IV.F), and distributed / meta-learning (§IV.G).
 flowchart TD
     NDQN[Nature DQN 2015]
     NDQN -->|offline data only NEW §IV.E| BCQ[BCQ 2019]

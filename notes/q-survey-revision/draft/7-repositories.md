@@ -1,4 +1,4 @@
-# VII. Comparative Analysis of Deep Q-Learning Repositories
+# VII. Comparative Analysis of Deep Q-Learning Repositories {#sec-vii}
 
 This section analyzes algorithmic coverage of Q-learning variants
 across six widely-used open-source deep RL repositories — Tianshou

@@ -1,4 +1,4 @@
-# IV.E. Distribution Shift (Offline Reinforcement Learning)
+# IV.E. Distribution Shift (Offline Reinforcement Learning) {#sec-iv-e}
 
 Addresses **W5** of the eight weaknesses introduced in §II.B. The
 section introduces the D4RL benchmark family [Fu et al. 2020], used
@@ -245,6 +245,7 @@ for unrelated reasons.
 **2D positioning (behavior similarity × data-quality robustness):**
 
 ```mermaid
+%% caption: Offline-RL methods positioned by similarity of learned policy to behavior (x) and robustness to low-quality data (y).
 quadrantChart
     title Offline RL methods — policy similarity to behavior × robustness to low-quality data
     x-axis "Tightly constrained to behavior" --> "Unconstrained from behavior"
@@ -272,6 +273,7 @@ upper-right quadrant.
 **Method-selection decision tree:**
 
 ```mermaid
+%% caption: Decision tree for offline-RL method selection.
 flowchart TD
     Start[Offline data available?]
     Start -->|No| Online[Use online methods — §IV.B]

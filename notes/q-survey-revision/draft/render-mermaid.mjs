@@ -107,11 +107,17 @@ async function main() {
   const blocks = [];
   const transformed = text.replace(/```mermaid\n([\s\S]*?)\n```/g, (full, code) => {
     if (!SUPPORTED_RX.test(code)) return full;
+    // Extract optional caption from leading "%% caption: ..." comment.
+    let caption = '';
+    const captionMatch = code.match(/^%%\s*caption:\s*(.+?)\s*$/m);
+    if (captionMatch) caption = captionMatch[1];
     const hash = crypto.createHash('md5').update(code).digest('hex').slice(0, 12);
     const png = path.join(outDir, `${hash}.png`);
     blocks.push({hash, code, png});
-    // Center the image and let LaTeX scale it down if needed.
-    return `\n![](${path.relative(path.dirname(input), png)}){ width=90% }\n`;
+    // Pandoc's implicit_figures turns `![caption](img)` (alt text on its
+    // own paragraph) into a numbered \begin{figure}\caption{...}\end{figure}.
+    const rel = path.relative(path.dirname(input), png);
+    return `\n![${caption}](${rel}){ width=90% }\n`;
   });
 
   // Render each block — cache by content hash so unchanged blocks reuse PNGs.

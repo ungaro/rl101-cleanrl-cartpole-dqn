@@ -1,4 +1,4 @@
-# IV.G. Scaling and Slow Adaptation
+# IV.G. Scaling and Slow Adaptation {#sec-iv-g}
 
 Addresses **W7** of the eight weaknesses introduced in §II.B. The
 section covers two related directions: distributed and parallel
@@ -289,6 +289,7 @@ Atari-scale benchmarks has not occurred.
 **Compute–performance positioning (log frames × performance):**
 
 ```mermaid
+%% caption: Scaling methods positioned by training-frame budget (x) and median Atari human-normalized score (y).
 quadrantChart
     title Scaling methods — compute scale × Atari median HNS
     x-axis "200M frames" --> "78B frames"

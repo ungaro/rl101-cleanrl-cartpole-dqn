@@ -1,4 +1,4 @@
-# II. Background and Problem Setup
+# II. Background and Problem Setup {#sec-ii}
 
 ### II.A. Markov Decision Processes
 

@@ -1,4 +1,4 @@
-# IV.H. Function-Approximation Instability
+# IV.H. Function-Approximation Instability {#sec-iv-h}
 
 Addresses **W8** of the eight weaknesses introduced in §II.B. Methods
 here modify the *training recipe* — target networks, normalization,
@@ -231,6 +231,7 @@ admit multiple interpretations; this is one.
 **2D positioning (classical → modern recipe × sample efficiency):**
 
 ```mermaid
+%% caption: Function-approximation stability methods positioned by recipe modernity (x) and sample efficiency at fixed compute (y).
 quadrantChart
     title Stability methods — recipe modernity × sample efficiency at fixed compute
     x-axis "Classical (target net + replay)" --> "Modern (norm-only)"

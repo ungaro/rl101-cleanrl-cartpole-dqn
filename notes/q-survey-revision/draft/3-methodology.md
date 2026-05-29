@@ -1,4 +1,4 @@
-# III. Methodology
+# III. Methodology {#sec-iii}
 
 This review surveys Q-learning algorithms spanning over three decades
 of development, from foundational tabular approaches to recent deep

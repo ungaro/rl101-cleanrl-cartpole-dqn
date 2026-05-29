@@ -1,4 +1,4 @@
-# I. Introduction
+# I. Introduction {#sec-i}
 
 Reinforcement Learning (RL) and Deep Reinforcement Learning (DRL) have
 emerged as powerful paradigms for solving complex sequential

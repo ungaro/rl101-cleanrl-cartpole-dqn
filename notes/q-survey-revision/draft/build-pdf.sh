@@ -56,6 +56,38 @@ for f in *.md; do
   first=0
 done
 
+# Convert §I, §II, §III, §IV (+A–H), §V, §VI, §VII, §VIII plain text into
+# markdown links to the anchors we set on each section heading. Alternation
+# is sorted by length so longest patterns (§VIII, §IV.A) win over shorter
+# ones (§V, §IV).
+perl -i -pe '
+  BEGIN {
+    %m = (
+      "§IV.A" => "[§IV.A](#sec-iv-a)",
+      "§IV.B" => "[§IV.B](#sec-iv-b)",
+      "§IV.C" => "[§IV.C](#sec-iv-c)",
+      "§IV.D" => "[§IV.D](#sec-iv-d)",
+      "§IV.E" => "[§IV.E](#sec-iv-e)",
+      "§IV.F" => "[§IV.F](#sec-iv-f)",
+      "§IV.G" => "[§IV.G](#sec-iv-g)",
+      "§IV.H" => "[§IV.H](#sec-iv-h)",
+      "§II.B" => "[§II.B](#sec-ii)",
+      "§II.A" => "[§II.A](#sec-ii)",
+      "§II.C" => "[§II.C](#sec-ii)",
+      "§VIII" => "[§VIII](#sec-viii)",
+      "§VII"  => "[§VII](#sec-vii)",
+      "§VI"   => "[§VI](#sec-vi)",
+      "§V"    => "[§V](#sec-v)",
+      "§IV"   => "[§IV](#sec-iv)",
+      "§III"  => "[§III](#sec-iii)",
+      "§II"   => "[§II](#sec-ii)",
+      "§I"    => "[§I](#sec-i)",
+    );
+    $rx = join "|", map { quotemeta } sort { length($b) <=> length($a) } keys %m;
+  }
+  s/($rx)/$m{$1}/g;
+' "$TMP"
+
 # Pandoc render with xelatex (unicode-friendly, handles §, ε, ∇, etc.).
 # --filter mermaid-filter rasterizes ```mermaid blocks to images.
 # --toc inserts a table of contents at the front.

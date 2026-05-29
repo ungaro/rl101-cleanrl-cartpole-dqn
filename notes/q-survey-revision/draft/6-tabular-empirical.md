@@ -1,4 +1,4 @@
-# VI. Empirical Evaluation of Tabular Q-Learning Variants
+# VI. Empirical Evaluation of Tabular Q-Learning Variants {#sec-vi}
 
 To complement the literature analysis of §IV and the Atari extraction
 of §V, we conduct controlled experiments in tabular environments

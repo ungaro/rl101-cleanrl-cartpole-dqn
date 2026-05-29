@@ -33,7 +33,7 @@ header-includes: |
   \usepackage{fancyhdr}
   \pagestyle{fancy}
   \fancyhf{}
-  \fancyhead[L]{\small\itshape Understanding Q-Learning and Deep Q-Learning in 2025}
+  \fancyhead[L]{\small\itshape\nouppercase{\leftmark}}
   \fancyhead[R]{\small\thepage}
   \renewcommand{\headrulewidth}{0.4pt}
 ---

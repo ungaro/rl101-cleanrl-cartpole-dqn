@@ -1,4 +1,4 @@
-# IV.D. Reward Sparsity and Credit Assignment
+# IV.D. Reward Sparsity and Credit Assignment {#sec-iv-d}
 
 Addresses **W4** of the eight weaknesses introduced in §II.B. Methods
 here modify *what the return signal represents* — its temporal
@@ -231,6 +231,7 @@ performance drop among the six components, second only to PER.
 **2D positioning (distributional resolution × compute):**
 
 ```mermaid
+%% caption: Reward-sparsity methods positioned by distributional resolution (x) and compute cost (y).
 quadrantChart
     title Reward-sparsity methods — distributional resolution × compute
     x-axis "No distribution (scalar)" --> "Learned-fraction distribution"

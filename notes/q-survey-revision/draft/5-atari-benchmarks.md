@@ -1,4 +1,4 @@
-# V. Atari Benchmark Analysis
+# V. Atari Benchmark Analysis {#sec-v}
 
 This section synthesizes Atari benchmark performance reported across
 the methods of §IV. Because third-party implementations often diverge

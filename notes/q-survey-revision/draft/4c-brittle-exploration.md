@@ -1,4 +1,4 @@
-# IV.C. Brittle Exploration
+# IV.C. Brittle Exploration {#sec-iv-c}
 
 Addresses **W3** of the eight weaknesses introduced in §II.B. Methods
 here replace ε-greedy's undirected randomness with structured
@@ -39,6 +39,7 @@ signals. The figure below shows the genealogy of methods covered in
 this section.
 
 ```mermaid
+%% caption: Genealogy of brittle-exploration methods (§IV.C).
 flowchart TD
     DQNE[DQN / Nature DQN<br/>§IV.B / §IV.H]
     DQNE -->|noise injection| NoisyNet[NoisyNet 2018]
@@ -271,6 +272,7 @@ on the diagnostic exploration games.
 **2D positioning (adaptivity × Montezuma effectiveness):**
 
 ```mermaid
+%% caption: Brittle-exploration methods positioned by temporal adaptivity (x) and effectiveness on Montezuma's Revenge (y).
 quadrantChart
     title Exploration methods — temporal adaptivity × Montezuma effectiveness
     x-axis "Per-step adaptive" --> "Per-episode consistent"

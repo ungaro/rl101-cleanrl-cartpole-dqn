@@ -1,4 +1,4 @@
-# IV.B. Sample Inefficiency
+# IV.B. Sample Inefficiency {#sec-iv-b}
 
 Addresses **W2** of the eight weaknesses introduced in §II.B. Methods
 here modify *how transitions are stored, sampled, or augmented* to
