@@ -4,7 +4,16 @@
 # Requirements (one-time install on Ubuntu/WSL):
 #   sudo apt install -y pandoc texlive-xetex texlive-fonts-recommended \
 #                       texlive-latex-extra
-#   npm install -g mermaid-filter
+#   npm install -g beautiful-mermaid sharp mermaid-filter
+#
+# Pipeline:
+#   1. render-mermaid.mjs pre-processes each section, rendering supported
+#      diagrams (flowchart, state, sequence, class, ER, xychart-beta) with
+#      beautiful-mermaid in the zinc-light theme → PNGs cached in
+#      ./mermaid-beautiful/.
+#   2. Pandoc + xelatex compiles the concatenated, pre-processed markdown.
+#      mermaid-filter still runs as a pandoc filter to catch unsupported
+#      block types (notably quadrantChart).
 #
 # The filenames sort lexically into the paper order:
 #   1-introduction → 2-background → 3-methodology → 4-overview →
@@ -30,6 +39,9 @@ if [ -x /usr/bin/pandoc ] && [ -x /usr/bin/xelatex ]; then
 fi
 
 # Concatenate the section files into one markdown source.
+# Each section is first pre-processed by render-mermaid.mjs so the
+# supported diagram blocks become PNG image references in the zinc-light
+# theme. Quadrant charts are left for mermaid-filter to handle.
 # Insert a pagebreak between top-level sections so each starts fresh.
 TMP="$(mktemp -t q-survey-XXXXXX.md)"
 trap 'rm -f "$TMP"' EXIT
@@ -40,7 +52,7 @@ for f in *.md; do
   if [[ $first -eq 0 ]]; then
     printf '\n\\newpage\n\n' >> "$TMP"
   fi
-  cat "$f" >> "$TMP"
+  node ./render-mermaid.mjs "$f" >> "$TMP"
   first=0
 done
 
