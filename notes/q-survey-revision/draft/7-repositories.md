@@ -90,9 +90,50 @@ adoption of methodological advances. This observation motivates
 the future-work proposal in §VIII for a community-maintained
 Q-learning–specific repository.
 
-### D. Design trade-offs across repositories
+### D. Tables VII and VIII — coverage and design trade-offs
 
-Table VIII summarizes the design priorities of each repository:
+\footnotesize
+
+Table: **Repository support for deep Q-learning algorithms, grouped by category.** ● = implemented; ○ = not implemented.
+
+| Category | Method (year) | Tianshou | XuanCe | CleanRL | SB3 | RLlib | DQN Zoo |
+|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Statistical | Param Space Noise (2017) | ○ | ● | ○ | ○ | ○ | ○ |
+| Statistical | C51 (2017) | ● | ● | ● | ○ | ● | ● |
+| Statistical | NoisyNet (2018) | ○ | ○ | ○ | ○ | ● | ○ |
+| Statistical | QR-DQN (2018) | ● | ● | ○ | ● | ○ | ● |
+| Statistical | IQN (2018) | ● | ○ | ○ | ○ | ○ | ● |
+| Statistical | FQF (2019) | ● | ○ | ○ | ○ | ○ | ○ |
+| Q-Func. Comp. | Nature DQN (2015) | ● | ● | ● | ● | ● | ● |
+| Q-Func. Comp. | DRQN (2015) | ○ | ○ | ○ | ○ | ○ | ○ |
+| Q-Func. Comp. | Double DQN (2016) | ● | ● | ○ | ○ | ● | ● |
+| Q-Func. Comp. | Dueling DQN (2016) | ● | ● | ○ | ● | ● | ○ |
+| Q-Func. Comp. | Rainbow DQN (2018) | ● | ○ | ○ | ○ | ● | ● |
+| Q-Func. Comp. | CBDQ (2025) | ○ | ○ | ○ | ○ | ○ | ○ |
+| Memory/Replay | DQN (2013) | ○ | ○ | ○ | ○ | ○ | ○ |
+| Memory/Replay | Prioritized ER (2016) | ○ | ● | ○ | ○ | ● | ● |
+| Memory/Replay | DQfD (2018) | ○ | ○ | ○ | ○ | ○ | ○ |
+| Memory/Replay | MeDQN (2023) | ○ | ○ | ○ | ○ | ○ | ○ |
+| Ensemble | Bootstrapped DQN (2016) | ○ | ○ | ○ | ○ | ○ | ○ |
+| Ensemble | UCB Q-Ensemble (2018) | ○ | ○ | ○ | ○ | ○ | ○ |
+| Ensemble | Ensemble Bootstrapping (2021) | ○ | ○ | ○ | ○ | ○ | ○ |
+| Model-Based | Posterior Sampling DQN (2023) | ○ | ○ | ○ | ○ | ○ | ○ |
+| Pure Q | Parallel Q (PQN, 2025) | ○ | ○ | ○ | ○ | ○ | ○ |
+
+\normalsize
+
+Table: **Comparison of popular Deep RL repositories — design pros and cons.**
+
+| Repository | Pros | Cons |
+|---|---|---|
+| **Tianshou** | Dual API (high-level and low-level); emphasis on reproducibility with agent-level tests; native TensorBoard support | Logs/results not available for all algorithms; reproducibility guarantees not empirically verified across full benchmark suite |
+| **XuanCe** | Modular YAML config files; W&B integration for hyperparameter tuning; high modularity for code reuse | Default hyperparameters often diverge from original papers; incomplete support across environments; steep learning curve |
+| **CleanRL** | Single-file implementations; easy to audit and understand; lightweight and minimal dependencies | Limited support for large-scale experiments; less modular, harder to extend |
+| **Stable Baselines3** | Clean API with sklearn-style interface; well-maintained and widely adopted; compatible with VecEnv, Gym, etc. | Focused more on policy-gradient methods; limited Q-learning variants beyond DQN |
+| **RLlib** | Distributed training out-of-the-box; Ray Tune integration; production-grade scalability | High complexity and heavyweight; harder to debug or customize individual components |
+| **DQN Zoo** | Faithful reimplementation of DQN variants; reproducibility aligned with DeepMind practices; highly organized training logs and configs | Focused exclusively on DQN family; less beginner-friendly |
+
+Reading Table VIII, the design priorities of each repository emerge:
 
 - **Tianshou** and **XuanCe** prioritize coverage breadth across
   methods at the cost of single-method depth or reproducibility

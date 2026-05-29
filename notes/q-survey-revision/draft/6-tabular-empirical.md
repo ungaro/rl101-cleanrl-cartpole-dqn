@@ -43,7 +43,47 @@ approximation by construction.
 Tables IV, V, and VI report final-episode performance per
 environment, averaged across seeds.
 
-[Tables IV, V, VI here.]
+Table: **Final performance on FrozenLake-v1** (mean ± std over the last 10 evaluation episodes, 5 seeds).
+
+| Algorithm | Final Reward |
+|---|:---:|
+| CVPI | 1.00 ± 0.00 |
+| Double Q-Learning | 0.90 ± 0.30 |
+| Expected SARSA | 0.94 ± 0.24 |
+| MCTS | 0.00 ± 0.00 |
+| MPI | 1.00 ± 0.00 |
+| Multi-Step Q-Learning | 0.90 ± 0.30 |
+| Q-Learning | 0.96 ± 0.20 |
+| SARSA | 0.78 ± 0.41 |
+| VI | 0.00 ± 0.00 |
+
+Table: **Final performance on Taxi-v3** (mean ± std over the last 10 evaluation episodes, 5 seeds).
+
+| Algorithm | Final Reward |
+|---|:---:|
+| CVPI | 5.52 ± 15.22 |
+| Double Q-Learning | -105.54 ± 44.62 |
+| Expected SARSA | -44.18 ± 41.00 |
+| MCTS | -6.22 ± 4.44 |
+| MPI | -0.90 ± 29.35 |
+| Multi-Step Q-Learning | -57.82 ± 80.61 |
+| Q-Learning | -57.04 ± 43.23 |
+| SARSA | -48.36 ± 45.84 |
+| VI | 7.58 ± 2.74 |
+
+Table: **Final performance on CliffWalking-v1** (mean ± std over the last 10 evaluation episodes, 5 seeds).
+
+| Algorithm | Final Reward |
+|---|:---:|
+| CVPI | -13.00 ± 0.00 |
+| Double Q-Learning | -53.38 ± 85.45 |
+| Expected SARSA | -25.02 ± 23.83 |
+| MCTS | -1.00 ± 0.00 |
+| MPI | -13.00 ± 0.00 |
+| Multi-Step Q-Learning | -36.94 ± 47.87 |
+| Q-Learning | -39.42 ± 49.55 |
+| SARSA | -21.02 ± 13.93 |
+| VI | -13.00 ± 0.00 |
 
 ### C. Interpretation by axis
 

@@ -53,6 +53,17 @@ The closest prior art is the single-axis problem-first organization
 of [Springer NCAA 2026], which addresses distribution shift in
 offline RL only.
 
+Table: **Comparison of Q-Learning and Deep Q-Learning Survey Papers.** ● = discussed; ◐ = partially discussed; ○ = not discussed.
+
+| Aspect | Urtans 2018 [12] | Jang 2019 [13] | Boppiniti 2021 [14] | Hafiz 2022 [15] | Ghasemi 2024/25 | Ours (2026) |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Analyzes Public DQN Code Repositories | ○ | ○ | ○ | ○ | ○ | ● |
+| Unified Taxonomy Covering Both Tabular Q and DQN | ○ | ○ | ○ | ○ | ◐ | ● |
+| Atari Benchmark Results Extracted from Prior DQN Papers | ○ | ○ | ○ | ○ | ○ | ● |
+| Classic Control Benchmark Results from Original Implementations | ○ | ○ | ○ | ○ | ○ | ● |
+| Thorough Per-Paper Literature Review | ○ | ○ | ○ | ○ | ◐ | ● |
+| Problem-First Organization Across Multiple Axes | ○ | ○ | ○ | ○ | ○ | ● |
+
 ### C. Axis assignment methodology
 
 Each method covered in this paper is assigned to a *primary axis* —

@@ -1,0 +1,36 @@
+# mermaid-filter config — applies to every ```mermaid block this filter
+# handles (which is the 5 quadrantChart blocks; the flowcharts are pre-
+# rendered by render-mermaid.mjs with beautiful-mermaid).
+#
+# Theme set to "base" so themeVariables actually take effect. Colors are
+# the same zinc-light palette beautiful-mermaid uses, with the derived
+# shades pre-computed from fg=#27272A, bg=#FFFFFF in sRGB.
+theme: base
+themeVariables:
+  # Quadrant-chart specifics
+  quadrantBackgroundFill: "#FFFFFF"
+  quadrantTitleFill: "#27272A"
+  quadrant1Fill: "#F8F8F9"
+  quadrant2Fill: "#F8F8F9"
+  quadrant3Fill: "#F8F8F9"
+  quadrant4Fill: "#F8F8F9"
+  quadrant1TextFill: "#7D7D7F"
+  quadrant2TextFill: "#7D7D7F"
+  quadrant3TextFill: "#7D7D7F"
+  quadrant4TextFill: "#7D7D7F"
+  quadrantPointFill: "#27272A"
+  quadrantPointTextFill: "#27272A"
+  quadrantXAxisTextFill: "#27272A"
+  quadrantYAxisTextFill: "#27272A"
+  quadrantInternalBorderStrokeFill: "#E0E0E1"
+  quadrantExternalBorderStrokeFill: "#939394"
+  # Generic fallbacks (won't all be used, but keep the palette coherent)
+  primaryColor: "#F8F8F9"
+  primaryBorderColor: "#E0E0E1"
+  primaryTextColor: "#27272A"
+  lineColor: "#939394"
+  background: "#FFFFFF"
+  mainBkg: "#FFFFFF"
+  secondaryColor: "#F4F4F5"
+  tertiaryColor: "#FAFAFA"
+  fontFamily: "Inter, system-ui, sans-serif"

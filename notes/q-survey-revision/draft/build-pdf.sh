@@ -64,13 +64,6 @@ pandoc "$TMP" \
   --pdf-engine=xelatex \
   --filter mermaid-filter \
   --toc \
-  --toc-depth=2 \
-  -V geometry:margin=1in \
-  -V documentclass=article \
-  -V mainfont="DejaVu Serif" \
-  -V monofont="DejaVu Sans Mono" \
-  -V colorlinks=true \
-  -V linkcolor=blue \
-  --metadata title="Understanding Q-Learning and Deep Q-Learning"
+  --toc-depth=3
 
 echo "Wrote $OUT"
