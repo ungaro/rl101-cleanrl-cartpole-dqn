@@ -78,15 +78,15 @@ slow convergence. Methods responding to this weakness — prioritized
 sampling, learning from demonstrations, memory-efficient replay —
 are surveyed in §IV.B.
 
-**W3. Brittle exploration.** ε-greedy action selection takes a
-random action with probability ε and a greedy action otherwise. This
+**W3. Brittle exploration.** $\varepsilon$-greedy action selection takes a
+random action with probability $\varepsilon$ and a greedy action otherwise. This
 suffices for environments where reward is sufficiently dense that
 near-greedy policies explore the state space through their own
 exploitation. In environments where rewards are sparse or delayed
-beyond an ε-greedy random-walk's reach — Montezuma's Revenge [2],
-Pitfall! [2], Private Eye [2] — ε-greedy exploration is dithered
+beyond an $\varepsilon$-greedy random-walk's reach — Montezuma's Revenge [2],
+Pitfall! [2], Private Eye [2] — $\varepsilon$-greedy exploration is dithered
 rather than directed and fails to escape early-state plateaus. The
-formal characterization is that ε-greedy is myopic with respect to
+formal characterization is that $\varepsilon$-greedy is myopic with respect to
 posterior uncertainty in $Q(s,a)$; methods responding to this
 weakness inject structured noise, maintain posterior estimates, or
 use intrinsic motivation, and are surveyed in §IV.C.

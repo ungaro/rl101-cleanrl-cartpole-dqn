@@ -1,0 +1,30 @@
+{
+  "theme": "base",
+  "themeVariables": {
+    "quadrantBackgroundFill": "#FFFFFF",
+    "quadrantTitleFill": "#27272A",
+    "quadrant1Fill": "#F8F8F9",
+    "quadrant2Fill": "#F8F8F9",
+    "quadrant3Fill": "#F8F8F9",
+    "quadrant4Fill": "#F8F8F9",
+    "quadrant1TextFill": "#7D7D7F",
+    "quadrant2TextFill": "#7D7D7F",
+    "quadrant3TextFill": "#7D7D7F",
+    "quadrant4TextFill": "#7D7D7F",
+    "quadrantPointFill": "#27272A",
+    "quadrantPointTextFill": "#27272A",
+    "quadrantXAxisTextFill": "#27272A",
+    "quadrantYAxisTextFill": "#27272A",
+    "quadrantInternalBorderStrokeFill": "#E0E0E1",
+    "quadrantExternalBorderStrokeFill": "#939394",
+    "primaryColor": "#F8F8F9",
+    "primaryBorderColor": "#E0E0E1",
+    "primaryTextColor": "#27272A",
+    "lineColor": "#939394",
+    "background": "#FFFFFF",
+    "mainBkg": "#FFFFFF",
+    "secondaryColor": "#F4F4F5",
+    "tertiaryColor": "#FAFAFA",
+    "fontFamily": "Inter, system-ui, sans-serif"
+  }
+}

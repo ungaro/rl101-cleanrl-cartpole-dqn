@@ -158,7 +158,7 @@ medium-replay, medium-expert).
 
 A representative summary of normalized scores on MuJoCo
 locomotion medium-expert datasets (higher = better, normalized to
-[0, 100] where 100 ≈ expert performance):
+[0, 100] where 100 $\approx$ expert performance):
 
 | Method | HalfCheetah | Hopper | Walker2d |
 |---|---|---|---|

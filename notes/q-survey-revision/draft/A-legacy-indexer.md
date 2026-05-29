@@ -1,4 +1,4 @@
-# Appendix A. Legacy Indexer (Six Categories ↔ Eight Axes) {#sec-app-a}
+# Appendix A. Legacy Indexer: Six Categories vs. Eight Axes {#sec-app-a}
 
 This appendix supports readers approaching the paper through the
 conventional method-type taxonomy used in prior Q-learning surveys

@@ -45,7 +45,7 @@ methods address**. Eight such weaknesses are identified:
 1. *Overestimation bias* introduced by the `max` operator over noisy
    value estimates;
 2. *Sample inefficiency* arising from uniform experience replay;
-3. *Brittle exploration* under ε-greedy action selection;
+3. *Brittle exploration* under $\varepsilon$-greedy action selection;
 4. *Reward sparsity and credit assignment* in long-horizon tasks;
 5. *Distribution shift* when transferring to fixed-data (offline)
    regimes;

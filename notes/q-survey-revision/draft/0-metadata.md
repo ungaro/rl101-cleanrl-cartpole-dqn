@@ -24,9 +24,12 @@ abstract: |
   practitioners to navigate the evolution, empirical performance, and
   implementation landscape of Q-learning.
 documentclass: article
+classoption:
+  - 10pt
 geometry: margin=1in
-mainfont: "DejaVu Serif"
-monofont: "DejaVu Sans Mono"
+mainfont: "Latin Modern Roman"
+monofont: "Latin Modern Mono"
+mathfont: "Latin Modern Math"
 colorlinks: true
 linkcolor: blue
 header-includes: |
@@ -36,6 +39,10 @@ header-includes: |
   \fancyhead[L]{\small\itshape\nouppercase{\leftmark}}
   \fancyhead[R]{\small\thepage}
   \renewcommand{\headrulewidth}{0.4pt}
+  \setlength{\columnsep}{0.25in}
+  \usepackage{caption}
+  \captionsetup[table]{font=small}
+  \captionsetup[figure]{font=small}
 ---
 
 ## Impact Statement

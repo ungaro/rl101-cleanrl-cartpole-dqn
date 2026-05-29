@@ -127,7 +127,7 @@ gain is not consistently realized in practice.
 - **Expressiveness vs. trainability.** The progression VDN → QMIX
   → QPLEX → QTRAN represents monotonically increasing
   representational capacity for IGM-compatible $Q_\text{tot}$. The
-  empirical ordering is QMIX ≈ QPLEX > VDN > QTRAN on most SMAC
+  empirical ordering is QMIX $\approx$ QPLEX > VDN > QTRAN on most SMAC
   scenarios — capacity helps but only when training dynamics
   cooperate, which they do for monotonic mixing more reliably than
   for constraint-loss formulations.

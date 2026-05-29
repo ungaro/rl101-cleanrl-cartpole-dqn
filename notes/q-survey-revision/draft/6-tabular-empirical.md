@@ -101,7 +101,7 @@ Walking — where the on-policy/off-policy distinction is sharpest —
 SARSA's conservative behavior (-21) outperforms Q-Learning's
 optimistic one (-39), as expected: SARSA learns the policy actually
 being executed, while Q-Learning learns a riskier optimal policy
-that ε-greedy execution sometimes plunges off the cliff.
+that $\varepsilon$-greedy execution sometimes plunges off the cliff.
 
 **Multi-Step Q-Learning (§IV.D).** Multi-step achieves 0.90 on
 FrozenLake and -57 on Taxi, slightly below baseline. The result is

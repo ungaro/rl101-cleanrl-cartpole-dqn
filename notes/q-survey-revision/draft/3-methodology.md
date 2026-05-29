@@ -53,16 +53,25 @@ The closest prior art is the single-axis problem-first organization
 of [Springer NCAA 2026], which addresses distribution shift in
 offline RL only.
 
-Table: **Comparison of Q-Learning and Deep Q-Learning Survey Papers.** ● = discussed; ◐ = partially discussed; ○ = not discussed.
-
-| Aspect | Urtans 2018 [12] | Jang 2019 [13] | Boppiniti 2021 [14] | Hafiz 2022 [15] | Ghasemi 2024/25 | Ours (2026) |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| Analyzes Public DQN Code Repositories | ○ | ○ | ○ | ○ | ○ | ● |
-| Unified Taxonomy Covering Both Tabular Q and DQN | ○ | ○ | ○ | ○ | ◐ | ● |
-| Atari Benchmark Results Extracted from Prior DQN Papers | ○ | ○ | ○ | ○ | ○ | ● |
-| Classic Control Benchmark Results from Original Implementations | ○ | ○ | ○ | ○ | ○ | ● |
-| Thorough Per-Paper Literature Review | ○ | ○ | ○ | ○ | ◐ | ● |
-| Problem-First Organization Across Multiple Axes | ○ | ○ | ○ | ○ | ○ | ● |
+\begin{table*}[t]
+\centering
+\caption{Comparison of Q-Learning and Deep Q-Learning Survey Papers. \\$\bullet$ = discussed; $\circ$ = not discussed; partial = \textit{partial}.}
+\label{tab:survey-comparison}
+\small
+\begin{tabular}{p{0.42\linewidth}cccccc}
+\toprule
+Aspect & Urtans 2018 & Jang 2019 & Boppiniti 2021 & Hafiz 2022 & Ghasemi 2024/25 & Ours (2026) \\
+       & [12]        & [13]      & [14]           & [15]       &                 &              \\
+\midrule
+Analyzes Public DQN Code Repositories & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\bullet$ \\
+Unified Taxonomy Covering Both Tabular Q and DQN & $\circ$ & $\circ$ & $\circ$ & $\circ$ & \textit{partial} & $\bullet$ \\
+Atari Benchmark Results Extracted from Prior DQN Papers & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\bullet$ \\
+Classic Control Benchmark Results from Original Implementations & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\bullet$ \\
+Thorough Per-Paper Literature Review & $\circ$ & $\circ$ & $\circ$ & $\circ$ & \textit{partial} & $\bullet$ \\
+Problem-First Organization Across Multiple Axes & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\bullet$ \\
+\bottomrule
+\end{tabular}
+\end{table*}
 
 ### C. Axis assignment methodology
 

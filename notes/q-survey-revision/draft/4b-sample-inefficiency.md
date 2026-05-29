@@ -201,7 +201,7 @@ Three questions on this axis remain open:
 | PER (2016) | Memory/Replay | Sample $\propto |\delta_i|^\alpha$, IS-corrected | IS bias, prioritization $\alpha$ | Rare high-info transitions | 41/49 Atari > DQN |
 | DQfD (2018) | Memory/Replay | Augment buffer with expert demonstrations | Demonstration availability | Sparse-reward Atari | Private Eye: 42,457 |
 | MeDQN (2023) | Memory/Replay | Consolidation loss compresses buffer | $\lambda$ hyperparameter | Memory-constrained training | Atari 7GB → 0.7GB |
-| HER (2017) | Memory/Replay | Goal relabeling for synthetic reward | Goal-conditioned only | Robotic manipulation | OpenAI Fetch ≈100% |
+| HER (2017) | Memory/Replay | Goal relabeling for synthetic reward | Goal-conditioned only | Robotic manipulation | OpenAI Fetch $\approx 100$\% |
 
 The methods on this axis do not occupy a clean 2D trade-off; the
 relevant trade-offs are categorical (memory vs. compute vs.

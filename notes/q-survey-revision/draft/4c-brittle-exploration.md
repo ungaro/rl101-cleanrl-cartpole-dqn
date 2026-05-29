@@ -1,13 +1,13 @@
 # IV.C. Brittle Exploration {#sec-iv-c}
 
 Addresses **W3** of the eight weaknesses introduced in §II.B. Methods
-here replace ε-greedy's undirected randomness with structured
+here replace $\varepsilon$-greedy's undirected randomness with structured
 exploration that scales to environments where reward is sparse,
 delayed, or behind narrow state-space passages.
 
 ### A. The Weakness
 
-ε-greedy action selection takes the greedy action $\arg\max_a Q(s,a)$
+$\varepsilon$-greedy action selection takes the greedy action $\arg\max_a Q(s,a)$
 with probability $1-\varepsilon$ and a uniform-random action with
 probability $\varepsilon$. The mechanism is *dithered*: at each step
 independently, with no memory of past exploration and no model of
@@ -16,14 +16,14 @@ is a random walk modulated by the current greedy policy.
 
 This is sufficient for environments where reward is dense enough that
 near-greedy policies stumble into informative states. It fails
-dramatically when reward is sparse, delayed beyond ε-greedy's
+dramatically when reward is sparse, delayed beyond $\varepsilon$-greedy's
 effective horizon, or located behind state-space passages whose
 random-walk hitting time is exponential in trajectory length. The
 canonical example is Montezuma's Revenge [2]: standard DQN agents
 score essentially zero, while domain-naive humans achieve thousands
 of points within minutes.
 
-The deeper diagnosis is that ε-greedy is *myopic with respect to
+The deeper diagnosis is that $\varepsilon$-greedy is *myopic with respect to
 epistemic uncertainty*. A state-action pair $(s,a)$ that has been
 visited many times is sampled at the same rate as one that has been
 visited zero times. Methods in this section maintain or approximate a
@@ -266,7 +266,7 @@ on the diagnostic exploration games.
 | UCB Q-Ensemble (2018) | Ensemble-Based | $Q_\mu + \lambda \sigma$ from $K$-ensemble | $K\times$ compute | Uncertainty-aware action | 30/49 Atari max |
 | CBDQ (2025) | Q-Function Comp. | Belief distribution over actions | Clustering overhead | Classic control + driving | LunarLander, MetaDrive |
 | Posterior Sampling DQN (2023) | Model-Based | Sample $Q$ from posterior per episode | Approximate posterior | Cyclic environments | 5-state chain |
-| RND (2018)* | Statistical | Random network distillation intrinsic bonus | Bonus scale hyperparameter | Sparse-reward Atari | Montezuma ≈10,000 |
+| RND (2018)* | Statistical | Random network distillation intrinsic bonus | Bonus scale hyperparameter | Sparse-reward Atari | Montezuma $\approx$ 10,000 |
 | Go-Explore (2019/2021) | Memory/Replay (archive) | Archive + return-then-explore | Discrete state hashing | Hardest Atari exploration | Montezuma > 1,000,000 |
 
 **2D positioning (adaptivity × Montezuma effectiveness):**

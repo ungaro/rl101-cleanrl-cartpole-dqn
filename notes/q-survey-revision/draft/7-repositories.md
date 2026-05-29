@@ -94,31 +94,31 @@ Q-learning–specific repository.
 
 \footnotesize
 
-Table: **Repository support for deep Q-learning algorithms, grouped by category.** ● = implemented; ○ = not implemented.
+Table: **Repository support for deep Q-learning algorithms, grouped by category.** $\bullet$ = implemented; $\circ$ = not implemented.
 
 | Category | Method (year) | Tianshou | XuanCe | CleanRL | SB3 | RLlib | DQN Zoo |
 |---|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| Statistical | Param Space Noise (2017) | ○ | ● | ○ | ○ | ○ | ○ |
-| Statistical | C51 (2017) | ● | ● | ● | ○ | ● | ● |
-| Statistical | NoisyNet (2018) | ○ | ○ | ○ | ○ | ● | ○ |
-| Statistical | QR-DQN (2018) | ● | ● | ○ | ● | ○ | ● |
-| Statistical | IQN (2018) | ● | ○ | ○ | ○ | ○ | ● |
-| Statistical | FQF (2019) | ● | ○ | ○ | ○ | ○ | ○ |
-| Q-Func. Comp. | Nature DQN (2015) | ● | ● | ● | ● | ● | ● |
-| Q-Func. Comp. | DRQN (2015) | ○ | ○ | ○ | ○ | ○ | ○ |
-| Q-Func. Comp. | Double DQN (2016) | ● | ● | ○ | ○ | ● | ● |
-| Q-Func. Comp. | Dueling DQN (2016) | ● | ● | ○ | ● | ● | ○ |
-| Q-Func. Comp. | Rainbow DQN (2018) | ● | ○ | ○ | ○ | ● | ● |
-| Q-Func. Comp. | CBDQ (2025) | ○ | ○ | ○ | ○ | ○ | ○ |
-| Memory/Replay | DQN (2013) | ○ | ○ | ○ | ○ | ○ | ○ |
-| Memory/Replay | Prioritized ER (2016) | ○ | ● | ○ | ○ | ● | ● |
-| Memory/Replay | DQfD (2018) | ○ | ○ | ○ | ○ | ○ | ○ |
-| Memory/Replay | MeDQN (2023) | ○ | ○ | ○ | ○ | ○ | ○ |
-| Ensemble | Bootstrapped DQN (2016) | ○ | ○ | ○ | ○ | ○ | ○ |
-| Ensemble | UCB Q-Ensemble (2018) | ○ | ○ | ○ | ○ | ○ | ○ |
-| Ensemble | Ensemble Bootstrapping (2021) | ○ | ○ | ○ | ○ | ○ | ○ |
-| Model-Based | Posterior Sampling DQN (2023) | ○ | ○ | ○ | ○ | ○ | ○ |
-| Pure Q | Parallel Q (PQN, 2025) | ○ | ○ | ○ | ○ | ○ | ○ |
+| Statistical | Param Space Noise (2017) | $\circ$ | $\bullet$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Statistical | C51 (2017) | $\bullet$ | $\bullet$ | $\bullet$ | $\circ$ | $\bullet$ | $\bullet$ |
+| Statistical | NoisyNet (2018) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\bullet$ | $\circ$ |
+| Statistical | QR-DQN (2018) | $\bullet$ | $\bullet$ | $\circ$ | $\bullet$ | $\circ$ | $\bullet$ |
+| Statistical | IQN (2018) | $\bullet$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\bullet$ |
+| Statistical | FQF (2019) | $\bullet$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Q-Func. Comp. | Nature DQN (2015) | $\bullet$ | $\bullet$ | $\bullet$ | $\bullet$ | $\bullet$ | $\bullet$ |
+| Q-Func. Comp. | DRQN (2015) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Q-Func. Comp. | Double DQN (2016) | $\bullet$ | $\bullet$ | $\circ$ | $\circ$ | $\bullet$ | $\bullet$ |
+| Q-Func. Comp. | Dueling DQN (2016) | $\bullet$ | $\bullet$ | $\circ$ | $\bullet$ | $\bullet$ | $\circ$ |
+| Q-Func. Comp. | Rainbow DQN (2018) | $\bullet$ | $\circ$ | $\circ$ | $\circ$ | $\bullet$ | $\bullet$ |
+| Q-Func. Comp. | CBDQ (2025) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Memory/Replay | DQN (2013) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Memory/Replay | Prioritized ER (2016) | $\circ$ | $\bullet$ | $\circ$ | $\circ$ | $\bullet$ | $\bullet$ |
+| Memory/Replay | DQfD (2018) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Memory/Replay | MeDQN (2023) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Ensemble | Bootstrapped DQN (2016) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Ensemble | UCB Q-Ensemble (2018) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Ensemble | Ensemble Bootstrapping (2021) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Model-Based | Posterior Sampling DQN (2023) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Pure Q | Parallel Q (PQN, 2025) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
 
 \normalsize
 
