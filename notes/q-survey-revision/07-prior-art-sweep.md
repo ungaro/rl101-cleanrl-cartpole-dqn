@@ -158,7 +158,7 @@ not threaten our angle.
 
 ---
 
-## What I'd still do before submission
+## Recommended follow-up checks before submission
 
 - A targeted Semantic Scholar / Connected Papers search seeded by
   Ghasemi 2024/2025 to surface anything that cites or is cited by it

@@ -229,7 +229,7 @@ minimal prose disruption.
 
 ---
 
-## What I'd want from the team before committing to a direction
+## Open questions for the team before committing to a direction
 
 1. **How locked is the taxonomy?** If the six categories are
    load-bearing in the cover letter or already accepted by the editor
@@ -249,15 +249,32 @@ minimal prose disruption.
 
 ---
 
-## Open question I cannot answer from inside the draft
+## Differentiation check against 2024–2026 prior art
 
-Are there other 2024–2026 Q-learning surveys we'd be competing against?
-A 30-minute Google Scholar + arXiv sweep before committing direction
-would be cheap insurance. If someone else is already doing the
-problem-first organization, our angle changes — we lean into the
-repository comparison + tabular benchmarking, which is genuinely
-unique. If no one is, the structural pivot is also a differentiation
-claim.
+A focused web sweep (Google Scholar + arXiv cs.LG/cs.AI + Semantic
+Scholar) was run to check whether other recent surveys threaten the
+differentiation claims. Verdict: **the problem-first reorganization
+angle is open.** No 2024–2026 Q-learning / DQN survey takes that
+organizing structure; no paper unifies tabular + deep Q-learning into
+a problem-axis framework. The structural pivot in Suggestion A is a
+clean differentiation claim.
+
+Three citations need to be added to the revision regardless of which
+suggestion the team adopts:
+
+- **Ghasemi et al. 2024/2025** (arXiv:2411.18892) — closest
+  competitor, broad RL survey organized by method family. The
+  proposed finer taxonomy + repo + Atari analysis differentiates.
+- **Springer NCAA 2026** offline-RL distribution-shift survey
+  (10.1007/s00521-026-11966-8) — single-axis problem-first precedent
+  to cite at the head of §IV.E.
+- **Hundal et al. 2025** (arXiv:2503.22575) — empirical
+  reproducibility audit of RL libraries on PPO. Not a survey, but
+  directly adjacent to our repository-comparison contribution.
+  Requires one sentence in §VII distinguishing the angles.
+
+Full findings, borderline cases, and follow-up checks in
+`07-prior-art-sweep.md`.
 
 ---
 
@@ -267,3 +284,4 @@ claim.
 - `04-method-remap.md` — every method mapped to its new axis-section
 - `05-worked-section-overestimation.md` — Section IV.A written end-to-end as proof of concept
 - `06-genealogy-figure.md` — ASCII genealogy figure draft
+- `07-prior-art-sweep.md` — 2024–2026 competing-surveys check
