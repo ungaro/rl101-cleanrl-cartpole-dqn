@@ -12,6 +12,39 @@ commit hash that introduced it.
 
 ---
 
+## v0.24 — 2026-05-30 — Supplementary Material assembled (separate 10-page PDF)
+
+The core points to "supplementary material" ~13 times; that document now
+exists as a separate IEEEtran PDF (`supplement.pdf`, built by
+`build-supp.sh` → `supplement.tex`), so none of those promises dangle.
+Sourced and curated from `draft-monograph/` and the working notes:
+
+- **S1 — Systematic search log & prior-art sweep** (from
+  `07-prior-art-sweep.md`): databases, search strings, date range,
+  inclusion/exclusion outcome, and a prior-survey overlap table. All
+  internal strategy commentary ("Verdict", "Implications for the
+  revision plan", follow-up checks) stripped — reads as a neutral
+  methodological appendix.
+- **S2 — Full method-type index**: the complete ~50-method mapping
+  between the method-type taxonomy and the eight axes (three tables);
+  "legacy" terminology migrated to "method-type" throughout.
+- **S3 — Full Atari per-game tables**: the complete extraction tables
+  §V defers, with protocol/rliable caveats; numbers unchanged.
+- **S4 — Full repository coverage matrix**: the complete method × six-repo
+  matrix behind §VII, plus the design pros/cons table.
+- **S5 — Notation and selected derivations**: the formal statements and
+  proof sketches §IV.I and the §I reading guide defer.
+- **S6 — Tabular experiment configuration & reproduction**: full
+  hyperparameters, oracle method, and results with std + 95% CIs;
+  reproducible from the committed script.
+
+Supplement: 10 pages, clean build, zero undefined citations, no "legacy"
+or identifying strings. Main paper unchanged at 19 pages.
+
+Commit: TBD
+
+---
+
 ## v0.23 — 2026-05-30 — Coherence pass (fix distillation seams)
 
 A read-only end-to-end coherence review surfaced seams left by the

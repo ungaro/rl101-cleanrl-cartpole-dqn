@@ -61,6 +61,7 @@ notes/q-survey-revision/draft-monograph/*.toc
 
 # draft-tai (IEEE TAI edition) — main.tex is SOURCE; body.tex is generated
 notes/q-survey-revision/draft-tai/body.tex
+notes/q-survey-revision/draft-tai/supp-body.tex
 notes/q-survey-revision/draft-tai/mermaid-filter.err
 notes/q-survey-revision/draft-tai/mermaid-beautiful/
 notes/q-survey-revision/draft-tai/*.png
