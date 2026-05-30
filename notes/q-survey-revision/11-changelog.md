@@ -36,7 +36,7 @@ commit hash that introduced it.
 compression, §V Atari synthesis, §VII repositories, and the new §VI
 experiment.
 
-Commit: TBD
+Commit: `c428f16`
 
 ---
 
