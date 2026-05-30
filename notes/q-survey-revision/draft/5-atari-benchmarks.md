@@ -219,3 +219,148 @@ strength of comparisons. We refrain from highlighting per-cell
 best-results in Tables II/III; the axis-stratified narrative above
 substitutes evaluation against the *diagnostic categories* for the
 weaker comparison against per-game best.
+
+### H. Limitations of Atari as a Q-learning benchmark
+
+The preceding subsections treat Atari as the evidence stream against
+which methods are evaluated; this subsection turns to what Atari
+*cannot* evaluate. Six inherent limits constrain the conclusions
+drawable from Tables II/III:
+
+**H.1. Determinism.** The Arcade Learning Environment [2] is
+deterministic by default: identical action sequences from identical
+initial frames produce identical trajectories. Two partial mitigations
+have become standard — *no-op starts* (the agent skips a random number
+of frames at episode start) and *sticky actions* [Machado et al. 2018]
+(actions persist with probability 0.25 per frame). Neither restores
+the stochasticity of real-world environments. Methods that exploit
+deterministic transitions — frame-perfect action sequences,
+memorized trajectories — score artificially well. The reporting
+protocols of methods covered here vary on this point; comparability
+suffers as a result.
+
+**H.2. Discrete action space.** Atari games have 4–18 discrete
+actions per game. Continuous-control evaluation falls entirely
+outside Atari's scope. This excludes a significant fraction of
+modern Q-learning research from Atari-based comparison: REDQ (§IV.A),
+soft Q-learning, and the offline-RL methods of §IV.E are all
+evaluated primarily on MuJoCo / D4RL, not Atari. Cross-paper
+comparison across the discrete/continuous boundary is structurally
+limited.
+
+**H.3. Single-task per episode.** Each Atari episode is one game;
+the agent does not transfer mid-episode between tasks. Multi-task,
+meta-learning, and continual-RL capabilities (§IV.G) cannot be
+evaluated on within-distribution Atari without modification.
+Agent57's achievement is impressive precisely because it handles
+the *distribution* of 57 games with a single agent — but the
+distribution is itself the construction; Atari was not designed as a
+multi-task benchmark.
+
+**H.4. Fixed environments.** Every Atari game has a fixed level
+layout, a fixed sprite set, fixed game mechanics. There is no
+procedural variation, no held-out test environment, no OOD
+evaluation possibility. A Q-function that overfits to the training
+trajectories of Pong cannot be distinguished, on Atari alone, from
+one that learned the underlying game dynamics. Reports of
+human-level performance on Atari elide this distinction.
+
+**H.5. Compute scale.** Agent57's 78B-frame training run is
+inaccessible to most research labs. R2D2's 10B is similar. The
+median academic Atari result of the past five years has been
+trained at 200M–1B frames — within an order of magnitude of Rainbow
+in 2017. The compute frontier of Atari research has effectively
+moved beyond what most researchers can reproduce, raising the
+question of whether Atari rankings produced at lower compute budgets
+remain comparable to frontier results.
+
+**H.6. Visual-only observation.** Atari observations are
+84×84 grayscale image patches. No language, no proprioception, no
+audio. Modern RL increasingly couples Q-learning with language-model
+priors (instruction following, language-conditioned exploration);
+Atari evaluation cannot speak to these directions.
+
+These limits define a specific evaluation niche. Atari is a strong
+benchmark for *exploration under sparse reward* (§IV.C),
+*credit assignment in long-horizon discrete tasks* (§IV.D), and
+*stability of deep Q-learning at scale* (§IV.H). It is a weak
+benchmark for *sample efficiency in low-compute regimes*,
+*generalization across procedural variation*,
+*transfer across tasks*, and *robustness in deployment*. The
+choices to add coverage of D4RL in §IV.E and SMAC in §IV.F reflect
+which Atari-uncovered weaknesses require their own benchmark
+infrastructure to evaluate; the next subsection surveys further
+benchmarks that complement Atari along the dimensions above.
+
+### I. Newer benchmarks for Q-learning evaluation
+
+The benchmarks below address one or more of the limits identified in
+§V.H. Each is tied to the axis it most directly diagnoses:
+
+**Atari-100k** [Kaiser et al. 2020] caps training at 100,000
+environment steps — roughly 2 hours of game play, 1/2000 the
+compute of standard Atari. The benchmark exposes *sample efficiency*
+under tight budgets, separating algorithmic improvements from
+compute scaling. Methods that perform well on standard Atari but
+poorly on Atari-100k (notably Rainbow without modifications)
+demonstrate that their gains rely on compute access. Primary axis:
+§IV.B (sample inefficiency).
+
+**ALE-stochastic.** The Machado et al. (2018) revisions to the
+Arcade Learning Environment introduce sticky actions as the default
+and require evaluation on multiple difficulty modes. The revised
+protocol is increasingly the standard for new methods. Primary axis:
+§IV.H (stability under stochasticity).
+
+**ProcGen** [Cobbe et al. 2020] provides 16 procedurally-generated
+games with disjoint training and evaluation level distributions.
+Methods are scored on held-out levels not seen during training,
+directly measuring generalization across procedural variation.
+Q-learning baselines on ProcGen show *very poor* generalization —
+between 25% and 50% of training performance on the held-out
+distribution — exposing a capability that Atari cannot diagnose.
+Primary axis: cross-axis (§IV.E distribution shift in the deployment
+direction; §IV.B sample efficiency on out-of-distribution data).
+
+**NetHack** [Küttler et al. 2020] provides a single procedurally-
+generated environment with millions-of-step episodes, rich symbolic
+observations, and extreme stochasticity. Q-learning baselines on
+NetHack score within an order of magnitude of random play, even at
+scale. The benchmark exposes the interaction of *credit assignment*
+(§IV.D) and *exploration* (§IV.C) at horizons orders of magnitude
+longer than Atari, and is currently the field's strongest test of
+whether Q-learning can scale to genuinely long-horizon decision-
+making.
+
+**BSuite** [Osband et al. 2020] is DeepMind's *behavior suite for
+reinforcement learning*: twenty small experiments each designed to
+isolate a single capability — basic memory, generalization, noise
+robustness, scale, exploration, credit assignment, and others.
+BSuite is the closest existing benchmark to the axis-stratified
+evaluation philosophy of this paper. A method's BSuite profile
+directly maps to its position on the eight weakness axes; the
+benchmark's results report uses a radar-chart presentation that
+makes axis-level comparison visible at a glance. Primary axis: all
+eight (BSuite is meta-axial by design).
+
+**D4RL** [Fu et al. 2020] is covered in §IV.E as the dominant
+offline-RL benchmark. Its locomotion, AntMaze, Adroit, and Kitchen
+suites diagnose *distribution shift* (§IV.E) along five distinct
+behavior-policy regimes.
+
+**SMAC** [Samvelyan et al. 2019] is covered in §IV.F as the
+cooperative multi-agent benchmark. Its scenarios diagnose
+*multi-agent coordination* (§IV.F) at varying levels of joint-task
+difficulty.
+
+Beyond these, several benchmarks are emerging as Q-learning
+evaluation targets but lie outside this paper's scope: MetaWorld
+[Yu et al. 2020] and Meta-MuJoCo for meta-learning (§IV.G);
+RLBench [James et al. 2020] for robotic manipulation; Crafter
+[Hafner 2022] as a long-horizon survival benchmark with explicit
+achievement metrics; CARL [Benjamins et al. 2021] for context-
+generalization in continuous control. The expansion of benchmark
+diversity in the past five years is itself a contribution of the
+modern era: where the original DQN paper [32] was evaluated on
+seven Atari games, today's serious Q-learning methods typically
+report on three or more benchmark families.

@@ -86,7 +86,7 @@ sections would let practitioners navigate from "I face problem $X$"
 ### C. Open research directions, by axis
 
 The "Open Questions" subsections (E) of each §IV axis-section
-collectively summarize the field's frontier. We highlight three
+collectively summarize the field's frontier. We highlight four
 cross-axis directions of particular promise:
 
 **The compute-vs.-algorithmic tradeoff.** The empirical pattern in
@@ -111,6 +111,23 @@ online learning (AWAC, Cal-QL) address a regime increasingly central
 to practical deployment but theoretically underexplored. The
 interface is itself a candidate weakness axis the field may
 recognize in coming years.
+
+**Q-learning under real-world distribution shift.** §IV.E treats
+distribution shift as a *training* regime: the data was collected by
+one or more behavior policies and is then fixed. A deployment-side
+analog — the learned policy meets a state distribution different
+from the one it was trained on — is largely unaddressed. Sim-to-real
+transfer in robotic Q-learning, OOD robustness against perturbations,
+and online policy correction at deployment time all live in this
+regime. The newer benchmarks of §V.I (ProcGen for procedural
+variation, CARL for context generalization, RLBench for
+sim-to-real) begin to provide evaluation infrastructure, but no
+unified Q-learning treatment of *deployment* distribution shift
+exists. This is the axis where the gap between Atari-evaluated
+methods and real-world deployment is most visible, and where
+Q-learning's value-based perspective could productively engage with
+robotics, control, and operations-research literature that has
+developed parallel tools.
 
 ### D. Closing
 

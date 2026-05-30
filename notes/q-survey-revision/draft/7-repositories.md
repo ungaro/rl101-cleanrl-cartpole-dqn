@@ -16,12 +16,20 @@ repositories' implementations against one another; that question is
 addressed empirically by Hundal et al. [Hundal 2025], whose
 controlled comparison of PPO across five repositories shows
 substantial reproducibility variance even for a single algorithm
-under nominally equivalent configurations. Hundal et al.'s
-empirical-reproducibility audit and the taxonomic-coverage analysis
-here are complementary: practitioners selecting a repository care
-both *whether their algorithm is supported* (this paper's question)
-and *whether the implementation reproduces published results*
-(Hundal et al.'s question).
+under nominally equivalent configurations. Hundal et al.'s work sits
+in a broader reproducibility-crisis literature: Henderson et al.
+2018 [*Deep Reinforcement Learning That Matters*] showed that
+hyperparameter sensitivity and seed variance in deep RL can rival
+the gap between published baselines and proposed methods; Engstrom
+et al. 2020 attributed several headline performance claims in
+policy-gradient methods to implementation details rather than
+algorithmic substance. Hundal et al.'s empirical-reproducibility
+audit and the taxonomic-coverage analysis here are complementary:
+practitioners selecting a repository care both *whether their
+algorithm is supported* (this paper's question) and *whether the
+implementation reproduces published results* (Hundal et al.'s
+question, against the standards of the reproducibility-crisis
+literature).
 
 ### B. Axis-aware coverage
 
