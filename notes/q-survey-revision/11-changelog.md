@@ -36,7 +36,7 @@ category↔axis mapping deferred to an end-of-paper appendix.
 Page count: 26 (unchanged — clarity, not compression). Clean build,
 zero undefined citations.
 
-Commit: TBD
+Commit: `45031e7`
 
 ---
 
