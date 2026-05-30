@@ -44,7 +44,7 @@ picture. Each doc carries a "Synced to v0.24" marker.
 Notes-only change; no manuscript rebuild. Main paper unchanged at 19pp,
 supplement at 10pp.
 
-Commit: TBD
+Commit: `4608389`
 
 ---
 
