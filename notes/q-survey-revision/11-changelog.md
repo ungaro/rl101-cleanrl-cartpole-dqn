@@ -49,7 +49,7 @@ a distilled TAI edition is built alongside it.
 
 paper.pdf (monograph): 1.6 MB. main.pdf (TAI): 1.3 MB, 47 pages.
 
-Commit: TBD
+Commit: `873f52c`
 
 ---
 
