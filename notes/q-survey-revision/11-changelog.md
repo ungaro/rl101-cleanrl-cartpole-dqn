@@ -57,7 +57,7 @@ methodological asks and Reviewer 1 #10.
 
 paper.pdf: 1.54 MB.
 
-Commit: pending push.
+Commit: `be7f05b`
 
 ---
 
