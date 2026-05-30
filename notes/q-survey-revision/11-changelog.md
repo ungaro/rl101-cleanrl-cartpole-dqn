@@ -12,6 +12,41 @@ commit hash that introduced it.
 
 ---
 
+## v0.17 — 2026-05-30 — TAI distillation: compression ledger + §IV.A–H
+
+Distillation of the TAI edition begins. The eight problem-axis sections
+— the bulk of the manuscript — are rewritten to a uniform compact
+template, and the steering plan is committed for the co-authors.
+
+- **`13-tai-compression-ledger.md`** (new, in notes) — maps every
+  monograph section → {core | supplementary | cut} with word budgets,
+  the "distill into a lens, don't delete" principle, and where the
+  analysis lives. Core-prose budget ≈ 10–11k words.
+- **`draft-tai/main.tex` anonymization toggle** — `\newif\ifanon`;
+  `\anontrue` for the double-anonymous submission build (current),
+  `\anonfalse` for a named camera-ready copy. Author list preserved
+  in the `\else` branch. Submission builds verified to leak no names.
+- **§IV.A–H distilled** to the uniform per-axis template: *Weakness →
+  Mechanisms (families by what they exploit) → Trade-off (the analysis)
+  → Open questions → one compact comparison table.* Run-in **bold**
+  lead-ins replace `###` subsubsections; §IV.x demoted to `##`
+  subsections under a single §IV section. Derivations, quadrant charts,
+  and per-game empirical prose move to supplementary (sourced from
+  `draft-monograph/`).
+  - Axis word counts: 4a 527, 4b 481, 4c 603, 4d 579, 4e 571, 4f 512,
+    4g 619, 4h 549 (from 1.4k–3.2k each; §IV.A–H total ≈ 16.5k → 4.4k).
+- A few method citations that were plain text in the monograph
+  (HER, Ape-X, SICQL, scaling-laws) are now keyed to existing
+  `refs.bib` entries. Zero undefined citations.
+
+**Page count: 47 → 34** (two-column) from the axis distillation alone.
+Front matter, §V/§VI/§VII, and the §IV.I/J + appendix demotions remain;
+target ≤21.
+
+Commit: TBD
+
+---
+
 ## v0.16 — 2026-05-30 — IEEE TAI edition + monograph freeze
 
 Target venue locked to **IEEE Transactions on Artificial Intelligence**

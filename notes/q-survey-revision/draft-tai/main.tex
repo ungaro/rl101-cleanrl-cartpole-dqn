@@ -39,12 +39,30 @@
 \title{Understanding Q-Learning and Deep Q-Learning in 2026:\\
 A Methodological and Empirical Survey}
 
-\author{Anonymous Submission to IEEE Transactions on Artificial Intelligence%
-\thanks{Double-anonymous review copy. Author identities, affiliations, and
-acknowledgements are withheld and provided via the submission portal.}}
+% ANONYMIZATION TOGGLE.
+%   \anonfalse -> named working copy (authors visible; for internal circulation)
+%   \anontrue  -> double-anonymous SUBMISSION build (REQUIRED for TAI; the
+%                 Editorial Assistant returns non-anonymized submissions).
+\newif\ifanon
+\anontrue
 
-\markboth{IEEE Transactions on Artificial Intelligence,~Vol.~XX, No.~X, 2026}%
-{Anonymous: Understanding Q-Learning and Deep Q-Learning in 2026}
+\ifanon
+  \author{Anonymous Submission to IEEE Transactions on Artificial Intelligence%
+  \thanks{Double-anonymous review copy. Author identities, affiliations, and
+  acknowledgements are withheld and provided via the submission portal.}}
+  \markboth{IEEE Transactions on Artificial Intelligence,~Vol.~XX, No.~X, 2026}%
+  {Understanding Q-Learning and Deep Q-Learning in 2026}
+\else
+  \author{Colby Wang, Ti, Divya, Kevin, Hamna, Logan,
+  Eason Yishan Wu, Charles Jiahao Zhang, and Alp Guneysel%
+  \thanks{E.~Y.~Wu is with Taipei, Taiwan Province of China.
+  C.~J.~Zhang is with the University of Waterloo.
+  Affiliations for the remaining authors are to be completed.
+  \emph{Working copy --- set \texttt{\textbackslash anontrue} for the
+  double-anonymous TAI submission build.}}}
+  \markboth{IEEE Transactions on Artificial Intelligence,~Vol.~XX, No.~X, 2026}%
+  {Wang \emph{et al.}: Understanding Q-Learning and Deep Q-Learning in 2026}
+\fi
 
 \maketitle
 
