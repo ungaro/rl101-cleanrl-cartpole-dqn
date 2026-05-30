@@ -12,6 +12,34 @@ commit hash that introduced it.
 
 ---
 
+## v0.18 — 2026-05-30 — TAI distillation: §IV.I/J demoted + appendices to supplementary
+
+- **§IV.I (theoretical advances)** distilled 1893 → 250 words: a
+  synthesis of convergence/deadly-triad, offline pessimism bounds,
+  plasticity/capacity loss, and distributional theory — one sentence
+  with citation per result; formal statements + proofs → supplementary.
+- **§IV.J (foundation-model alignment)** distilled 1970 → 336 words and
+  reframed as an *emerging direction* (accessible to TAI's wide
+  readership, clearly flagged as not-yet-settled): the KL-regularized
+  large-discrete-action-MDP framing plus a compact tour of
+  Q-Transformer, VLM-Q, ShiQ, Q♯, SICQL/ICQL, Q-shaping.
+- **Appendix A (legacy indexer)** compacted 1311 → 301 words: keeps the
+  analytically interesting reverse-view crosswalk (legacy category →
+  axis distribution) and the three "why the legacy taxonomy fragments"
+  patterns; the full 50-method per-method mapping → supplementary.
+- **Appendix B (notation & proofs)** removed from the core build
+  (→ supplementary; preserved in `draft-monograph/`).
+- Fixed a ` ```math ` fence in §IV.J that pandoc was rendering as a code
+  block (undefined `Shaded`/`Highlighting`); now `$$…$$` display math.
+
+**Page count: 34 → 26** (two-column). Remaining to ≤21: front-matter
+compression, §V Atari synthesis, §VII repositories, and the new §VI
+experiment.
+
+Commit: TBD
+
+---
+
 ## v0.17 — 2026-05-30 — TAI distillation: compression ledger + §IV.A–H
 
 Distillation of the TAI edition begins. The eight problem-axis sections
