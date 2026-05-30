@@ -43,7 +43,7 @@ template, and the steering plan is committed for the co-authors.
 Front matter, §V/§VI/§VII, and the §IV.I/J + appendix demotions remain;
 target ≤21.
 
-Commit: TBD
+Commit: `66a18c0`
 
 ---
 
