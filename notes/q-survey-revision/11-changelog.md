@@ -41,7 +41,7 @@ below the 21-page cap.
 Page count: **21 → 19** (two pages of slack below the cap). Clean build,
 zero undefined citations.
 
-Commit: TBD
+Commit: `57c23c4`
 
 ---
 
