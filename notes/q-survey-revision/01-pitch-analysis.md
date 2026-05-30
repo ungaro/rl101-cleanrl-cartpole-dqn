@@ -1,5 +1,26 @@
 # Q-Learning Survey — Direction Analysis
 
+> **Synced to v0.24 (2026-05-30).**
+> **Status:** the direction analyzed below was *realized*. The
+> problem-first reframe (Suggestion A) became the spine of the paper;
+> the genealogy figure (Suggestion B) and the repo proposal
+> (Suggestion C) both landed. Venue is locked to **IEEE Transactions
+> on Artificial Intelligence (TAI)**, "Original Research Review
+> Manuscript." The paper is **submission-ready**: a 19-page
+> two-column IEEEtran main paper (`draft-tai/`) plus a 10-page
+> supplement (S1–S6). The comprehensive ~47-page single-column
+> version is frozen at git tag `monograph-v0.15` (`draft-monograph/`)
+> and now serves as the "quarry" for supplement material. This file
+> is the *direction* record (why the reframe); the build/structure
+> ground truth lives in the v0.24 state brief and `00-README.md`.
+>
+> Reading note: the reasoning below is preserved because it remains
+> the correct rationale for the reframe. Where the original text
+> speculated about open choices that are now decided (taxonomy
+> terminology, two-column layout, references, author block, the
+> figure rendering, the repo spin-off), those are marked **[RESOLVED
+> v0.24]** inline rather than deleted.
+
 ## The core read of the reviewer feedback
 
 The five reviewer points (algorithms feel isolated; need conceptual
@@ -23,6 +44,101 @@ Fixing surface complaints one by one will produce a *bigger* catalogue.
 Fixing the root cause means **reorganizing around a different axis** —
 and once the axis is right, the surface complaints largely resolve
 themselves.
+
+---
+
+## How the direction was realized (added v0.24)
+
+The reframe above survived contact with a hard venue constraint, and
+the *way* it survived is the real lesson. The governing principle that
+drove every cut and every reorganization:
+
+> **Distill into a lens, don't delete.** The contribution is the
+> *framework* — the eight-weakness taxonomy and the analytical
+> apparatus around it. The methods are *evidence* for the framework,
+> not the point. Whenever the page budget bit, the question was never
+> "which method do we drop?" but "which method's prose can be
+> compressed into the lens without losing the analysis?" Cut material
+> didn't vanish — it stayed in `draft-monograph/` (frozen at
+> `monograph-v0.15`) and was curated forward into the 10-page
+> supplement.
+
+### The venue decision and what it forced
+
+Locking to **IEEE TAI** ("Original Research Review Manuscript")
+imposed a **21-page hard cap** (15 normal, mandatory \$200/page over
+15), two-column IEEEtran, double-anonymous review, and an *explicit
+systematic-methodology requirement*. That cap is what converted the
+abstract "distill into a lens" principle into concrete edits. The
+distillation arc by page count:
+
+`47 → 34` (axis-sections §IV.A–H tightened) `→ 26` (§IV.I/J demoted,
+appendices moved to supplement) `→ 27` (cross-axis interaction table
+added back as net-new analysis) `→ 21` (§V/§VII distilled, §VI
+re-run) `→ 19` (front-matter compression).
+
+The end state is two editions plus a supplement:
+- `draft-monograph/` — the ~47-page single-column "quarry," **frozen**.
+- `draft-tai/` — the **19-page** two-column submission (`\ifanon`
+  toggle; `\anontrue` for submission, named author list preserved for
+  camera-ready).
+- `draft-tai/supplement.pdf` — the **10-page** supplement (S1–S6),
+  where the math depth, full Atari per-game tables, full repository
+  matrix, ~50-method index, and proofs live.
+
+So the TAI cap is what *forced* the compression from a monograph into
+a tight paper + supplement — exactly the discipline the "lens"
+principle prescribes, but with a number attached.
+
+### The key framing decisions that made the lens hold
+
+1. **Method-type taxonomy defined once, up front.** The six
+   method-type categories (the old "botanist's" axis) were not
+   deleted — they were demoted to a *single table at the head of §IV*
+   ("Q-Learning Methods by Weakness," retitled from "Related Works")
+   that maps each category to the axes it touches. Terminology was
+   standardized to "method-type taxonomy"; the word **"legacy" was
+   killed**. This is the resolution of the original tension between
+   "pivot the axis" and "don't throw away the existing taxonomy": the
+   taxonomy becomes a *reference grid*, the weaknesses become the
+   *spine*. **[RESOLVED v0.24 — replaces the open "how locked is the
+   taxonomy?" question below.]**
+
+2. **Eight-axis uniform compact template.** Every axis subsection
+   §IV.A–H follows the same shape: *Weakness → Mechanisms (families by
+   what they exploit) → Trade-off (the analysis) → Open questions →
+   one comparison table*, with run-in **bold** lead-ins instead of
+   lettered subsubsections. This is the disciplined descendant of the
+   five-part section sketch proposed in Suggestion A; the uniform
+   template is what made eight axes fit in the page budget. (Note W7
+   is a *composite* axis: W7a sample throughput + W7b slow adaptation,
+   merged under the cap.)
+
+3. **Cross-axis interaction table.** The one genuinely *new*
+   analytical artifact — W1–W8 by origin / principal interaction /
+   deployment failure mode. It is the payoff of the "physician's
+   taxonomy" idea: it makes the weaknesses interact on the page
+   instead of sitting in isolated buckets. It was the single item
+   adopted into core from the (otherwise math-heavy, largely
+   already-covered) LLM reviews of v0.14.
+
+4. **§VI's reproducible experiment as original evidence.** The
+   tabular section was upgraded from a descriptive table into a
+   *first-party reproducible experiment*: Q-learning / SARSA /
+   Expected SARSA / 3-step Q over **100 seeds with 95% bootstrap CIs**
+   on FrozenLake / Taxi / CliffWalking, with VI/PI/MPI/CVPI reported
+   as a **separated planning oracle** (an upper bound with full model
+   access — explicitly *not* a model-free competitor). This is what
+   lets a *survey* carry original evidence under a review-paper
+   banner, and it directly answers the "too much derivation, not
+   enough synthesis/evidence" complaint: the space derivations would
+   have occupied now holds reproducible results
+   (`scripts/tabular_experiments.py` + `data/tabular_results.json`).
+
+Together these four decisions are how the abstract direction became a
+submission-ready paper: the lens (weakness spine) is the contribution,
+the methods are evidence, the cap forced compression rather than
+deletion, and the supplement absorbed everything the lens didn't need.
 
 ---
 
@@ -209,31 +325,42 @@ implementation" tags.
   `quadrantChart` 2D positioning grids in §IV.A, §IV.C, §IV.D,
   §IV.E, §IV.H. Final TikZ/PGF rendering for the IEEE template is
   the only pending sub-item.
-- **C (repo spin-off) — pending.** A named deliverable in
-  `draft/8-conclusion.md` with four design priorities and a
-  prioritized roadmap (nine methods absent from all six surveyed
-  repositories per Table VII). The repository itself is not yet
-  stood up — that's the remaining concrete action.
+- **C (repo spin-off) — landed as a proposal in the paper.** Promoted
+  to a named deliverable in §VIII (community-repository proposal +
+  open directions) anchored on the **nine methods absent from all six
+  surveyed repositories** (DRQN, CBDQ, DQfD, MeDQN, Bootstrapped DQN,
+  UCB Q-Ensemble, EBQL, PSDQN, PQN). The standalone GitHub stub is
+  out of scope for the submission itself and is not required for it.
 
 ---
 
 ## Open questions for the team before committing to a direction
 
-1. **How locked is the taxonomy?** If the six categories are
-   load-bearing in the cover letter or already accepted by the editor
-   as the paper's contribution, the structural pivot becomes more
-   expensive.
+**[RESOLVED v0.24]** — these were the gating questions before the
+team committed. They are recorded as resolved:
+
+1. **How locked is the taxonomy?** Resolved by *demotion, not
+   deletion*: the six method-type categories now live in a single
+   head-of-§IV table mapping categories→axes; the weakness spine is
+   the contribution. "legacy" terminology killed. (See "How the
+   direction was realized," decision 1.)
 2. **Is there appetite for a co-author taking ownership of modern
-   families?** Offline RL alone (CQL/IQL/BCQ/EDAC) is a real lift; a
-   PhD researcher with offline-RL chops would be the right owner.
-3. **What's the editor's tone?** "Major revision" vs. "reject and
-   resubmit" maps to different ambition levels.
+   families?** Resolved: modern families are covered within the axis
+   spine rather than as owned standalone sections — foundation-model
+   alignment (Q-Transformer, VLM-Q, ShiQ, Q♯, SICQL/ICQL, Q-shaping)
+   sits in §IV.J as an *emerging direction* (~336 words); theoretical
+   advances in §IV.I (proofs→supp S5). Full continuous-action-space
+   expansion (DDPG/NAF/QT-Opt/CAQL/CQSM) was **declined** as out of
+   core scope for a discrete-focused survey at 21pp.
+3. **What's the editor's tone?** Moot — the work was reframed as a
+   fresh systematic review submission to TAI rather than a revision
+   of a prior decision; §III now carries an explicit systematic/PRISMA
+   protocol to satisfy TAI's methodology requirement.
 4. **Should the repository comparison stay as a standalone section?**
-   It currently reads like a sidebar. Alternative: fold each
-   repository's choices into the method sections they implement —
-   one-line callouts ("supported in Tianshou, XuanCe; absent from
-   CleanRL, SB3"). Reproducibility-by-axis, which the reviewers
-   explicitly want.
+   Resolved: kept as standalone §VII (six repos by axis + per-repo
+   trade-off table; full matrix→supp S4), with the
+   non-interchangeability and named-vs-feature-equivalent caveats
+   that make it analytical rather than a sidebar.
 
 ---
 
@@ -296,13 +423,15 @@ Full findings, borderline cases, and follow-up checks in
   `draft/4-overview.md` (master genealogy + modern-RL branches) and
   `draft/4c-brittle-exploration.md` (exploration branch). Mermaid
   `quadrantChart` 2D positioning grids inserted in §IV.A, §IV.C,
-  §IV.D, §IV.E, §IV.H. Final TikZ/PGF rendering for the IEEE
-  template is pending.
+  §IV.D, §IV.E, §IV.H. **[RESOLVED v0.24]** The §IV overview in
+  `draft-tai/` ships the figures (genealogy, branches, axis×mechanism
+  matrix) plus the **cross-axis interaction table**; rendering is
+  resolved in the IEEEtran build.
 - **Suggestion C — Q-learning repo spin-off:** Promoted to a named
-  deliverable in `draft/8-conclusion.md` with four design priorities
-  and a prioritized roadmap (nine methods absent from all six
-  surveyed repositories per Table VII). Repository stub not yet
-  stood up — outstanding action item.
+  deliverable in §VIII (community-repository proposal) anchored on the
+  nine methods absent from all six surveyed repositories. **[RESOLVED
+  v0.24 — bounded]** The proposal is in the paper; standing up the
+  external GitHub repo is out of scope for the submission.
 
 ## Reviewer-feedback coverage (after Sessions 1–3)
 
@@ -328,19 +457,29 @@ areas from the pitch deck now satisfy every sub-ask:
 
 ## Outstanding items (independent of reviewer feedback)
 
-- **Bibliography / References section** at the end of the paper.
-  Body cites [1]–[55] and named-year authors but no References list
-  is generated yet. Wire up with pandoc-citeproc + `.bib` file
-  before submission.
-- **Author block.** YAML metadata `title` and `abstract` set; no
-  authors yet.
-- **Q-learning repository stub** (Suggestion C). Roadmap defined in
-  §VIII.B but the GitHub repo itself is not stood up.
-- **Two-column layout.** Reverted in the build because pandoc's
-  default `\begin{longtable}` for markdown tables conflicts with
-  twocolumn class. Real two-column would require either converting
-  every markdown table to raw LaTeX `\begin{table*}` or switching to
-  `documentclass=IEEEtran`.
-- **Final visual polish on tables and figures** including any
-  remaining table-overflow issues and TikZ rendering of the master
-  genealogy.
+**[RESOLVED v0.24]** — the build-side blockers below are all closed.
+Recorded as resolved:
+
+- **Bibliography / References section.** Resolved: IEEE `[N]`
+  citations via `IEEEtran.bst` through pandoc `--natbib` + bibtex;
+  `refs.bib` has ~136 entries.
+- **Author block.** Resolved: `\ifanon` toggle, `\anontrue` set for
+  the double-anonymous submission; named author list (Colby Wang, Ti,
+  Divya, Kevin, Hamna, Logan, Eason Yishan Wu, Charles Jiahao Zhang,
+  Alp Guneysel) preserved in the `\else` branch for camera-ready.
+- **Two-column layout.** Resolved: switched to `documentclass=IEEEtran`;
+  the longtable/twocolumn conflict is handled by `tables-twocol.lua`
+  (longtable→`table*`). Builds via `build-tai.sh`→`main.pdf` and
+  `build-supp.sh`→`supplement.pdf`.
+- **Visual polish on tables and figures.** Resolved in the IEEEtran
+  build; oversized tables routed to the supplement (S2/S3/S4).
+
+**Still open (USER-SIDE, pre-submission):**
+
+- Pick keywords from the TAI dropdown (3–6; currently 5 placeholders).
+- Run iThenticate similarity check (≤20% required).
+- ORCID for all authors.
+- Flip `\anonfalse` only for camera-ready.
+- *(Bounded, out of submission scope)* stand up the external
+  Q-learning community repo (Suggestion C is a paper proposal, not a
+  submission gate).

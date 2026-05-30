@@ -1,297 +1,187 @@
-# New Outline — Problem-First Q-Learning Survey
+# Outline — Problem-First Q-Learning Survey (TAI submission)
 
-The section-level skeleton of the revised paper. Each top-level
-Related Works section is an *axis* — a weakness of vanilla Q-learning
-that a family of methods addresses — rather than a *method type*.
+**Synced to v0.24 (2026-05-30).** This is THE OUTLINE — it tracks the
+*realized* structure of `draft-tai/`, not the pre-distillation plan.
+Status: submission-ready. **19-page TAI paper** (two-column IEEEtran,
+double-anonymous, `\anontrue`) **+ 10-page supplement** (S1–S6).
+Comprehensive ~47-page single-column source frozen as `draft-monograph/`
+(git tag `monograph-v0.15`) — the "quarry" the paper distills from.
 
-The old taxonomy (Statistical / Q-Function Computation / Memory & Replay
-/ Ensemble / Model-Based / Minimal) is preserved as the **row spine of
-Tables II/III** (see `draft/5-atari-benchmarks.md` §V.A) and as
-Appendix A (`draft/A-legacy-indexer.md`).
+Governing principle of the distillation arc (47 → 34 → 26 → 27 → 21 → 19
+pp): *"distill into a lens, don't delete."* Cut material lives in the
+monograph and is curated into the supplement, never discarded.
 
-**Status:** structure below is fully drafted. Each section heading
-includes a link to the corresponding markdown draft file. Status
-markers:
-
-- ✓ drafted
-- (modern) needs domain-owner review before integration
-- ⊘ pending
-
----
-
-## Structure with status
-
-### I. Introduction ✓ — [`draft/1-introduction.md`](draft/1-introduction.md)
-*Largely as-is.* Updates:
-- The pitch shifts from "we built a unified taxonomy" to "we
-  reorganize Q-learning's evolution around the *problems* its variants
-  were designed to solve."
-- Adds a one-paragraph framing claim: the field is not a sequence of
-  parallel inventions; it is eight running attempts to fix eight
-  weaknesses of vanilla Q-learning.
-- Pre-announces the eight axes (table on first page).
-
-### II. Background and Problem Setup ✓ — [`draft/2-background.md`](draft/2-background.md)
-*Largely as-is.* The MDP setup stays. Add ~1 page: **"Eight Weaknesses
-of Vanilla Q-Learning."** This is the conceptual spine — each weakness
-is named, formally stated in 2–4 lines of math, and given an empirical
-illustration (one paragraph). The eight Related Works sections that
-follow are responses to these eight named weaknesses.
-
-The eight weaknesses (this is the spine of the paper):
-
-1. **Overestimation bias** — `max` over noisy estimates is biased upward
-2. **Sample inefficiency** — uniform replay wastes high-information transitions
-3. **Brittle exploration** — ε-greedy is dithered, not directed
-4. **Reward sparsity & credit assignment** — bootstrapping a delayed
-   signal through a deep network is unstable
-5. **Distribution shift** — Q-learning is off-policy *in theory* but
-   fragile when the behavior policy is fixed (offline RL)
-6. **Multi-agent coordination** — single-agent Q does not factor across
-   cooperative agents
-7. **Slow adaptation** — Q-learning trains per-task; transfer is hard
-8. **Function-approximation instability** — the "deadly triad" of
-   off-policy + bootstrapping + function approximation
-
-### III. Methodology ✓ — [`draft/3-methodology.md`](draft/3-methodology.md)
-*Trimmed.* What stays:
-- How we chose papers
-- The contribution table (Table I)
-- The repository analysis methodology
-
-What is cut from the current Methodology:
-- The "six categories" preamble (now an appendix indexer)
-
-### IV. Related Works (eight axis-sections) — overview ✓ — [`draft/4-overview.md`](draft/4-overview.md)
-
-The §IV overview holds the paper's two structural figures (master
-genealogy + modern-RL subgraph, both mermaid) plus the axis ×
-mechanism-family matrix. It frames the eight axis-sections that
-follow.
-
-Each section follows the same five-part template:
-
-> **A. The Weakness**
-> Formal statement (math). Why it matters. The simplest case where it
-> bites.
->
-> **B. Solution Families**
-> Methods grouped by *mechanism*, not chronology. For each family:
-> one-paragraph sketch of how it addresses the weakness, the key
-> equation, citation.
->
-> **C. Trade-offs**
-> Every fix has a cost. What does each family give up — compute,
-> wall-clock, sample efficiency on benign tasks, exploration, etc.
->
-> **D. Empirical Evidence**
-> A table or paragraph drawing from the Atari results (Table II/III in
-> the current draft) showing where each family pulls ahead and where
-> it fails. **The dashes in the current tables become *evidence* here**
-> — methods that don't report on Montezuma cannot be claimed to solve
-> exploration.
->
-> **E. Open Questions**
-> What's unsolved on this axis. Replaces the current "Critical
-> Reflections" but is sharper and references work the methods could
-> not have tried.
-
-The eight sections:
-
-**IV.A. Overestimation Bias** ✓ — [`draft/4a-overestimation-bias.md`](draft/4a-overestimation-bias.md)
-- Double Q-learning, Double DQN, Dueling DQN (partial), Rainbow, EBQL,
-  Maximin Q (added), under-estimation as the opposite failure mode
-- Trade-off axis: bias ↔ variance, with EBQL as the explicit
-  ensemble-mediated point on this trade-off
-
-**IV.B. Sample Inefficiency** ✓ — [`draft/4b-sample-inefficiency.md`](draft/4b-sample-inefficiency.md)
-- DQN (replay buffer as baseline), Prioritized ER, MeDQN,
-  DQfD, HER (added), Rainbow (re-appears via PER)
-- Trade-off axis: stored memory cost ↔ sample efficiency gain
-
-**IV.C. Brittle Exploration** ✓ — [`draft/4c-brittle-exploration.md`](draft/4c-brittle-exploration.md)
-- Parameter Space Noise, NoisyNet, Bootstrapped DQN, UCB Q-Ensemble,
-  CBDQ (belief-driven), RND / pseudo-counts (added briefly)
-- Empirical evidence subsection leans hard on Montezuma's Revenge,
-  Pitfall, Private Eye — the games that *expose* the axis. Atari
-  dashes here are the argument
-
-**IV.D. Reward Sparsity & Credit Assignment (distributional methods + n-step)** ✓ — [`draft/4d-reward-sparsity.md`](draft/4d-reward-sparsity.md)
-- C51, QR-DQN, IQN, FQF, Multi-Step Q-Learning, λ-returns
-- This is the natural home for distributional RL because the distribution
-  *is* a richer credit-assignment signal, not just an uncertainty thing
-- Trade-off axis: distribution flexibility ↔ compute cost (FQF is 20%
-  slower than IQN)
-
-**IV.E. Distribution Shift (offline RL)** ✓ (modern) — [`draft/4e-distribution-shift.md`](draft/4e-distribution-shift.md)
-- CQL, IQL, BCQ, BRAC, EDAC, AWAC — all added
-- This is the section where modern Q-learning lives
-- Empirical evidence shifts to D4RL benchmarks, not Atari
-- This is also where "Atari is limited" is most directly addressed:
-  the offline-RL literature uses different benchmarks because Atari
-  cannot test distribution shift
-
-**IV.F. Multi-Agent Coordination (value decomposition)** ✓ (modern) — [`draft/4f-multi-agent.md`](draft/4f-multi-agent.md)
-- VDN, QMIX, QPLEX, QTRAN — all added
-- Even a 2-page treatment here would close reviewer point 5 substantially
-- Empirical evidence: SMAC (StarCraft Multi-Agent Challenge)
-
-**IV.G. Scaling and Slow Adaptation (distributed / meta)** ✓ (modern) — [`draft/4g-scaling-adaptation.md`](draft/4g-scaling-adaptation.md)
-- Ape-X, R2D2, Agent57 (distributed scale — added)
-- Meta-Q / MAML-Q (meta-RL — added)
-- Deep Recurrent Q-Network (DRQN — relocated from §IV.B for
-  contextual-adaptation framing)
-- PQN (re-appears: it's a "remove the architecture overhead" answer
-  to the scale axis)
-
-**IV.H. Function-Approximation Instability (the deadly triad)** ✓ — [`draft/4h-stability.md`](draft/4h-stability.md)
-- Nature DQN (target network), Polyak averaging, Dueling decomposition
-  (as a stability response, not a value-estimation response — this is
-  *the* re-interpretation argued in subsection B.2), layer norm, PQN's
-  normalization recipe, MeDQN's consolidation loss, Munchausen DQN
-- This is where the foundational *deep RL* recipe lives, separated from
-  the more exotic enhancements
-
-**IV.I. Theoretical Foundations and Recent Advances** ✓ — [`draft/4i-theoretical-advances.md`](draft/4i-theoretical-advances.md)
-- Watkins & Dayan 1992 tabular convergence; Tsitsiklis & Van Roy
-  1997 deadly-triad counterexamples; Baird 1995; GTD/TDC line
-- Distributional Bellman contraction (Bellemare 2017, Rowland 2018);
-  finite-time bounds (Yang 2019, Fan 2020); pessimism in offline RL
-  (Jin et al. 2021); stability theory (Lyle 2023, Nikishin 2022);
-  QPLEX IGM completeness theorem (Wang 2020)
-- Meta-section over the eight axes — addresses the "recent
-  theoretical advances" reviewer ask directly
-
-### V. Atari Benchmark Analysis ✓ — [`draft/5-atari-benchmarks.md`](draft/5-atari-benchmarks.md)
-*Tables II/III kept structurally*, with the legacy six-category row
-grouping preserved (§V.A — dual-view organization). Surrounding
-prose rewritten:
-- Drop the "Reporting gaps limit fair ranking" apologia
-- Re-frame the tables as evidence stratified by axis (the
-  Reaction-Time / Strategic Planning / Sparse / Dense column
-  categories map to axes — this is now made explicit)
-- Each axis-section in §IV references the relevant column range
-- The dashes are reframed as evidence, not apology
-
-*Note on the foundational methods:* the original outline proposed a
-separate "Foundations" section consolidating Q-Learning, SARSA,
-Multi-Step Q, NFQ, PQN, etc. In the actual draft, these are kept
-within their respective axis-sections (Multi-Step Q in §IV.D, PQN
-in §IV.H, and the tabular baselines as cross-references from §VI).
-A separate foundations section would have duplicated material; the
-consolidation is achieved through Appendix A's legacy indexer
-instead.
-
-### VI. Empirical Evaluation (Tabular) ✓ — [`draft/6-tabular-empirical.md`](draft/6-tabular-empirical.md)
-*As-is structurally* (Tables IV/V/VI preserved). Discussion reframed
-to tie each algorithm to its §IV axis-section and to surface the
-methodological purpose of tabular evaluation: isolating algorithmic
-design from architectural confound.
-
-### VII. Repositories ✓ — [`draft/7-repositories.md`](draft/7-repositories.md)
-*Tables VII/VIII preserved.* Prose rewritten with:
-- Each repository's coverage annotated *by axis* (§VII.B)
-- One paragraph distinguishing this paper's taxonomic analysis
-  from Hundal et al. 2025's empirical PPO audit
-- §VII.C identifies nine methods absent from *all six* surveyed
-  repositories — the roadmap for §VIII's repository spin-off
-
-### VIII. Conclusion and Q-Learning Repository Spin-Off ✓ — [`draft/8-conclusion.md`](draft/8-conclusion.md)
-*Repository proposal promoted from future-work bullet to a named
-deliverable with four design priorities and a prioritized roadmap.*
-Summary subsection (§VIII.A) organized by the eight weakness axes.
-Three cross-axis open directions surfaced — only visible from this
-paper's vantage.
-
-### Appendices
-
-**A. Legacy Indexer.** ✓ — [`draft/A-legacy-indexer.md`](draft/A-legacy-indexer.md)
-Full bidirectional map between the six legacy categories and the
-eight axes. Forward view (every method → primary + secondary axes),
-reverse view (each legacy category → distribution across axes), and
-treatment of the 18 new methods that have no row in the original
-taxonomy. The reverse view is the data backing the structural pivot.
-
-**B. Notation and Selected Derivations.** ✓ — [`draft/B-notation-and-proofs.md`](draft/B-notation-and-proofs.md)
-Notation reference table consolidated from §II.C, plus selected
-derivations the §IV body references rather than works through:
-maximum-of-noisy-estimators bound (Smith & Winkler), categorical
-distributional projection, Wasserstein contraction proof sketch,
-pessimism LCB argument for offline RL, QPLEX IGM completeness, and
-the Watkins & Dayan 1992 tabular convergence proof. Reading guide
-in §I points readers here.
-
-**C. Repository support matrix.** ⊘ pending. Table VII expanded with
-axis annotations, complementing §VII.
+The §IV top-level sections are *axes* — weaknesses of vanilla Q-learning
+that a family of methods addresses — not *method types*. The method-type
+taxonomy survives only as the analytic spine defined once in §IV's opening
+table and indexed in full in supplement S2.
 
 ---
 
-## What this buys us, mapped to reviewer feedback
+## Main paper — `draft-tai/` (≈19 pp, two-column)
 
-| Reviewer complaint | How the new structure addresses it |
+### Front matter (compressed)
+Title (12 words) · abstract (179 words, ≤250) · impact statement
+(135 words, 100–150) · 5 keywords (TAI dropdown). No acknowledgements /
+funding under `\anontrue`. Author list (Colby Wang, Ti, Divya, Kevin,
+Hamna, Logan, Eason Yishan Wu, Charles Jiahao Zhang, Alp Guneysel)
+preserved in the `\else` branch for camera-ready only.
+
+### §I Introduction — *framework-first* (~1 pp)
+Problem-first reframe: the field is not parallel inventions but eight
+running attempts to fix eight weaknesses of vanilla Q-learning. Five
+explicit contributions. Pre-announces the eight axes.
+
+### §II Background (~1.5 pp)
+MDP / Q-learning formalism, then eight weaknesses **W1–W8**, one sentence
+each. **W7 is a COMPOSITE axis**: W7a sample throughput + W7b slow
+adaptation. These eight names are the spine the §IV axis-sections answer.
+
+| | Weakness |
 |---|---|
-| Algorithms feel isolated | Every method lives in a *family* compared head-to-head inside its axis-section |
-| Need conceptual insight | The axis-sections *are* the conceptual layer; each section starts with the weakness, not the method |
-| Atari is limited | Offline RL (IV.E) and multi-agent (IV.F) introduce D4RL and SMAC; Atari results are stratified by axis and the dashes become evidence |
-| Too much derivation | Derivations move to Appendix B; in-section text is mechanism + trade-off |
-| Need more modern RL | IV.E, IV.F, and IV.G are *new sections*, not appendices — they expose the modern-RL areas the current draft misses |
+| W1 | Overestimation bias (`max` over noisy estimates) |
+| W2 | Sample inefficiency (uniform replay) |
+| W3 | Brittle exploration (ε-greedy is dithered, not directed) |
+| W4 | Reward sparsity & credit assignment |
+| W5 | Distribution shift (offline RL) |
+| W6 | Multi-agent coordination |
+| W7 | **Composite:** W7a throughput / scaling + W7b slow adaptation |
+| W8 | Function-approximation instability (deadly triad) |
 
----
+### §III Methodology — systematic / PRISMA (~1.5 pp)
+Explicit **systematic/PRISMA** protocol: databases (Google Scholar, arXiv
+cs.LG/cs.AI, Semantic Scholar), search strings, 5 inclusion/exclusion
+criteria, screening funnel ~200 → 120 → 80. **Table I** = prior-survey
+comparison (six dimensions vs. five prior surveys). Full search log and
+prior-art overlap → supplement S1.
 
-## What this *costs*
+### §IV "Q-Learning Methods by Weakness" (~8–9 pp — the core)
+RETITLED from "Related Works." Terminology standardized to **"method-type
+taxonomy"** — the word *"legacy"* is KILLED throughout.
 
-| Cost item | Estimate |
+**Overview / front apparatus:**
+- **Method-type taxonomy table** up front — six categories → which axes
+  (defined once here; full ~50-method index → supplement S2).
+- **Genealogy figure** (master) + **branches figure** (modern-RL subgraph).
+- **Axis × mechanism matrix.**
+- **Cross-axis interaction table** — W1–W8 origin / principal interaction /
+  deployment failure mode. (The one genuinely new analytical idea adopted
+  from the LLM reviews.)
+
+**§IV.A–H — uniform compact template per axis** (run-in **bold** lead-ins,
+NO lettered subsubsections):
+> *Weakness → Mechanisms (families by what they exploit) → Trade-off
+> (the analysis) → Open questions → one comparison table.*
+
+| Sub | Axis (weakness) |
 |---|---|
-| Restructure existing 30+ method writeups into new sections | 2 weeks distributed work |
-| Write three new sections (Offline / Multi-Agent / Distributed) | 1 week per section per owner — needs domain owners |
-| Update Tables II/III re-framing prose | 2 days |
-| Update Table VII to axis-aware version | 1 day |
-| Write new section II expansion (eight weaknesses) | 2 days |
-| Set up legacy-indexer appendix | 1 day |
-| Genealogy figure (Suggestion B) | 2–3 days |
-| Q-learning repo spin-off (Suggestion C) | 1 day for stub |
+| §IV.A | Overestimation bias (W1) — Double Q/DDQN, Dueling, Rainbow, EBQL, Maximin Q; bias↔variance, PDQN hybrid retained |
+| §IV.B | Sample inefficiency (W2) — PER, MeDQN, DQfD, HER |
+| §IV.C | Brittle exploration (W3) — NoisyNet, Param-Space Noise, Bootstrapped DQN, UCB Q-Ensemble, CBDQ, RND |
+| §IV.D | Reward sparsity & credit assignment (W4) — C51, QR-DQN, IQN, FQF, multi-step / λ-returns (distributional = richer credit signal) |
+| §IV.E | Distribution shift / offline RL (W5) — CQL, IQL, BCQ, BRAC, EDAC, AWAC; D4RL not Atari |
+| §IV.F | Multi-agent coordination (W6) — VDN, QMIX, QPLEX, QTRAN; SMAC |
+| §IV.G | Scaling & slow adaptation (W7 composite) — Ape-X, R2D2, Agent57, Meta-Q/MAML-Q, DRQN, PQN |
+| §IV.H | Function-approximation instability (W8) — target net, Polyak, LayerNorm, PQN recipe, MeDQN consolidation, Munchausen |
 
-Rough total: **3–4 weeks of distributed work** with 3+ contributors,
-assuming domain owners are lined up for offline / multi-agent /
-distributed.
+**§IV.I Theoretical synthesis** (~250 words) — meta-section over the eight
+axes: tabular convergence, deadly-triad counterexamples, distributional
+contraction, finite-time bounds, offline pessimism, QPLEX IGM. Proofs and
+derivations → supplement S5.
+
+**§IV.J Foundation-model alignment** (~336 words) — framed as an EMERGING
+direction: Q-Transformer, VLM-Q, ShiQ, Q♯, SICQL/ICQL, Q-shaping.
+
+### §V Atari — diagnostic synthesis (~1.5 pp)
+DIAGNOSTIC framing: task-category × axis. rliable / point-estimate caveat
+kept. Dashes reframed as *evidence* (a method not reporting Montezuma
+cannot claim to solve exploration). Full per-game tables → supplement S3.
+
+### §VI Tabular — reproducible experiment (~1.5 pp)
+NEW reproducible experiment (`scripts/tabular_experiments.py` +
+`data/tabular_results.json`): Q-learning / SARSA / Expected SARSA /
+3-step Q over **100 seeds + 95% bootstrap CIs** on FrozenLake / Taxi /
+CliffWalking. **VI/PI/MPI/CVPI reported as a SEPARATED planning oracle**
+(upper bound, full model access — NOT a model-free competitor).
+Headline results: FrozenLake Q 0.722 / oracle 0.739; Taxi ≈7.93 /
+oracle 7.935; CliffWalking Q −13 (optimal) / SARSA −79.9 (safe, high
+variance) / Expected SARSA −17 / oracle −13. Full results (±std, CIs) →
+supplement S6.
+
+### §VII Repositories (~1 pp)
+Six repos (Tianshou, XuanCe, CleanRL, DQN Zoo, SB3, RLlib) annotated by
+axis. **Nine methods absent from ALL six**: DRQN, CBDQ, DQfD, MeDQN,
+Bootstrapped DQN, UCB Q-Ensemble, EBQL, PSDQN, PQN. Hundal et al.
+non-interchangeability point; named-vs-feature-equivalent caveat; per-repo
+trade-off table. Full coverage matrix + design table → supplement S4.
+
+### §VIII Conclusion (~0.5–1 pp)
+Per-axis summary (now folds in §IV.I/J); community-repository proposal;
+open directions; limitations & ethics (benchmark monoculture, compute
+inequality, citation bias). "First" language hedged to "to our knowledge."
 
 ---
 
-## What we do *not* need to do
+## Supplement — `draft-tai/supplement.pdf` (≈10 pp, S1–S6)
 
-- Rewrite the abstract / impact statement materially (the pitch shifts
-  but stays at the same scope)
-- Rewrite the existing per-method paragraphs (they get *re-homed*, not
-  re-written, with cosmetic edits)
-- Re-run any of the existing tabular benchmarks
-- Re-extract any Atari numbers
-
-The leverage of this restructure is exactly that *most of the existing
-prose survives*. We're rearranging deck chairs *deliberately and
-explicitly* — and the reviewers asked for the rearrangement.
+| § | Contents |
+|---|---|
+| S1 | Systematic search log + prior-art overlap |
+| S2 | Full ~50-method **method-type index** (3 tables) — *was Appendix A* |
+| S3 | Full Atari per-game tables — *moved out of §V* |
+| S4 | Full repository coverage matrix + design table — *moved out of §VII* |
+| S5 | Notation + 7 derivations/proofs — *was Appendix B* |
+| S6 | Tabular-experiment config + full results (±std, CIs) — *backs §VI* |
 
 ---
 
-## Risks
+## What MOVED to the supplement
+- **Full Atari per-game tables** → S3 (§V keeps only the diagnostic
+  task-category × axis synthesis).
+- **Method-type index** (old Appendix A "legacy indexer", ~50 methods,
+  3 tables) → S2.
+- **Notation + proofs/derivations** (old Appendix B) → S5; §IV.I points here.
+- **Full repository coverage matrix** → S4 (§VII keeps the per-repo
+  trade-off table + the nine-absent-methods finding).
+- **Systematic search log** → S1 (§III keeps the PRISMA prose + Table I).
 
-- **Section IV.E and IV.F need domain owners.** If no co-author has
-  offline-RL or multi-agent background, the new sections will be
-  thin and reviewers will notice.
-- **The eight-axis framing is a claim.** A reviewer could argue we
-  collapsed two axes that should be separate (e.g. exploration vs.
-  reward sparsity) or split one that should be unified. Defensible —
-  the framing has citations and forced cross-comparisons — but it is
-  an editorial commitment we'd own.
-- **Re-homing some methods is contested.** Distributional RL especially:
-  the current draft puts it under "Statistical" (uncertainty); we'd
-  move it under "Reward Sparsity & Credit Assignment" (richer signal).
-  We should note both readings in the section and pick the load-bearing
-  one for the structure.
+## What was CUT or DEMOTED
+- **§IV.I/J demoted** from full sections to a ~250-word theory synthesis
+  and a ~336-word alignment subsection (proofs offloaded to S5).
+- **"Legacy" terminology KILLED** — no longer a dual-view organizing
+  device; the method-type taxonomy appears once (§IV table) and in S2.
+- **Separate "Foundations" section dropped** — foundational methods stay
+  in their axis-sections (multi-step in §IV.D, PQN in §IV.H, tabular
+  baselines as §VI cross-refs); a standalone section would duplicate.
+- **Continuous-action expansion DECLINED** (DDPG/NAF/QT-Opt/CAQL/CQSM) —
+  out of core scope for a discrete-focused survey at the 21-page cap;
+  only the PDQN discrete-continuous hybrid retained (§IV.A).
+- **Added math depth ROUTED to supplement, not core** (per LLM-review
+  triage): DDQL reciprocal-bootstrapping eqs, Q+FIX formula + Dec-POMDP
+  V(h,s), SICQL/ICQL losses, PQN LayerNorm-Lipschitz contraction,
+  scaling-law formulas. TAI explicitly discourages over-use of math.
+- **Atari "reporting gaps limit fair ranking" apologia dropped** — the
+  dashes are now evidence, not an excuse.
 
 ---
 
-*Companion files:*
-- `04-method-remap.md` — every method, current section vs. new axis (the spine)
-- `draft/4a-overestimation-bias.md` — IV.A written end-to-end as proof of concept
-- `draft/1-introduction.md`, `draft/2-background.md` — revised §I and §II
-- `06-genealogy-figure.md` — ASCII genealogy visual
+## Reviewer-triage outcome (v0.14 LLM reviews)
+- **Adopted into core:** cross-axis interaction table (§IV); planning-oracle
+  separation (§VI); 5 → 100 seeds + bootstrap CIs (§VI); systematic/PRISMA
+  framing (§III).
+- **Already present, not "missing":** planning-oracle framing, Hundal
+  non-interchangeability, rliable caveat, CBDQ/QFIX/SICQL/ShiQ/Q♯.
+- **Routed to supplement:** math depth (see CUT/DEMOTED above).
+- **Declined/bounded:** full continuous-action expansion.
+
+## Build & hygiene
+- `build-tai.sh` → `main.pdf`; `build-supp.sh` → `supplement.pdf`.
+  pandoc → LaTeX fragment, `--natbib` (IEEE `[N]` via `IEEEtran.bst`) +
+  `tables-twocol.lua` (longtable → table*); system xelatex/bibtex;
+  `refs.bib` (~136 entries).
+- All automated checks PASS: `\anontrue`; no author/identity/internal-notes
+  leakage in either PDF; two-column IEEEtran; abstract 179 w / title 12 w /
+  impact 135 w / 5 keywords.
+- **USER-SIDE TODO:** pick keywords from TAI dropdown; iThenticate
+  similarity (≤20%); ORCID for all authors; flip `\anonfalse` only for
+  camera-ready.

@@ -12,6 +12,42 @@ commit hash that introduced it.
 
 ---
 
+## v0.25 — 2026-05-30 — Sync all planning/reasoning docs to current state
+
+Only the changelog and the compression ledger had kept pace with the
+TAI distillation; the rest of the working notes were 4–19 hours stale
+(pre-distillation). Full sweep so the 8 co-authors see one consistent
+picture. Each doc carries a "Synced to v0.24" marker.
+
+- **00-README** — rewritten as the current entry point: venue (TAI),
+  submission-ready status (19pp + 10pp supp), the two-edition + supplement
+  layout, and an index of all planning docs (00–15).
+- **01-pitch-analysis** — added "how the direction was realized"
+  (distill-into-a-lens; TAI cap; the four framing decisions); decided
+  items marked resolved.
+- **03-new-outline** — rewritten to the actual final structure (§I–§VIII
+  with the §IV taxonomy table, uniform axis template, §IV.I/J; supplement
+  S1–S6; what moved/was cut).
+- **04-method-remap** — terminology → method-type; recent methods placed
+  (DDQL, QFIX, PQN, SICQL/ICQL, CBDQ, Cal-QL/FQL); full index → S2.
+- **06-genealogy-figure / 08-figure-proposals** — annotated each artifact
+  SHIPPED / MOVED-to-supplement / CUT.
+- **09-section-notes** — per-section status (core vs supplement, TODOs).
+- **10-reviewer-audit / 12-second-review-audit** — every ask re-statused
+  (CLOSED / ADDRESSED-IN-SUPPLEMENT / DECLINED / SUPERSEDED).
+- **14-llm-review-triage** (new) — the three v0.14 LLM reviews and the
+  disposition of every ask (adopt-in-core / route-to-supplement /
+  decline-bounded).
+- **15-submission-readiness** (new) — package manifest, the passing
+  automated hygiene checks, and the three portal-side TODOs.
+
+Notes-only change; no manuscript rebuild. Main paper unchanged at 19pp,
+supplement at 10pp.
+
+Commit: TBD
+
+---
+
 ## v0.24 — 2026-05-30 — Supplementary Material assembled (separate 10-page PDF)
 
 The core points to "supplementary material" ~13 times; that document now

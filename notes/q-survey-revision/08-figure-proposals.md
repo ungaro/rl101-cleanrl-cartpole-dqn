@@ -1,5 +1,13 @@
 # Figure Proposals — Comparison Artifacts for the Revised Paper
 
+> **Synced to v0.24 (2026-05-30).** Status: dispositions reconciled
+> against the shipped `draft-tai/` (19 pp) + `supplement.pdf` (10 pp).
+> Each proposal below is annotated **SHIPPED** (made it into the TAI
+> core), **MOVED** (relegated to the supplement S1–S6), or **CUT**
+> (dropped from the core; §IV.I is now prose, not a table). Original
+> proposal text is preserved as an internal record; only disposition
+> annotations were added.
+
 Concrete proposals for visual comparisons in the revised paper.
 Organized into:
 
@@ -14,36 +22,56 @@ visual that captures "what to take away from this section in 30
 seconds." The format need not be an x/y chart — a comparison table,
 capability matrix, or 2D positioning grid is often more informative.
 
-## Status summary
+## Status summary — disposition vs. shipped v0.24
 
-| Artifact | Status | Where it lives |
+| Artifact | Disposition | Where it landed in v0.24 |
 |---|---|---|
-| A.1 Comparison table per section | **drafted in all 8 axis-sections** | `draft/4a` through `draft/4h`, subsection F |
-| A.2 2D positioning grid (mermaid quadrantChart) | **drafted for 5 sections** | §IV.A, §IV.C, §IV.D, §IV.E, §IV.H |
-| A.3 Decision tree (mermaid flowchart) | **drafted for §IV.E** | `draft/4e-distribution-shift.md` |
-| B.1 Axis × method-family matrix | **design drafted** (markdown table); TikZ rendering pending | `06-genealogy-figure.md` § axis matrix |
-| B.2 Axis-stratified Atari grouped bars | ⊘ pending — data assembly needed | proposed only |
-| B.3 TikZ genealogy | **design drafted** (ASCII + mermaid); TikZ rendering pending | `06-genealogy-figure.md` |
-| B.4 Complexity vs. performance Pareto scatter | ⊘ pending — component-count list needed | proposed only |
-| C.1 Compute log-log for §IV.G | **drafted as mermaid quadrantChart** | `draft/4g-scaling-adaptation.md` F |
-| C.2 D4RL degradation curve for §IV.E | ⊘ pending — D4RL data extraction needed | proposed only |
-| C.3 Per-game spread within axis | ⊘ pending — seed-level variance not always reported | proposed only |
-| C.4 Distributional resolution vs. performance | **partially drafted as mermaid quadrantChart in §IV.D F** | `draft/4d-reward-sparsity.md` |
+| A.1 Comparison table per section | **SHIPPED** | One compact comparison table in each §IV.A–H (uniform template) |
+| A.2 2D positioning grid (quadrant) | **CUT** | Per-axis 2D quadrant/positioning grids dropped from core |
+| A.3 Decision tree (offline-RL, §IV.E) | **CUT** | Offline-RL decision tree dropped from core |
+| B.1 Axis × method-family matrix | **SHIPPED** | §IV overview: axis×mechanism-family matrix |
+| B.2 Axis-stratified Atari grouped bars | **SHIPPED (as table)** | §V Atari diagnostic summary table (task-category × axis); full per-game tables → supp **S3** |
+| B.3 TikZ genealogy | **SHIPPED** | §IV overview: method genealogy figure (+ branches figure) |
+| B.4 Complexity vs. performance Pareto scatter | **CUT** | Dropped from core |
+| C.1 Compute log-log for §IV.G | **CUT** | Folded into §IV.G prose / table; standalone chart dropped |
+| C.2 D4RL degradation curve for §IV.E | **CUT** | Dropped from core |
+| C.3 Per-game spread within axis | **CUT** | Dropped from core; full per-game data → supp **S3** |
+| C.4 Distributional resolution vs. performance | **CUT** | Dropped from core |
 
-**Net:** the per-section comparison artifacts (Part A) are fully
-in place; the paper-level figures (Part B) have design drafts but
-need final rendering; the per-section evidence charts (Part C)
-have two of four drafted as mermaid quadrantCharts.
+**Also SHIPPED in §IV overview (beyond Part A/B/C as originally
+proposed):** method-type taxonomy table (six categories → axes,
+defined once); cross-axis interaction table (W1–W8 origin / principal
+interaction / deployment failure mode) — the one genuinely new
+analytical artifact adopted from the LLM-review triage.
 
-Remaining design-heavy work: TikZ rendering of B.1 and B.3 for the
-paper proper. Remaining data-heavy work: assembling component-count
-lists for B.4 and D4RL benchmark extraction for C.2.
+**SHIPPED elsewhere:** §VI tabular results table (100-seed +
+bootstrap-CI experiment, planning oracle separated); §VII per-repo
+trade-off table.
+
+**MOVED to supplement:** full per-game Atari tables (**S3**); full
+repository coverage matrix + design table (**S4**); full ~50-method
+method-type index, 3 tables (**S2**); notation + proofs (**S5**).
+
+**Net:** every §IV axis-section ships the A.1 comparison table; the
+§IV overview ships the taxonomy table, axis×family matrix, cross-axis
+interaction table, genealogy figure, and branches figure. All
+qualitative 2D quadrant grids (A.2), both decision trees (A.3), the
+Pareto scatter (B.4), and the Part C evidence charts were **CUT** from
+core under the 21-page cap. Per-game and full-coverage detail was
+**MOVED** to the supplement rather than deleted ("distill into a lens,
+don't delete").
 
 ---
 
 ## Part A — Per-section comparison artifacts
 
-### A.1. Uniform template: end-of-section comparison table
+### A.1. Uniform template: end-of-section comparison table — **SHIPPED**
+
+> **Disposition (v0.24): SHIPPED.** One compact comparison table now
+> closes each §IV.A–H subsection under the uniform axis template
+> (Weakness → Mechanisms → Trade-off → Open questions → comparison
+> table). This was the highest-leverage, lowest-cost proposal and
+> survived intact.
 
 Every axis-section ends with a five-column comparison table summarizing
 the methods discussed. Columns:
@@ -72,7 +100,14 @@ example below for §IV.A (Overestimation Bias):
 *Dueling DQN's primary contribution is contested (§IV.A vs §IV.H).
 Listed here as a secondary entry.
 
-### A.2. Optional supplement: 2D trade-off positioning grid
+### A.2. Optional supplement: 2D trade-off positioning grid — **CUT**
+
+> **Disposition (v0.24): CUT from core.** The per-axis 2D
+> quadrant/positioning grids were dropped under the 21-page cap. The
+> qualitative trade-off they encoded is now carried by the
+> *Trade-off* run-in paragraph of each axis template plus the §IV
+> overview axis×mechanism-family matrix. Proposal preserved below for
+> a possible longer-form journal version.
 
 For sections with a *clean two-dimensional trade-off*, supplement the
 comparison table with a 2D positioning grid — each method placed as
@@ -159,7 +194,11 @@ NoisyNet (per-step adaptive) vs. Bootstrapped DQN (per-episode
 consistent) trade-off is visible. RND and Go-Explore land high on the
 Montezuma axis — the cluster the section actually wants to highlight.
 
-### A.3. Decision tree variant (optional, for §IV.E only)
+### A.3. Decision tree variant (optional, for §IV.E only) — **CUT**
+
+> **Disposition (v0.24): CUT from core.** The offline-RL decision
+> tree was dropped; §IV.E carries its practitioner logic in prose +
+> the A.1 comparison table.
 
 §IV.E (Distribution Shift / Offline RL) has a strong practitioner
 audience and an unusually clean decision logic. A decision tree at
@@ -205,7 +244,11 @@ These carry the paper's overall thesis. Either F-B1 or F-B2 should
 appear; ideally both. F-B3 is the genealogy figure already drafted in
 `06-genealogy-figure.md`.
 
-### F-B1. Axis × method-family matrix
+### F-B1. Axis × method-family matrix — **SHIPPED**
+
+> **Disposition (v0.24): SHIPPED** in the §IV overview as the
+> axis×mechanism-family matrix, alongside the method-type taxonomy
+> table and the cross-axis interaction table.
 
 8 × 5 heatmap. Rows = the eight weakness axes from §II.B. Columns =
 mechanism families (decoupling, ensembles, architectural, behavior
@@ -218,7 +261,11 @@ eight-weakness statement.
 Sketch already in `06-genealogy-figure.md` near the end ("axis matrix
 companion figure"). Effort: ~1 day for clean TikZ.
 
-### F-B2. Axis-stratified Atari performance
+### F-B2. Axis-stratified Atari performance — **SHIPPED (as table)**
+
+> **Disposition (v0.24): SHIPPED as a table.** Realized as the §V
+> Atari **diagnostic summary table** (task-category × axis), not as
+> grouped bars. The full per-game tables MOVED to supplement **S3**.
 
 Grouped bars or per-method radar chart. X = task category from
 current Tables II/III (Reaction-Time, Strategic Planning, Sparse
@@ -230,7 +277,10 @@ currently apologizes for dashes in Tables II/III.
 
 Effort: ~2 days for data re-grouping + rendering.
 
-### F-B3. Method genealogy with edge labels
+### F-B3. Method genealogy with edge labels — **SHIPPED**
+
+> **Disposition (v0.24): SHIPPED** in the §IV overview as the method
+> genealogy figure, paired with the branches figure.
 
 ASCII sketch in `06-genealogy-figure.md`. Final version in TikZ,
 edges color-coded by weakness addressed, [NEW] subtrees visually
@@ -239,7 +289,11 @@ distinguished.
 Goes in §IV introduction or §I. Effort: ~3–5 days for a
 publication-quality TikZ rendering.
 
-### F-B4. Complexity vs. performance Pareto scatter
+### F-B4. Complexity vs. performance Pareto scatter — **CUT**
+
+> **Disposition (v0.24): CUT from core.** Dropped under the page cap;
+> the Rainbow-vs-PQN "same performance, opposite recipe" point is now
+> made in §IV.H prose and the genealogy/branches figures.
 
 X = number of components over vanilla DQN. Y = median Atari HNS.
 Points per method, colored by primary axis.
@@ -251,7 +305,32 @@ Effort: ~2 days for component-count assembly and rendering.
 
 ---
 
-## Part C — Optional per-section evidence charts
+## Part B′ — Overview artifacts added at integration (not originally proposed here) — **SHIPPED**
+
+> Two §IV-overview artifacts shipped in v0.24 that this doc did not
+> originally enumerate, recorded here for completeness:
+>
+> - **Method-type taxonomy table** — **SHIPPED.** Defines the six
+>   method categories once and maps each to the axes it touches;
+>   terminology standardized to "method-type taxonomy" ("legacy"
+>   killed). The full ~50-method index it summarizes MOVED to
+>   supplement **S2** (3 tables).
+> - **Cross-axis interaction table** (W1–W8 origin / principal
+>   interaction / deployment failure mode) — **SHIPPED.** The one
+>   genuinely new analytical artifact adopted from the LLM-review
+>   triage.
+>
+> Note on §IV.I: the proposed **results-by-year theoretical-status
+> table** was **CUT** — §IV.I is now a ~250-word prose synthesis,
+> with proofs MOVED to supplement **S5**.
+
+## Part C — Optional per-section evidence charts — **ALL CUT**
+
+> **Disposition (v0.24): all four CUT from core.** Space did not
+> permit beyond Part A/B under the 21-page cap; none of F-C1–F-C4
+> shipped. Underlying per-game / seed-level data lives in supplement
+> **S3** (Atari) and **S6** (tabular). Preserved as candidates for a
+> longer-form version.
 
 If space permits beyond the per-section comparison artifacts (Part
 A), these per-section evidence figures provide quantitative depth.
@@ -313,18 +392,18 @@ revision cycle; reasonable target for a longer-form journal version.
 
 ---
 
-## Data we already have vs. need to assemble
+## Data we already have vs. need to assemble (historical) — disposition appended
 
-| Artifact | Data source | Status |
+| Artifact | Data source | Disposition (v0.24) |
 |---|---|---|
-| A.1 comparison tables | Section prose itself | Mechanical; per-section author can compile in ~30 min each |
-| A.2 2D positioning grids | Section trade-off discussions | Qualitative; ~1 hr design + render each |
-| A.3 decision tree (IV.E only) | §IV.E content | Ready to render |
-| B.1 axis × family matrix | `04-method-remap.md` | Ready |
-| B.2 axis-stratified Atari | Tables II/III | Re-grouping needed |
-| B.3 TikZ genealogy | `06-genealogy-figure.md` | Ready to render |
-| B.4 complexity-perf scatter | Tables II/III + lit | Component-count list needed |
-| C.1–C.4 evidence charts | Original papers | Data extraction needed per chart |
+| A.1 comparison tables | Section prose itself | **SHIPPED** in every §IV.A–H |
+| A.2 2D positioning grids | Section trade-off discussions | **CUT** from core |
+| A.3 decision tree (IV.E only) | §IV.E content | **CUT** from core |
+| B.1 axis × family matrix | `04-method-remap.md` | **SHIPPED** in §IV overview |
+| B.2 axis-stratified Atari | Tables II/III | **SHIPPED** as §V table; per-game → supp S3 |
+| B.3 TikZ genealogy | `06-genealogy-figure.md` | **SHIPPED** in §IV overview (+ branches figure) |
+| B.4 complexity-perf scatter | Tables II/III + lit | **CUT** from core |
+| C.1–C.4 evidence charts | Original papers | **CUT** from core (data in supp S3/S6) |
 
 ---
 

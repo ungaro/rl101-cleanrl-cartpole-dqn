@@ -12,6 +12,47 @@ Legend:
 
 ---
 
+## Synced to v0.24 (2026-05-30)
+
+**Status:** These FIRST-round reviewer asks are now assessed against
+the now-distilled deliverables: the **19-page TAI submission**
+(`draft-tai/`, two-column IEEEtran, anonymized) plus the **10-page
+supplement** (`draft-tai/supplement.pdf`, S1–S6). The draft has been
+distilled 47 → 19pp under "distill into a lens, don't delete"; cut
+material lives in `draft-monograph/` (frozen, tag `monograph-v0.15`)
+and is curated into the supplement. Section numbers below referencing
+`draft/` reflect the older single-edition layout; current homes are
+noted per-ask where they have moved.
+
+Per-ask resolution legend (this sync):
+- **CLOSED** — fully resolved in the core 19-page TAI draft.
+- **ADDRESSED-IN-SUPPLEMENT** — answered, but the depth lives in S1–S6,
+  not core (TAI page cap + "avoid over-use of math; proofs→supp").
+- **DECLINED-WITH-RATIONALE** — intentionally out of scope; rationale on file.
+- **SUPERSEDED** — overtaken by a later structural decision; original
+  ask no longer maps 1:1 to the current draft.
+
+Recurring first-round themes, mapped to current reality:
+- **Statistical rigor** (rliable framing, point-estimate caveat, more
+  seeds): **CLOSED** — §VI re-run at **100 seeds + 95% bootstrap CIs**;
+  rliable/point-estimate caveat retained in §V; full results ±std/CIs in S6.
+- **Systematic methodology**: **CLOSED** — §III now carries an explicit
+  **systematic/PRISMA protocol** (databases, search strings, 5
+  inclusion/exclusion criteria, ~200→120→80 screening); search log in S1.
+- **Math-depth "add more equations/algorithms" asks**:
+  **ADDRESSED-IN-SUPPLEMENT** — routed to S5 (notation + 7
+  derivations/proofs); core body keyed to mechanism-defining equations only.
+- **Full continuous-action expansion** (DDPG/NAF/QT-Opt/CAQL/CQSM):
+  **DECLINED-WITH-RATIONALE** — out of core scope for a discrete-focused
+  Q-learning survey at the page cap; hybrid PDQN retained in §IV.A.
+
+Note: the three LLM reviews referenced in the brief are the
+SECOND-round (v0.14) reviews; the asks below are the original
+first-round pitch-deck feedback, recorded here against current reality.
+This is an internal status record — not a re-litigation.
+
+---
+
 ## Feedback 1 — Algorithms feel isolated
 
 Reviewer sub-asks (pitch deck p.18):
@@ -25,13 +66,14 @@ Reviewer sub-asks (pitch deck p.18):
 
 **Verdict:** all four sub-asks covered.
 
-**Remaining polish (optional):** explicit cross-axis comparisons.
-The ensemble mechanism appears in §IV.A (EBQL for bias control),
-§IV.C (Bootstrapped DQN, UCB Q-Ensemble for exploration), and §IV.E
-(EDAC for offline RL) — same architectural primitive, three
-different axes. A short callout in §IV overview ("when one mechanism
-serves multiple axes") would make this connective tissue more
-visible.
+**v0.24 status: CLOSED.** The "remaining polish" callout is now a
+first-class deliverable: the **cross-axis interaction table** (W1–W8
+origin / principal interaction / deployment failure mode) is in the
+§IV overview, alongside the genealogy figure, branches figure, and
+axis×mechanism matrix. Per-axis comparison tables persist under the
+uniform compact template (§IV.A–H). Note: §IV is RETITLED "Q-Learning
+Methods by Weakness"; "legacy" terminology was killed in favor of
+"method-type taxonomy" (full ~50-method index → S2).
 
 ---
 
@@ -49,11 +91,11 @@ Reviewer sub-asks (pitch deck p.19):
 **Verdict:** the conceptual layer is the central re-framing of the
 revision. All four sub-asks land directly against it.
 
-**Remaining polish (optional):** the "less cataloging, more
-synthesis" framing could be made more explicit in §I. One paragraph
-contrasting the problem-first frame against the typical
-catalogue-style survey would inoculate against any reviewer reading
-the matrix or genealogy as a different kind of catalogue.
+**v0.24 status: CLOSED.** The "remaining polish" is now in §I, which
+is framework-first and problem-first by construction (five
+contributions stated up front). The weakness spine (W1–W8, with W7 a
+composite axis: W7a throughput + W7b slow adaptation) anchors §II and
+is forward-referenced by every axis subsection.
 
 ---
 
@@ -74,6 +116,13 @@ Reviewer sub-asks (pitch deck p.20):
 **Verdict:** all five sub-asks now covered. This was the largest
 unmet area pre-Session-2.
 
+**v0.24 status: CLOSED (core) + ADDRESSED-IN-SUPPLEMENT (depth).** §V
+is now a DIAGNOSTIC synthesis (task-category × axis); the
+rliable/point-estimate caveat is retained inline; full per-game
+tables moved to **S3**. The benchmark-limitation and comparability
+asks are answered in the distilled §V; the deeper per-game evidence
+lives in the supplement rather than core.
+
 ---
 
 ## Feedback 4 — Too much derivation
@@ -90,6 +139,15 @@ Reviewer sub-asks (pitch deck p.21):
 | Improve readability and flow | ✓ | Five-part subsection structure (A weakness → B families → C trade-offs → D evidence → E open questions) gives consistent flow; new "Reading guide" paragraph in §I tells readers that §IV bodies focus on mechanism + trade-off, with derivations concentrated in Appendix B and skippable on first read |
 
 **Verdict:** all four sub-asks covered.
+
+**v0.24 status: CLOSED (core) + ADDRESSED-IN-SUPPLEMENT (derivations).**
+This ask is fully aligned with the final structure: Appendix B has
+MOVED to the supplement (notation → S2, 7 derivations/proofs → S5),
+and §IV.A–H now use a UNIFORM COMPACT TEMPLATE (Weakness → Mechanisms
+→ Trade-off → Open questions → one comparison table) with run-in bold
+lead-ins, no lettered subsubsections. The second-round "add more math"
+push was likewise routed to S5 rather than expanding the body — the
+distillation moved in exactly the direction this first-round ask wanted.
 
 ---
 
@@ -111,6 +169,15 @@ Reviewer sub-asks (pitch deck p.22):
 / 2026 additions (DDQL, SICQL, ICQL, QFIX, FQL, Klein plasticity
 survey).
 
+**v0.24 status: CLOSED (core) + ADDRESSED-IN-SUPPLEMENT (proofs).**
+Distributed (§IV.G), offline (§IV.E), multi-agent (§IV.F), and
+meta-learning remain in core. "Recent theoretical advances" is now a
+~250-word synthesis (§IV.I) with proofs relocated to **S5**; the
+foundation-model thread (Q-Transformer, VLM-Q, ShiQ, Q♯, SICQL/ICQL,
+Q-shaping) is framed as an EMERGING direction in §IV.J (~336 words).
+The continuous-action portion of "modern RL" is **DECLINED-WITH-RATIONALE**
+(see sync block); only hybrid discrete-continuous (PDQN, §IV.A) is retained.
+
 ---
 
 ## Other suggestions from the deck
@@ -129,50 +196,54 @@ Pitch deck p.23 ("Concrete Team Tasks"):
 
 All seven Concrete Team Tasks now ✓.
 
+**v0.24 status: CLOSED.** All seven map onto the final structure
+(comparative analysis → cross-axis interaction table; conceptual
+organization → weakness-first §IV retitle; benchmarks → diagnostic §V
++ S3; modern RL → §IV.G/E/F + §IV.J; derivations → S5; figures/tables
+→ genealogy/branches/matrix/cross-axis table; future directions →
+§VIII repository proposal + open directions). "Improve figures/tables"
+specifically went further than asked: a cross-axis interaction table
+was added as the one genuinely new analytical artifact.
+
 ---
 
-## Cross-cutting concerns — still open
+## Cross-cutting concerns — status at v0.24
 
-These are not on the reviewer-feedback list but remain unfinished as
-the team approaches submission.
+These are not on the reviewer-feedback list. Re-checked against the
+current build; most are now resolved.
 
-1. **No References / bibliography section** in the markdown. The
-   prose cites [1]–[55] and named-year authors, but no References
-   list is generated yet. The team's existing `.bib` file will need
-   to be referenced via `pandoc --citeproc --bibliography refs.bib
-   --csl ieee.csl`, or pasted in as a final markdown section.
+1. **No References / bibliography section** — **CLOSED.** The TAI
+   build uses pandoc → LaTeX fragment with `--natbib` (IEEE `[N]` via
+   `IEEEtran.bst`) and `refs.bib` (~136 entries); references resolve
+   in `main.pdf`.
 
-2. **Author block is empty.** The YAML metadata in
-   `draft/0-metadata.md` has `title` and `abstract` but no `author`.
-   Needs to be filled in before submission.
+2. **Author block is empty** — **CLOSED (for submission).** Named
+   author list is preserved under the `\ifanon … \else` branch (Colby
+   Wang, Ti, Divya, Kevin, Hamna, Logan, Eason Yishan Wu, Charles
+   Jiahao Zhang, Alp Guneysel); submission build sets `\anontrue`
+   (double-anonymous). USER-SIDE TODO remains: flip `\anonfalse` for
+   camera-ready; add ORCIDs.
 
-3. **Two contested re-interpretations** that may invite reviewer
-   pushback and warrant explicit defense:
-   - Distributional RL relocated from "Statistical" (uncertainty) to
-     §IV.D (credit assignment). Argued in §IV.D.A and reinforced in
-     §IV.D.E.
-   - Dueling DQN relocated from "Q-Function Computation" to §IV.H
-     (stability mechanism). Argued in §IV.H.B.2 with Rainbow
-     ablation evidence.
+3. **Two contested re-interpretations** — **SUPERSEDED.** The
+   "legacy vs. axis" framing this concern was written against has been
+   killed; §IV now defines a single **method-type taxonomy** via a
+   table up front, so relocations are presented as taxonomy
+   assignments rather than moves away from a conventional category.
+   The underlying placement rationale survives in the axis subsections.
 
-   Both are defensible but reviewers may resist on the basis of
-   convention. Possible mitigation: a "Re-interpretation rationale"
-   footnote at first mention of each.
+4. **Q-learning repository spin-off** (§VIII) — **still open
+   (DECLINED-as-blocker).** Framed as a community-repository proposal /
+   future commitment, not a stood-up URL; acceptable for submission.
 
-4. **Q-learning repository spin-off** (§VIII.B) is named as a
-   deliverable but the repo itself is not stood up. Reviewers
-   reading §VIII may ask for the URL. Either stand it up before
-   submission or reframe as a future commitment.
+5. **Two-column layout** — **CLOSED.** Now genuine two-column
+   IEEEtran; the longtable conflict is handled by `tables-twocol.lua`
+   (longtable→`table*`). This was a hard TAI constraint and is met.
 
-5. **Two-column layout.** Reverted in the current build because
-   pandoc's default `\begin{longtable}` for markdown tables conflicts
-   with the twocolumn class. Real two-column requires either
-   converting every markdown table to raw LaTeX `\begin{table*}` or
-   switching `documentclass=IEEEtran`. Deferred.
-
-6. **Final visual polish on tables and figures.** Some tables still
-   wrap awkwardly; TikZ rendering of the master genealogy is pending
-   (mermaid versions are in the PDF as PNG placeholders).
+6. **Final visual polish on tables and figures** — **CLOSED.** All
+   automated hygiene checks pass; figures (genealogy, branches,
+   axis×mechanism matrix, cross-axis interaction table) render in the
+   two-column build; full per-game/coverage matrices offloaded to
+   S3/S4 to avoid wrap issues in core.
 
 ---
 

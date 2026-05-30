@@ -1,9 +1,50 @@
 # Genealogy Figure — Design Draft
 
-The visual companion to the structural pivot. The eventual paper
-figure will be a clean TikZ rendering; this file is the *layout and
-edge annotation* design source, suitable for circulating to the team
-and converting downstream.
+**Synced to v0.24 (2026-05-30).**
+**Status: SHIPPED — both figures are in `draft-tai` §IV overview, rendered to the two-column PDF.**
+
+What actually shipped (vs. the original TikZ/landscape plan below):
+
+- **Two mermaid flowcharts**, both in the §IV "Q-Learning Methods by
+  Weakness" overview of `draft-tai`, rendered into the **two-column
+  IEEEtran PDF** (not TikZ, not a landscape half-page):
+  1. **Method genealogy flowchart** — Q-Learning → Double Q / DQN → …
+     → Rainbow, including the **distributional lineage** C51 → QR-DQN →
+     IQN → FQF. This is the main lineage tree (the "Mermaid genealogy"
+     + "Distributional / credit-assignment branch" content below,
+     combined into the paper figure).
+  2. **"Branches outside the method-type taxonomy" figure** — the
+     offline-RL (§IV.E), multi-agent (§IV.F), and distributed/meta
+     (§IV.G) subtrees off Nature DQN. (This is the
+     "Modern-RL branches" graph below; it shipped as a *standalone
+     second figure*, framed as the axes that sit outside the six
+     method-type categories.)
+- **CUT from the TAI core: the per-axis quadrant / positioning charts**
+  (the 8×4 "axis matrix" / "physician's taxonomy" sketch at the bottom
+  of this file). The monograph carried per-axis positioning charts; the
+  TAI core does **not** render them as figures. Their analytical content
+  was absorbed into the §IV **comparison tables** (one per axis,
+  uniform template) and the cross-axis interaction table, with the full
+  method-type index pushed to **supplement S2**. The empty-cell
+  "where attention went" argument now lives in prose + the comparison
+  tables, not a quadrant chart.
+- Path note: the draft moved from `draft/` to the two-edition layout —
+  `draft-monograph/` (FROZEN, tag `monograph-v0.15`, the quarry) and
+  `draft-tai/` (the 19-page submission). The figures live in the §IV
+  overview of `draft-tai`; the monograph retains the fuller set.
+
+The remainder of this file is the original **design rationale and
+edge-annotation source** — retained because the edge labels (parent
+weakness each child addresses) and the lineage decisions are still the
+source of truth for the shipped mermaid figures.
+
+---
+
+The visual companion to the structural pivot. This file is the *layout
+and edge annotation* design source, suitable for circulating to the
+team and converting downstream. (Original plan was a TikZ landscape
+half-page figure; the shipped figures are mermaid in the two-column
+PDF — see the sync note above.)
 
 Each node is a method (year). Each edge is labeled with the **weakness
 of the parent that the child method addresses**. Edges crossing into
@@ -20,14 +61,20 @@ edge-annotation design reference. The mermaid version (immediately
 below) renders natively on GitHub and is what reviewers will see in
 the markdown preview. Final paper figure will be TikZ.
 
-**Note:** the mermaid versions have also been inserted directly into
-the draft files where they belong in the final paper:
-- Master genealogy + modern-RL subgraph → `draft/4-overview.md` (§IV intro)
-- Exploration-branch subgraph → `draft/4c-brittle-exploration.md` (start of §IV.C.B)
+**Note (SHIPPED):** the mermaid versions are inserted into the §IV
+overview of `draft-tai` and render into the two-column PDF:
+- **Figure: method genealogy** — master lineage + distributional branch
+  (C51→QR-DQN→IQN→FQF) → §IV overview of `draft-tai`.
+- **Figure: branches outside the method-type taxonomy** — offline-RL
+  (§IV.E) / multi-agent (§IV.F) / distributed-meta (§IV.G) subtrees →
+  §IV overview of `draft-tai`.
+- The exploration-branch subgraph below did **not** ship as a separate
+  figure; its lineage is folded into the main genealogy / §IV.C prose.
 
-This file remains the design-source-of-truth for edge annotations
-and the eventual TikZ rendering; the draft files contain the actual
-paper-position visualizations.
+This file remains the design-source-of-truth for edge annotations; the
+`draft-tai` §IV overview contains the actual paper-position mermaid
+figures (the eventual TikZ redraw was dropped — mermaid renders fine in
+the two-column PDF).
 
 ---
 
@@ -246,12 +293,13 @@ signal than a scalar expectation.
 
 ---
 
-## Modern-RL branches we propose adding (the gaps the figure makes visible)
+## Modern-RL branches (SHIPPED as the "branches outside the method-type taxonomy" figure)
 
-These are the subtrees that currently have *no representation* in the
-draft. The figure layout above leaves room for them as new branches
-off DQN / Nature DQN; their absence becomes a visible empty region in
-the figure, which is itself an argument for adding the sections.
+These subtrees became the **second §IV figure** in `draft-tai`:
+"branches outside the method-type taxonomy" — offline RL (§IV.E),
+multi-agent (§IV.F), and distributed/meta (§IV.G), as new branches off
+Nature DQN. (Originally proposed below as the gaps the genealogy made
+visible; the sections were added and the figure shipped.)
 
 ```
                             Nature DQN (2015)
@@ -299,7 +347,16 @@ A real journal figure should:
 - Span a half-page landscape figure; a quarter-page is too cramped for
   the edge annotations to be legible.
 
-## A second figure worth pairing this with
+## Per-axis quadrant / axis-matrix chart — CUT FROM TAI CORE
+
+**Status: NOT a figure in `draft-tai`.** This 8×4 quadrant/positioning
+matrix was proposed as a companion figure (and per-axis positioning
+charts existed in the monograph). It was **cut from the TAI core**: the
+analytical content — which families target which axis, and the
+"empty-cell / where attention went" argument — moved into the §IV
+**per-axis comparison tables**, the cross-axis interaction table, and
+the full method-type index in **supplement S2**. Kept below as the
+design rationale that informed those tables.
 
 A second, simpler figure — the *axis matrix* — would complement the
 genealogy:

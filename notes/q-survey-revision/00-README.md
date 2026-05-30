@@ -1,175 +1,193 @@
-# Q-Survey Revision — Working Notes
+# Q-Survey Revision — Working Notes (folder index)
 
-Working notes and a markdown draft for revising the IEEE TAI
-submission *"Understanding Q-Learning and Deep Q-Learning in 2025:
+Internal planning notes and source for the IEEE TAI submission
+*"Understanding Q-Learning and Deep Q-Learning in 2025:
 A Methodological and Empirical Survey."*
+
+> **Synced to v0.24 (2026-05-30).**
+> **Venue: IEEE Transactions on Artificial Intelligence (TAI)** —
+> "Original Research Review Manuscript."
+> **Status: SUBMISSION-READY** — main **19 pp** two-column IEEEtran
+> + separate **10 pp** supplement (S1–S6). All automated hygiene
+> checks pass (`\anontrue`, no identity leakage, abstract 179 w,
+> title 12 w, impact 135 w, 5 keywords, no acks/funding).
+> Remaining work is user-side: pick keywords from the TAI dropdown,
+> run iThenticate (≤20% target), add ORCIDs, and flip `\anonfalse`
+> only for camera-ready.
 
 All content here lives on branch `alp/q-survey-revision-prep` and
 is **not merged to main** — this is exploratory revision work, not
-course material.
+course material. This is an INTERNAL notes folder: meta-commentary,
+distillation history, and references to the monograph are fine here
+(none of that leaks into the submitted PDFs).
 
 ---
 
-## Reading order for reviewers
+## TAI hard constraints (the box we built to)
 
-1. **Start with `01-pitch-analysis.md`** — the analytical brief.
-   What the reviewers asked for, the root-cause read of the
-   feedback, and the three proposals (A: problem-first
-   reorganization; B: centerpiece figures; C: Q-learning repo
-   spin-off). Status of each proposal at the top.
-
-2. **Then `03-new-outline.md`** — the proposed table of contents
-   for the revised paper, with per-section status markers and
-   links to drafted files.
-
-3. **Then `draft/`** — the actual revised paper prose, organized
-   one file per section.
-
-The other planning files (`04`, `06`, `07`, `08`, Appendix A) are
-reference material to consult as needed.
+Review papers: **15 pp normal / 21 pp max** ($200/page over 15,
+mandatory); **two-column IEEEtran**; **double-anonymous** review;
+abstract ≤250 w; impact statement 100–150 w; title ≤15 w; 3–6
+keywords (TAI dropdown); **explicit systematic methodology
+required**; ≤20% iThenticate similarity.
 
 ---
 
-## Layout
+## Two editions + supplement
+
+The work now exists as a distilled submission carved out of a
+larger frozen source — *"distill into a lens, don't delete."*
+
+- **`draft-monograph/`** — the comprehensive ~47-page single-column
+  edition, **FROZEN** (git tag `monograph-v0.15`). The "quarry"
+  every cut paragraph is preserved here and curated into the
+  supplement rather than discarded.
+- **`draft-tai/`** — the **SUBMISSION**: 19-page two-column
+  IEEEtran, anonymized via an `\ifanon` toggle (`\anontrue` for
+  review; the named author list — Colby Wang, Ti, Divya, Kevin,
+  Hamna, Logan, Eason Yishan Wu, Charles Jiahao Zhang, Alp
+  Guneysel — is preserved in the `\else` branch for camera-ready).
+  Plus the **10-page supplement** (`supplement.pdf`, sections
+  S1–S6).
+
+**Distillation arc** (page counts): 47 → 34 (§IV.A–H) → 26 (§IV.I/J
+demoted + appendices → supp) → 27 (cross-axis table) → 21 (§V/§VII
+distilled, §VI re-run) → **19** (front-matter compression). See
+`13-tai-compression-ledger.md` for the page-by-page accounting.
+
+---
+
+## Folder layout
 
 ```
 notes/q-survey-revision/
-├── 00-README.md            ← this file
-├── 01-pitch-analysis.md    ← analysis & direction
-├── 03-new-outline.md       ← outline / TOC with status
-├── 04-method-remap.md      ← working notes; superseded by Appendix A
-├── 06-genealogy-figure.md  ← genealogy figure design (ASCII + mermaid)
-├── 07-prior-art-sweep.md   ← 2024–2026 competing-surveys check
-├── 08-figure-proposals.md  ← figure / comparison artifact catalogue
-├── 09-section-notes.md     ← per-section bibliography / scope notes
-├── 10-reviewer-audit.md    ← first-round IEEE TAI reviewer audit (post-execution status)
-├── 11-changelog.md         ← versioned history of draft changes
-├── 12-second-review-audit.md ← second-round reviewer audit + Sessions 4-6 plan
-└── draft/
-    ├── 1-introduction.md       (§I)
-    ├── 2-background.md         (§II + 8 weaknesses)
-    ├── 3-methodology.md        (§III)
-    ├── 4-overview.md            (§IV intro — genealogy + axis × family matrix)
-    ├── 4a-overestimation-bias.md  (§IV.A, W1)
-    ├── 4b-sample-inefficiency.md  (§IV.B, W2)
-    ├── 4c-brittle-exploration.md  (§IV.C, W3)
-    ├── 4d-reward-sparsity.md      (§IV.D, W4)
-    ├── 4e-distribution-shift.md   (§IV.E, W5) ← new offline-RL
-    ├── 4f-multi-agent.md          (§IV.F, W6) ← new multi-agent
-    ├── 4g-scaling-adaptation.md   (§IV.G, W7) ← new distributed/meta
-    ├── 4h-stability.md            (§IV.H, W8)
-    ├── 4i-theoretical-advances.md (§IV.I — theory)
-    ├── 5-atari-benchmarks.md      (§V)
-    ├── 6-tabular-empirical.md     (§VI)
-    ├── 7-repositories.md          (§VII)
-    ├── 8-conclusion.md            (§VIII)
-    ├── A-legacy-indexer.md        (Appendix A — legacy vs. axis map)
-    └── B-notation-and-proofs.md   (Appendix B — notation + selected derivations)
+├── 00-README.md                ← this file (folder entry point / index)
+│
+├── draft-tai/                  ← THE SUBMISSION (19 pp main + 10 pp supp)
+│   ├── main.tex / body.tex         main paper (§I–§VIII)
+│   ├── main.pdf                    built main paper
+│   ├── 1-introduction.md … 8-conclusion.md   per-section markdown source
+│   │                               (incl. 4a–4j axis/theory/foundation sections)
+│   ├── supplement.tex / supp-body.tex   supplement wrapper + body
+│   ├── supplement.pdf              built supplement
+│   ├── supp-S1-search-log.md … supp-S6-experiment-details.md   supp sources
+│   ├── build-tai.sh                main build (pandoc→LaTeX → main.pdf)
+│   ├── build-supp.sh               supplement build (→ supplement.pdf)
+│   ├── tables-twocol.lua           pandoc filter: longtable → table* (2-col)
+│   ├── render-mermaid.mjs          figure renderer
+│   ├── refs.bib (~136 entries) + IEEEtran.cls/.bst
+│   └── data/tabular_results.json   committed §VI experiment results
+│
+├── draft-monograph/            ← FROZEN extended edition (tag monograph-v0.15)
+│   └── 0-metadata.md … B-notation-and-proofs.md, build-pdf.sh, paper.pdf
+│
+├── scripts/tabular_experiments.py  ← reproducible §VI experiment (writes
+│                                     draft-tai/data/tabular_results.json)
+│
+└── (planning docs 01–15, indexed below)
 ```
 
-Totals: ~15,500 words of paper prose across 16 draft files;
-~5,000 words of planning artifacts across 7 top-level files.
+**Build pipeline.** `build-tai.sh` → `main.pdf` and `build-supp.sh`
+→ `supplement.pdf`. Both run pandoc → LaTeX fragment with
+`--natbib` (IEEE `[N]` citations via `IEEEtran.bst`) and the
+`tables-twocol.lua` filter (longtable → `table*`), then system
+xelatex/bibtex over `refs.bib`. The `\ifanon` toggle in `main.tex`
+governs anonymization. The §VI experiment is reproducible via
+`scripts/tabular_experiments.py` → `data/tabular_results.json`.
+
+> Note: a legacy `draft/` directory (the pre-split working copy) may
+> still be present on disk; it is superseded by `draft-monograph/`
+> and is not part of the canonical layout.
 
 ---
 
-## Current status
+## Planning-doc index
 
-| Workstream | Status |
-|---|---|
-| §I Introduction | drafted |
-| §II Background + 8 Weaknesses | drafted |
-| §III Methodology | drafted |
-| §IV Overview (genealogy + axis × family matrix) | drafted (`draft/4-overview.md`) |
-| §IV.A–H (all eight axis-sections) | drafted (with per-section comparison artifacts) |
-| §IV.G.B.3 meta-learning expansion (PEARL, ProMP, MQL, in-context) | drafted (Session 1) |
-| §IV.I Theoretical Foundations and Recent Advances | drafted (`draft/4i-theoretical-advances.md`, Session 1) |
-| §V Atari benchmarks | drafted (preserves legacy row grouping) |
-| §V.H Atari limitations + §V.I newer benchmarks | drafted (Session 2) |
-| §VI Tabular empirical | drafted (preserves Tables IV–VI) |
-| §VII Repositories + reproducibility-crisis citations | drafted (Session 2) |
-| §VIII Conclusion + real-world distribution-shift bullet | drafted (Session 2) |
-| Appendix A — legacy vs. axis indexer | drafted |
-| Appendix B — notation and selected derivations | drafted (`draft/B-notation-and-proofs.md`, Session 3) |
-| §I reading guide | drafted (Session 3) |
-| Per-section comparison tables (Part A.1) | drafted in each axis-section |
-| Per-section 2D positioning grids (Part A.2) | drafted in mermaid for §IV.A, §IV.C, §IV.D, §IV.E, §IV.H |
-| Decision tree for §IV.E | drafted in mermaid |
-| Genealogy figure (ASCII design) | drafted; mermaid companion in `06-genealogy-figure.md` |
-| Axis × method-family matrix (paper-level F-B1) | design only; TikZ rendering pending |
-| Axis-stratified Atari grouped bars (F-B2) | proposed; data assembly pending |
-| Complexity–performance scatter (F-B4) | proposed; data assembly pending |
-| Compute log-log (F-C1) | drafted as mermaid quadrant in §IV.G |
-| D4RL degradation curve (F-C2) | proposed; data extraction pending |
-| Q-learning repo spin-off (Suggestion C) | **pending** — stub not yet stood up |
-| Bibliography assembly (~25 new entries) | pending |
-| LaTeX integration into team's `.tex` source | pending |
+One line each — consult as needed.
 
----
-
-## Three structural decisions that need team validation
-
-Before LaTeX integration, three claims merit explicit team review:
-
-1. **The eight-axis problem-first reorganization** as the
-   replacement spine for §IV. Argued in `01-pitch-analysis.md` and
-   §II.B; defended against prior art in `07-prior-art-sweep.md`.
-
-2. **Two contested method reinterpretations** that affect §IV
-   structure:
-   - Distributional methods (C51 / QR-DQN / IQN / FQF) treated
-     as credit-assignment (§IV.D) rather than uncertainty (the
-     original draft's §IV.A "Statistical Methods" placement).
-   - Dueling DQN treated as a stability mechanism (§IV.H) rather
-     than a Q-function-computation mechanism (the original
-     draft's placement).
-
-   Both reinterpretations are argued explicitly in their respective
-   axis-sections with Rainbow ablation evidence; reviewers may
-   push back.
-
-3. **The three modern-RL additions** (§IV.E offline, §IV.F
-   multi-agent, §IV.G distributed) cover methods entirely new to
-   the existing draft. Each section needs review by a co-author
-   with domain background before integration. Per-method technical
-   claims have been cross-checked against original papers, but
-   framing decisions (the four-family taxonomy in §IV.E, the
-   four-method canonical set in §IV.F, the
-   distributed/recurrent/meta tripartite in §IV.G) are first-pass.
+- **`00-README.md`** — this file; folder entry point / index and
+  current-state snapshot.
+- **`01-pitch-analysis.md`** — the analytical brief: reviewer
+  feedback root-cause read and the three original proposals
+  (A problem-first reorg; B centerpiece figures; C repo spin-off).
+- **`03-new-outline.md`** — proposed table of contents / section
+  spine that became the §I–§VIII structure.
+- **`04-method-remap.md`** — working notes mapping legacy
+  categories onto the weakness axes (now the method-type taxonomy /
+  supplement S2 index).
+- **`06-genealogy-figure.md`** — genealogy figure design (ASCII +
+  mermaid) for the §IV overview.
+- **`07-prior-art-sweep.md`** — 2024–2026 competing-survey check
+  (defends the axis spine; feeds Table I + supp S1 overlap).
+- **`08-figure-proposals.md`** — figure / comparison-artifact
+  catalogue (genealogy, branches, axis×mechanism matrix,
+  cross-axis interaction table).
+- **`09-section-notes.md`** — per-section bibliography / scope notes.
+- **`10-reviewer-audit.md`** — first-round IEEE TAI reviewer audit
+  with post-execution status.
+- **`11-changelog.md`** — versioned history of draft changes
+  (through v0.24; records the monograph freeze and distillation).
+- **`12-second-review-audit.md`** — second-round reviewer audit.
+- **`13-tai-compression-ledger.md`** — page-by-page accounting of
+  the 47 → 19 pp distillation and what moved to the supplement.
+- **`14-llm-review-triage.md`** *(new)* — triage of three LLM
+  reviews of v0.14: what was adopted into core, routed to
+  supplementary, or declined/bounded.
+- **`15-submission-readiness.md`** *(new)* — final hygiene checklist
+  (anon, word/page counts, keywords, leakage) + user-side TODO.
 
 ---
 
-## What's preserved from the original draft
+## Final structure of the submission (draft-tai)
 
-- Tables II and III (Atari extracted scores) — row grouping by the
-  six legacy categories, column grouping by task category.
-- Tables IV, V, VI (tabular empirical evaluation) — preserved
-  structurally with axis-attribution prose added.
-- Tables VII and VIII (repository comparison) — preserved with
-  axis-aware annotation.
-- The five distinguishing contributions in Table I — reframed but
-  preserved in number and intent.
-- All per-method writeups in the original §IV — re-homed to new
-  axis-sections, with the *prose paragraphs themselves preserved
-  nearly verbatim* (the structural change is which subsection each
-  paragraph lives in, not the paragraph content).
+- **§I Introduction** — framework-first; five contributions;
+  problem-first reframe.
+- **§II Background** — MDP/Q-learning formalism + eight weaknesses
+  **W1–W8** (one sentence each; W7 is a COMPOSITE axis: W7a sample
+  throughput + W7b slow adaptation).
+- **§III Methodology** — explicit **systematic/PRISMA** protocol
+  (Google Scholar, arXiv cs.LG/cs.AI, Semantic Scholar; search
+  strings; 5 inclusion/exclusion criteria; screening ~200→120→80);
+  Table I prior-survey comparison (six dimensions vs five surveys).
+- **§IV "Q-Learning Methods by Weakness"** (retitled from "Related
+  Works") — opens with the **method-type taxonomy** defined once via
+  a table (six categories → axes); "legacy" terminology killed.
+  Overview adds genealogy figure, branches figure, axis×mechanism
+  matrix, and the **cross-axis interaction table** (W1–W8 origin /
+  principal interaction / deployment failure mode). §IV.A–H use a
+  uniform compact template (Weakness → Mechanisms → Trade-off →
+  Open questions → one comparison table; run-in **bold** lead-ins).
+  §IV.I theoretical advances (~250 w; proofs → supp S5). §IV.J
+  foundation-model alignment (~336 w, framed as EMERGING:
+  Q-Transformer, VLM-Q, ShiQ, Q♯, SICQL/ICQL, Q-shaping).
+- **§V Atari** — diagnostic synthesis (task-category × axis);
+  rliable/point-estimate caveat kept; full per-game tables → supp S3.
+- **§VI Tabular** — reproducible experiment (Q-learning / SARSA /
+  Expected SARSA / 3-step Q over **100 seeds + 95% bootstrap CIs**
+  on FrozenLake/Taxi/CliffWalking; VI/PI/MPI/CVPI reported as a
+  separated **planning oracle** / upper bound, not a model-free
+  competitor).
+- **§VII Repositories** — six repos (Tianshou, XuanCe, CleanRL, DQN
+  Zoo, SB3, RLlib) by axis; **nine methods absent from all six**;
+  Hundal non-interchangeability; full matrix → supp S4.
+- **§VIII Conclusion** — per-axis summary; community-repository
+  proposal; open directions; limitations & ethics.
+- Appendices A/B moved to the supplement (S2 method-type index,
+  S5 notation/proofs).
 
-The original taxonomy is not discarded; it lives on as Tables
-II/III's row spine and as Appendix A. The eight-axis structure adds
-a third lens (analytical organization in §IV prose) without
-removing the existing two.
+**Supplement (S1–S6):** S1 search log + prior-art overlap; S2 full
+~50-method method-type index; S3 full Atari per-game tables; S4 full
+repository coverage matrix; S5 notation + 7 derivations/proofs; S6
+tabular-experiment config + full results (±std, CIs).
 
 ---
 
-## How to handoff to the team
+## How to hand off to the team
 
-When sending for review, point co-authors at:
-
-- This README first
-- Then `01-pitch-analysis.md` (the "why")
-- Then `03-new-outline.md` (the "what")
-- Then specific axis-sections in `draft/` (the "how")
-
-Flag the three structural decisions above explicitly. Domain
-owners (offline RL, multi-agent, distributed) should be assigned
-review of §IV.E, §IV.F, §IV.G respectively before LaTeX
-integration begins.
+Point co-authors at this README first, then `01-pitch-analysis.md`
+(the "why"), then `13-tai-compression-ledger.md` and
+`14-llm-review-triage.md` to see what was cut/kept and why. The
+canonical artifacts to review are `draft-tai/main.pdf` and
+`draft-tai/supplement.pdf`. The monograph (`draft-monograph/`,
+tag `monograph-v0.15`) is the frozen reference for anything that was
+distilled out.
