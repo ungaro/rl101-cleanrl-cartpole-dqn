@@ -229,6 +229,49 @@ likely depends on whether the cost structure is compute-dominated
 (favoring synchronous) or environment-dominated (favoring
 asynchronous).
 
+**B.6. Predictable scaling laws for value-based deep RL.** The
+preceding subsections frame distributed scaling as an *architectural*
+response to a sample throughput bottleneck. A complementary line of
+recent work argues that this framing is partial: value-based deep
+Q-learning scales *predictably* once the right relationships among
+data, compute, and hyperparameters are identified. Rybkin et al.
+[2025] show empirically that the data and compute required to reach
+a given performance level lie on a strict Pareto frontier whose
+shape follows power-law relationships governed by the
+*updates-to-data ratio* (UTD, the number of gradient updates per
+collected transition). For a fixed total resource budget, there
+exists a predictable optimal UTD along with predictable optimal
+choices of batch size and learning rate; these jointly determine the
+point on the frontier at which a value-based agent achieves a target
+return at minimum total resource cost.
+
+The results were validated across multiple algorithms — SAC and a
+parallel Q-learning variant — and across domains including the
+DeepMind Control Suite, OpenAI Gym, and IsaacGym, indicating that
+the predictability is a property of the value-based learning regime
+rather than of a single algorithm. The framework's practical use is
+*extrapolative*: estimating the frontier on a low-budget pilot run
+allows researchers to project compute-data trade-offs into
+higher-resource regimes without re-tuning at scale, and conversely
+to identify regimes where additional compute would not improve
+performance because the bottleneck is data quality rather than
+sample volume.
+
+This result revises one of the longstanding framings of distributed
+Q-learning: the assumption that scaling is achieved primarily by
+parallelizing environment interaction (Ape-X / R2D2 / Agent57) is
+incomplete. A complementary path is to predict — from a small-scale
+calibration — the *optimal* compute-data allocation and tune
+hyperparameters accordingly *before* scaling. The two approaches are
+compatible rather than competing: a distributed architecture provides
+the data-throughput axis; predictable scaling laws govern the
+data-versus-compute axis along which any architecture is tuned. The
+empirical implications for the §V Atari analysis are subtle: the
+methods in Tables II-III were largely not tuned along the
+predictable-scaling frontier, so the per-game numbers under-state
+the algorithmic performance achievable with the same compute budget
+under modern UTD-aware tuning.
+
 ### C. Trade-offs
 
 - **Throughput vs. staleness.** Asynchronous actor-learner systems

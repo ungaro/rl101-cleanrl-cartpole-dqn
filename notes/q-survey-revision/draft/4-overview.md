@@ -168,6 +168,12 @@ The remainder of §IV proceeds axis by axis:
   convergence theory, finite-time bounds, pessimism in offline RL,
   stability theory, and IGM theorems. A meta-section that surveys
   the theoretical landscape underlying the eight axes above.
+- **§IV.J** Q-learning for foundation model alignment —
+  Q-Transformer, ShiQ, VLM Q-Learning, Q$^\sharp$. An application-oriented
+  section covering Q-learning's role in fine-tuning large language
+  and vision-language models, distinct from the weakness-axes in
+  that it represents a new deployment regime rather than a new
+  mechanism category.
 
 Each axis subsection (A–H) ends with **F. Comparison summary**: a
 uniform six-column table (method / mechanism category / mechanism /
@@ -176,3 +182,5 @@ naturally two-dimensional, a 2D positioning grid. §IV.E additionally
 provides a method-selection decision tree for practitioner use.
 §IV.I substitutes a results-by-year theoretical-status table for the
 comparison grid since its entries are theorems rather than methods.
+§IV.J provides a four-column comparison table organized by
+off-policy support and KL-regularization compatibility.

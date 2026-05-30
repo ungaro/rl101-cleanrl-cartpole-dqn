@@ -71,6 +71,8 @@ perl -i -pe '
       "§IV.F" => "[§IV.F](#sec-iv-f)",
       "§IV.G" => "[§IV.G](#sec-iv-g)",
       "§IV.H" => "[§IV.H](#sec-iv-h)",
+      "§IV.I" => "[§IV.I](#sec-iv-i)",
+      "§IV.J" => "[§IV.J](#sec-iv-j)",
       "§II.B" => "[§II.B](#sec-ii)",
       "§II.A" => "[§II.A](#sec-ii)",
       "§II.C" => "[§II.C](#sec-ii)",

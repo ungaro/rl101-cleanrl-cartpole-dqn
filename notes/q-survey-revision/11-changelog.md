@@ -12,6 +12,74 @@ commit hash that introduced it.
 
 ---
 
+## v0.13 — 2026-05-30 — Session 5: large content gaps
+
+Closes Reviewer 1's four largest content-addition asks
+(#5, #6, #7, #8 in 12-second-review-audit.md).
+
+- §IV.A.B.4 new — Hybrid discrete-continuous action spaces.
+  Parametrized Deep Q-Networks (PDQN, Xiong et al. 2018) for joint
+  discrete-action / continuous-parameter Q-learning. Branching
+  variants (Bester et al. 2019). Plus transfer-feature-correlation
+  regularization as a related mitigation for compound
+  overestimation under task transfer.
+
+- §IV.E.B.5 expanded — Q-learning with Adjoint Matching added
+  alongside FQL. Where FQL eliminates recursive backprop by
+  restricting to a single flow step, adjoint matching tolerates
+  the full multi-step flow generation and uses the continuous
+  adjoint method to propagate a "lean" adjoint state backward
+  without gradients flowing through the entire chain. The
+  formulation gives an unbiased policy-improvement guarantee for
+  multi-step expressive flow-matching offline-RL policies.
+
+- §IV.G.B.6 new — Predictable scaling laws for value-based deep
+  RL (Rybkin et al. 2025). Data and compute required to reach a
+  given performance level lie on a strict mathematically
+  predictable Pareto frontier governed by the updates-to-data
+  ratio. Predictable optimal batch size and learning rate.
+  Validated across SAC, Parallel Q-Learning on DM Control, Gym,
+  IsaacGym. Restructures the §IV.G framing: scaling is not only
+  an architectural axis (distributed parallelism) but also a
+  predictable-tuning axis along which any architecture is
+  calibrated. Notes the implication for §V Tables II/III: extracted
+  methods were not tuned along the predictable-scaling frontier,
+  so per-game numbers under-state achievable performance under
+  modern UTD-aware tuning.
+
+- §IV.J new — Q-Learning for Foundation Model Alignment
+  (`4j-foundation-model-alignment.md`, ~2500 words). Tenth axis-
+  section parallel to §IV.I. Covers Q-Transformer (Chebotar
+  2023), ShiQ (logits-as-Q for LLM alignment), VLM Q-Learning
+  (off-policy multimodal alignment), and Q♯ (distributional
+  Q-learning under KL regularization). Five-part structure
+  (weakness / solution families / trade-offs / empirical evidence
+  / open questions) plus a four-column off-policy ✓ /
+  KL-regularized ✓ comparison table. Section opens with explicit
+  treatment of the three structural differences (vocabulary-scale
+  action space; sparse per-token reward credit assignment;
+  KL-regularization against a pretrained reference policy) that
+  make foundation-model alignment distinct from classical
+  Q-learning. Section closes with an honest note that the section
+  deliberately breaks the eight-axis weakness framework: it
+  represents a new deployment regime rather than a new mechanism
+  category, and is included because Q-learning's role in foundation-
+  model alignment is the most significant practical application of
+  value-based methods in the current AI ecosystem.
+
+- §IV overview roadmap updated to include §IV.J.
+
+- build-pdf.sh perl substitution table extended with §IV.I and
+  §IV.J entries so the new cross-references render as
+  hyperlinks in the PDF.
+
+paper.pdf: 1.53 MB. Math-mode wrapping applied to ♯ (Q$^\sharp$) and ✓
+($\checkmark$) glyphs not in Latin Modern Roman.
+
+Commit: pending push.
+
+---
+
 ## v0.12 — 2026-05-30 — References-section meta-prose cleanup
 
 The Session 4 references file (`draft/9-references.md`) opened with

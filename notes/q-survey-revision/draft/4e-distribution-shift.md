@@ -143,6 +143,33 @@ Q-learning-compatible policies and points toward a broader family
 of continuous-time generative policies that the offline RL
 community has begun to develop.
 
+Q-learning with *Adjoint Matching* takes the same problem — offline
+optimization of an expressive flow-matching policy under a Q-value
+critic — and resolves it via a different mathematical route. Where
+FQL eliminates recursive backpropagation by restricting the policy
+to a single flow step, the adjoint-matching formulation tolerates
+the full multi-step flow generation and uses the *continuous adjoint
+method* to compute the policy gradient. The critic's action
+gradient is transformed into a step-wise objective: at each step of
+the flow generation, an adjoint state — itself the solution of an
+ordinary differential equation — is propagated backward through the
+flow, providing the policy update direction without requiring
+gradients to flow back through the entire generation chain. The
+formulation casts the constrained policy-optimization problem on a
+flow model as a stochastic optimal-control problem, with a "lean"
+adjoint state that strictly satisfies the relevant ODE.
+
+Under the adjoint-matching objective, when the objective is
+optimized to convergence the resulting flow-matching policy
+provably recovers the optimal behavior-regularized policy.
+The method preserves the expressiveness of multi-step flow-matching
+policies, where FQL trades expressiveness for tractability via
+single-step generation. The two approaches define complementary
+points on the expressiveness-vs-tractability trade-off for offline
+Q-learning with generative policies: FQL is simpler to train and
+deploy; adjoint matching admits more expressive policies and
+provides an unbiased policy-improvement guarantee.
+
 ### C. Trade-offs
 
 - **Policy constraint vs. improvement bound.** BCQ, BRAC, AWAC

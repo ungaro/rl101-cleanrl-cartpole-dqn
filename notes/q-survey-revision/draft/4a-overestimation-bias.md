@@ -123,6 +123,41 @@ distributional learning, but it does not *hurt*, which is consistent
 with this re-interpretation: it is a stability/normalization
 contribution, not a value-estimation one. (See also §IV.H.)
 
+**B.4. Hybrid discrete-continuous action spaces.** The
+overestimation methods above operate on finite discrete action
+spaces. When the action space is *hybrid* — a discrete top-level
+choice followed by continuous parameters for the chosen action, as
+in many robotic-control and game-control settings — overestimation
+compounds across the two levels. The bias of choosing the
+"best-looking" discrete action interacts with the bias of choosing
+the "best-looking" continuous parameter, and standard Double DQN
+treats only the discrete bias.
+
+Parametrized Deep Q-Networks (PDQN) [Xiong et al. 2018] address
+this by jointly learning a Q-function over $(s, k, a_k)$ — state,
+discrete action $k$, and continuous parameter $a_k$ — and a
+deterministic policy that produces $a_k$ for each $k$. The
+overestimation problem is partially decoupled: the discrete $\max_k$
+is debiased via Double-DQN-style decoupling on the discrete level,
+while the continuous parameter is selected by a learned actor
+rather than by a max operation. Branching variants [Bester et al.
+2019, *Multi-Pass Q-Networks*] separate the Q-function into
+per-discrete-action sub-branches, each producing a continuous
+parameter for its own action. The per-branch decomposition reduces
+gradient interference between discrete actions and substantially
+reduces compound overestimation in high-dimensional parameter
+spaces.
+
+A related line of work addresses overestimation under transfer
+learning, where a Q-network trained on a source task is fine-tuned
+on a related target. Subsequent ablations have observed that the
+feature representations learned by the source Q-network often
+become highly correlated, producing a substrate on which
+overestimation compounds when the target's reward distribution
+differs. Regularizers that penalize positive feature-feature
+correlations during transfer reduce this compound overestimation
+without modifying the value-estimation mechanism itself.
+
 ### C. Trade-offs
 
 Every fix on this axis trades against one or more of the following.
