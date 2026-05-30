@@ -51,22 +51,18 @@ header-includes: |
 
 ## Impact Statement
 
-Reinforcement learning increasingly underpins decision-making
-systems in robotics, autonomous vehicles, recommendation, and the
-post-training of large language models — and value-based Q-learning
-sits beneath much of this technology. Yet practitioners face a
-fragmented literature: dozens of algorithmic variants whose purpose,
-trade-offs, and software availability are scattered across three
-decades of papers. This survey reorganizes that landscape around the
-specific weaknesses each method was designed to fix, letting an
-engineer move directly from a symptom — overestimation, sparse
-rewards, instability at scale — to the methods that address it and
-the open-source libraries that implement them. By pairing this
-diagnostic taxonomy with calibrated benchmark evidence and a
-reproducibility audit of six widely used codebases, the work lowers
-the barrier to selecting, deploying, and extending Q-learning
-methods, and surfaces where research and tooling investment are most
-needed.
+Q-learning has influenced nearly every area of deep Reinforcement
+Learning, yet its own methodological evolution has lacked a focused
+and analytical treatment. This paper addresses that need by
+delivering a problem-first taxonomy of Q-learning methods,
+benchmarking results from original studies, and a comparative
+analysis of leading open-source implementations. By bridging
+theoretical advances with empirical evidence and practical
+repositories, this work clarifies the algorithmic landscape of
+Q-learning and highlights both underexplored areas and reproducibility
+challenges. The resulting insights are intended to guide the
+development of more robust, efficient, and extensible deep RL systems
+that build on Q-learning principles.
 
 **Index Terms:** Deep Learning, Machine Learning, Reinforcement
 Learning, Q-Learning, Survey

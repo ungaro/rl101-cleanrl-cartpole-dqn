@@ -48,3 +48,26 @@ notes/q-survey-revision/draft/*.aux
 notes/q-survey-revision/draft/*.log
 notes/q-survey-revision/draft/*.out
 notes/q-survey-revision/draft/*.toc
+
+# draft-monograph (frozen snapshot) — build artifacts (paper.pdf + sources kept)
+notes/q-survey-revision/draft-monograph/mermaid-filter.err
+notes/q-survey-revision/draft-monograph/mermaid-beautiful/
+notes/q-survey-revision/draft-monograph/*.png
+notes/q-survey-revision/draft-monograph/*.svg
+notes/q-survey-revision/draft-monograph/*.aux
+notes/q-survey-revision/draft-monograph/*.log
+notes/q-survey-revision/draft-monograph/*.out
+notes/q-survey-revision/draft-monograph/*.toc
+
+# draft-tai (IEEE TAI edition) — main.tex is SOURCE; body.tex is generated
+notes/q-survey-revision/draft-tai/body.tex
+notes/q-survey-revision/draft-tai/mermaid-filter.err
+notes/q-survey-revision/draft-tai/mermaid-beautiful/
+notes/q-survey-revision/draft-tai/*.png
+notes/q-survey-revision/draft-tai/*.svg
+notes/q-survey-revision/draft-tai/*.aux
+notes/q-survey-revision/draft-tai/*.bbl
+notes/q-survey-revision/draft-tai/*.blg
+notes/q-survey-revision/draft-tai/*.log
+notes/q-survey-revision/draft-tai/*.out
+notes/q-survey-revision/draft-tai/*.toc

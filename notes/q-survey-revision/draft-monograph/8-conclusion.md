@@ -166,9 +166,9 @@ surveys.
 reduces a large field to "canonical methods" can inadvertently
 erase negative results, replication studies, and less-publicized
 alternatives — even when, as here, the source selection criteria
-are documented (§III.A). We provide the prior-art sweep as
-supplementary material — the audit trail for our differentiation
-claim — and Appendix A's legacy indexer to allow navigation through
+are documented (§III.A). We cite the prior-art sweep in
+`07-prior-art-sweep.md` as the audit trail for our differentiation
+claim, and Appendix A's legacy indexer to allow navigation through
 the conventional taxonomy, but we cannot eliminate the bias
 inherent in narrative selection. Readers seeking a more systematic
 review-of-reviews should consult the Springer NCAA 2026 offline-RL

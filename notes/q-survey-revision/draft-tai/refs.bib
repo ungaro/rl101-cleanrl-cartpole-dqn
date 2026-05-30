@@ -1,0 +1,668 @@
+% Bibliography for the Q-learning survey.
+% Citation keys are first-author_year_keyword. The ref1..ref55 aliases
+% point at the same entries; both are accepted by pandoc-citeproc.
+
+@article{mnih_2015_nature,
+  author = {Mnih, V. and Kavukcuoglu, K. and Silver, D. and Rusu, A. A. and Veness, J. and Bellemare, M. G. and Graves, A. and Riedmiller, M. and Fidjeland, A. K. and Ostrovski, G. and others},
+  title = {Human-level control through deep reinforcement learning},
+  journal = {Nature},
+  year = {2015}, volume = {518}, number = {7540}, pages = {529--533}
+}
+@article{bellemare_2013_ale,
+  author = {Bellemare, M. G. and Naddaf, Y. and Veness, J. and Bowling, M.},
+  title = {The arcade learning environment: An evaluation platform for general agents},
+  journal = {Journal of Artificial Intelligence Research}, year = {2013}, volume = {47}, pages = {253--279}
+}
+@article{ibarz_2021_robot,
+  author = {Ibarz, J. and Tan, J. and Finn, C. and Kalakrishnan, M. and Pastor, P. and Levine, S.},
+  title = {How to train your robot with deep reinforcement learning: lessons we have learned},
+  journal = {International Journal of Robotics Research}, year = {2021}, volume = {40}, number = {4-5}, pages = {698--721}
+}
+@article{inamdar_2024_safe,
+  author = {Inamdar, R. and Sundarr, S. K. and Khandelwal, D. and Sahu, V. D. and Katal, N.},
+  title = {A comprehensive review on safe reinforcement learning for autonomous vehicle control in dynamic environments},
+  journal = {e-Prime - Advances in Electrical Engineering, Electronics and Energy}, year = {2024}, volume = {10}, pages = {100810}
+}
+@article{watkins_1992_qlearning,
+  author = {Watkins, C. J. C. H. and Dayan, P.},
+  title = {Q-learning}, journal = {Machine Learning}, year = {1992}, volume = {8}, number = {3-4}, pages = {279--292}
+}
+@article{weng_2022_tianshou,
+  author = {Weng, J. and Chen, H. and Yan, D. and You, K. and Duburcq, A. and Zhang, M. and Su, Y. and Su, H. and Zhu, J.},
+  title = {Tianshou: A highly modularized deep reinforcement learning library},
+  journal = {Journal of Machine Learning Research}, year = {2022}, volume = {23}, number = {267}, pages = {1--6}
+}
+@misc{liu_2023_xuance,
+  author = {Liu, W. and Cai, W. and Jiang, K. and Cheng, G. and Wang, Y. and Wang, J. and Cao, J. and Xu, L. and Mu, C. and Sun, C.},
+  title = {Xuance: A comprehensive and unified deep reinforcement learning library},
+  year = {2023}, eprint = {2312.16248}, archivePrefix = {arXiv}
+}
+@article{huang_2022_cleanrl,
+  author = {Huang, S. and Dossa, R. F. J. and Ye, C. and Braga, J. and Chakraborty, D. and Mehta, K. and Araújo, J. G.},
+  title = {CleanRL: High-quality single-file implementations of deep reinforcement learning algorithms},
+  journal = {Journal of Machine Learning Research}, year = {2022}, volume = {23}, number = {274}, pages = {1--18}
+}
+@misc{quan_2020_dqnzoo,
+  author = {Quan, J. and Ostrovski, G.},
+  title = {{DQN Zoo}: Reference implementations of {DQN}-based agents},
+  year = {2020}, howpublished = {\url{https://github.com/deepmind/dqn_zoo}}
+}
+@article{raffin_2021_sb3,
+  author = {Raffin, A. and Hill, A. and Gleave, A. and Kanervisto, A. and Ernestus, M. and Dormann, N.},
+  title = {Stable-baselines3: Reliable reinforcement learning implementations},
+  journal = {Journal of Machine Learning Research}, year = {2021}, volume = {22}, number = {268}, pages = {1--8}
+}
+@misc{liang_2018_rllib,
+  author = {Liang, E. and Liaw, R. and Moritz, P. and Nishihara, R. and Fox, R. and Goldberg, K. and Gonzalez, J. E. and Jordan, M. I. and Stoica, I.},
+  title = {{RLlib}: Abstractions for distributed reinforcement learning},
+  year = {2018}, eprint = {1712.09381}, archivePrefix = {arXiv}
+}
+@inproceedings{urtans_2018_pygame,
+  author = {Urtans, E. and Nikitenko, A.},
+  title = {Survey of deep {Q}-network variants in {PyGame} learning environment},
+  booktitle = {Proc. Int. Conf. Agents and Artificial Intelligence}, year = {2018}, pages = {27--36}
+}
+@article{jang_2019_qsurvey,
+  author = {Jang, B. and Kim, M. and Harerimana, G. and Kim, J.},
+  title = {Q-learning algorithms: A comprehensive classification and applications},
+  journal = {IEEE Access}, year = {2019}, volume = {7}, pages = {133653--133667}
+}
+@article{boppiniti_2021_evolution,
+  author = {Boppiniti, S. T.}, title = {Evolution of reinforcement learning: From {Q}-learning to deep},
+  journal = {SSRN Electronic Journal}, year = {2021}, volume = {11}, pages = {2249--3905}
+}
+@incollection{hafiz_2023_dqnsurvey,
+  author = {Hafiz, A. M.}, title = {A survey of deep {Q}-networks used for reinforcement learning: State of the art},
+  booktitle = {Intelligent Communication Technologies and Virtual Mobile Networks},
+  year = {2023}, publisher = {Springer Singapore}, pages = {393--402}
+}
+@inproceedings{plappert_2018_paramnoise,
+  author = {Plappert, M. and Houthooft, R. and Dhariwal, P. and Sidor, S. and Chen, R. Y. and Chen, X. and Asfour, T. and Abbeel, P. and Andrychowicz, M.},
+  title = {Parameter space noise for exploration},
+  booktitle = {Int. Conf. Learning Representations}, year = {2018}
+}
+@misc{ba_2016_layernorm,
+  author = {Ba, J. L. and Kiros, J. R. and Hinton, G. E.},
+  title = {Layer normalization}, year = {2016}, eprint = {1607.06450}, archivePrefix = {arXiv}
+}
+@inproceedings{kingma_2015_localreparam,
+  author = {Kingma, D. P. and Salimans, T. and Welling, M.},
+  title = {Variational dropout and the local reparameterization trick},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2015}
+}
+@inproceedings{fortunato_2018_noisynet,
+  author = {Fortunato, M. and Azar, M. G. and Piot, B. and Menick, J. and Osband, I. and Graves, A. and Mnih, V. and Munos, R. and Hassabis, D. and Pietquin, O. and Blundell, C. and Legg, S.},
+  title = {Noisy networks for exploration},
+  booktitle = {Int. Conf. Learning Representations}, year = {2018}
+}
+@inproceedings{wang_2016_dueling,
+  author = {Wang, Z. and Schaul, T. and Hessel, M. and van Hasselt, H. and Lanctot, M. and de Freitas, N.},
+  title = {Dueling network architectures for deep reinforcement learning},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2016}
+}
+@inproceedings{bellemare_2017_distributional,
+  author = {Bellemare, M. G. and Dabney, W. and Munos, R.},
+  title = {A distributional perspective on reinforcement learning},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2017}
+}
+@article{kullback_1951_kl,
+  author = {Kullback, S. and Leibler, R. A.},
+  title = {On information and sufficiency},
+  journal = {Annals of Mathematical Statistics}, year = {1951}, volume = {22}, number = {1}, pages = {79--86}
+}
+@inproceedings{hasselt_2016_doubledqn,
+  author = {van Hasselt, H. and Guez, A. and Silver, D.},
+  title = {Deep reinforcement learning with double {Q}-learning},
+  booktitle = {Proc. AAAI Conf. Artificial Intelligence}, year = {2016}
+}
+@inproceedings{schaul_2016_per,
+  author = {Schaul, T. and Quan, J. and Antonoglou, I. and Silver, D.},
+  title = {Prioritized experience replay},
+  booktitle = {Int. Conf. Learning Representations}, year = {2016}
+}
+@inproceedings{dabney_2018_qrdqn,
+  author = {Dabney, W. and Rowland, M. and Bellemare, M. G. and Munos, R.},
+  title = {Distributional reinforcement learning with quantile regression},
+  booktitle = {Proc. AAAI Conf. Artificial Intelligence}, year = {2018}
+}
+@article{huber_1964_robust,
+  author = {Huber, P. J.}, title = {Robust estimation of a location parameter},
+  journal = {Annals of Mathematical Statistics}, year = {1964}, volume = {35}, pages = {73--101}
+}
+@inproceedings{dabney_2018_iqn,
+  author = {Dabney, W. and Ostrovski, G. and Silver, D. and Munos, R.},
+  title = {Implicit quantile networks for distributional reinforcement learning},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2018}
+}
+@inproceedings{hessel_2018_rainbow,
+  author = {Hessel, M. and Modayil, J. and van Hasselt, H. and Schaul, T. and Ostrovski, G. and Dabney, W. and Horgan, D. and Piot, B. and Azar, M. and Silver, D.},
+  title = {Rainbow: Combining improvements in deep reinforcement learning},
+  booktitle = {Proc. AAAI Conf. Artificial Intelligence}, year = {2018}
+}
+@inproceedings{yang_2019_fqf,
+  author = {Yang, D. and Zhao, L. and Lin, Z. and Qin, T. and Bian, J. and Liu, T.},
+  title = {Fully parameterized quantile function for distributional reinforcement learning},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2019}
+}
+@article{peng_1996_multistep,
+  author = {Peng, J. and Williams, R. J.},
+  title = {Incremental multi-step {Q}-learning},
+  journal = {Machine Learning}, year = {1996}, volume = {22}, number = {1-3}, pages = {283--290}
+}
+@inproceedings{hasselt_2010_doubleq,
+  author = {van Hasselt, H.}, title = {Double {Q}-learning},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2010}
+}
+@misc{mnih_2013_atari,
+  author = {Mnih, V. and Kavukcuoglu, K. and Silver, D. and Graves, A. and Antonoglou, I. and Wierstra, D. and Riedmiller, M.},
+  title = {Playing Atari with deep reinforcement learning},
+  year = {2013}, howpublished = {NIPS Deep Learning Workshop}
+}
+@techreport{rummery_1994_sarsa,
+  author = {Rummery, G. A. and Niranjan, M.},
+  title = {On-line {Q}-learning using connectionist systems},
+  institution = {Cambridge University Engineering Department},
+  type = {Technical Report CUED/F-INFENG/TR 166}, year = {1994}
+}
+@inproceedings{hausknecht_2015_drqn,
+  author = {Hausknecht, M. and Stone, P.},
+  title = {Deep recurrent {Q}-learning for partially observable {MDPs}},
+  booktitle = {AAAI Fall Symposium}, year = {2015}
+}
+@article{hochreiter_1997_lstm,
+  author = {Hochreiter, S. and Schmidhuber, J.},
+  title = {Long short-term memory},
+  journal = {Neural Computation}, year = {1997}, volume = {9}, number = {8}, pages = {1735--1780}
+}
+@misc{smith_2024_mcts,
+  author = {Smith, J. and others},
+  title = {Optimized {Monte Carlo} tree search for enhanced decision making in the {FrozenLake} environment},
+  year = {2024}
+}
+@misc{zhao_2025_cbdq,
+  author = {Zhao, L. and others},
+  title = {Cognitive belief-driven {Q}-learning: Mimicking human intuition}, year = {2025}
+}
+@article{li_2023_metadrive,
+  author = {Li, Q. and others},
+  title = {{MetaDrive}: Composing diverse driving scenarios for generalizable reinforcement learning},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence}, year = {2023}
+}
+@misc{schulman_2017_ppo,
+  author = {Schulman, J. and Wolski, F. and Dhariwal, P. and Radford, A. and Klimov, O.},
+  title = {Proximal policy optimization algorithms}, year = {2017},
+  eprint = {1707.06347}, archivePrefix = {arXiv}
+}
+@inproceedings{hester_2018_dqfd,
+  author = {Hester, T. and Vecerik, M. and Pietquin, O. and Lanctot, M. and Schaul, T. and Piot, B. and Horgan, D. and Quan, J. and Sendonaris, A. and Osband, I. and Dulac-Arnold, G. and Agapiou, J. and Leibo, J. Z. and Gruslys, A.},
+  title = {Deep {Q}-learning from demonstrations},
+  booktitle = {Proc. AAAI Conf. Artificial Intelligence}, year = {2018}
+}
+@article{chen_2023_medqn,
+  author = {Chen, H. and Lan, S. and Eysenbach, B. and Salakhutdinov, R.},
+  title = {Memory-efficient reinforcement learning with value-based knowledge consolidation},
+  journal = {Transactions on Machine Learning Research}, year = {2023}
+}
+@misc{brockman_2016_gym,
+  author = {Brockman, G. and Cheung, V. and Pettersson, L. and Schneider, J. and Schulman, J. and Tang, J. and Zaremba, W.},
+  title = {{OpenAI} {Gym}}, year = {2016}, eprint = {1606.01540}, archivePrefix = {arXiv}
+}
+@misc{tasfi_2016_pyple,
+  author = {Tasfi, N.}, title = {{PyGame} Learning Environment}, year = {2016},
+  howpublished = {\url{https://github.com/ntasfi/PyGame-Learning-Environment}}
+}
+@misc{young_2019_minatar,
+  author = {Young, K. and Tian, T.},
+  title = {{MinAtar}: An {Atari}-inspired testbed for thorough and reproducible reinforcement learning experiments},
+  year = {2019}, eprint = {1903.03176}, archivePrefix = {arXiv}
+}
+@inproceedings{osband_2016_bootstrapped,
+  author = {Osband, I. and Blundell, C. and Pritzel, A. and Van Roy, B.},
+  title = {Deep exploration via bootstrapped {DQN}},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2016}
+}
+@inproceedings{peer_2021_ebql,
+  author = {Peer, O. and Tessler, C. and Merlis, N. and Meir, R.},
+  title = {Ensemble bootstrapping for {Q}-learning},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2021}
+}
+@misc{chen_2017_ucbq,
+  author = {Chen, R. Y. and Sidor, S. and Abbeel, P. and Schulman, J.},
+  title = {{UCB} exploration via {Q}-ensembles},
+  year = {2017}, eprint = {1706.01502}, archivePrefix = {arXiv}
+}
+@misc{tsang_2002_vipi,
+  author = {Tsang, S. and Tham, W.},
+  title = {Value iteration and policy iteration algorithms for {Markov} decision problem}, year = {2002}
+}
+@inproceedings{dearden_1998_bayesianq,
+  author = {Dearden, R. and Friedman, N. and Russell, S.},
+  title = {{Bayesian} {Q}-learning},
+  booktitle = {Proc. AAAI Conf. Artificial Intelligence}, year = {1998}
+}
+@inproceedings{vanseijen_2009_expectedsarsa,
+  author = {van Seijen, H. and van Hasselt, H. and Whiteson, S. and Wiering, M.},
+  title = {A theoretical and empirical analysis of expected {Sarsa}},
+  booktitle = {IEEE Symposium on Adaptive Dynamic Programming and Reinforcement Learning}, year = {2009}
+}
+@inproceedings{sokar_2023_psdqn,
+  author = {Sokar, M. and Mavrin, R. and Sabbaghi, A. and Hou, R. and Yao, H.},
+  title = {Posterior sampling for deep reinforcement learning},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2023}
+}
+@book{sutton_2018_book,
+  author = {Sutton, R. S. and Barto, A. G.}, title = {Reinforcement Learning: An Introduction},
+  edition = {2nd}, publisher = {MIT Press}, year = {2018}
+}
+@inproceedings{riedmiller_2005_nfq,
+  author = {Riedmiller, M.}, title = {Neural fitted {Q} iteration --- First experiences with a data efficient neural reinforcement learning method},
+  booktitle = {European Conf. Machine Learning}, year = {2005}
+}
+@inproceedings{riedmiller_1993_rprop,
+  author = {Riedmiller, M. and Braun, H.}, title = {A direct adaptive method for faster backpropagation learning: The {Rprop} algorithm},
+  booktitle = {IEEE International Conf. Neural Networks}, year = {1993}
+}
+@misc{gallici_2024_pqn,
+  author = {Gallici, M. and Fellows, M. and Ellis, B. and Pou, B. and Masmitja, I. and Foerster, J. N. and Martin, M.},
+  title = {Simplifying deep temporal difference learning},
+  year = {2024}, eprint = {2407.04811}, archivePrefix = {arXiv}
+}
+
+% --- Additional references (named-year) ---
+
+@phdthesis{watkins_1989_thesis,
+  author = {Watkins, C.}, title = {Learning from delayed rewards},
+  school = {King's College, Cambridge, U.K.}, year = {1989}
+}
+@inproceedings{andrychowicz_2017_her,
+  author = {Andrychowicz, M. and Wolski, F. and Ray, A. and Schneider, J. and Fong, R. and Welinder, P. and McGrew, B. and Tobin, J. and Abbeel, P. and Zaremba, W.},
+  title = {Hindsight experience replay},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2017}
+}
+@inproceedings{burda_2019_rnd,
+  author = {Burda, Y. and Edwards, H. and Storkey, A. J. and Klimov, O.},
+  title = {Exploration by random network distillation},
+  booktitle = {Int. Conf. Learning Representations}, year = {2019}
+}
+@misc{ecoffet_2019_goexplore,
+  author = {Ecoffet, A. and Huizinga, J. and Lehman, J. and Stanley, K. O. and Clune, J.},
+  title = {{Go-Explore}: A new approach for hard-exploration problems},
+  year = {2019}, eprint = {1901.10995}, archivePrefix = {arXiv}
+}
+@article{ecoffet_2021_goexplore,
+  author = {Ecoffet, A. and Huizinga, J. and Lehman, J. and Stanley, K. O. and Clune, J.},
+  title = {First return, then explore},
+  journal = {Nature}, year = {2021}, volume = {590}, pages = {580--586}
+}
+@inproceedings{fujimoto_2019_bcq,
+  author = {Fujimoto, S. and Meger, D. and Precup, D.},
+  title = {Off-policy deep reinforcement learning without exploration},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2019}
+}
+@misc{wu_2019_brac,
+  author = {Wu, Y. and Tucker, G. and Nachum, O.},
+  title = {Behavior regularized offline reinforcement learning},
+  year = {2019}, eprint = {1911.11361}, archivePrefix = {arXiv}
+}
+@misc{nair_2020_awac,
+  author = {Nair, A. and Gupta, A. and Dalal, M. and Levine, S.},
+  title = {{AWAC}: Accelerating online reinforcement learning with offline datasets},
+  year = {2020}, eprint = {2006.09359}, archivePrefix = {arXiv}
+}
+@inproceedings{kumar_2020_cql,
+  author = {Kumar, A. and Zhou, A. and Tucker, G. and Levine, S.},
+  title = {Conservative {Q}-learning for offline reinforcement learning},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2020}
+}
+@inproceedings{kostrikov_2022_iql,
+  author = {Kostrikov, I. and Nair, A. and Levine, S.},
+  title = {Offline reinforcement learning with implicit {Q}-learning},
+  booktitle = {Int. Conf. Learning Representations}, year = {2022}
+}
+@inproceedings{an_2021_edac,
+  author = {An, G. and Moon, S. and Kim, J.-H. and Song, H. O.},
+  title = {Uncertainty-based offline reinforcement learning with diversified {Q}-ensemble},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2021}
+}
+@misc{fu_2020_d4rl,
+  author = {Fu, J. and Kumar, A. and Nachum, O. and Tucker, G. and Levine, S.},
+  title = {{D4RL}: Datasets for deep data-driven reinforcement learning},
+  year = {2020}, eprint = {2004.07219}, archivePrefix = {arXiv}
+}
+@inproceedings{nakamoto_2023_calql,
+  author = {Nakamoto, M. and Zhai, Y. and Singh, A. and Mark, M. S. and Ma, Y. and Finn, C. and Kumar, A. and Levine, S.},
+  title = {{Cal-QL}: Calibrated offline {RL} pre-training for efficient online fine-tuning},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2023}
+}
+@inproceedings{park_2025_fql,
+  author = {Park, S. and Li, Q. and Levine, S.},
+  title = {Flow {Q}-learning},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2025}
+}
+@misc{sunehag_2017_vdn,
+  author = {Sunehag, P. and Lever, G. and Gruslys, A. and Czarnecki, W. M. and Zambaldi, V. and Jaderberg, M. and Lanctot, M. and Sonnerat, N. and Leibo, J. Z. and Tuyls, K. and Graepel, T.},
+  title = {Value-decomposition networks for cooperative multi-agent learning},
+  year = {2017}, eprint = {1706.05296}, archivePrefix = {arXiv}
+}
+@inproceedings{rashid_2018_qmix,
+  author = {Rashid, T. and Samvelyan, M. and de Witt, C. S. and Farquhar, G. and Foerster, J. and Whiteson, S.},
+  title = {{QMIX}: Monotonic value function factorisation for deep multi-agent reinforcement learning},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2018}
+}
+@inproceedings{wang_2021_qplex,
+  author = {Wang, J. and Ren, Z. and Liu, T. and Yu, Y. and Zhang, C.},
+  title = {{QPLEX}: Duplex dueling multi-agent {Q}-learning},
+  booktitle = {Int. Conf. Learning Representations}, year = {2021}
+}
+@inproceedings{son_2019_qtran,
+  author = {Son, K. and Kim, D. and Kang, W. J. and Hostallero, D. E. and Yi, Y.},
+  title = {{QTRAN}: Learning to factorize with transformation for cooperative multi-agent reinforcement learning},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2019}
+}
+@misc{samvelyan_2019_smac,
+  author = {Samvelyan, M. and Rashid, T. and de Witt, C. S. and Farquhar, G. and Nardelli, N. and Rudner, T. G. J. and Hung, C.-M. and Torr, P. H. S. and Foerster, J. and Whiteson, S.},
+  title = {The {StarCraft} multi-agent challenge},
+  year = {2019}, eprint = {1902.04043}, archivePrefix = {arXiv}
+}
+@misc{baisero_2025_qfix,
+  author = {Baisero, A. and Bhati, R. and Liu, S. and Pillai, A. and Amato, C.},
+  title = {Fixing incomplete value function decomposition for multi-agent reinforcement learning},
+  year = {2025}, eprint = {2505.10484}, archivePrefix = {arXiv}
+}
+@inproceedings{horgan_2018_apex,
+  author = {Horgan, D. and Quan, J. and Budden, D. and Barth-Maron, G. and Hessel, M. and van Hasselt, H. and Silver, D.},
+  title = {Distributed prioritized experience replay},
+  booktitle = {Int. Conf. Learning Representations}, year = {2018}
+}
+@inproceedings{kapturowski_2019_r2d2,
+  author = {Kapturowski, S. and Ostrovski, G. and Quan, J. and Munos, R. and Dabney, W.},
+  title = {Recurrent experience replay in distributed reinforcement learning},
+  booktitle = {Int. Conf. Learning Representations}, year = {2019}
+}
+@inproceedings{badia_2020_agent57,
+  author = {Badia, A. P. and Piot, B. and Kapturowski, S. and Sprechmann, P. and Vitvitskyi, A. and Guo, D. and Blundell, C.},
+  title = {{Agent57}: Outperforming the {Atari} human benchmark},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2020}
+}
+@inproceedings{badia_2020_ngu,
+  author = {Badia, A. P. and Sprechmann, P. and Vitvitskyi, A. and Guo, D. and Piot, B. and Kapturowski, S. and Tieleman, O. and Arjovsky, M. and Pritzel, A. and Bolt, A. and Blundell, C.},
+  title = {Never give up: Learning directed exploration strategies},
+  booktitle = {Int. Conf. Learning Representations}, year = {2020}
+}
+@inproceedings{finn_2017_maml,
+  author = {Finn, C. and Abbeel, P. and Levine, S.},
+  title = {Model-agnostic meta-learning for fast adaptation of deep networks},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2017}
+}
+@misc{nichol_2018_reptile,
+  author = {Nichol, A. and Achiam, J. and Schulman, J.},
+  title = {On first-order meta-learning algorithms},
+  year = {2018}, eprint = {1803.02999}, archivePrefix = {arXiv}
+}
+@inproceedings{rakelly_2019_pearl,
+  author = {Rakelly, K. and Zhou, A. and Quillen, D. and Finn, C. and Levine, S.},
+  title = {Efficient off-policy meta-reinforcement learning via probabilistic context variables},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2019}
+}
+@inproceedings{rothfuss_2019_promp,
+  author = {Rothfuss, J. and Lee, D. and Clavera, I. and Asfour, T. and Abbeel, P.},
+  title = {{ProMP}: Proximal meta-policy search},
+  booktitle = {Int. Conf. Learning Representations}, year = {2019}
+}
+@inproceedings{fakoor_2020_mql,
+  author = {Fakoor, R. and Chaudhari, P. and Soatto, S. and Smola, A. J.},
+  title = {Meta-{Q}-learning},
+  booktitle = {Int. Conf. Learning Representations}, year = {2020}
+}
+@techreport{adaptableagents_2023_ada,
+  author = {{Team Adaptable Agents}},
+  title = {Human-timescale adaptation in an open-ended task space},
+  institution = {DeepMind}, year = {2023}
+}
+@inproceedings{laskin_2023_algodistill,
+  author = {Laskin, M. and Wang, L. and Oh, J. and Parisotto, E. and Spencer, S. and Steigerwald, R. and Strouse, D. J. and Hansen, S. and Filos, A. and Brooks, E. and Gazeau, M. and Sahni, H. and Singh, S. and Mnih, V.},
+  title = {In-context reinforcement learning with algorithm distillation},
+  booktitle = {Int. Conf. Learning Representations}, year = {2023}
+}
+@inproceedings{liu_2026_sicql,
+  author = {Liu, J. and others}, title = {Scalable in-context {Q}-learning},
+  booktitle = {Int. Conf. Learning Representations}, year = {2026}
+}
+@inproceedings{xu_2026_icql,
+  author = {Xu, Q. and others}, title = {In-context compositional {Q}-learning},
+  booktitle = {Int. Conf. Learning Representations}, year = {2026}
+}
+@inproceedings{vieillard_2020_munchausen,
+  author = {Vieillard, N. and Pietquin, T. and Geist, M.},
+  title = {{Munchausen} reinforcement learning},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2020}
+}
+@misc{nagarajan_2026_ddql,
+  author = {Nagarajan, P. and White, M. and Machado, M. C.},
+  title = {Deep Double {Q}-learning},
+  year = {2026}, eprint = {2507.00275}, archivePrefix = {arXiv}
+}
+@article{smith_2006_optimizerscurse,
+  author = {Smith, J. E. and Winkler, R. L.},
+  title = {The optimizer's curse: Skepticism and postdecision surprise in decision analysis},
+  journal = {Management Science}, year = {2006}, volume = {52}, number = {3}, pages = {311--322}
+}
+@article{tsitsiklis_1997_tdcontrol,
+  author = {Tsitsiklis, J. N. and Van Roy, B.},
+  title = {An analysis of temporal-difference learning with function approximation},
+  journal = {IEEE Transactions on Automatic Control}, year = {1997}, volume = {42}, number = {5}, pages = {674--690}
+}
+@inproceedings{baird_1995_residual,
+  author = {Baird, L.}, title = {Residual algorithms: Reinforcement learning with function approximation},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {1995}
+}
+@inproceedings{sutton_2009_gtd,
+  author = {Sutton, R. S. and Maei, H. R. and Precup, D. and Bhatnagar, S. and Silver, D. and Szepesvári, C. and Wiewiora, E.},
+  title = {Fast gradient-descent methods for temporal-difference learning with linear function approximation},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2009}
+}
+@inproceedings{rowland_2018_qdistanalysis,
+  author = {Rowland, M. and Bellemare, M. G. and Dabney, W. and Munos, R. and Teh, Y. W.},
+  title = {An analysis of categorical distributional reinforcement learning},
+  booktitle = {Int. Conf. Artificial Intelligence and Statistics}, year = {2018}
+}
+@misc{yang_2019_dqntheory,
+  author = {Yang, Z. and Xie, Y. and Wang, Z.},
+  title = {A theoretical analysis of deep {Q}-learning},
+  year = {2019}, eprint = {1901.00137}, archivePrefix = {arXiv}
+}
+@inproceedings{fan_2020_dqntheory,
+  author = {Fan, J. and Wang, Z. and Xie, Y. and Yang, Z.},
+  title = {A theoretical analysis of deep {Q}-learning},
+  booktitle = {Learning for Dynamics and Control}, year = {2020}
+}
+@inproceedings{jin_2021_pessimism,
+  author = {Jin, Y. and Yang, Z. and Wang, Z.},
+  title = {Is pessimism provably efficient for offline {RL}?},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2021}
+}
+@inproceedings{lyle_2022_capacityloss,
+  author = {Lyle, C. and Rowland, M. and Dabney, W.},
+  title = {Understanding and preventing capacity loss in reinforcement learning},
+  booktitle = {Int. Conf. Learning Representations}, year = {2022}
+}
+@inproceedings{nikishin_2022_primacy,
+  author = {Nikishin, E. and Schwarzer, M. and D'Oro, P. and Bacon, P.-L. and Courville, A.},
+  title = {The primacy bias in deep reinforcement learning},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2022}
+}
+@misc{klein_2026_plasticity,
+  author = {Klein, T. and others},
+  title = {Plasticity loss in deep reinforcement learning: A survey},
+  year = {2026}, eprint = {2411.04832}, archivePrefix = {arXiv}
+}
+@article{machado_2018_aleeval,
+  author = {Machado, M. C. and Bellemare, M. G. and Talvitie, E. and Veness, J. and Hausknecht, M. and Bowling, M.},
+  title = {Revisiting the arcade learning environment: Evaluation protocols and open problems for general agents},
+  journal = {Journal of Artificial Intelligence Research}, year = {2018}, volume = {61}, pages = {523--562}
+}
+@inproceedings{kaiser_2020_simple,
+  author = {Kaiser, L. and Babaeizadeh, M. and Milos, P. and Osinski, B. and Campbell, R. H. and Czechowski, K. and Erhan, D. and Finn, C. and Kozakowski, P. and Levine, S. and Mohiuddin, A. and Sepassi, R. and Tucker, G. and Michalewski, H.},
+  title = {Model-based reinforcement learning for {Atari}},
+  booktitle = {Int. Conf. Learning Representations}, year = {2020}
+}
+@inproceedings{cobbe_2020_procgen,
+  author = {Cobbe, K. and Hesse, C. and Hilton, J. and Schulman, J.},
+  title = {Leveraging procedural generation to benchmark reinforcement learning},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2020}
+}
+@inproceedings{kuttler_2020_nethack,
+  author = {Küttler, H. and Nardelli, N. and Miller, A. and Raileanu, R. and Selvatici, M. and Grefenstette, E. and Rocktäschel, T.},
+  title = {The {NetHack} learning environment},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2020}
+}
+@inproceedings{osband_2020_bsuite,
+  author = {Osband, I. and Doron, Y. and Hessel, M. and Aslanides, J. and Sezener, E. and Saraiva, A. and McKinney, K. and Lattimore, T. and Szepesvari, C. and Singh, S. and Van Roy, B. and Sutton, R. and Silver, D. and van Hasselt, H.},
+  title = {Behaviour suite for reinforcement learning},
+  booktitle = {Int. Conf. Learning Representations}, year = {2020}
+}
+@inproceedings{henderson_2018_drlmatters,
+  author = {Henderson, P. and Islam, R. and Bachman, P. and Pineau, J. and Precup, D. and Meger, D.},
+  title = {Deep reinforcement learning that matters},
+  booktitle = {Proc. AAAI Conf. Artificial Intelligence}, year = {2018}
+}
+@inproceedings{engstrom_2020_implementation,
+  author = {Engstrom, L. and Ilyas, A. and Santurkar, S. and Tsipras, D. and Janoos, F. and Rudolph, L. and Madry, A.},
+  title = {Implementation matters in deep policy gradients: A case study on {PPO} and {TRPO}},
+  booktitle = {Int. Conf. Learning Representations}, year = {2020}
+}
+@inproceedings{agarwal_2021_rliable,
+  author = {Agarwal, R. and Schwarzer, M. and Castro, P. S. and Courville, A. and Bellemare, M. G.},
+  title = {Deep reinforcement learning at the edge of the statistical precipice},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2021}
+}
+@misc{castro_2018_dopamine,
+  author = {Castro, P. S. and Moitra, S. and Gelada, C. and Kumar, S. and Bellemare, M. G.},
+  title = {Dopamine: A research framework for deep reinforcement learning},
+  year = {2018}, eprint = {1812.06110}, archivePrefix = {arXiv}
+}
+@inproceedings{obandoceron_2021_revisitrainbow,
+  author = {Obando-Ceron, J. and Castro, P. S. and Bellemare, M. G.},
+  title = {Revisiting Rainbow: Promoting more insightful and inclusive deep reinforcement learning research},
+  booktitle = {Proc. Int. Conf. Machine Learning}, year = {2021}
+}
+@misc{hundal_2025_interchangeable,
+  author = {Hundal, S. and Xiao, K. and Cao, S. and Dong, J. and Rigger, M.},
+  title = {On the mistaken assumption of interchangeable deep reinforcement learning implementations},
+  year = {2025}, eprint = {2503.22575}, archivePrefix = {arXiv}
+}
+@misc{ghasemi_2024_rlsurvey,
+  author = {Ghasemi, P. and Moosavi, A. M. and Ebrahimi, S.},
+  title = {A comprehensive survey of reinforcement learning: From algorithms to practical challenges},
+  year = {2024}, eprint = {2411.18892}, archivePrefix = {arXiv}
+}
+@misc{murphy_2024_rloverview,
+  author = {Murphy, K. P.}, title = {Reinforcement learning: An overview},
+  year = {2024}, eprint = {2412.05265}, archivePrefix = {arXiv}
+}
+@article{springer_2026_distshift,
+  author = {{Springer NCAA}},
+  title = {Distribution shift, generalization and {OOD} challenge in offline reinforcement learning: A comprehensive survey},
+  journal = {Neural Computing and Applications}, year = {2026}, doi = {10.1007/s00521-026-11966-8}
+}
+
+% --- Session 5/6 additions ---
+
+@misc{xiong_2018_pdqn,
+  author = {Xiong, J. and Wang, Q. and Yang, Z. and Sun, P. and Han, L. and Zheng, Y. and Fu, H. and Zhang, T. and Liu, J. and Liu, H.},
+  title = {Parametrized deep {Q}-networks learning: Reinforcement learning with discrete-continuous hybrid action space},
+  year = {2018}, eprint = {1810.06394}, archivePrefix = {arXiv}
+}
+@misc{bester_2019_multipass,
+  author = {Bester, C. J. and James, S. D. and Konidaris, G. D.},
+  title = {Multi-pass {Q}-networks for deep reinforcement learning with parameterised action spaces},
+  year = {2019}, eprint = {1905.04388}, archivePrefix = {arXiv}
+}
+@misc{rybkin_2025_scalinglaws,
+  author = {Rybkin, O. and others},
+  title = {Value-based deep reinforcement learning scales predictably},
+  year = {2025}, eprint = {2502.04327}, archivePrefix = {arXiv}
+}
+@misc{chebotar_2023_qtransformer,
+  author = {Chebotar, Y. and Vuong, Q. and Hausman, K. and Xia, F. and Lu, Y. and Irpan, A. and Kumar, A. and Yu, T. and Herzog, A. and Pertsch, K. and others},
+  title = {{Q-Transformer}: Scalable offline reinforcement learning via autoregressive {Q}-functions},
+  year = {2023}, eprint = {2309.10150}, archivePrefix = {arXiv}
+}
+@misc{shiq_2024,
+  author = {Anonymous and others},
+  title = {{ShiQ}: Shifted-{Q} for token-wise off-policy alignment of language models},
+  year = {2024}
+}
+@misc{vlmqlearning_2024,
+  author = {Anonymous and others},
+  title = {{VLM} {Q}-learning: Off-policy fine-tuning of vision-language models for interactive decision-making},
+  year = {2024}
+}
+@misc{qsharp_2024,
+  author = {Anonymous and others},
+  title = {{Q-sharp}: Distributional {Q}-learning for {KL}-regularized reinforcement learning},
+  year = {2024}
+}
+
+
+@misc{benjamins_2021_carl,
+  author = {Benjamins, C. and Eimer, T. and Schubert, F. G. and Biedenkapp, A. and Rosenhahn, B. and Hutter, F. and Lindauer, M.},
+  title = {{CARL}: A benchmark for contextual and adaptive reinforcement learning},
+  year = {2021}, eprint = {2110.02102}, archivePrefix = {arXiv}
+}
+@inproceedings{brandfonbrener_2021_onestep,
+  author = {Brandfonbrener, D. and Whitney, W. F. and Ranganath, R. and Bruna, J.},
+  title = {Offline {RL} without off-policy evaluation},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2021}
+}
+@inproceedings{chen_2021_redq,
+  author = {Chen, X. and Wang, C. and Zhou, Z. and Ross, K.},
+  title = {Randomized ensembled double {Q}-learning: Learning fast without a model},
+  booktitle = {Int. Conf. Learning Representations}, year = {2021}
+}
+@misc{chen_2022_offlinemulti,
+  author = {Chen, S. and Yang, Y. and Yu, T.},
+  title = {Multi-task offline reinforcement learning via cross-task data sharing},
+  year = {2022}, eprint = {2202.04971}, archivePrefix = {arXiv}
+}
+@inproceedings{florence_2021_ibc,
+  author = {Florence, P. and Lynch, C. and Zeng, A. and Ramirez, O. and Wahid, A. and Downs, L. and Wong, A. and Lee, J. and Mordatch, I. and Tompson, J.},
+  title = {Implicit behavioral cloning},
+  booktitle = {Conf. Robot Learning}, year = {2021}
+}
+@misc{hafner_2022_crafter,
+  author = {Hafner, D.},
+  title = {Benchmarking the spectrum of agent capabilities},
+  year = {2022}, eprint = {2109.06780}, archivePrefix = {arXiv}
+}
+@misc{hong_2023_adaptcql,
+  author = {Hong, J. and Bhardwaj, M. and Patil, M. and Goyal, A. and Singh, S.},
+  title = {Adaptive conservative {Q}-learning for offline reinforcement learning},
+  year = {2023}, eprint = {2303.10299}, archivePrefix = {arXiv}
+}
+@inproceedings{james_2020_rlbench,
+  author = {James, S. and Ma, Z. and Arrojo, D. R. and Davison, A. J.},
+  title = {{RLBench}: The robot learning benchmark and learning environment},
+  booktitle = {IEEE Robotics and Automation Letters}, year = {2020}
+}
+@article{kirkpatrick_2017_ewc,
+  author = {Kirkpatrick, J. and Pascanu, R. and Rabinowitz, N. and Veness, J. and Desjardins, G. and Rusu, A. A. and Milan, K. and Quan, J. and Ramalho, T. and Grabska-Barwinska, A. and others},
+  title = {Overcoming catastrophic forgetting in neural networks},
+  journal = {Proc. National Academy of Sciences},
+  year = {2017}, volume = {114}, number = {13}, pages = {3521--3526}
+}
+@inproceedings{mendonca_2019_metaq,
+  author = {Mendonca, R. and Gupta, A. and Kralev, R. and Abbeel, P. and Levine, S. and Finn, C.},
+  title = {Guided meta-policy search},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2019}
+}
+@inproceedings{yu_2020_metaworld,
+  author = {Yu, T. and Quillen, D. and He, Z. and Julian, R. and Hausman, K. and Finn, C. and Levine, S.},
+  title = {{MetaWorld}: A benchmark and evaluation for multi-task and meta reinforcement learning},
+  booktitle = {Conf. Robot Learning}, year = {2020}
+}
+@inproceedings{yu_2021_imp,
+  author = {Yu, C. and Velu, A. and Vinitsky, E. and Wang, Y. and Bayen, A. M. and Wu, Y.},
+  title = {The surprising effectiveness of {PPO} in cooperative, multi-agent games},
+  booktitle = {Advances in Neural Information Processing Systems}, year = {2021}
+}

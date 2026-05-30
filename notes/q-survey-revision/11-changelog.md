@@ -12,6 +12,47 @@ commit hash that introduced it.
 
 ---
 
+## v0.16 — 2026-05-30 — IEEE TAI edition + monograph freeze
+
+Target venue locked to **IEEE Transactions on Artificial Intelligence**
+(Original Research Review Manuscript). TAI caps review papers at 15
+pages (21 max, $200/page over 15), two-column IEEEtran, double-anonymous.
+The comprehensive draft is now treated as the extended/source version;
+a distilled TAI edition is built alongside it.
+
+- **Monograph preserved.** Tagged `monograph-v0.15` and frozen as a
+  reference copy at `draft-monograph/`. The comprehensive build
+  (`draft/`, single-column, `paper.pdf`) continues unchanged.
+- **New `draft-tai/` — working IEEE TAI two-column edition.**
+  - `main.tex` — IEEEtran `journal` wrapper: anonymized title block +
+    `\thanks`, abstract, impact statement, `IEEEkeywords`; manual
+    Roman heading numerals preserved via `secnumdepth=0`; xelatex +
+    TeX Gyre Termes (Times-metric) for realistic page count.
+  - `build-tai.sh` — pandoc → LaTeX fragment (`--natbib` → IEEE
+    `[N]` via `IEEEtran.bst`) + `tables-twocol.lua` + mermaid-filter,
+    compiled with pinned system `xelatex`/`bibtex`.
+  - `tables-twocol.lua` — converts pandoc `longtable` (illegal in
+    two-column) into floats: wide tables (≥4 cols) → full-width
+    `table*`, narrow tables → single-column `table`.
+  - `IEEEtran.{cls,bst}` kept as committed fallbacks (conda's bibtex
+    can't see the system copies).
+  - **Baseline: 47 two-column pages** — the real figure to compress
+    toward the 21-page cap (~55% reduction ahead).
+
+- **Two correctness fixes (both editions):**
+  - Impact statement rewritten to 135 words (was 97, below TAI's
+    100–150) with a practitioner "so-what" framing per TAI guidance.
+  - Stripped the internal note-leak: the conclusion's reference to
+    `07-prior-art-sweep.md` now reads "provided as supplementary
+    material." (Required for double-anonymous; no external/internal
+    links in the manuscript.)
+
+paper.pdf (monograph): 1.6 MB. main.pdf (TAI): 1.3 MB, 47 pages.
+
+Commit: TBD
+
+---
+
 ## v0.15 — 2026-05-30 — Bibliography pipeline (pandoc citeproc + BibTeX)
 
 References are now produced by pandoc-citeproc from a checked-in
