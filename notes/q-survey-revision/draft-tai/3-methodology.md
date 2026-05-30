@@ -1,133 +1,66 @@
 # III. Methodology {#sec-iii}
 
-This review surveys Q-learning algorithms spanning over three decades
-of development, from foundational tabular approaches to recent deep
-variants. We include influential papers that shaped the theoretical
-landscape, introduced practical improvements, or demonstrated wide
-applicability in real-world domains. The selection prioritizes
-methods whose contributions can be mapped onto one or more of the
-eight weakness axes introduced in §II.B — methods that respond to a
-recognizable weakness of vanilla Q-learning with a distinct
-mechanism.
+This section states our search, selection, and classification protocol
+so that the resulting axis assignments, benchmark extractions, and
+repository comparisons can be independently audited. We adopt a
+systematic, PRISMA-style protocol: an explicit search across named
+databases, fixed search strings, a stated date range, and recorded
+inclusion/exclusion criteria. The synthesis remains interpretive — each
+axis carries an argued reading of the methods it surveys — and the
+eight-axis framework of [§II.B](#sec-ii) was refined against the
+literature, which we treat as a limitation surfaced in
+[§VIII.D](#sec-viii) rather than a defect. The full search log is
+provided as supplementary material.
 
-### A. Source selection and review protocol
+**Search protocol.** Candidates were drawn from three databases:
+Google Scholar (broad coverage, citation-graph traversal), arXiv
+(cs.LG and cs.AI, primary preprint source), and Semantic Scholar
+(citation-relationship analysis). The recent-work sweep ran from
+December 2025 through May 2026 (cutoff 2026-05-15), augmented by a
+full historical pass for foundational results. Searches combined
+topical anchors ("Q-learning", "deep Q-network", "DQN") with
+axis-specific terms ("overestimation bias", "prioritized replay",
+"exploration bonus", "distributional reinforcement learning",
+"offline reinforcement learning", "value decomposition", "distributed
+reinforcement learning", "meta-reinforcement learning", "function
+approximation stability"), with a 2018-onward recency filter for
+deep-RL methods and no date floor for foundational results.
 
-This paper is best characterized as a *narrative review with
-empirical add-ons* rather than a strictly systematic review in the
-PRISMA sense: the synthesis is interpretive (each axis carries an
-argued reading of the methods it surveys), and the eight-axis
-framework was developed iteratively with the literature rather than
-applied as a pre-registered classification. We document the search
-and selection protocol here so that the resulting axis assignments,
-benchmark extractions, and repository comparisons can be
-independently audited.
+**Inclusion and exclusion criteria.** A work was included if it met
+all five criteria: (1) *method centrality* — it contributes to the
+Q-learning family rather than applying Q-learning to a domain;
+(2) *mechanism distinctness* — it is mechanistically distinguishable
+from prior work along at least one [§II.B](#sec-ii) axis;
+(3) *empirical validation* — it reports results on a recognized
+benchmark (Atari, classic control, D4RL, SMAC, ProcGen, or
+equivalent); (4) *cross-reference impact* — it is cited as
+foundational by later methods in its axis-family, *or* appeared within
+the prior twelve months as an active thread; and (5) *reproducibility*
+— code is public or the algorithm is fully specified. We excluded
+(a) application papers using Q-learning as a black box, (b)
+workshop-only or non-archival preprints without follow-up, and
+(c) methods superseded by equivalent-effort alternatives. Works
+meeting all five received per-paper treatment; others were folded into
+family-level coverage (e.g., the value-decomposition family in
+[§IV.F](#sec-iv-f) via VDN, QMIX, QPLEX, QTRAN, with QFIX added under
+criterion 4's twelve-month clause).
 
-**Databases and search strategy.** Source candidates were
-identified from three databases: Google Scholar (broad coverage,
-citation-graph traversal), arXiv (cs.LG and cs.AI listings, primary
-source for preprints), and Semantic Scholar (citation-relationship
-analysis). The search ran from December 2025 through May 2026 with
-a cutoff date of 2026-05-15 for the late-2025 / 2026 paper sweep
-documented separately. Searches combined topical anchors
-("Q-learning", "deep Q-network", "DQN") with axis-specific terms
-("overestimation bias", "prioritized replay", "exploration bonus",
-"distributional reinforcement learning", "offline reinforcement
-learning", "value decomposition", "distributed reinforcement
-learning", "meta-reinforcement learning", "function approximation
-stability") and recency filters (publication date 2018-onward for
-deep-RL methods; full historical range for foundational results).
+**Screening flow.** Initial identification produced ~200 papers;
+title/abstract screening narrowed this to ~120; full-text screening
+against the five criteria yielded ~80 receiving per-method treatment,
+plus ~20 cited at family or cross-reference level. The complete
+ledger is supplementary material.
 
-**Inclusion and exclusion criteria.** Five inclusion criteria were
-applied:
-
-1. **Method centrality** — the work introduces a methodological
-   contribution to the Q-learning family rather than applying
-   Q-learning to a domain.
-2. **Mechanism distinctness** — the contribution is mechanistically
-   distinguishable from prior work along at least one of the eight
-   axes of §II.B.
-3. **Empirical validation** — the work reports results on a
-   recognized benchmark (Atari, classic control, D4RL, SMAC,
-   ProcGen, or equivalent).
-4. **Cross-reference impact** — the work is cited as foundational
-   by subsequent methods in the same axis-family, *or* the work was
-   published within the previous twelve months and represents an
-   active research thread.
-5. **Reproducibility** — code is publicly available or the
-   algorithm is sufficiently specified to be independently
-   re-implemented.
-
-Exclusion criteria removed: (a) application-domain papers using
-Q-learning as a black-box tool without methodological contribution;
-(b) workshop-only or non-archival preprints lacking subsequent
-follow-up; (c) methods that have been demonstrably superseded by
-equivalent-effort alternatives (e.g., we cover Maximin Q-Learning
-but not all of its precursors). Methods satisfying all five
-inclusion criteria received per-paper treatment. Methods satisfying
-a subset received compact treatment as part of a family (e.g., the
-value-decomposition family in §IV.F is treated through its
-canonical members VDN, QMIX, QPLEX, QTRAN, with QFIX added on the
-basis of criterion 4's twelve-month clause).
-
-**Screening flow.** Initial candidate identification produced
-approximately 200 papers; first-pass title/abstract screening
-narrowed this to approximately 120. A subsequent full-text
-screening against the five inclusion criteria produced
-approximately 80 papers receiving full per-method treatment, with
-an additional 20 cited at family or cross-reference level. We do
-not publish a strict PRISMA flow diagram here because the
-search-and-iterate process was non-linear: as the eight-axis
-framework crystallized, several methods that initially appeared
-incidental were promoted to per-paper status, and conversely some
-once-canonical entries were demoted to family-level mention. We
-treat this iteration as a methodological *limitation* rather than a
-defect (and surface it explicitly in §VIII.D); a strictly
-systematic review would have required pre-registering the axis
-framework before the literature search, which we did not.
-
-**Axis-assignment protocol.** Each method covered in §IV is
-assigned to a *primary axis* — the weakness whose response motivated
-the method's introduction — and zero or more *secondary axes* —
-additional weaknesses the method incidentally addresses or
-partially mitigates. Primary assignment is made on the basis of the
-method's stated motivation in its original publication and the
-predominant mechanism of its contribution. Where the original
-publication's motivation differs from our axis assignment (notably
-for distributional methods in §IV.D and Dueling DQN in §IV.H), the
-re-interpretation is argued explicitly within the section. The
-complete per-method mapping, including secondary axes and
-cross-references, is provided as supplementary material.
-
-**Per-paper extraction template.** For methods receiving per-paper
-treatment, we extracted: (i) the formal weakness statement the
-method addresses (§IV.X.A reference); (ii) the key mechanism-
-defining equation; (iii) the primary empirical evidence reported in
-the original publication; (iv) trade-offs explicitly discussed by
-the authors; (v) any subsequent ablations or follow-up evaluations
-relevant to the trade-off discussion. This extraction template is
-not published as supplementary material in the current version, but
-the per-method writeups in §IV reflect its structure consistently.
-
-### B. Comparison with prior surveys
-
-To position this survey against existing work, we compiled Table I,
-which compares this paper with five prior Q-learning–focused surveys
-[@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey] and [@ghasemi_2024_rlsurvey] along five distinguishing
-dimensions: analysis of public DQN repositories, unified taxonomy
-spanning tabular and deep Q-learning, extraction of original-paper
-Atari benchmarks, classic control benchmarks from controlled
-re-implementation, and per-paper review organized around mechanism
-and axis. Where prior surveys focus on chronological or method-type
-organization, this paper's problem-first axis structure (§IV) is, to
-our knowledge, the first multi-axis problem-first treatment of
-Q-learning specifically. This claim is supported by a documented
-2024-2026 sweep across Google Scholar, arXiv (cs.LG and cs.AI), and
-Semantic Scholar that surveyed every recent Q-learning, DQN, and
-broad-RL survey we could identify; the closest prior art is the
-single-axis problem-first organization of [@springer_2026_distshift],
-which addresses distribution shift in offline RL only. Search
-strings, dates, and per-survey notes are recorded as supplementary
-material so the claim can be independently audited.
+**Comparison with prior surveys.** Table I positions this paper
+against five prior Q-learning–focused surveys
+[@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey]
+and [@ghasemi_2024_rlsurvey] along five distinguishing dimensions.
+Where those surveys organize chronologically or by method type, this
+paper's problem-first axis structure ([§IV](#sec-iv)) is, to our
+knowledge, the first multi-axis problem-first treatment of Q-learning;
+the closest prior art, [@springer_2026_distshift], is single-axis
+(distribution shift in offline RL only). Per-survey notes are recorded
+as supplementary material.
 
 \begin{table*}[t]
 \centering
@@ -148,38 +81,30 @@ Problem-First Organization Across Multiple Axes & $\circ$ & $\circ$ & $\circ$ & 
 \end{tabular}
 \end{table*}
 
-### C. Axis assignment methodology
+**Axis-assignment methodology.** Each method covered in
+[§IV](#sec-iv) is assigned a *primary axis* — the weakness whose
+response motivated its introduction, determined from the stated
+motivation in the original publication and the predominant mechanism
+of its contribution — and zero or more *secondary axes* for weaknesses
+it incidentally addresses. Where our assignment departs from the
+original motivation (notably distributional methods under credit
+assignment in [§IV.D](#sec-iv-d) and Dueling DQN in
+[§IV.H](#sec-iv-h)), the reinterpretation is argued in-section.
+Cross-references — e.g., Rainbow's primary placement in
+[§IV.B](#sec-iv-b) with links from [§IV.A](#sec-iv-a),
+[§IV.C](#sec-iv-c), [§IV.D](#sec-iv-d), and [§IV.H](#sec-iv-h) —
+surface connective tissue that catalogue-style surveys obscure. The
+complete per-method mapping, with secondary axes and a full index for
+readers expecting the older organization, is supplementary material.
 
-Each method covered in this paper is assigned to a *primary axis* —
-the weakness whose response motivated the method's introduction — and
-zero or more *secondary axes* — additional weaknesses the method
-incidentally addresses or partially mitigates. Primary assignment is
-made on the basis of the method's stated motivation in its original
-publication and the predominant mechanism of its contribution.
-Where the original publication's motivation differs from our axis
-assignment (notably for distributional methods in §IV.D and Dueling
-DQN in §IV.H), the reinterpretation is argued explicitly within the
-section.
-
-Cross-references between axis-sections — e.g., Rainbow appearing in
-§IV.B (primary) and being cross-referenced from §IV.A, §IV.C, §IV.D,
-and §IV.H — surface the connective tissue that catalogue-style
-surveys obscure. The method-type taxonomy table in §IV gives the
-category-level mapping; a full per-method index supporting readers who
-arrive expecting the older organization is provided as supplementary
-material.
-
-### D. Empirical evidence sources
-
-Section V analyzes Atari benchmark results extracted from the
-original papers introducing each method. Section VI reports tabular
+**Empirical evidence sources.** [§V](#sec-v) analyzes Atari results
+extracted from the original papers; [§VI](#sec-vi) reports tabular
 benchmarks from controlled re-implementations on Gymnasium
-environments (FrozenLake-v1, Taxi-v3, CliffWalking-v1). Section VII
-analyzes algorithmic coverage across six widely-used open-source
-deep RL repositories (Tianshou [@weng_2022_tianshou], XuanCe [@liu_2023_xuance], CleanRL [@huang_2022_cleanrl], DQN
-Zoo [@quan_2020_dqnzoo], Stable Baselines3 [@raffin_2021_sb3], RLlib [@liang_2018_rllib]). The three evidence
-streams together support different aspects of the paper's
-contribution: the literature analysis demonstrates methodological
-diversity, the controlled experiments isolate algorithmic from
-architectural effects, and the repository analysis maps the
-practical landscape of available implementations.
+(FrozenLake-v1, Taxi-v3, CliffWalking-v1); and [§VII](#sec-vii)
+analyzes algorithmic coverage across six open-source deep-RL
+repositories (Tianshou [@weng_2022_tianshou], XuanCe
+[@liu_2023_xuance], CleanRL [@huang_2022_cleanrl], DQN Zoo
+[@quan_2020_dqnzoo], Stable Baselines3 [@raffin_2021_sb3], RLlib
+[@liang_2018_rllib]). Together these streams demonstrate
+methodological diversity, isolate algorithmic from architectural
+effects, and map the practical implementation landscape.

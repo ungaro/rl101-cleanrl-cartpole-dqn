@@ -12,6 +12,39 @@ commit hash that introduced it.
 
 ---
 
+## v0.22 — 2026-05-30 — Front-matter cleanup + compression → 19 pages
+
+Stale-reference cleanup and front-matter distillation; opens headroom
+below the 21-page cap.
+
+- **§IV retitled** "Q-Learning Methods by Weakness" (was the
+  survey-inappropriate "Related Works"). Removed the stale
+  "five-part A–F subsection" description and the old roadmap paragraph
+  describing table formats (six-column tables, 2D positioning grids,
+  decision trees) that no longer exist post-distillation; tightened the
+  §IV.I/J roadmap entries.
+- **All "Related Works" references fixed** (intro, background); the §I
+  roadmap now correctly describes §IV.A–H + §IV.I + §IV.J and points to
+  supplementary (not the removed appendices).
+- **§II Background** distilled 1293 → 540 words: compact MDP/Q-learning
+  formalism (Bellman optimality + tabular update) and all eight
+  weaknesses W1–W8 at one sentence each, with the W7 composite
+  (W7a throughput / W7b adaptation) framing preserved.
+- **§III Methodology** distilled to ~650 prose words and reframed as an
+  explicit **systematic, PRISMA-style protocol** — named databases,
+  search strings, date range, five inclusion/exclusion criteria, and a
+  screening flow (~200 → ~120 → ~80) — directly answering the reviewer
+  concern that it read as narrative rather than systematic, per TAI's
+  survey requirement. Table I (prior-survey comparison) preserved verbatim.
+- Fixed two dangling anchors (`#sec-ii-b`, `#sec-viii-d`).
+
+Page count: **21 → 19** (two pages of slack below the cap). Clean build,
+zero undefined citations.
+
+Commit: TBD
+
+---
+
 ## v0.21 — 2026-05-30 — §V / §VII distilled + §VI re-run (100 seeds) → 21 pages
 
 Reaches the TAI 21-page cap.

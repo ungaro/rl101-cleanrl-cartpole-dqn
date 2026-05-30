@@ -55,8 +55,8 @@ methods address**. Eight such weaknesses are identified:
 8. *Function-approximation instability* — the "deadly triad" of
    off-policy learning, bootstrapping, and function approximation.
 
-Each Related Works section in this paper corresponds to one of these
-weaknesses. Within each section, methods are grouped by the
+Each §IV subsection corresponds to one of these
+weaknesses. Within each, methods are grouped by the
 *mechanism* they use to address the weakness, compared head-to-head
 on the trade-offs they introduce, and evaluated against the empirical
 evidence relevant to that axis. The same method can appear in
@@ -91,10 +91,11 @@ reframing:
 
 The remainder of the paper is organized as follows. Section II
 introduces the MDP formalism and formally states the eight
-weaknesses that structure the Related Works. Section III describes
+weaknesses that structure the survey. Section III describes
 the methodology. Section IV — the bulk of the paper — presents the
-problem-first review across the eight axes (§IV.A–H), followed by a
-ninth subsection §IV.I covering recent theoretical advances.
+problem-first review across the eight axes (§IV.A–H), followed by
+§IV.I on recent theoretical advances and §IV.J on the emerging use
+of Q-learning for foundation-model alignment.
 Sections V and VI report Atari and tabular benchmark analyses.
 Section VII presents the repository comparison. Section VIII
 concludes with future directions, including a planned

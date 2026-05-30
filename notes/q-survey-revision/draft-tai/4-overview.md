@@ -1,4 +1,4 @@
-# IV. Related Works {#sec-iv}
+# IV. Q-Learning Methods by Weakness {#sec-iv}
 
 Over the past three decades, Q-learning and its deep variants have
 evolved through a long sequence of mechanism-level innovations.
@@ -42,12 +42,11 @@ method genealogy showing the inheritance relationships between
 Q-learning's variants, a companion figure showing the modern-RL
 branches that have emerged outside the conventional taxonomy, and
 an axis × mechanism-family matrix summarizing what mechanism types
-are deployed against each weakness. The §IV subsections that
-follow each provide a five-part structure: formal statement of
-the weakness (subsection A), grouped solution families
-(subsection B), trade-offs (subsection C), empirical evidence
-(subsection D), open questions (subsection E), and a comparison
-summary with positioning grid (subsection F).
+are deployed against each weakness. Each §IV axis-subsection that
+follows uses a uniform template: the *weakness*, the *mechanism
+families* that respond (grouped by what they exploit), the
+*trade-offs* among them, the open *questions* that remain, and a
+compact comparison table.
 
 ### A. Method genealogy
 
@@ -216,23 +215,9 @@ The remainder of §IV proceeds axis by axis:
 - **§IV.H** Function-approximation instability — target networks,
   architectural decomposition, normalization recipes, consolidation
   losses.
-- **§IV.I** Theoretical foundations and recent advances —
-  convergence theory, finite-time bounds, pessimism in offline RL,
-  stability theory, and IGM theorems. A meta-section that surveys
-  the theoretical landscape underlying the eight axes above.
-- **§IV.J** Q-learning for foundation model alignment —
-  Q-Transformer, ShiQ, VLM Q-Learning, Q$^\sharp$. An application-oriented
-  section covering Q-learning's role in fine-tuning large language
-  and vision-language models, distinct from the weakness-axes in
-  that it represents a new deployment regime rather than a new
-  mechanism category.
-
-Each axis subsection (A–H) ends with **F. Comparison summary**: a
-uniform six-column table (method / mechanism category / mechanism /
-cost / best-at / empirical anchor) and, where the trade-off is
-naturally two-dimensional, a 2D positioning grid. §IV.E additionally
-provides a method-selection decision tree for practitioner use.
-§IV.I substitutes a results-by-year theoretical-status table for the
-comparison grid since its entries are theorems rather than methods.
-§IV.J provides a four-column comparison table organized by
-off-policy support and KL-regularization compatibility.
+- **§IV.I** Theoretical foundations — a brief synthesis of
+  convergence, finite-time, pessimism, stability, and IGM results
+  underlying the eight axes (full statements in supplementary).
+- **§IV.J** Q-learning for foundation-model alignment — an emerging
+  direction (Q-Transformer, ShiQ, VLM Q-Learning, Q$^\sharp$),
+  representing a new deployment regime rather than a new mechanism.
