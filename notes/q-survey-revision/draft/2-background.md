@@ -135,17 +135,29 @@ on $f$ (additivity, monotonicity) that preserve the
 $Q_\text{tot}$ jointly is the per-agent argmax of each $Q_i$.
 Methods responding to this weakness are surveyed in §IV.F.
 
-**W7. Slow adaptation.** Vanilla Q-learning trains a single
-$Q$-function for a single task. Transfer to a related task —
+**W7. Slow adaptation and sample throughput (composite axis).**
+Vanilla Q-learning is bottlenecked along two distinct but
+interrelated dimensions that we treat as a single axis. The
+*adaptation* dimension: vanilla Q-learning trains a single
+$Q$-function for a single task; transfer to a related task —
 different reward, different transition dynamics, different state
 distribution — requires retraining from scratch or initialization
 from a pre-trained $Q$. Neither is satisfactory when adaptation
-must occur online and within a small number of episodes. Methods
-responding to this weakness include meta-learning approaches that
-learn an initialization or adaptation rule rather than a fixed
-$Q$, distributed actor-critic architectures that share experience
-across tasks, and architecturally recurrent variants that condition
-on task context. They are surveyed in §IV.G.
+must occur online and within a small number of episodes. The
+*throughput* dimension: a single sequential learner is bottlenecked
+on the rate at which the environment produces transitions, even
+with experience replay. Both dimensions admit the same set of
+methodological responses — distributed actor-learner architectures,
+recurrent value functions, meta-learning approaches, and the
+recent predictable-scaling literature — because at scale the
+distinction between "scale to adapt across tasks" and "scale to
+learn faster on one task" blurs (Agent57 is the paradigm case).
+We treat them as one composite axis rather than two separate ones
+because the methodological responses are mostly shared; readers
+who prefer a finer-grained taxonomy can read §IV.G as covering two
+sub-axes W7a (sample throughput / distributed systems) and W7b
+(slow adaptation / meta-learning), which we surface explicitly
+in §IV.G.A. Methods are surveyed in §IV.G.
 
 **W8. Function-approximation instability.** The combination of
 off-policy learning, bootstrapping, and function approximation —

@@ -170,6 +170,25 @@ slower training than IQN.
   not *acting*. Methods that act on higher distributional moments
   (risk-sensitive RL, CVaR-based action selection) are out of scope
   here but represent a natural extension.
+- **Quantile-crossing pathology.** Quantile-regression methods —
+  QR-DQN, IQN, and FQF — train independent estimators for each
+  quantile level $\tau_i$ without enforcing the monotonicity
+  constraint $\tau_i < \tau_j \implies \theta_i \leq \theta_j$
+  that the true quantile function must satisfy. During training the
+  predicted quantiles can cross — the estimate for $\tau = 0.3$
+  exceeds the estimate for $\tau = 0.7$ — producing a non-monotone
+  pseudo-distribution that does not correspond to any valid
+  probability distribution. The pathology is most severe early in
+  training when the network has high variance and on environments
+  with sparse or asymmetric reward distributions. Non-crossing
+  variants enforce strict monotonic ordering of the quantile
+  estimators via constrained parameterization (cumulative sum of
+  non-negative increments) or explicit pairwise penalties on
+  inverted predictions. Empirical results indicate that
+  non-crossing variants produce smoother training curves and reduce
+  reported variance, with smaller absolute improvements on Atari
+  median scores; the value of monotonicity scales with the severity
+  of the underlying distributional irregularity in the environment.
 
 ### D. Empirical Evidence
 

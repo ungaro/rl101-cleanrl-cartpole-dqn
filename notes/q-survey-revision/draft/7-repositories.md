@@ -31,6 +31,41 @@ implementation reproduces published results* (Hundal et al.'s
 question, against the standards of the reproducibility-crisis
 literature).
 
+**Audit methodology and date.** The repository coverage matrix in
+Table VII reflects the state of each repository as of 2026-05-01.
+Specifically, the audited versions were Tianshou 0.5.x,
+XuanCe 1.x, CleanRL master (commit-pinned during the audit),
+DQN Zoo (current head), Stable Baselines3 2.x, and RLlib 2.x.
+Repository state changes quickly; readers consulting this paper
+after 2026 should treat Table VII as a snapshot. We have not
+pinned commit hashes for each cell in the matrix because the
+matrix is intended to characterize *general availability* of
+algorithms rather than reproducibility-grade implementation
+fidelity; for the latter purpose, audit-with-commit-hash methodology
+in the style of Hundal et al. 2025 is the appropriate framework.
+
+**Named-algorithm support vs. feature-equivalent support.** The
+matrix marks a method as *supported* if the repository implements
+it as a named algorithm with appropriate hyperparameter exposure.
+This is the strictest interpretation of "supported" and may
+*under-state* practical availability in two ways. First, several
+repositories expose component features that can be combined to
+reproduce a method without naming it: RLlib's `DQNConfig`, for
+example, accepts flags for `noisy: True`, `categorical:
+distributional_n_atoms`, and similar that together can
+configure a Rainbow-like agent without the matrix counting RLlib
+as a named-Rainbow implementation. Second, some repositories
+maintain experimental branches or community PRs that implement
+recent methods but have not been merged to master; we excluded
+these from the matrix to keep the audit reproducible. The
+practical implication is that Table VII reflects what users will
+find by searching repository documentation for an algorithm by
+name; the *feature-equivalent* availability of compound methods
+(Rainbow components, ensemble variants, distributional
+configurations) is consistently higher than the matrix indicates,
+particularly in RLlib and to a lesser extent in Tianshou and
+XuanCe.
+
 ### B. Axis-aware coverage
 
 Reading Table VII through the eight axis-sections of §IV reveals

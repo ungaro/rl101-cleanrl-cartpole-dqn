@@ -12,6 +12,26 @@ Factory, Podracer) is touched only at cross-references.
 
 ### A. The Weakness
 
+This section's axis is *composite*. It bundles two distinct failure
+modes of vanilla Q-learning — sample throughput (W7a, scaling) and
+slow adaptation (W7b, task transfer) — under a single heading
+because the methods that respond to either mostly respond to both.
+Ape-X targets throughput but enables the kind of within-distribution
+multi-task training that produces implicit adaptation in Agent57.
+MAML-style meta-learning targets adaptation but requires the
+distributed compute that the scaling literature developed. Recent
+predictable-scaling results (Rybkin et al. 2025, §IV.G.B.6) further
+blur the distinction by characterizing the data-vs-compute Pareto
+that any architecture is tuned along. Readers preferring a
+finer-grained taxonomy can read §IV.G as covering two sub-axes —
+W7a sample throughput, W7b slow adaptation — and we note within
+each subsection below which sub-axis is primary. The bundling is
+a deliberate methodological choice; the alternative two-axis
+treatment would either over-classify methods that genuinely
+respond to both, or under-cover the recent literature
+(in-context Q-learning, predictable scaling laws) that operates
+across the W7a/W7b boundary.
+
 Vanilla Q-learning trains a single agent on a single task using
 sequential environment interactions. Two distinct failure modes
 follow.

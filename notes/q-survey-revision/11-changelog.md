@@ -12,6 +12,55 @@ commit hash that introduced it.
 
 ---
 
+## v0.14 — 2026-05-30 — Session 6: taxonomic and methodological refinements
+
+Three additions closing Reviewer 2's remaining taxonomic and
+methodological asks and Reviewer 1 #10.
+
+- §II.B W7 rewritten as an explicitly *composite axis* covering
+  both sample throughput (W7a, scaling) and slow adaptation (W7b,
+  task transfer). Defended on the grounds that methods responding
+  to either mostly respond to both (Ape-X → Agent57 → predictable
+  scaling). Readers preferring finer-grained taxonomy are pointed
+  at the W7a / W7b sub-labels surfaced in §IV.G.A. The composite
+  framing is a deliberate methodological choice; the two-axis
+  alternative would either over-classify methods that genuinely
+  respond to both sides, or under-cover in-context Q-learning and
+  predictable-scaling work that operates across the W7a/W7b
+  boundary.
+
+- §IV.G.A — matching composite-axis framing paragraph naming the
+  W7a/W7b distinction and explaining how the methods of §IV.G
+  populate both sub-axes.
+
+- §IV.D.C trade-offs extended with the *quantile-crossing
+  pathology*. QR-DQN / IQN / FQF train independent estimators per
+  quantile level without enforcing monotonicity; during training
+  predicted quantiles can cross, producing non-monotone
+  pseudo-distributions. Non-crossing variants enforce monotonicity
+  via constrained parameterization or pairwise penalties. Closes
+  Reviewer 1 #10.
+
+- §VII.A extended with two new paragraphs:
+  - *Audit methodology and date.* Repository coverage matrix
+    reflects state as of 2026-05-01 with audited version ranges
+    listed per repository (Tianshou 0.5.x, XuanCe 1.x, CleanRL
+    master, DQN Zoo current head, SB3 2.x, RLlib 2.x). Snapshot-
+    nature acknowledged.
+  - *Named-algorithm support vs. feature-equivalent support.* The
+    matrix marks support strictly by named-algorithm presence;
+    feature-equivalent availability via configuration (e.g. RLlib's
+    DQNConfig with noisy/categorical/distributional flags
+    composing a Rainbow-like agent) is consistently higher than
+    the matrix indicates, particularly in RLlib and to a lesser
+    extent in Tianshou and XuanCe.
+
+paper.pdf: 1.54 MB.
+
+Commit: pending push.
+
+---
+
 ## v0.13 — 2026-05-30 — Session 5: large content gaps
 
 Closes Reviewer 1's four largest content-addition asks
