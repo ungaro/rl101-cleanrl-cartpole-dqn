@@ -169,7 +169,31 @@ Several patterns are visible at a glance:
   literature or merely a labeling artifact is an open question
   flagged in §VIII.
 
-### D. Section roadmap
+### D. Axis interactions and failure modes
+
+The eight weaknesses are not independent: a method that resolves one
+frequently aggravates another. The table below names, for each axis,
+its mathematical origin, the axis it most strongly interacts with, and
+the deployment symptom that signals it — a practitioner-facing
+complement to the mechanism view above.
+
+| Axis | Mathematical origin | Principal interaction | Deployment failure mode |
+|---|---|---|---|
+| W1 Overestimation | $\max$ over noisy estimates biased upward | debiasing can suppress optimism (W3) | value divergence in stochastic / large action spaces |
+| W2 Sample inefficiency | uniform replay ignores information density | heavy reuse of stale data erodes stability (W8) | slow convergence under memory limits |
+| W3 Brittle exploration | temporally inconsistent $\varepsilon$-greedy dithering | poor coverage delays credit propagation (W4) | stuck on sparse-reward plateaus (e.g.\ Montezuma) |
+| W4 Credit assignment | one-step backups propagate reward slowly | $n$-step cuts bias but adds off-policy variance (W8) | fails under delayed / terminal-only rewards |
+| W5 Distribution shift | bootstrapping on OOD actions, narrow support | OOD extrapolation mimics overestimation (W1) | offline policy collapse without interaction |
+| W6 Multi-agent | non-stationarity breaks the single-agent MDP | exponential joint action space strains stability (W8) | coordination collapse under decentralized execution |
+| W7 Scaling / adaptation | sequential-interaction bottleneck; no meta-transfer | stale actor–learner gradients destabilize targets (W8) | extreme sample / wall-clock cost; weak online adaptation |
+| W8 Instability | deadly triad: off-policy $+$ bootstrap $+$ approximation | target nets stabilize but slow learning (W2) | catastrophic value divergence, oscillation |
+
+: Each weakness, its origin, the axis it most strongly interacts with,
+and the symptom that signals it in deployment. Most interaction paths
+lead back to W8 (function-approximation stability), which the matrix
+above already shows as the field's central failure mode.
+
+### E. Section roadmap
 
 The remainder of §IV proceeds axis by axis:
 

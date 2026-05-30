@@ -12,6 +12,25 @@ commit hash that introduced it.
 
 ---
 
+## v0.20 — 2026-05-30 — Cross-axis interaction table (§IV.D overview)
+
+Added an analytical "axis interactions and failure modes" table to the
+§IV overview: for each weakness W1–W8, its mathematical origin, the axis
+it most strongly interacts with, and the deployment symptom that signals
+it. Surfaces the second-order structure (resolving one weakness often
+aggravates another; most interaction paths lead back to W8) and adds a
+practitioner-facing "so-what" column. This is the one substantive
+addition adopted from the third (LLM) review — its other asks were
+either already in the draft (planning-oracle framing §VI, Hundal
+non-interchangeability §VII, rliable framing §V) or are math-depth
+items routed to supplementary rather than the page-limited core.
+
+Page count: 26 → 27 (clawed back in the pending §V/§VII distillation).
+
+Commit: TBD
+
+---
+
 ## v0.19 — 2026-05-30 — Terminology: "method-type taxonomy" defined once, up front
 
 Reviewer-driven clarity fix. The conventional method-organization scheme
