@@ -40,7 +40,7 @@ follow.
 at which the environment produces transitions. Even with experience
 replay, the agent cannot consume transitions faster than they are
 generated. Atari training runs at ~30 FPS in the standard
-environment; collecting the 200M frames used in Rainbow [28]
+environment; collecting the 200M frames used in Rainbow [@hessel_2018_rainbow]
 evaluation requires approximately 80 days of wall-clock time on a
 single machine. The bottleneck is not compute — modern GPUs train
 Q-networks orders of magnitude faster than the environment generates
@@ -81,7 +81,7 @@ training than DQN while substantially improving final performance,
 reaching state-of-the-art on the majority of Atari games at the
 time of publication.
 
-R2D2 (Recurrent Replay Distributed DQN) [Kapturowski et al. 2019]
+R2D2 (Recurrent Replay Distributed DQN) [@kapturowski_2019_r2d2]
 extends Ape-X with LSTM-based recurrent agents and a *burn-in*
 mechanism for replay: when sampling a trajectory segment from
 replay, the first $\ell$ steps are used only to initialize the
@@ -110,7 +110,7 @@ Skiing, Solaris). Agent57 builds on R2D2 and adds:
   policy parameters to roll out, with rewards based on undiscounted
   episode return — exploiting more when exploitation is paying off
   and exploring more when it is not;
-- The Never Give Up (NGU) [Badia et al. 2020] intrinsic
+- The Never Give Up (NGU) [@badia_2020_agent57] intrinsic
   motivation module providing exploration bonuses based on
   episodic memory.
 
@@ -130,8 +130,8 @@ sampled task in a small number of episodes. Three mechanisms recur,
 distinguished by *what is meta-learned*: an initialization, a context
 embedding, or a forward-pass update rule.
 
-*Optimization-based meta-learning.* MAML [Finn et al. 2017] applied
-to Q-learning [Mendonca et al. 2019] trains an initialization
+*Optimization-based meta-learning.* MAML [@finn_2017_maml] applied
+to Q-learning [@mendonca_2019_metaq] trains an initialization
 $\theta_0$ from which a few gradient steps on any sampled task
 produce a good task-specific Q-function:
 
@@ -140,14 +140,14 @@ $$
 $$
 
 requiring second-order gradients through the inner-loop adaptation.
-Reptile-Q [Nichol et al. 2018] proposes a first-order approximation
+Reptile-Q [@nichol_2018_reptile] proposes a first-order approximation
 that retains most of the empirical performance at substantially
-lower compute. ProMP [Rothfuss et al. 2019] introduces a proximal
+lower compute. ProMP [@rothfuss_2019_promp] introduces a proximal
 constraint on the inner-loop update — a low-variance estimator that
 substantially stabilizes meta-policy gradient computation and was
 adopted by several subsequent meta-RL works.
 
-*Context-based meta-learning.* PEARL [Rakelly et al. 2019] takes a
+*Context-based meta-learning.* PEARL [@rakelly_2019_pearl] takes a
 different approach: rather than learning an initialization that
 adapts via gradient steps, PEARL learns a *context inference network*
 $q_\phi(z \mid c)$ that infers a low-dimensional task embedding $z$
@@ -158,7 +158,7 @@ with respect to $Q(\cdot, \cdot, z)$ — no gradient adaptation
 required. The approach decouples meta-training (expensive,
 distribution-wide) from meta-deployment (cheap, single forward pass).
 
-Meta-Q-Learning (MQL) [Fakoor et al. 2020] extends PEARL's context
+Meta-Q-Learning (MQL) [@fakoor_2020_mql] extends PEARL's context
 approach to off-policy multi-task settings. MQL maintains a single
 shared Q-network plus a multi-task replay buffer, using
 *propensity-score weighting* to correct for the differing visitation
@@ -185,7 +185,7 @@ ICLR 2026] decouples policy and value into separate transformer
 heads, with a pretrained world model producing compact prompts that
 preserve the dynamic-programming structure of Q-bootstrapping inside
 the in-context computation. In-Context Compositional Q-Learning
-(ICQL) [Xu et al. 2026, ICLR 2026] takes a different angle: it casts
+(ICQL) [@xu_2026_icql] takes a different angle: it casts
 Q-learning as contextual inference, with a linear-attention
 transformer inferring local Q-functions from retrieved transitions,
 and admits theoretical bounds on the inferred Q's accuracy under
@@ -214,7 +214,7 @@ question that the cross-axis composition of Agent57 (§IV.C, §IV.B,
 this section) makes especially visible.
 
 **B.4. Recurrent architectures for partial observability.** Deep
-Recurrent Q-Network (DRQN) [Hausknecht & Stone 2015] introduces an
+Recurrent Q-Network (DRQN) [@hausknecht_2015_drqn] introduces an
 LSTM layer into the DQN architecture, replacing the first
 fully-connected layer. The recurrent network maintains a hidden
 state $h_t$ summarizing the trajectory so far; the Q-function
@@ -230,7 +230,7 @@ recurrent architecture is DRQN's mechanism deployed at distributed
 scale with burn-in correction for replay.
 
 **B.5. Synchronous parallelism (cross-reference to §IV.H).** PQN
-[55] adopts a different parallelism model: synchronous vectorized
+[@gallici_2024_pqn] adopts a different parallelism model: synchronous vectorized
 environments where a single learner processes $B$ environments per
 step, accumulating gradients across the batch. The trade-off
 relative to Ape-X is:

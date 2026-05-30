@@ -12,6 +12,48 @@ commit hash that introduced it.
 
 ---
 
+## v0.15 — 2026-05-30 — Bibliography pipeline (pandoc citeproc + BibTeX)
+
+References are now produced by pandoc-citeproc from a checked-in
+BibTeX file plus the IEEE CSL. The hand-curated References section
+in `9-references.md` was replaced with an empty `::: {#refs} :::`
+anchor that pandoc populates automatically from the cited keys.
+
+- New `draft/refs.bib` — 134 entries, semantic citation keys
+  (`mnih_2015_nature`, `hessel_2018_rainbow`,
+  `gallici_2024_pqn`, …) covering every paper cited in the body
+  plus the 12 named-year references that were missing from the
+  prior hand-curated list (CARL, RLBench, EWC, MetaWorld, REDQ,
+  Crafter, IBC, RLBench, AdaptCQL, Mendonca, Yu et al. 2020/2021).
+- New `draft/ieee.csl` — IEEE Reference Guide (11.29.2023) style
+  pulled from `citation-style-language/styles`.
+- `0-metadata.md` — YAML block now sets `bibliography: refs.bib`,
+  `csl: ieee.csl`, `link-citations: true`, and a
+  `reference-section-title: "References"`.
+- `build-pdf.sh` — `--citeproc` added to the pandoc invocation.
+- Body files — every `[1]…[55]` numeric and every `[Author 20YY]`
+  named-year cite converted to `[@key]` (130+ replacements across
+  16 files, plus range expansions like `[12]–[15]` → `[@k12; @k13;
+  @k14; @k15]`).
+- `9-references.md` — replaced with an empty `::: {#refs} :::`
+  anchor; the curated numbered list is removed entirely.
+- `3-methodology.md` — Table I citation row removed (raw-LaTeX
+  table cells can't host `[@key]` markers; the citations live in
+  the prose immediately above).
+
+Net effect: adding a new reference now means appending one BibTeX
+entry to `refs.bib` and using `[@new_key]` in the body. Renumbering
+across the manuscript is no longer manual.
+
+paper.pdf: 1.60 MB, 91 pages, References section now spans 10
+pages of IEEE-format entries auto-generated from the 96 keys cited
+in the body (and only those — uncited bib entries are dropped by
+pandoc-citeproc).
+
+Commit: TBD
+
+---
+
 ## v0.14 — 2026-05-30 — Session 6: taxonomic and methodological refinements
 
 Three additions closing Reviewer 2's remaining taxonomic and

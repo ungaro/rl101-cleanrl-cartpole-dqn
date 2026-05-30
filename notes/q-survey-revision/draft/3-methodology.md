@@ -112,7 +112,7 @@ the per-method writeups in §IV reflect its structure consistently.
 
 To position this survey against existing work, we compiled Table I,
 which compares this paper with five prior Q-learning–focused surveys
-[12]–[15] and [Ghasemi 2024/2025] along five distinguishing
+[@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey] and [@ghasemi_2024_rlsurvey] along five distinguishing
 dimensions: analysis of public DQN repositories, unified taxonomy
 spanning tabular and deep Q-learning, extraction of original-paper
 Atari benchmarks, classic control benchmarks from controlled
@@ -124,7 +124,7 @@ Q-learning specifically. This claim is supported by a documented
 2024-2026 sweep across Google Scholar, arXiv (cs.LG and cs.AI), and
 Semantic Scholar that surveyed every recent Q-learning, DQN, and
 broad-RL survey we could identify; the closest prior art is the
-single-axis problem-first organization of [Springer NCAA 2026],
+single-axis problem-first organization of [@springer_2026_distshift],
 which addresses distribution shift in offline RL only. Search
 strings, dates, and per-survey notes are recorded as supplementary
 material so the claim can be independently audited.
@@ -137,7 +137,6 @@ material so the claim can be independently audited.
 \begin{tabular}{p{0.42\linewidth}cccccc}
 \toprule
 Aspect & Urtans 2018 & Jang 2019 & Boppiniti 2021 & Hafiz 2022 & Ghasemi 2024/25 & Ours (2026) \\
-       & [12]        & [13]      & [14]           & [15]       &                 &              \\
 \midrule
 Analyzes Public DQN Code Repositories & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\bullet$ \\
 Unified Taxonomy Covering Both Tabular Q and DQN & $\circ$ & $\circ$ & $\circ$ & $\circ$ & \textit{partial} & $\bullet$ \\
@@ -177,8 +176,8 @@ original papers introducing each method. Section VI reports tabular
 benchmarks from controlled re-implementations on Gymnasium
 environments (FrozenLake-v1, Taxi-v3, CliffWalking-v1). Section VII
 analyzes algorithmic coverage across six widely-used open-source
-deep RL repositories (Tianshou [6], XuanCe [7], CleanRL [8], DQN
-Zoo [9], Stable Baselines3 [10], RLlib [11]). The three evidence
+deep RL repositories (Tianshou [@weng_2022_tianshou], XuanCe [@liu_2023_xuance], CleanRL [@huang_2022_cleanrl], DQN
+Zoo [@quan_2020_dqnzoo], Stable Baselines3 [@raffin_2021_sb3], RLlib [@liang_2018_rllib]). The three evidence
 streams together support different aspects of the paper's
 contribution: the literature analysis demonstrates methodological
 diversity, the controlled experiments isolate algorithmic from

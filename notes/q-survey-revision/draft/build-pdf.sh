@@ -97,6 +97,7 @@ pandoc "$TMP" \
   -o "$OUT" \
   --pdf-engine=xelatex \
   --filter mermaid-filter \
+  --citeproc \
   --toc \
   --toc-depth=3
 

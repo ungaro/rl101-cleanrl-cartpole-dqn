@@ -18,7 +18,7 @@ both groupings are load-bearing.
 are grouped into six rows: *Statistical Methods*, *Q-Function
 Computation*, *Memory/Replay*, *Ensemble-Based*, *Model-Based*, and
 *Pure Q-Learning*. This grouping matches the method-type taxonomy
-used by prior Q-learning surveys [12]–[15]. We retain it in Tables
+used by prior Q-learning surveys [@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey]. We retain it in Tables
 II/III as a presentation device, because (a) it lets readers familiar
 with the conventional taxonomy navigate the empirical data without
 translation; (b) it preserves within-family comparability across
@@ -187,9 +187,9 @@ stochasticity). The pattern of dashes, considered as a structured
 absence, is sometimes more informative than the present scores.
 
 Several specific gaps illustrate the point. Ensemble Bootstrapping
-[46] reports on 11 of 57 games and skips the entire sparse-reward
+[@peer_2021_ebql] reports on 11 of 57 games and skips the entire sparse-reward
 category, despite the ensemble mechanism being a natural exploration
-candidate. Memory-Efficient DQN [41] reports on 5 of 57 games
+candidate. Memory-Efficient DQN [@chen_2023_medqn] reports on 5 of 57 games
 selected for memory-sensitivity, leaving the method's broader
 performance profile undefined. The dashes are honest about reporting
 scope; reading them as evidence is internally consistent with the
@@ -210,7 +210,7 @@ empirical argument for the structural pivot.
 
 ### G. Why we do not produce a leaderboard
 
-Earlier surveys [13]–[15] bold or italicize the "best" result per
+Earlier surveys [@jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey] bold or italicize the "best" result per
 game. This presentation implicitly invites comparison across methods
 that used different evaluation protocols (training-frame budgets,
 seed counts, no-op-start variations, sticky-action settings).
@@ -229,7 +229,7 @@ systematically misrepresents algorithmic performance. They introduce
 the *rliable* framework, which substitutes robust aggregate metrics
 (interquartile mean, optimality gap, probability of improvement)
 and stratified bootstrap confidence intervals for the point-estimate
-comparisons that have dominated Atari reporting since DQN [1]. Where
+comparisons that have dominated Atari reporting since DQN [@mnih_2015_nature]. Where
 the original-paper numbers we extract in Tables II/III are
 point-estimate scores under heterogeneous protocols, rliable
 provides the standard against which future Q-learning reports
@@ -255,11 +255,11 @@ which methods are evaluated; this subsection turns to what Atari
 *cannot* evaluate. Six inherent limits constrain the conclusions
 drawable from Tables II/III:
 
-**H.1. Determinism.** The Arcade Learning Environment [2] is
+**H.1. Determinism.** The Arcade Learning Environment [@bellemare_2013_ale] is
 deterministic by default: identical action sequences from identical
 initial frames produce identical trajectories. Two partial mitigations
 have become standard — *no-op starts* (the agent skips a random number
-of frames at episode start) and *sticky actions* [Machado et al. 2018]
+of frames at episode start) and *sticky actions* [@machado_2018_aleeval]
 (actions persist with probability 0.25 per frame). Neither restores
 the stochasticity of real-world environments. Methods that exploit
 deterministic transitions — frame-perfect action sequences,
@@ -325,7 +325,7 @@ benchmarks that complement Atari along the dimensions above.
 The benchmarks below address one or more of the limits identified in
 §V.H. Each is tied to the axis it most directly diagnoses:
 
-**Atari-100k** [Kaiser et al. 2020] caps training at 100,000
+**Atari-100k** [@kaiser_2020_simple] caps training at 100,000
 environment steps — roughly 2 hours of game play, 1/2000 the
 compute of standard Atari. The benchmark exposes *sample efficiency*
 under tight budgets, separating algorithmic improvements from
@@ -340,7 +340,7 @@ and require evaluation on multiple difficulty modes. The revised
 protocol is increasingly the standard for new methods. Primary axis:
 §IV.H (stability under stochasticity).
 
-**ProcGen** [Cobbe et al. 2020] provides 16 procedurally-generated
+**ProcGen** [@cobbe_2020_procgen] provides 16 procedurally-generated
 games with disjoint training and evaluation level distributions.
 Methods are scored on held-out levels not seen during training,
 directly measuring generalization across procedural variation.
@@ -350,7 +350,7 @@ distribution — exposing a capability that Atari cannot diagnose.
 Primary axis: cross-axis (§IV.E distribution shift in the deployment
 direction; §IV.B sample efficiency on out-of-distribution data).
 
-**NetHack** [Küttler et al. 2020] provides a single procedurally-
+**NetHack** [@kuttler_2020_nethack] provides a single procedurally-
 generated environment with millions-of-step episodes, rich symbolic
 observations, and extreme stochasticity. Q-learning baselines on
 NetHack score within an order of magnitude of random play, even at
@@ -360,7 +360,7 @@ longer than Atari, and is currently the field's strongest test of
 whether Q-learning can scale to genuinely long-horizon decision-
 making.
 
-**BSuite** [Osband et al. 2020] is DeepMind's *behavior suite for
+**BSuite** [@osband_2020_bsuite] is DeepMind's *behavior suite for
 reinforcement learning*: twenty small experiments each designed to
 isolate a single capability — basic memory, generalization, noise
 robustness, scale, exploration, credit assignment, and others.
@@ -371,24 +371,24 @@ benchmark's results report uses a radar-chart presentation that
 makes axis-level comparison visible at a glance. Primary axis: all
 eight (BSuite is meta-axial by design).
 
-**D4RL** [Fu et al. 2020] is covered in §IV.E as the dominant
+**D4RL** [@fu_2020_d4rl] is covered in §IV.E as the dominant
 offline-RL benchmark. Its locomotion, AntMaze, Adroit, and Kitchen
 suites diagnose *distribution shift* (§IV.E) along five distinct
 behavior-policy regimes.
 
-**SMAC** [Samvelyan et al. 2019] is covered in §IV.F as the
+**SMAC** [@samvelyan_2019_smac] is covered in §IV.F as the
 cooperative multi-agent benchmark. Its scenarios diagnose
 *multi-agent coordination* (§IV.F) at varying levels of joint-task
 difficulty.
 
 Beyond these, several benchmarks are emerging as Q-learning
 evaluation targets but lie outside this paper's scope: MetaWorld
-[Yu et al. 2020] and Meta-MuJoCo for meta-learning (§IV.G);
-RLBench [James et al. 2020] for robotic manipulation; Crafter
-[Hafner 2022] as a long-horizon survival benchmark with explicit
-achievement metrics; CARL [Benjamins et al. 2021] for context-
+[@yu_2020_metaworld] and Meta-MuJoCo for meta-learning (§IV.G);
+RLBench [@james_2020_rlbench] for robotic manipulation; Crafter
+[@hafner_2022_crafter] as a long-horizon survival benchmark with explicit
+achievement metrics; CARL [@benjamins_2021_carl] for context-
 generalization in continuous control. The expansion of benchmark
 diversity in the past five years is itself a contribution of the
-modern era: where the original DQN paper [32] was evaluated on
+modern era: where the original DQN paper [@mnih_2013_atari] was evaluated on
 seven Atari games, today's serious Q-learning methods typically
 report on three or more benchmark families.

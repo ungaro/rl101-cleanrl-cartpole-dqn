@@ -17,7 +17,7 @@ is an *interpretive choice* rather than a canonical classification.
 The original distributional-RL papers [Bellemare et al. 2017;
 Dabney et al. 2018] motivate the family primarily as
 uncertainty-modeling or learning-signal-richness contributions; the
-prior surveys [12]–[15] place these methods under "Statistical
+prior surveys [@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey] place these methods under "Statistical
 Methods" or similar uncertainty-focused groupings. We re-frame them
 as credit-assignment mechanisms because the empirical strength of
 the family — and especially the standalone Rainbow-comparable
@@ -49,21 +49,21 @@ families:
    bias-variance trade-off with $\lambda$.
 2. **Information content of the backup.** The scalar
    $\mathbb{E}[\text{return}]$ discards higher moments of the return
-   distribution. Distributional RL [21] replaces the scalar with the
+   distribution. Distributional RL [@bellemare_2017_distributional] replaces the scalar with the
    full return distribution $Z(s,a)$ and learns it directly. Per
-   [Bellemare, Dabney & Munos 2017], the distributional target is
+   [@bellemare_2017_distributional], the distributional target is
    more informative as a learning signal even when the agent
    ultimately acts on its expectation.
 
 Methods in this section attack the credit-assignment weakness from
 both directions. The distributional family has been the more
 empirically productive line of work, but the multi-step family
-underlies several composite agents (notably Rainbow [28], where
+underlies several composite agents (notably Rainbow [@hessel_2018_rainbow], where
 multi-step is the second-largest performance contributor after PER).
 
 ### B. Solution Families
 
-**B.1. Multi-step returns.** Multi-Step Q-Learning [30] generalizes
+**B.1. Multi-step returns.** Multi-Step Q-Learning [@peng_1996_multistep] generalizes
 the one-step update via eligibility traces. For each state-action
 pair, the trace $\mathrm{Tr}(s,a)$ tracks recency and frequency of
 visits; updates apply to all eligible pairs simultaneously, weighted
@@ -81,13 +81,13 @@ function-approximation setting, $\lambda$ also controls a stability
 trade-off: large $\lambda$ amplifies the variance of bootstrap targets
 and can destabilize learning.
 
-Rainbow [28] uses three-step returns as one of its six components.
-The ablation reported in [Hessel et al. 2018] places multi-step
+Rainbow [@hessel_2018_rainbow] uses three-step returns as one of its six components.
+The ablation reported in [@hessel_2018_rainbow] places multi-step
 learning second only to PER in performance contribution, removing
 it produces the second-largest performance drop among all components.
 
 **B.2. Distributional return — fixed support.** A Distributional
-Perspective on Reinforcement Learning (C51) [21] models the return
+Perspective on Reinforcement Learning (C51) [@bellemare_2017_distributional] models the return
 distribution $Z(s,a)$ as a categorical distribution over 51 fixed
 atoms in a bounded support $[V_\text{min}, V_\text{max}]$. The
 training objective minimizes the KL divergence between the predicted
@@ -110,7 +110,7 @@ fewer (limited resolution) and substantially more (training
 inefficiency).
 
 **B.3. Distributional return — adjustable quantiles.** Quantile
-Regression DQN (QR-DQN) [25] inverts C51's design: instead of fixed
+Regression DQN (QR-DQN) [@dabney_2018_qrdqn] inverts C51's design: instead of fixed
 support and learned probabilities, QR-DQN uses fixed probabilities
 and learned quantile locations. For $N$ uniform quantile fractions
 $\tau_i = i/N$, the network outputs quantile values
@@ -128,7 +128,7 @@ to the actual return distribution. QR-DQN outperforms C51 on Atari
 median scores.
 
 **B.4. Distributional return — implicit and fully-parameterized.**
-Implicit Quantile Networks (IQN) [27] generalize QR-DQN by sampling
+Implicit Quantile Networks (IQN) [@dabney_2018_iqn] generalize QR-DQN by sampling
 quantile fractions $\tau \sim \mathcal{U}(0,1)$ at runtime and
 learning a network that maps $(s, \tau)$ to a quantile value:
 $Q(s, a; \tau) = f(m(\psi(s), \phi(\tau)))$, where $\psi(s)$ is the
@@ -138,7 +138,7 @@ of the return distribution, achieving Rainbow-comparable
 performance with none of Rainbow's six components except the
 distributional component.
 
-Fully Parameterized Quantile Function (FQF) [29] extends IQN by
+Fully Parameterized Quantile Function (FQF) [@yang_2019_fqf] extends IQN by
 *also* learning the quantile fractions: a fraction proposal network
 generates $\tau_1, \dots, \tau_N$ adaptively per state-action pair,
 trained to minimize 1-Wasserstein distance between predicted and
@@ -225,7 +225,7 @@ for the problem-first organization.
 
 Multi-step learning's contribution is harder to isolate empirically
 because it appears as a component of Rainbow rather than as a
-standalone method in Tables II–III. The Rainbow ablation [28]
+standalone method in Tables II–III. The Rainbow ablation [@hessel_2018_rainbow]
 reports that removing $n$-step learning produces the second-largest
 performance drop among the six components, second only to PER.
 

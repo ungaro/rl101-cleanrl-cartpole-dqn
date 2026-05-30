@@ -32,6 +32,10 @@ monofont: "Latin Modern Mono"
 mathfont: "Latin Modern Math"
 colorlinks: true
 linkcolor: blue
+bibliography: refs.bib
+csl: ieee.csl
+link-citations: true
+reference-section-title: "References"
 header-includes: |
   \usepackage{fancyhdr}
   \pagestyle{fancy}

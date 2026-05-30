@@ -2,7 +2,7 @@
 
 This appendix supports readers approaching the paper through the
 conventional method-type taxonomy used in prior Q-learning surveys
-[12]–[15]. The eight-axis problem-first organization of §IV is the
+[@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey]. The eight-axis problem-first organization of §IV is the
 analytical spine of this paper, but the six-category taxonomy is
 preserved as a secondary indexing system — in Tables II/III row
 groupings, in this appendix's mapping below, and in inline tags

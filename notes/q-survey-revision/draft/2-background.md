@@ -21,7 +21,7 @@ expected discounted return under that policy: $V^\pi(s) =
 \mathbb{E}_\pi\bigl[\sum_{t=0}^\infty \gamma^t R(s_t, a_t) \mid s_0 =
 s\bigr]$. The associated action-value function is $Q^\pi(s,a) =
 \mathbb{E}_\pi\bigl[\sum_{t=0}^\infty \gamma^t R(s_t, a_t) \mid s_0
-= s, a_0 = a\bigr]$. Q-learning [5] estimates the optimal action-
+= s, a_0 = a\bigr]$. Q-learning [@watkins_1992_qlearning] estimates the optimal action-
 value $Q^\ast(s,a) = \max_\pi Q^\pi(s,a)$ via the recursive Bellman
 optimality equation,
 
@@ -67,7 +67,7 @@ whose values are least accurately estimated. Methods responding to
 this weakness are surveyed in §IV.A.
 
 **W2. Sample inefficiency.** Vanilla Q-learning uses each transition
-once and uniformly. The introduction of experience replay [32]
+once and uniformly. The introduction of experience replay [@mnih_2013_atari]
 allowed transitions to be reused, but uniform sampling treats all
 transitions as equally informative — a transition where the agent
 already predicts the outcome accurately contributes little to the
@@ -83,8 +83,8 @@ random action with probability $\varepsilon$ and a greedy action otherwise. This
 suffices for environments where reward is sufficiently dense that
 near-greedy policies explore the state space through their own
 exploitation. In environments where rewards are sparse or delayed
-beyond an $\varepsilon$-greedy random-walk's reach — Montezuma's Revenge [2],
-Pitfall! [2], Private Eye [2] — $\varepsilon$-greedy exploration is dithered
+beyond an $\varepsilon$-greedy random-walk's reach — Montezuma's Revenge [@bellemare_2013_ale],
+Pitfall! [@bellemare_2013_ale], Private Eye [@bellemare_2013_ale] — $\varepsilon$-greedy exploration is dithered
 rather than directed and fails to escape early-state plateaus. The
 formal characterization is that $\varepsilon$-greedy is myopic with respect to
 posterior uncertainty in $Q(s,a)$; methods responding to this
@@ -94,7 +94,7 @@ use intrinsic motivation, and are surveyed in §IV.C.
 **W4. Reward sparsity and credit assignment.** When reward is
 received only at the end of a long trajectory, the one-step Bellman
 backup requires many iterations to propagate the signal to early
-states. Multi-step returns [30] partially mitigate this by allowing
+states. Multi-step returns [@peng_1996_multistep] partially mitigate this by allowing
 $n$-step bootstrapping:
 
 $$
@@ -103,7 +103,7 @@ $$
 
 But $n$-step returns trade variance for bias and do not address the
 deeper question of *what information* the return signal carries.
-Distributional RL [21] reframes the question: rather than estimating
+Distributional RL [@bellemare_2017_distributional] reframes the question: rather than estimating
 the expected return $\mathbb{E}[Z(s,a)]$, estimate the full
 distribution $Z(s,a)$. The distribution carries richer credit-
 assignment information — bimodality, skewness, tail behavior — that
@@ -161,7 +161,7 @@ in §IV.G.A. Methods are surveyed in §IV.G.
 
 **W8. Function-approximation instability.** The combination of
 off-policy learning, bootstrapping, and function approximation —
-the *deadly triad* [Sutton & Barto 2018] — is provably unstable in
+the *deadly triad* [@sutton_2018_book] — is provably unstable in
 the general case. Concretely, the iterates of
 $Q(s,a;\theta) \leftarrow Q(s,a;\theta) + \alpha\bigl(r + \gamma
 \max_{a'} Q(s',a';\theta) - Q(s,a;\theta)\bigr)$

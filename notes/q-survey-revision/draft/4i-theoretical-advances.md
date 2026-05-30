@@ -68,7 +68,7 @@ becomes a contraction in the weighted $L^2$ norm, and TD(0) with
 linear function approximation converges to a fixed point that is
 near-optimal in the sense of bounded approximation error
 [Tsitsiklis & Van Roy 1997]. This is the result the GTD/TDC family
-of off-policy convergence algorithms [Sutton et al. 2009] extends:
+of off-policy convergence algorithms [@sutton_2009_gtd] extends:
 by replacing the standard TD update with a gradient on an explicit
 MSPBE objective, they obtain convergence guarantees in the
 off-policy linear regime — at the cost of slower empirical
@@ -78,10 +78,10 @@ convergence than vanilla TD.
 
 **C.1. Distributional Bellman operator convergence.** The
 distributional methods of §IV.D admit a clean theoretical account.
-[Bellemare, Dabney & Munos 2017] show that the distributional
+[@bellemare_2017_distributional] show that the distributional
 Bellman operator is a $\gamma$-contraction in the maximal form of
 the Wasserstein-$p$ metric — but *not* a contraction in the KL
-divergence used by C51's loss. [Rowland et al. 2018] subsequently
+divergence used by C51's loss. [@rowland_2018_qdistanalysis] subsequently
 proved that the quantile-regression scheme of QR-DQN is a
 contraction in the Wasserstein-$\infty$ metric, providing a
 theoretical foundation for the practical strength of QR-DQN over
@@ -92,7 +92,7 @@ results hold for the *tabular distributional* operator; their
 extension to neural function approximation remains an active area.
 
 **C.2. Finite-time bounds for deep Q-learning.** A line of work
-beginning with [Yang et al. 2019] and [Fan et al. 2020,
+beginning with [@yang_2019_fqf] and [Fan et al. 2020,
 *Theoretical Analysis of DQN*] derives non-asymptotic suboptimality
 bounds for neural-fitted Q-iteration under specific architectural
 and data-generation assumptions. The bounds have the form
@@ -118,14 +118,14 @@ conservative penalty is a tractable approximation to LCB-pessimism;
 IQL's expectile regression avoids the OOD-action problem in a manner
 that admits a similar pessimism interpretation. The pessimism
 framework has since been extended to multi-task offline settings
-[Chen et al. 2022] and to model-based offline RL [Uehara & Sun
+[@chen_2022_offlinemulti] and to model-based offline RL [Uehara & Sun
 2022], establishing offline RL as one of the most theoretically
 mature axes covered in this paper.
 
 **C.4. Stability theory under modern recipes.** The empirical
 stability advances of §IV.H — layer normalization, batch
 normalization, the PQN recipe — have only recently begun to admit
-theoretical accounts. [Lyle et al. 2023] analyze *capacity loss*
+theoretical accounts. [@lyle_2022_capacityloss] analyze *capacity loss*
 in deep RL: the phenomenon where neural Q-networks progressively
 lose representational capacity over training, partly explaining
 why naive deep Q-learning diverges. They show that specific
@@ -190,11 +190,11 @@ the frontier.
 ### E. Open Theoretical Questions
 
 1. **Convergence of distributional Q under function approximation.**
-   The Wasserstein-contraction results of [Rowland 2018] hold in the
+   The Wasserstein-contraction results of [@rowland_2018_qdistanalysis] hold in the
    tabular distributional setting; extension to the neural setting
    where C51, QR-DQN, IQN, and FQF actually run remains incomplete.
 2. **Tighter finite-time bounds in the realistic deep RL regime.**
-   The [Fan 2020] bounds require restrictive assumptions; bounds
+   The [@fan_2020_dqntheory] bounds require restrictive assumptions; bounds
    that match the empirical sample efficiency observed in practice
    are not known.
 3. **A unified offline-online theoretical framework.** Pessimism

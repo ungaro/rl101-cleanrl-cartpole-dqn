@@ -64,7 +64,7 @@ admits clean theoretical treatment.
 
 ### B. Solution Families
 
-**B.1. Q-Transformer.** Q-Transformer [Chebotar et al. 2023] is the
+**B.1. Q-Transformer.** Q-Transformer [@chebotar_2023_qtransformer] is the
 canonical large-scale Q-learning architecture for sequence-based
 control. The method treats the action space as discrete-tokenized
 (continuous control actions are discretized into per-dimension token

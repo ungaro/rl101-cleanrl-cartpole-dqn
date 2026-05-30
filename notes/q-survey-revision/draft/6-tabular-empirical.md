@@ -32,10 +32,10 @@ evaluation episodes, averaged across 5 random seeds. The reported
 values are raw — no smoothing is applied.
 
 Two algorithms from the §IV survey are excluded from tabular
-evaluation. Bayesian Q-learning [49] is excluded because its
+evaluation. Bayesian Q-learning [@dearden_1998_bayesianq] is excluded because its
 posterior maintenance is prohibitively slow in repeated runs; its
 formal contribution is preserved in the §IV review. Neural Fitted Q
-Iteration (NFQ) [53] is excluded because it requires function
+Iteration (NFQ) [@riedmiller_2005_nfq] is excluded because it requires function
 approximation by construction.
 
 ### B. Results
@@ -125,7 +125,7 @@ of §IV.A.E flags as underexplored.
 **Planning baselines (Value Iteration, Policy Iteration, MPI,
 CVPI).** Value Iteration and Policy Iteration are not RL algorithms
 in the strict sense — they require known dynamics — but serve as
-optimality references. CVPI [48] consistently matches or exceeds the
+optimality references. CVPI [@tsang_2002_vipi] consistently matches or exceeds the
 RL methods, confirming that the gap between learned and optimal
 policies is the cost paid for unknown dynamics. The comparison
 quantifies the cost: on Taxi, CVPI scores 5.5 against Q-Learning's

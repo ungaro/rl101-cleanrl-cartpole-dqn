@@ -47,7 +47,7 @@ quantities in multi-agent settings (§IV.F).
 
 §IV.A invokes the result that the maximum of noisy estimators is
 biased upward as the source of Q-learning's overestimation.
-[Smith & Winkler 2006, *The Optimizer's Curse*] formalize this for
+[@smith_2006_optimizerscurse] formalize this for
 the related setting of decision analysis. The relevant inequality
 for our purposes:
 
@@ -78,7 +78,7 @@ ensemble methods of §IV.A.B.2.
 
 ## B.3. Categorical distributional projection (referenced by §IV.D)
 
-C51 [21] maintains a return distribution as a categorical
+C51 [@bellemare_2017_distributional] maintains a return distribution as a categorical
 distribution over $N = 51$ fixed atoms in $[V_\text{min},
 V_\text{max}]$. After applying the distributional Bellman update
 $\hat{\mathcal{T}} Z(s, a) = r + \gamma Z(s', a^\ast)$, the
@@ -115,7 +115,7 @@ instead.
 
 ## B.4. Wasserstein contraction of the distributional Bellman operator (referenced by §IV.I.C.1)
 
-[Bellemare, Dabney & Munos 2017] establish that the distributional
+[@bellemare_2017_distributional] establish that the distributional
 Bellman operator $\mathcal{T}_\pi^d$ is a $\gamma$-contraction in
 the maximal form of the Wasserstein-$p$ distance over return
 distributions.
@@ -146,7 +146,7 @@ $(s, a)$ on both sides yields the stated contraction.
 The KL divergence used by C51's loss does *not* satisfy an analogous
 contraction; this is the technical motivation for QR-DQN's switch to
 quantile-regression losses, where the Wasserstein-$\infty$
-contraction is preserved [Rowland et al. 2018].
+contraction is preserved [@rowland_2018_qdistanalysis].
 
 ---
 
@@ -154,7 +154,7 @@ contraction is preserved [Rowland et al. 2018].
 
 Pessimistic value iteration constructs a lower confidence bound
 (LCB) on Q-values at each Bellman backup. The canonical version due
-to [Jin, Yang & Wang 2021] runs
+to [@jin_2021_pessimism] runs
 
 $$
 \hat Q^{k+1}(s, a) = r(s, a) + \gamma \sum_{s'} \hat P(s' \mid s, a) \max_{a'} \hat Q^k(s', a') - b(s, a),
@@ -184,7 +184,7 @@ this bound holds *without coverage assumptions* on the behavior
 policy — it adapts gracefully when the dataset covers only a small
 subset of the state space.
 
-CQL's [Kumar et al. 2020] conservative penalty is a tractable
+CQL's [@kumar_2020_cql] conservative penalty is a tractable
 relaxation of this LCB construction: rather than maintaining
 explicit confidence bounds, CQL adds a regularizer that drives
 $\hat Q$ down at OOD actions, achieving the same pessimism guarantee
@@ -207,7 +207,7 @@ $$
 **QMIX's sufficient condition.** Monotonic mixing — $\partial Q_\text{tot} / \partial Q_i \geq 0$ for all $i$ — implies IGM but is not necessary. There exist IGM-compatible
 $Q_\text{tot}$ that QMIX cannot represent.
 
-**QPLEX's claim** [Wang et al. 2020]. Decomposing $Q_\text{tot} =
+**QPLEX's claim** [@wang_2021_qplex]. Decomposing $Q_\text{tot} =
 \sum_i V_i(\tau_i) + A_\text{tot}(\mathbf{s}, \mathbf{a})$ with
 $A_\text{tot}$ produced by a duplex-dueling mixer admits *every*
 IGM-compatible $Q_\text{tot}$. The proof constructs an explicit

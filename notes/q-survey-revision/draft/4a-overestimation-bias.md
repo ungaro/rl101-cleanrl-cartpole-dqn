@@ -34,7 +34,7 @@ Three families of approach have emerged, distinguished by *what
 information they exploit to debias the maximum*.
 
 **B.1. Two-estimator decoupling (Double Q-learning, Double DQN).**
-The earliest fix, introduced by [Hasselt 2010], maintains two
+The earliest fix, introduced by [@hasselt_2010_doubleq], maintains two
 independent Q-tables $Q_A$ and $Q_B$. At each update, one is randomly
 chosen to be updated, with its target computed using the *other* table:
 
@@ -48,7 +48,7 @@ share noise with the value used to evaluate it. The bias does not
 vanish — it can become slightly *negative* (under-estimation) — but it
 is no longer driven by the maximization itself.
 
-Double DQN [Hasselt et al. 2016] applies the same idea inside the
+Double DQN [@hasselt_2016_doubledqn] applies the same idea inside the
 deep-RL recipe, using the *online* network for action selection and
 the *target* network for evaluation:
 
@@ -61,9 +61,9 @@ maintains, which is a substantial part of its adoption: the cost is
 near-zero.
 
 A recent re-examination of this design — Deep Double Q-Learning (DDQL)
-[Nagarajan, White & Machado 2026] — argues that the Double DQN trick
+[@nagarajan_2026_ddql] — argues that the Double DQN trick
 of using online and target networks as a decoupled pair is *not*
-equivalent to the original tabular Double Q-learning [31], which
+equivalent to the original tabular Double Q-learning [@hasselt_2010_doubleq], which
 trains two genuinely independent estimators. Substituting a target
 network for the second estimator introduces a stale-bootstrap bias
 that Double Q-learning does not have. DDQL trains two independent
@@ -78,7 +78,7 @@ gap between two methods often treated as equivalent in the literature.
 methods generalize the two-estimator idea to $K$ Q-estimators
 and tune the bias-variance trade-off explicitly.
 
-Ensemble Bootstrapped Q-Learning (EBQL) [Peer et al. 2021] maintains
+Ensemble Bootstrapped Q-Learning (EBQL) [@peer_2021_ebql] maintains
 $K$ Q-networks; at each step it samples a single member $k_t$ for
 update and uses the *average of the remaining $K-1$ members* to
 evaluate the next-state action chosen by member $k_t$:
@@ -91,7 +91,7 @@ Increasing $K$ smoothly moves between Q-learning ($K=1$,
 over-estimation) and Double DQN ($K=2$, slight under-estimation).
 Empirically, $K \in [5,10]$ balances the two.
 
-REDQ [Chen et al. 2021] pushes this further: it takes the *minimum* of
+REDQ [@chen_2021_redq] pushes this further: it takes the *minimum* of
 $M \le K$ randomly selected ensemble members at each update step.
 Taking the min instead of the average creates explicit
 under-estimation pressure, which the authors argue is preferable when
@@ -109,7 +109,7 @@ $$
 Q(s,a) = V(s) + \Bigl(A(s,a) - \tfrac{1}{|\mathcal{A}|}\sum_{a'} A(s,a')\Bigr).
 $$
 
-[Wang et al. 2016] motivate dueling primarily as an architecture for
+[@wang_2016_dueling] motivate dueling primarily as an architecture for
 states where action choice is unimportant: $V(s)$ can be learned from
 *all* transitions through $s$, while $A(s,\cdot)$ only updates on
 transitions involving each action.
@@ -133,7 +133,7 @@ compounds across the two levels. The bias of choosing the
 the "best-looking" continuous parameter, and standard Double DQN
 treats only the discrete bias.
 
-Parametrized Deep Q-Networks (PDQN) [Xiong et al. 2018] address
+Parametrized Deep Q-Networks (PDQN) [@xiong_2018_pdqn] address
 this by jointly learning a Q-function over $(s, k, a_k)$ — state,
 discrete action $k$, and continuous parameter $a_k$ — and a
 deterministic policy that produces $a_k$ for each $k$. The

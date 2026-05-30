@@ -59,7 +59,7 @@ flowchart TD
 ```
 
 Two structural observations emerge from the genealogy. First,
-**Rainbow [28] is the integration point** for five separate
+**Rainbow [@hessel_2018_rainbow] is the integration point** for five separate
 axis responses (Double DQN, PER, Dueling, multi-step,
 distributional, NoisyNet) — it is not a single method but a
 deliberate composition across axes. Second, **the distributional
@@ -80,23 +80,23 @@ no category to hold. These are the methods that motivate §IV.E,
 ```mermaid
 %% caption: Q-learning branches outside the conventional six-category mechanism taxonomy — offline RL (§IV.E), multi-agent value decomposition (§IV.F), and distributed / meta-learning (§IV.G).
 flowchart TD
-    NDQN[Nature DQN 2015]
-    NDQN -->|offline data only NEW §IV.E| BCQ[BCQ 2019]
-    BCQ --> CQL[CQL 2020]
-    CQL --> IQL[IQL 2021]
-    BCQ -.->|ensemble variant| EDAC[EDAC 2021]
-    NDQN -->|multiple cooperating agents NEW §IV.F| VDN[VDN 2018]
-    VDN --> QMIX[QMIX 2018]
-    QMIX --> QPLEX[QPLEX 2020]
-    QMIX -.->|constraint-free| QTRAN[QTRAN 2019]
-    NDQN -->|massive scale NEW §IV.G| ApeX[Ape-X 2018]
+    NDQN[@mnih_2015_nature]
+    NDQN -->|offline data only NEW §IV.E| BCQ[@fujimoto_2019_bcq]
+    BCQ --> CQL[@kumar_2020_cql]
+    CQL --> IQL[@kostrikov_2022_iql]
+    BCQ -.->|ensemble variant| EDAC[@an_2021_edac]
+    NDQN -->|multiple cooperating agents NEW §IV.F| VDN[@sunehag_2017_vdn]
+    VDN --> QMIX[@rashid_2018_qmix]
+    QMIX --> QPLEX[@wang_2021_qplex]
+    QMIX -.->|constraint-free| QTRAN[@son_2019_qtran]
+    NDQN -->|massive scale NEW §IV.G| ApeX[@horgan_2018_apex]
     ApeX --> R2D2[R2D2 2019]
-    R2D2 --> Agent57[Agent57 2020]
+    R2D2 --> Agent57[@badia_2020_agent57]
     NDQN -->|meta/fast adapt NEW §IV.G| MAML[MAML-Q / Meta-Q 2017+]
 ```
 
 The visual absence of these branches from prior Q-learning surveys
-[12]–[15] is one of the most direct empirical arguments for the
+[@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey] is one of the most direct empirical arguments for the
 structural pivot of §IV. The legacy taxonomy classifies methods by
 mechanism type; these branches require new mechanism categories
 (constrained policies, value decomposition, distributed actors,

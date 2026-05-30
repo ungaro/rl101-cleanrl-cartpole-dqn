@@ -3,7 +3,7 @@
 Reinforcement Learning (RL) and Deep Reinforcement Learning (DRL) have
 emerged as powerful paradigms for solving complex sequential
 decision-making problems, with applications ranging from Atari games
-[1], [2] and robotic control [3] to autonomous driving [4]. Among
+[@mnih_2015_nature], [@bellemare_2013_ale] and robotic control [@ibarz_2021_robot] to autonomous driving [@inamdar_2024_safe]. Among
 DRL approaches, two major families dominate: value-based methods,
 which estimate action-value functions, and policy-based methods, which
 directly optimize policy distributions.
@@ -11,7 +11,7 @@ directly optimize policy distributions.
 While policy-based algorithms have shown strong performance in tasks
 with continuous action spaces, they often suffer from high variance
 and sensitivity to hyperparameters. In contrast, value-based methods
-such as Q-learning [5] and its deep variant DQN [1] remain widely used
+such as Q-learning [@watkins_1992_qlearning] and its deep variant DQN [@mnih_2015_nature] remain widely used
 due to their conceptual simplicity, sample efficiency in discrete
 domains, and ease of implementation.
 
@@ -20,11 +20,11 @@ literature. Over three decades, dozens of variants have been proposed
 to address specific limitations — overestimation bias, brittle
 exploration, sample inefficiency, instability under function
 approximation — and many have been combined into composite agents such
-as Rainbow [28]. Despite this volume of work, the *organizing
+as Rainbow [@hessel_2018_rainbow]. Despite this volume of work, the *organizing
 structure* through which the field is presented has remained largely
 chronological or method-typed: distributional methods, ensemble
-methods, replay innovations, and so on. Existing surveys [12]–[15],
-as well as more recent broad-RL treatments [Ghasemi 2024/2025], have
+methods, replay innovations, and so on. Existing surveys [@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey],
+as well as more recent broad-RL treatments [@ghasemi_2024_rlsurvey], have
 inherited this method-type organization.
 
 Method-type organization is bibliometrically convenient but
@@ -60,7 +60,7 @@ weaknesses. Within each section, methods are grouped by the
 *mechanism* they use to address the weakness, compared head-to-head
 on the trade-offs they introduce, and evaluated against the empirical
 evidence relevant to that axis. The same method can appear in
-multiple sections when it advances multiple axes — Rainbow [28], for
+multiple sections when it advances multiple axes — Rainbow [@hessel_2018_rainbow], for
 instance, recurs across five of the eight — and these cross-references
 form an explicit map of the field's connective tissue.
 
@@ -74,11 +74,11 @@ reframing:
    multi-agent value decomposition, distributed scaling) within a
    single framework.
 2. A comparative analysis of six widely used open-source DRL
-   repositories — Tianshou [6], XuanCe [7], CleanRL [8], DQN Zoo [9],
-   Stable Baselines3 [10], and RLlib [11] — annotated *by axis* to
+   repositories — Tianshou [@weng_2022_tianshou], XuanCe [@liu_2023_xuance], CleanRL [@huang_2022_cleanrl], DQN Zoo [@quan_2020_dqnzoo],
+   Stable Baselines3 [@raffin_2021_sb3], and RLlib [@liang_2018_rllib] — annotated *by axis* to
    reveal where the open-source ecosystem provides coverage and where
    it does not.
-3. Curated benchmark results extracted from the Atari [2] suite as
+3. Curated benchmark results extracted from the Atari [@bellemare_2013_ale] suite as
    reported in the original papers, stratified by task category, and
    re-interpreted as evidence for or against each algorithmic axis
    rather than as a leaderboard.

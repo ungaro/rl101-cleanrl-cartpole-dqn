@@ -1,7 +1,7 @@
 # IV.E. Distribution Shift (Offline Reinforcement Learning) {#sec-iv-e}
 
 Addresses **W5** of the eight weaknesses introduced in §II.B. The
-section introduces the D4RL benchmark family [Fu et al. 2020], used
+section introduces the D4RL benchmark family [@fu_2020_d4rl], used
 in place of the Atari suite of Sections V and VI because the
 distribution-shift axis cannot be evaluated on online benchmarks.
 
@@ -34,7 +34,7 @@ support — into $Q(s, a)$. Iterated backups drive $Q$ unboundedly
 upward at OOD points, and the resulting greedy policy concentrates
 on actions whose true value is unknown. Empirically, naive offline
 Q-learning consistently produces policies far worse than the
-behavior policy that generated the data [Fujimoto et al. 2019].
+behavior policy that generated the data [@fujimoto_2019_bcq].
 
 Methods responding to this weakness fall into four families,
 distinguished by *what they constrain*: the learned policy, the
@@ -44,7 +44,7 @@ training data through ensembling.
 ### B. Solution Families
 
 **B.1. Policy constraint.** Batch-Constrained Q-learning (BCQ)
-[Fujimoto et al. 2019] introduced the formal account of
+[@fujimoto_2019_bcq] introduced the formal account of
 extrapolation error and proposed restricting the policy to actions
 the behavior policy plausibly took. BCQ learns a generative model
 $G_\omega(s)$ of behavior-policy actions and a perturbation
@@ -54,13 +54,13 @@ $\pi(s) = \arg\max_{a \in \{a_i + \xi_\phi(s, a_i)\}_{i=1}^n,\, a_i
 space at each state by sampling from the behavior model and
 allowing small perturbations.
 
-BRAC [Wu et al. 2019] generalizes the policy-constraint idea via
+BRAC [@wu_2019_brac] generalizes the policy-constraint idea via
 explicit divergence regularization: the policy objective includes
 a KL or Wasserstein penalty against the behavior policy. The
 penalty weight controls the bias-variance trade-off between
 behavior cloning ($\to \pi_b$) and aggressive improvement.
 
-AWAC [Nair et al. 2020] addresses the *online fine-tuning* of
+AWAC [@nair_2020_awac] addresses the *online fine-tuning* of
 offline-trained policies. Its advantage-weighted update,
 $\pi(a \mid s) \propto \pi_b(a \mid s) \exp(A(s, a) / \beta)$,
 upweights actions with high advantage relative to the behavior
@@ -85,7 +85,7 @@ conditions, the learned $Q$-function lower-bounds the true policy
 value $V^\pi$, ensuring that policy improvement does not propagate
 extrapolation error. CQL is widely regarded as the canonical
 offline-RL Q-method and is one of the strongest baselines on D4RL
-[Fu et al. 2020].
+[@fu_2020_d4rl].
 
 **B.3. Avoiding the maximum.** Implicit Q-Learning (IQL) [Kostrikov
 et al. 2021] takes a different approach: avoid the $\max$ operator
@@ -110,7 +110,7 @@ single-network families and is favored for its simplicity (no
 explicit constraint hyperparameter).
 
 **B.4. Ensemble diversification.** Ensemble Diversified Actor
-Critic (EDAC) [An et al. 2021] approaches OOD generalization via
+Critic (EDAC) [@an_2021_edac] approaches OOD generalization via
 ensemble disagreement. EDAC maintains $K$ Q-networks and trains
 them to be *diverse* on OOD actions via a gradient-diversity
 penalty:
@@ -128,7 +128,7 @@ mechanism for a different axis.
 **B.5. Flow-matching policies with Q-learning.** A recent line of
 work integrates *flow matching* — a continuous-time generative-
 modeling technique adjacent to diffusion — with Q-learning. Flow
-Q-Learning (FQL) [Park, Li & Levine 2025, ICML 2025] trains a
+Q-Learning (FQL) [@park_2025_fql] trains a
 one-step flow-matching policy network conditioned on a Q-function,
 avoiding the recursive-backprop-through-diffusion-chain issue of
 earlier Diffusion-QL approaches. The policy generates actions in a
@@ -180,7 +180,7 @@ provides an unbiased policy-improvement guarantee.
 - **Value penalty vs. hyperparameter sensitivity.** CQL's
   conservative penalty weight $\alpha$ is the single most important
   hyperparameter and varies substantially across D4RL tasks. Recent
-  work [Hong et al. 2023] proposes adaptive penalty scaling but the
+  work [@hong_2023_adaptcql] proposes adaptive penalty scaling but the
   basic sensitivity remains.
 - **Avoiding the max vs. losing optimality.** IQL's expectile
   regression avoids extrapolation error but learns a policy whose
@@ -193,7 +193,7 @@ provides an unbiased policy-improvement guarantee.
 
 ### D. Empirical Evidence
 
-The benchmark suite for this section is D4RL [Fu et al. 2020],
+The benchmark suite for this section is D4RL [@fu_2020_d4rl],
 which spans nine task families (MuJoCo locomotion, AntMaze, Adroit
 dexterous manipulation, Franka Kitchen, CARLA driving, Flow,
 Bandit-mode FrankaKitchen, plus Atari offline variants). Each
@@ -246,8 +246,8 @@ for unrelated reasons.
    unifying framework that recovers each as a limit of a single
    regularization or constraint would clarify the field
    considerably. Recent work toward this — *Implicit Behavior
-   Cloning* [Florence et al. 2021], the *On-Policy Constraints*
-   framework [Brandfonbrener et al. 2021] — has not produced
+   Cloning* [@florence_2021_ibc], the *On-Policy Constraints*
+   framework [@brandfonbrener_2021_onestep] — has not produced
    consensus.
 
 2. **Online-to-offline transfer of stability mechanisms.** The
@@ -256,7 +256,7 @@ for unrelated reasons.
    offline-specific stabilizers (CQL's conservative penalty, IQL's
    expectile regression) is largely unexplored. Some offline-RL
    work reports instability when target networks are removed
-   even though the corresponding online claim (PQN [55]) shows
+   even though the corresponding online claim (PQN [@gallici_2024_pqn]) shows
    removal is feasible.
 
 3. **Scaling to internet-scale data.** Offline RL with diverse

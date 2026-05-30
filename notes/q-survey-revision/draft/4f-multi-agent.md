@@ -8,7 +8,7 @@ greedily according to their local Q without coordinated optimization
 at execution time.
 
 The benchmark for this section is SMAC (StarCraft Multi-Agent
-Challenge) [Samvelyan et al. 2019]. Atari is not multi-agent and
+Challenge) [@samvelyan_2019_smac]. Atari is not multi-agent and
 plays no role in this section.
 
 ### A. The Weakness
@@ -50,7 +50,7 @@ guarantee IGM while admitting expressive joint Q-functions.
 ### B. Solution Families
 
 **B.1. Additive decomposition.** Value Decomposition Networks (VDN)
-[Sunehag et al. 2018] impose the simplest IGM-preserving structure:
+[@sunehag_2017_vdn] impose the simplest IGM-preserving structure:
 strict additivity.
 
 $$
@@ -69,7 +69,7 @@ Coordination tasks where the joint reward depends on combinations
 of agent actions (one agent's optimal action depends on another's)
 are out of representational scope.
 
-**B.2. Monotonic mixing.** QMIX [Rashid et al. 2018] relaxes
+**B.2. Monotonic mixing.** QMIX [@rashid_2018_qmix] relaxes
 additivity to *monotonicity*: $Q_\text{tot}$ is a *monotonic
 function* of each $Q_i$. The mixer network takes the per-agent
 Q-values as input and outputs $Q_\text{tot}$, with weights
@@ -88,10 +88,10 @@ weights to depend on the global state, giving the agent rich
 coordinative capacity while maintaining decentralized execution.
 
 QMIX has become the dominant baseline for cooperative multi-agent
-value decomposition. On SMAC [Samvelyan et al. 2019], QMIX is the
+value decomposition. On SMAC [@samvelyan_2019_smac], QMIX is the
 standard against which subsequent methods are compared.
 
-**B.3. Duplex dueling.** QPLEX [Wang et al. 2020] generalizes QMIX
+**B.3. Duplex dueling.** QPLEX [@wang_2021_qplex] generalizes QMIX
 via a *duplex dueling* architecture that factorizes $Q_\text{tot}$
 into per-agent state-values $V_i$ and advantage $A_i$, then mixes
 each separately:
@@ -106,7 +106,7 @@ $Q_\text{tot}$ — strictly more expressive than QMIX's monotonic
 mixing. QPLEX improves over QMIX on hard SMAC scenarios while
 matching it on easy scenarios.
 
-**B.4. Constraint-free factorization.** QTRAN [Son et al. 2019]
+**B.4. Constraint-free factorization.** QTRAN [@son_2019_qtran]
 removes the structural mixing constraint entirely and instead
 enforces IGM via *auxiliary loss terms*. QTRAN learns an
 unconstrained joint $Q$, $Q_\text{tot}^{j}$, alongside individual
@@ -174,7 +174,7 @@ benchmark protocol reports *test win rate* averaged over the last
 $k$ evaluation rollouts after a fixed training budget.
 
 Representative results on selected SMAC maps (test win rate %,
-2M training steps, drawn from [Wang et al. 2020] and replications
+2M training steps, drawn from [@wang_2021_qplex] and replications
 in subsequent work):
 
 | Method | 3m (easy) | 2c_vs_64zg (hard) | MMM2 (super-hard) | 6h_vs_8z (super-hard) |
@@ -223,7 +223,7 @@ on the newer benchmarks with broadly consistent rankings.
    off-policy correction is an open problem: the per-agent
    correction interacts non-trivially with the joint-action
    maximization. Recent work on *multi-agent importance sampling*
-   [Yu et al. 2021] proposes partial solutions but no consensus
+   [@yu_2021_imp] proposes partial solutions but no consensus
    method has emerged.
 
 3. **Heterogeneous agents and partial observability.** Most value

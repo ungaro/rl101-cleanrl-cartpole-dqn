@@ -71,7 +71,7 @@ The repository would have four design priorities:
    results for each implemented method.
 4. **Empirical reproducibility audits** — each method release gated
    on reproduction of the original paper's headline results, in the
-   style of Hundal et al. [Hundal 2025].
+   style of Hundal et al. [@hundal_2025_interchangeable].
 
 The repository's initial roadmap would prioritize the nine methods
 in §VII.C as the first implementation targets, followed by the
@@ -102,7 +102,7 @@ directed.
 explicitly compose mechanisms from multiple axes. A formal account
 of which axis combinations are synergistic, redundant, or
 antagonistic would convert the empirical pattern into a design
-principle. The Rainbow ablation [28] provides one such account on
+principle. The Rainbow ablation [@hessel_2018_rainbow] provides one such account on
 a smaller method set; a broader cross-axis composition study would
 extend it.
 

@@ -7,7 +7,7 @@ extract more learning signal per environment interaction.
 ### A. The Weakness
 
 Vanilla Q-learning consumes each transition exactly once. Experience
-replay [32] relaxed this constraint by storing transitions in a
+replay [@mnih_2013_atari] relaxed this constraint by storing transitions in a
 buffer $\mathcal{D}$ and sampling minibatches for repeated use:
 
 $$
@@ -37,7 +37,7 @@ transitions get stored, how the buffer is summarized when memory is
 limited, and how reward density itself can be increased.
 
 **B.1. Prioritized sampling.** Prioritized Experience Replay (PER)
-[24] samples transitions in proportion to their TD-error magnitude:
+[@schaul_2016_per] samples transitions in proportion to their TD-error magnitude:
 
 $$
 P(i) = \frac{p_i^\beta}{\sum_k p_k^\beta},
@@ -52,12 +52,12 @@ which PER corrects via importance-sampling weights
 $w_i = (1/(N \cdot P(i)))^\beta$, annealed toward 1 as training
 progresses.
 
-PER is one of the two largest contributors to Rainbow's [28]
+PER is one of the two largest contributors to Rainbow's [@hessel_2018_rainbow]
 performance, alongside multi-step learning. Its ablation removal
 produces the steepest performance drop of any Rainbow component.
 
 **B.2. Demonstration augmentation.** Deep Q-learning from
-Demonstrations (DQfD) [40] augments the replay buffer with expert
+Demonstrations (DQfD) [@hester_2018_dqfd] augments the replay buffer with expert
 trajectories prior to environment interaction. During an initial
 pre-training phase, the loss combines four terms:
 
@@ -77,7 +77,7 @@ policies, achieving state-of-the-art on 11 of 42 Atari games at the
 time of publication.
 
 **B.3. Memory-efficient consolidation.** Memory-Efficient DQN
-(MeDQN) [41] addresses a different bottleneck: replay buffer storage.
+(MeDQN) [@chen_2023_medqn] addresses a different bottleneck: replay buffer storage.
 Standard DQN on Atari requires a 7GB buffer; MeDQN compresses this to
 ~0.7GB by introducing a consolidation loss that distills past Q-values
 from a target network into the current network:
@@ -135,7 +135,7 @@ largest single sample-efficiency advances of the past decade.
 ### D. Empirical Evidence
 
 PER outperforms uniform-replay DQN on 41 of 49 Atari games in the
-original evaluation [24], with the largest gains on games where
+original evaluation [@schaul_2016_per], with the largest gains on games where
 high-error transitions are rare. Improvements concentrate on
 strategic-planning games (Q*bert, Ms. Pac-Man) rather than
 reaction-time games (Breakout, Space Invaders), consistent with the

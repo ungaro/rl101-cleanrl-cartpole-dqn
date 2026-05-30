@@ -2,8 +2,8 @@
 
 This section analyzes algorithmic coverage of Q-learning variants
 across six widely-used open-source deep RL repositories — Tianshou
-[6], XuanCe [7], CleanRL [8], DQN Zoo [9], Stable Baselines3 [10],
-and RLlib [11] — together with their stated design priorities.
+[@weng_2022_tianshou], XuanCe [@liu_2023_xuance], CleanRL [@huang_2022_cleanrl], DQN Zoo [@quan_2020_dqnzoo], Stable Baselines3 [@raffin_2021_sb3],
+and RLlib [@liang_2018_rllib] — together with their stated design priorities.
 Table VII (Appendix A) reports a method-level coverage matrix;
 Table VIII summarizes design trade-offs.
 
@@ -13,7 +13,7 @@ This paper's repository analysis is *taxonomic*: we report which
 algorithms each repository implements, with brief commentary on the
 design choices that shape coverage. We do *not* benchmark the
 repositories' implementations against one another; that question is
-addressed empirically by Hundal et al. [Hundal 2025], whose
+addressed empirically by Hundal et al. [@hundal_2025_interchangeable], whose
 controlled comparison of PPO across five repositories shows
 substantial reproducibility variance even for a single algorithm
 under nominally equivalent configurations. Hundal et al.'s work sits

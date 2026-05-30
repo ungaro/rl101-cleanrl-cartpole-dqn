@@ -19,7 +19,7 @@ near-greedy policies stumble into informative states. It fails
 dramatically when reward is sparse, delayed beyond $\varepsilon$-greedy's
 effective horizon, or located behind state-space passages whose
 random-walk hitting time is exponential in trajectory length. The
-canonical example is Montezuma's Revenge [2]: standard DQN agents
+canonical example is Montezuma's Revenge [@bellemare_2013_ale]: standard DQN agents
 score essentially zero, while domain-naive humans achieve thousands
 of points within minutes.
 
@@ -42,13 +42,13 @@ this section.
 %% caption: Genealogy of brittle-exploration methods (§IV.C).
 flowchart TD
     DQNE[DQN / Nature DQN<br/>§IV.B / §IV.H]
-    DQNE -->|noise injection| NoisyNet[NoisyNet 2018]
-    DQNE -->|parameter-space noise| PSN[Parameter Space Noise 2017]
-    DQNE -->|ensemble disagreement| Boot[Bootstrapped DQN 2016]
-    Boot -->|UCB-style scoring| UCBQ[UCB Q-Ensemble 2018]
-    DQNE -->|posterior sampling| PSDQN[Posterior Sampling DQN 2023]
-    DQNE -->|belief modulation| CBDQ[CBDQ 2025]
-    DQNE -->|intrinsic motivation NEW| RND[RND 2018]
+    DQNE -->|noise injection| NoisyNet[@fortunato_2018_noisynet]
+    DQNE -->|parameter-space noise| PSN[@plappert_2018_paramnoise]
+    DQNE -->|ensemble disagreement| Boot[@osband_2016_bootstrapped]
+    Boot -->|UCB-style scoring| UCBQ[@chen_2017_ucbq]
+    DQNE -->|posterior sampling| PSDQN[@sokar_2023_psdqn]
+    DQNE -->|belief modulation| CBDQ[@zhao_2025_cbdq]
+    DQNE -->|intrinsic motivation NEW| RND[@burda_2019_rnd]
     DQNE -->|archive return-then-explore NEW| GE[Go-Explore 2019/21]
 ```
 
@@ -58,19 +58,19 @@ and archival approaches that extend the families above.
 **B.1. Noise injection.** Two methods inject zero-mean noise during
 action selection but at different layers of the network.
 
-Parameter Space Noise for Exploration [16] perturbs the parameter
+Parameter Space Noise for Exploration [@plappert_2018_paramnoise] perturbs the parameter
 vector at the start of each episode: $\tilde\theta = \theta +
 \mathcal{N}(0, \sigma^2 I)$. The perturbation is held fixed within
 the episode, producing temporally consistent exploration:
 the same state yields the same exploratory action within an
 episode but different actions across episodes. To maintain perturbation
-scale across layers, layer normalization [17] is applied. The
+scale across layers, layer normalization [@ba_2016_layernorm] is applied. The
 noise scale $\sigma$ is adjusted adaptively via
 $\sigma_{k+1} = \alpha \sigma_k$ if $d(\pi, \tilde\pi) \leq \delta$
 and $\alpha^{-1} \sigma_k$ otherwise, where $d(\pi, \tilde\pi)$
 measures policy distance.
 
-Noisy Networks (NoisyNet) [19] move noise into the network weights
+Noisy Networks (NoisyNet) [@fortunato_2018_noisynet] move noise into the network weights
 themselves. Each linear layer $y = wx + b$ is replaced by
 $y = (\mu_w + \sigma_w \odot \varepsilon_w) x + (\mu_b + \sigma_b
 \odot \varepsilon_b)$, where $\mu, \sigma$ are learned parameters
@@ -79,21 +79,21 @@ $\sigma$ is *learned*, allowing the network to reduce exploration
 in well-understood regions of the state space and maintain it where
 uncertainty remains. NoisyNet improved median human-normalized Atari
 score by 48% over DQN and is one of the six components of Rainbow
-[28].
+[@hessel_2018_rainbow].
 
 **B.2. Ensemble disagreement.** Multiple Q-heads, trained on
 overlapping but distinct subsets of the experience buffer, disagree
 on $Q(s,a)$ in proportion to epistemic uncertainty. The disagreement
 provides a usable exploration signal.
 
-Bootstrapped DQN [45] maintains $K$ Q-heads sharing a feature
+Bootstrapped DQN [@osband_2016_bootstrapped] maintains $K$ Q-heads sharing a feature
 extractor, with each head trained on a bootstrap-masked subset of
 the buffer. At the start of each episode, one head is sampled and
 used throughout, ensuring temporally consistent exploration similar
 to parameter-noise. Bootstrapped DQN reaches human-level performance
 on Atari approximately 30% faster than DQN.
 
-UCB Q-Ensembles [47] use the ensemble disagreement explicitly via
+UCB Q-Ensembles [@chen_2017_ucbq] use the ensemble disagreement explicitly via
 an upper-confidence-bound selection rule: $a_t = \arg\max_a (\mu(s,a)
 + \lambda \sigma(s,a))$, where $\mu, \sigma$ are the empirical mean
 and standard deviation of $Q$ across the ensemble. The variant
@@ -108,7 +108,7 @@ deliberate: a single ensemble provides both uncertainty estimates and
 bias reduction at no additional architectural cost.
 
 **B.3. Belief-modulated policies.** Cognitive Belief-Driven
-Q-Learning (CBDQ) [37] maintains an explicit belief distribution
+Q-Learning (CBDQ) [@zhao_2025_cbdq] maintains an explicit belief distribution
 $b_t(a \mid s)$ over actions, updated as
 $b_t(a \mid s_{t+1}) = (1-\beta_t) \hat b_t(a \mid s_{t+1}) +
 \beta_t \, p_k(a \mid s_{t+1})$,
@@ -121,13 +121,13 @@ Q_{t+1}(s,a) = Q_t(s,a) + \alpha\Bigl[r + \gamma \sum_a b_t(a \mid s') Q_t(s', a
 $$
 
 CBDQ improves convergence on classic control benchmarks (Cartpole,
-Acrobot, LunarLander) and on the MetaDrive [38] traffic simulation.
+Acrobot, LunarLander) and on the MetaDrive [@li_2023_metadrive] traffic simulation.
 Its mechanism — modulating future-value backups by a learned belief
 distribution — sits between value-based exploration (§IV.A) and
 policy-distribution exploration.
 
-Posterior Sampling DQN [51] applies the older idea of posterior
-sampling [49] to the deep setting, sampling a hypothesis $Q$-function
+Posterior Sampling DQN [@sokar_2023_psdqn] applies the older idea of posterior
+sampling [@dearden_1998_bayesianq] to the deep setting, sampling a hypothesis $Q$-function
 from an approximate posterior at the start of each episode and
 acting greedily with respect to it. This is the natural deep-network
 analog of Thompson sampling for bandits.
@@ -137,7 +137,7 @@ exploitation signal, intrinsic-motivation methods modify the *reward*
 itself, adding a bonus $r^\text{int}(s, a)$ for visiting under-explored
 states.
 
-Random Network Distillation (RND) [Burda et al. 2018] computes the
+Random Network Distillation (RND) [@burda_2019_rnd] computes the
 bonus as the prediction error of a small network trained to mimic a
 fixed random target network on observed states: $r^\text{int}_t =
 \|f_\theta(s_t) - \hat f(s_t)\|^2$. The bonus decays as the
@@ -145,7 +145,7 @@ prediction network learns the state distribution, biasing exploration
 toward novel states. RND was the first method to achieve consistent
 non-trivial performance on Montezuma's Revenge.
 
-Go-Explore [Ecoffet et al. 2019/2021] takes a fundamentally
+Go-Explore [@ecoffet_2021_goexplore] takes a fundamentally
 different approach: it maintains an archive of visited states with
 their action sequences, returns to a sampled archived state without
 exploration, and only then begins exploration. The archive
@@ -165,7 +165,7 @@ Atari games that motivate this entire section.
   producing temporally consistent exploration. NoisyNet samples per
   forward pass, allowing finer-grained adaptation but losing the
   multi-step exploration property that solves problems like
-  Pong-with-flickering-frames [34]. The right choice depends on the
+  Pong-with-flickering-frames [@hausknecht_2015_drqn]. The right choice depends on the
   temporal structure of the exploration problem.
 - **Ensemble cost.** Ensemble methods (Bootstrapped DQN,
   UCB Q-Ensembles, RND) multiply forward-pass cost by $K$. On
@@ -239,7 +239,7 @@ on the diagnostic exploration games.
    exploration mechanism by detected environment properties — could
    improve average performance without sacrificing peak performance.
    The mechanism for such selection (meta-learned? bandit-controlled?
-   uncertainty-thresholded?) is unsettled. Agent57 [Badia et al. 2020]
+   uncertainty-thresholded?) is unsettled. Agent57 [@badia_2020_agent57]
    makes progress here via bandit-controlled exploration policy
    selection; it is the natural cross-reference to §IV.G.
 
