@@ -12,6 +12,41 @@ commit hash that introduced it.
 
 ---
 
+## v0.21 — 2026-05-30 — §V / §VII distilled + §VI re-run (100 seeds) → 21 pages
+
+Reaches the TAI 21-page cap.
+
+- **§V Atari** distilled 3380 → 789 words: a *diagnostic* synthesis
+  (task-category × axis), the rliable / point-estimate caveat kept;
+  the full per-game extraction tables → supplementary.
+- **§VII repositories** distilled 1902 → 649 words: axis-coverage
+  findings, the nine-methods-absent gap, the Hundal et al.
+  non-interchangeability point and the named-vs-feature-equivalent
+  distinction kept, plus a per-repository trade-off table; the full
+  coverage matrix → supplementary.
+- **§VI tabular** rewritten 1276 → 555 words around a **new,
+  reproducible experiment** (`scripts/tabular_experiments.py`):
+  Q-learning / SARSA / Expected SARSA / 3-step Q over **100 seeds**
+  with **95% bootstrap CIs** on FrozenLake / Taxi / CliffWalking;
+  Value/Policy Iteration reported separately as a **planning oracle
+  (upper bound)**, not a model-free competitor — closing the LLM
+  review's one valid §VI point. Results reproduce the textbook
+  on-/off-policy contrast (Q-learning −13 optimal vs. SARSA's safe,
+  high-variance route) and are committed as JSON.
+  - Experiment notes: parallelized across 22 cores (CPU — tabular RL
+    has no GPU work); fixed two bugs found while running — CliffWalking
+    has no built-in episode limit (wrapped in `TimeLimit` so a looping
+    eval policy truncates instead of hanging) and Value Iteration now
+    zeroes terminal-state values (the CliffWalking oracle is −13, not
+    a spurious −500).
+
+Page count: **27 → 21** (target met). Clean build, zero undefined
+citations.
+
+Commit: TBD
+
+---
+
 ## v0.20 — 2026-05-30 — Cross-axis interaction table (§IV.D overview)
 
 Added an analytical "axis interactions and failure modes" table to the

@@ -1,394 +1,97 @@
 # V. Atari Benchmark Analysis {#sec-v}
 
-This section synthesizes Atari benchmark performance reported across
-the methods of §IV. Because third-party implementations often diverge
-from authors' codebases, and because official repositories are
-incomplete (§VII), we extract results directly from peer-reviewed
-publications rather than re-running experiments. Tables II and III
-present raw per-game scores under each paper's original evaluation
-protocol; Figure F-B2 (if included) provides an axis-stratified
-visual summary.
+We read the historical Atari record diagnostically rather than as a
+leaderboard. Games are stratified by task category — reaction-time /
+dense-reward, strategic-planning, sparse-reward, and large-observation
+— and each category preferentially stresses one or two of the
+weakness axes of §IV: reaction-time and large-observation games load
+function-approximation stability (W8), strategic-planning games load
+credit assignment (W4), and sparse-reward games load brittle
+exploration (W3). The question is therefore not which method scores
+highest, but whether methods targeting a given weakness excel on its
+diagnostic category and sit near baseline elsewhere — the central
+empirical prediction of the taxonomy. Scores are extracted from the
+original publications under each paper's own protocol; the full
+per-game tables (supplementary material) report the raw numbers, and we
+draw only category-level patterns from them here. The aim is to test
+predictions, not to crown a method, and where a pattern could equally
+be explained by reporting conventions we say so.
 
-### A. Table structure and dual-view organization
+**Sparse-reward games discriminate exploration, where the axis matters
+most.** On Montezuma's Revenge, Pitfall!, and Private Eye, methods that
+target exploration explicitly — NoisyNet, Bootstrapped DQN, posterior
+sampling — produce nonzero Montezuma scores where vanilla DQN and
+methods aimed at other axes do not, and Rainbow's small Montezuma score
+is attributable to its NoisyNet component. Demonstration-based DQfD
+scores far higher still, illustrating the trade-off of
+[§IV.B](#sec-iv-b): demonstrations substitute for directed exploration.
+Crucially, intrinsic motivation is necessary but not sufficient — the
+category is not saturated by the methods tabulated here, since RND and
+Go-Explore ([§IV.C](#sec-iv-c)) report Montezuma scores one to two
+orders of magnitude larger again.
 
-Tables II and III are structured on two axes simultaneously, and
-both groupings are load-bearing.
+**Strategic-planning games favor distributional methods.** On
+credit-assignment-heavy games such as Q*bert and Ms. Pac-Man,
+quantile and distributional methods (QR-DQN, IQN, FQF) produce the
+category's most striking results — QR-DQN's Q*bert score is the
+single largest in the compilation, far above the best
+non-distributional result on that game — consistent with modeling the
+full return distribution — rather than only its mean — helping
+propagate value over the long action chains these games reward
+([§IV.D](#sec-iv-d)). The magnitude of the gap warrants caution: such
+extreme scores can reflect a handful of favorable seeds as much as a
+mechanism, so we treat the *consistency* of the distributional advantage
+across the category, not any single number, as the signal. Prioritized
+replay shows the same category profile, strongest exactly where
+high-information transitions are rare and uniform sampling wastes
+updates.
 
-**Row grouping (the conventional six-category taxonomy).** Methods
-are grouped into six rows: *Statistical Methods*, *Q-Function
-Computation*, *Memory/Replay*, *Ensemble-Based*, *Model-Based*, and
-*Pure Q-Learning*. This grouping matches the method-type taxonomy
-used by prior Q-learning surveys [@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey]. We retain it in Tables
-II/III as a presentation device, because (a) it lets readers familiar
-with the conventional taxonomy navigate the empirical data without
-translation; (b) it preserves within-family comparability across
-the historical literature; and (c) the six-category grouping makes
-the modern-RL families (§IV.E offline, §IV.F multi-agent, §IV.G
-distributed) visually salient as absences — there is no
-six-category row for them to occupy.
+**Dense-reward and large-observation games show that stability, not
+capability, is the bottleneck.** On reaction-time control (Breakout,
+Space Invaders, Enduro) and large-observation games (River Raid, Hero),
+inter-method variance is comparatively small: Double DQN, Dueling DQN,
+Rainbow, and distributional methods cluster within roughly a factor of
+two. Here overestimation control buys only modest gains over the DQN
+baseline: when rewards are frequent the agent receives enough signal
+that the binding constraint is keeping training stable rather than
+extracting value from rare events. The weakness signal is therefore
+function-approximation stability ([§IV.H](#sec-iv-h)) rather than
+capability, and PQN's strong showing — from a deliberately simple
+parallelized Q-learner — is consistent with that reading: where
+stability is the issue, architectural restraint suffices and elaborate
+debiasing or distributional machinery adds little.
 
-**Column grouping (task categories).** Atari games are grouped into
-seven task categories — Reaction-Time Control, Strategic Planning,
-Sparse Rewards, Dense Rewards, Large Observation Space, Partially
-Observable Environments, Stochastic Environments.
+These patterns are suggestive, not conclusive. The original-paper
+numbers are point estimates over three to five seeds without confidence
+intervals, gathered under heterogeneous no-op-start, sticky-action, and
+frameskip protocols, so apparent gaps may reflect protocol or compute
+differences rather than algorithmic superiority.
+[@agarwal_2021_rliable] document how this standard practice
+systematically misrepresents performance, and introduce the *rliable*
+framework, which substitutes robust aggregate metrics (interquartile
+mean, optimality gap, probability of improvement) and stratified
+bootstrap intervals for point-estimate comparisons. The
+deterministic-by-default Arcade Learning Environment
+[@bellemare_2013_ale; @machado_2018_aleeval] compounds the concern,
+since methods exploiting frame-perfect sequences can score artificially
+well. We therefore refrain from declaring per-game winners and read the
+category narrative as the load-bearing evidence.
 
-**Axis annotation.** A rightmost column or footnote on each table
-maps each method's row to its primary §IV axis. The annotation does
-not change the table's structure; it provides a third lens. Readers
-can read Table II as "method-family × task-category" by attending to
-the row grouping, or as "primary-axis × task-category" by attending
-to the axis column.
+Atari also leaves capabilities undiagnosed, motivating newer
+benchmarks: ProcGen [@cobbe_2020_procgen] measures generalization
+across procedural variation, NetHack [@kuttler_2020_nethack] tests
+exploration and credit assignment at extreme horizons, BSuite
+[@osband_2020_bsuite] isolates single capabilities in an explicitly
+axis-stratified manner, D4RL [@fu_2020_d4rl] diagnoses offline
+distribution shift ([§IV.E](#sec-iv-e)), and SMAC
+[@samvelyan_2019_smac] targets multi-agent coordination
+([§IV.F](#sec-iv-f)).
 
-The dual-view organization is itself a contribution. Readers
-arriving with the catalogue-style expectation find the familiar
-six-category structure; readers seeking analytical synthesis follow
-the prose subsection-by-subsection below and the axis column.
-Neither audience needs to translate the empirical data to align
-with their reading.
+| Task category | Diagnoses (axis) | Methods that excel | Representative finding |
+|---|---|---|---|
+| Reaction-time / dense reward | Function-approx stability (W8) | Double DQN, Dueling, PQN | Methods cluster within ~2x; overestimation control buys modest gains |
+| Strategic planning | Credit assignment (W4) | QR-DQN, IQN, FQF | Distributional methods dominate Q*bert / Ms. Pac-Man |
+| Sparse reward | Brittle exploration (W3) | NoisyNet, Bootstrapped DQN, DQfD, RND/Go-Explore | Intrinsic motivation necessary but not sufficient on Montezuma |
+| Large observation | Function-approx stability (W8) | Dueling, distributional, PQN | Low inter-method variance; capability not the bottleneck |
 
-### B. Tables II and III — extracted scores
-
-\footnotesize
-
-Table: **Reported Atari benchmark performance (raw per-game scores), Part I.** Reaction-Time Control / Strategic Planning / Sparse Rewards / Dense Rewards. "—" indicates the original paper did not report a score for that game.
-
-| Method (year) | Method type | Breakout | Sp. Inv. | Ms. Pac-Man | Q*bert | Montezuma | Pitfall! | Boxing | Enduro |
-|---|---|---|---|---|---|---|---|---|---|
-| Param Space Noise (2017) | Statistical | 390 | 1,205 | — | 7,525 | 0 | -100 | — | 1,672 |
-| C51 (2017) | Statistical | 748 | 5,747 | 3,415 | 23,784 | 0 | 0 | 98 | 3,454 |
-| NoisyNet (2018) | Statistical | 516 | 2,186 | 2,722 | 15,545 | 3 | 0 | 89 | 1,240 |
-| QR-DQN (2018) | Statistical | 742 | 20,972 | 5,821 | 572,510 | 0 | 0 | 100 | 2,355 |
-| IQN (2018) | Statistical | 734 | 28,888 | 6,349 | 25,750 | 0 | 0 | 100 | 2,359 |
-| FQF (2019) | Statistical | 854 | 140 | 7,632 | 27,524 | 0 | 0 | 98 | 2,371 |
-| Nature DQN (2015) | Q-Func. Comp. | 401 | 1,976 | 2,311 | 10,596 | 0 | — | 72 | 302 |
-| Deep Recurrent Q (2015) | Q-Func. Comp. | — | — | 2,048 | — | — | — | — | — |
-| Double DQN (2016) | Q-Func. Comp. | 375 | 3,155 | 3,210 | 14,875 | 0 | — | 82 | 320 |
-| Dueling DQN (2016) | Q-Func. Comp. | 345 | 6,427 | 6,284 | 19,220 | 0 | 0 | 99 | 2,258 |
-| Rainbow DQN (2018) | Q-Func. Comp. | 418 | 18,789 | 5,380 | 33,818 | 384 | 0 | 100 | 2,126 |
-| CBDQ (2025) | Q-Func. Comp. | — | — | — | — | — | — | — | — |
-| DQN (2013) | Memory/Replay | 168 | 581 | — | 1,952 | — | — | — | 470 |
-| Prioritized ER (2016) | Memory/Replay | 481 | 1,697 | 965 | 12,741 | 44 | -194 | 70 | 1,266 |
-| DQfD (2018) | Memory/Replay | 308 | — | 4,696 | 21,793 | 4,638 | 57 | 99 | 2,200 |
-| MeDQN (2023) | Memory/Replay | — | — | — | — | — | — | — | — |
-| Bootstrapped DQN (2016) | Ensemble | 855 | 2,893 | 2,983 | 15,093 | 100 | — | 93 | 1,591 |
-| UCB Q-Ensemble (2018) | Ensemble | 411 | 2,627 | 3,425 | 14,198 | 4 | -1 | 98 | 2,753 |
-| Ensemble Bootstrapping (2021) | Ensemble | 406 | — | — | 14,384 | — | — | — | — |
-| Posterior Sampling DQN (2023) | Model-Based | 46 | 511 | 1,824 | 4,245 | 0 | -44 | 79 | 363 |
-| Parallel Q (PQN, 2024) | Pure Q | 515 | 18,451 | 5,568 | 31,717 | 0 | -89 | 100 | 2,349 |
-
-\normalsize
-
-\footnotesize
-
-Table: **Reported Atari benchmark performance, Part II.** Large Observation Space / Partially Observable / Stochastic Environments.
-
-| Method (year) | Method type | River Raid | Priv. Eye | Frostbite | Hero | Zaxxon | Berzerk |
-|---|---|---|---|---|---|---|---|
-| Param Space Noise (2017) | Statistical | — | 100 | 1,310 | — | 8,050 | — |
-| C51 (2017) | Statistical | 17,322 | 15,095 | 3,965 | 38,874 | 10,513 | 1,645 |
-| NoisyNet (2018) | Statistical | 9,425 | 3,712 | 753 | 6,246 | 6,920 | 905 |
-| QR-DQN (2018) | Statistical | 17,571 | 350 | 4,384 | 21,395 | 13,112 | 3,117 |
-| IQN (2018) | Statistical | 17,765 | 200 | 4,324 | 28,386 | 21,772 | 1,053 |
-| FQF (2019) | Statistical | 23,561 | 140 | 16,473 | 30,926 | 15,180 | 12,422 |
-| Nature DQN (2015) | Q-Func. Comp. | 8,316 | 1,788 | 328 | 19,950 | 4,977 | — |
-| Double DQN (2016) | Q-Func. Comp. | 12,015 | 670 | 242 | 20,357 | 10,182 | — |
-| Dueling DQN (2016) | Q-Func. Comp. | 21,163 | 103 | 4,673 | 20,818 | 13,886 | 3,409 |
-| Rainbow DQN (2018) | Q-Func. Comp. | — | 4,234 | 9,591 | 55,887 | 22,210 | 2,546 |
-| Prioritized ER (2016) | Memory/Replay | 10,206 | 2,202 | 289 | 15,151 | 9,501 | 644 |
-| DQfD (2018) | Memory/Replay | 18,735 | 42,457 | — | 105,929 | — | — |
-| Bootstrapped DQN (2016) | Ensemble | 12,845 | 1,813 | 2,181 | 21,021 | 11,492 | — |
-| UCB Q-Ensemble (2018) | Ensemble | 15,622 | 1,252 | 1,903 | — | 3,695 | — |
-| Ensemble Bootstrapping (2021) | Ensemble | — | 100 | — | — | — | — |
-| Posterior Sampling DQN (2023) | Model-Based | 3,858 | 68 | 929 | 7,965 | 4,413 | 386 |
-| Parallel Q (PQN, 2024) | Pure Q | 28,764 | 100 | 7,314 | 26,099 | 23,538 | 18,542 |
-
-\normalsize
-
-### C. Task category stratification
-
-**Each Atari task category preferentially tests one or two of the
-eight weaknesses introduced in §II.B**:
-
-| Task category | Diagnoses weakness(es) |
-|---|---|
-| Reaction-Time Control | function-approx stability (W8), sample inefficiency (W2) |
-| Strategic Planning | reward sparsity & credit assignment (W4) |
-| Sparse Rewards | brittle exploration (W3) |
-| Dense Rewards | none specifically — baseline for stability |
-| Large Observation Space | function-approx stability (W8) |
-| Partially Observable | slow adaptation / recurrence (W7) |
-| Stochastic Environments | overestimation bias (W1), distribution robustness |
-
-The mapping is not perfect — most games test multiple weaknesses to
-some degree — but the dominant signal in each category aligns
-cleanly with one or two axes. The empirical claim of this paper's
-structural pivot is that methods targeting weakness $W_i$ should
-excel on the diagnostic category for $W_i$ and remain at baseline
-elsewhere. Tables II and III, read through this lens, support the
-claim.
-
-### D. Patterns by axis
-
-**Brittle exploration (W3, §IV.C).** The sparse-reward category
-(Montezuma's Revenge, Pitfall!, Private Eye) is where the axis
-matters most. Methods targeting exploration explicitly — NoisyNet,
-Bootstrapped DQN, CBDQ, Posterior Sampling DQN — produce nonzero
-scores on Montezuma where vanilla DQN and methods targeting other
-axes do not. Rainbow's 384 on Montezuma is attributable specifically
-to its NoisyNet component (per the original ablation). DQfD's 4,638
-on Montezuma — substantially higher than any non-demonstration
-method — illustrates the trade-off explored in §IV.B: demonstration
-substitutes for directed exploration. RND and Go-Explore (newly
-discussed in §IV.C but not in Tables II/III) report Montezuma scores
-of ~10,000 and >1 million respectively, indicating that the axis is
-not saturated by the methods covered here.
-
-**Reward sparsity and credit assignment (W4, §IV.D).** The
-strategic-planning category (Q*bert, Ms. Pac-Man) is where
-distributional methods produce their most striking results. QR-DQN's
-572,510 on Q*bert is the single largest score in our compilation by
-any method — over $25\times$ the best non-distributional result on the
-same game — and the pattern is consistent across the category. IQN
-and FQF follow the same pattern at lower absolute magnitude.
-
-**Function-approximation stability (W8, §IV.H).** Reaction-Time
-Control games (Breakout, Space Invaders, Enduro) show comparatively
-small inter-method variance: Double DQN, Dueling DQN, Rainbow, and
-distributional methods cluster within a factor of two of each other
-on these games. The pattern indicates that for games where the
-weakness signal is *stability rather than capability*, modest
-algorithmic improvements over the DQN baseline suffice — and PQN's
-strong performance on the category (§IV.H) is consistent with this
-interpretation.
-
-**Sample inefficiency (W2, §IV.B).** PER's performance pattern,
-across the categories, is most pronounced on strategic-planning and
-sparse-reward games — categories where high-information transitions
-are rare. On dense-reward games where informative transitions are
-abundant under uniform sampling, the PER advantage is small. The
-ablation pattern from Rainbow (PER is the largest single contributor)
-is consistent with this category-stratified picture.
-
-### E. The reporting gaps as evidence
-
-Dashes ("---") in Tables II and III indicate that the original paper
-introducing the method did not report a score for that game under
-the stated evaluation protocol. Absence of data does not imply poor
-performance — but the gap *pattern* is itself diagnostic and carries
-more information than is sometimes assumed.
-
-**For most methods, the gap pattern is itself diagnostic.** A method
-that reports comprehensively on dense-reward games and skips sparse-
-reward games signals — perhaps implicitly — that the method does not
-solve the sparse-reward problem. A method that reports on Reaction-
-Time Control and skips Stochastic Environments is unlikely to be a
-strong response to W1 (overestimation, which compounds under
-stochasticity). The pattern of dashes, considered as a structured
-absence, is sometimes more informative than the present scores.
-
-Several specific gaps illustrate the point. Ensemble Bootstrapping
-[@peer_2021_ebql] reports on 11 of 57 games and skips the entire sparse-reward
-category, despite the ensemble mechanism being a natural exploration
-candidate. Memory-Efficient DQN [@chen_2023_medqn] reports on 5 of 57 games
-selected for memory-sensitivity, leaving the method's broader
-performance profile undefined. The dashes are honest about reporting
-scope; reading them as evidence is internally consistent with the
-authors' own treatment of their methods.
-
-### F. The "improvement ladder" and its limits
-
-Within several axes — particularly W1 (overestimation) and W4
-(credit assignment) — a consistent chronological improvement
-trajectory is visible: classical DQN → Double DQN → Dueling /
-Prioritized → Distributional / Quantile-based methods, with each
-generation outperforming the previous on its diagnostic category.
-This "ladder" is real but axis-specific. A method that places at
-the top of the W4 ladder (FQF) does not necessarily improve on W3
-(FQF scores zero on Montezuma). The ladder is a strong frame *within
-an axis* and a weak frame *across axes* — which is the central
-empirical argument for the structural pivot.
-
-### G. Why we do not produce a leaderboard
-
-Earlier surveys [@jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey] bold or italicize the "best" result per
-game. This presentation implicitly invites comparison across methods
-that used different evaluation protocols (training-frame budgets,
-seed counts, no-op-start variations, sticky-action settings).
-Boldface in the presence of protocol divergence overstates the
-strength of comparisons. We refrain from highlighting per-cell
-best-results in Tables II/III; the axis-stratified narrative above
-substitutes evaluation against the *diagnostic categories* for the
-weaker comparison against per-game best.
-
-Two recent methodological contributions inform this decision and
-should be read alongside Tables II/III. [Agarwal et al. 2021,
-*Deep Reinforcement Learning at the Edge of the Statistical
-Precipice*] documents how the field's standard reporting practice —
-mean scores over three to five seeds, no confidence intervals —
-systematically misrepresents algorithmic performance. They introduce
-the *rliable* framework, which substitutes robust aggregate metrics
-(interquartile mean, optimality gap, probability of improvement)
-and stratified bootstrap confidence intervals for the point-estimate
-comparisons that have dominated Atari reporting since DQN [@mnih_2015_nature]. Where
-the original-paper numbers we extract in Tables II/III are
-point-estimate scores under heterogeneous protocols, rliable
-provides the standard against which future Q-learning reports
-should be held. [Castro et al. 2020, *Revisiting Rainbow: Promoting
-More Insightful and Inclusive Deep Reinforcement Learning Research*]
-makes a complementary methodological case: small-scale,
-insight-oriented evaluation on the four-game ALE subset chosen to
-exercise distinct algorithmic dimensions can outperform full 57-game
-sweeps for understanding *which* mechanism in a compound agent
-matters. Castro et al.'s framework is methodologically aligned with
-the axis-stratified evaluation philosophy of this paper: their
-"insight-oriented" dimensions and our weakness axes both substitute
-mechanism-targeted evidence for breadth-by-default reporting. The
-limitations we discuss in §V.H below should be read in this
-context: not as Atari is bad, but as Atari is one evidence stream
-among several, and the conventions for reporting Atari results have
-themselves been updated since the period covered by Tables II/III.
-
-### H. Limitations of Atari as a Q-learning benchmark
-
-The preceding subsections treat Atari as the evidence stream against
-which methods are evaluated; this subsection turns to what Atari
-*cannot* evaluate. Six inherent limits constrain the conclusions
-drawable from Tables II/III:
-
-**H.1. Determinism.** The Arcade Learning Environment [@bellemare_2013_ale] is
-deterministic by default: identical action sequences from identical
-initial frames produce identical trajectories. Two partial mitigations
-have become standard — *no-op starts* (the agent skips a random number
-of frames at episode start) and *sticky actions* [@machado_2018_aleeval]
-(actions persist with probability 0.25 per frame). Neither restores
-the stochasticity of real-world environments. Methods that exploit
-deterministic transitions — frame-perfect action sequences,
-memorized trajectories — score artificially well. The reporting
-protocols of methods covered here vary on this point; comparability
-suffers as a result.
-
-**H.2. Discrete action space.** Atari games have 4–18 discrete
-actions per game. Continuous-control evaluation falls entirely
-outside Atari's scope. This excludes a significant fraction of
-modern Q-learning research from Atari-based comparison: REDQ (§IV.A),
-soft Q-learning, and the offline-RL methods of §IV.E are all
-evaluated primarily on MuJoCo / D4RL, not Atari. Cross-paper
-comparison across the discrete/continuous boundary is structurally
-limited.
-
-**H.3. Single-task per episode.** Each Atari episode is one game;
-the agent does not transfer mid-episode between tasks. Multi-task,
-meta-learning, and continual-RL capabilities (§IV.G) cannot be
-evaluated on within-distribution Atari without modification.
-Agent57's achievement is impressive precisely because it handles
-the *distribution* of 57 games with a single agent — but the
-distribution is itself the construction; Atari was not designed as a
-multi-task benchmark.
-
-**H.4. Fixed environments.** Every Atari game has a fixed level
-layout, a fixed sprite set, fixed game mechanics. There is no
-procedural variation, no held-out test environment, no OOD
-evaluation possibility. A Q-function that overfits to the training
-trajectories of Pong cannot be distinguished, on Atari alone, from
-one that learned the underlying game dynamics. Reports of
-human-level performance on Atari elide this distinction.
-
-**H.5. Compute scale.** Agent57's 78B-frame training run is
-inaccessible to most research labs. R2D2's 10B is similar. The
-median academic Atari result of the past five years has been
-trained at 200M–1B frames — within an order of magnitude of Rainbow
-in 2017. The compute frontier of Atari research has effectively
-moved beyond what most researchers can reproduce, raising the
-question of whether Atari rankings produced at lower compute budgets
-remain comparable to frontier results.
-
-**H.6. Visual-only observation.** Atari observations are
-84×84 grayscale image patches. No language, no proprioception, no
-audio. Modern RL increasingly couples Q-learning with language-model
-priors (instruction following, language-conditioned exploration);
-Atari evaluation cannot speak to these directions.
-
-These limits define a specific evaluation niche. Atari is a strong
-benchmark for *exploration under sparse reward* (§IV.C),
-*credit assignment in long-horizon discrete tasks* (§IV.D), and
-*stability of deep Q-learning at scale* (§IV.H). It is a weak
-benchmark for *sample efficiency in low-compute regimes*,
-*generalization across procedural variation*,
-*transfer across tasks*, and *robustness in deployment*. The
-choices to add coverage of D4RL in §IV.E and SMAC in §IV.F reflect
-which Atari-uncovered weaknesses require their own benchmark
-infrastructure to evaluate; the next subsection surveys further
-benchmarks that complement Atari along the dimensions above.
-
-### I. Newer benchmarks for Q-learning evaluation
-
-The benchmarks below address one or more of the limits identified in
-§V.H. Each is tied to the axis it most directly diagnoses:
-
-**Atari-100k** [@kaiser_2020_simple] caps training at 100,000
-environment steps — roughly 2 hours of game play, 1/2000 the
-compute of standard Atari. The benchmark exposes *sample efficiency*
-under tight budgets, separating algorithmic improvements from
-compute scaling. Methods that perform well on standard Atari but
-poorly on Atari-100k (notably Rainbow without modifications)
-demonstrate that their gains rely on compute access. Primary axis:
-§IV.B (sample inefficiency).
-
-**ALE-stochastic.** The Machado et al. (2018) revisions to the
-Arcade Learning Environment introduce sticky actions as the default
-and require evaluation on multiple difficulty modes. The revised
-protocol is increasingly the standard for new methods. Primary axis:
-§IV.H (stability under stochasticity).
-
-**ProcGen** [@cobbe_2020_procgen] provides 16 procedurally-generated
-games with disjoint training and evaluation level distributions.
-Methods are scored on held-out levels not seen during training,
-directly measuring generalization across procedural variation.
-Q-learning baselines on ProcGen show *very poor* generalization —
-between 25% and 50% of training performance on the held-out
-distribution — exposing a capability that Atari cannot diagnose.
-Primary axis: cross-axis (§IV.E distribution shift in the deployment
-direction; §IV.B sample efficiency on out-of-distribution data).
-
-**NetHack** [@kuttler_2020_nethack] provides a single procedurally-
-generated environment with millions-of-step episodes, rich symbolic
-observations, and extreme stochasticity. Q-learning baselines on
-NetHack score within an order of magnitude of random play, even at
-scale. The benchmark exposes the interaction of *credit assignment*
-(§IV.D) and *exploration* (§IV.C) at horizons orders of magnitude
-longer than Atari, and is currently the field's strongest test of
-whether Q-learning can scale to genuinely long-horizon decision-
-making.
-
-**BSuite** [@osband_2020_bsuite] is DeepMind's *behavior suite for
-reinforcement learning*: twenty small experiments each designed to
-isolate a single capability — basic memory, generalization, noise
-robustness, scale, exploration, credit assignment, and others.
-BSuite is the closest existing benchmark to the axis-stratified
-evaluation philosophy of this paper. A method's BSuite profile
-directly maps to its position on the eight weakness axes; the
-benchmark's results report uses a radar-chart presentation that
-makes axis-level comparison visible at a glance. Primary axis: all
-eight (BSuite is meta-axial by design).
-
-**D4RL** [@fu_2020_d4rl] is covered in §IV.E as the dominant
-offline-RL benchmark. Its locomotion, AntMaze, Adroit, and Kitchen
-suites diagnose *distribution shift* (§IV.E) along five distinct
-behavior-policy regimes.
-
-**SMAC** [@samvelyan_2019_smac] is covered in §IV.F as the
-cooperative multi-agent benchmark. Its scenarios diagnose
-*multi-agent coordination* (§IV.F) at varying levels of joint-task
-difficulty.
-
-Beyond these, several benchmarks are emerging as Q-learning
-evaluation targets but lie outside this paper's scope: MetaWorld
-[@yu_2020_metaworld] and Meta-MuJoCo for meta-learning (§IV.G);
-RLBench [@james_2020_rlbench] for robotic manipulation; Crafter
-[@hafner_2022_crafter] as a long-horizon survival benchmark with explicit
-achievement metrics; CARL [@benjamins_2021_carl] for context-
-generalization in continuous control. The expansion of benchmark
-diversity in the past five years is itself a contribution of the
-modern era: where the original DQN paper [@mnih_2013_atari] was evaluated on
-seven Atari games, today's serious Q-learning methods typically
-report on three or more benchmark families.
+: Atari task categories as axis diagnostics.

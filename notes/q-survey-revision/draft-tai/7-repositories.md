@@ -1,220 +1,81 @@
 # VII. Comparative Analysis of Deep Q-Learning Repositories {#sec-vii}
 
-This section analyzes algorithmic coverage of Q-learning variants
-across six widely-used open-source deep RL repositories — Tianshou
-[@weng_2022_tianshou], XuanCe [@liu_2023_xuance], CleanRL [@huang_2022_cleanrl], DQN Zoo [@quan_2020_dqnzoo], Stable Baselines3 [@raffin_2021_sb3],
-and RLlib [@liang_2018_rllib] — together with their stated design priorities.
-Table VII reports a method-level coverage matrix;
-Table VIII summarizes design trade-offs.
+To assess how the methodological landscape of §IV is reflected in
+practice, we audited six widely-used open-source deep-RL repositories —
+Tianshou [@weng_2022_tianshou], XuanCe [@liu_2023_xuance], CleanRL
+[@huang_2022_cleanrl], DQN Zoo [@quan_2020_dqnzoo], Stable Baselines3
+[@raffin_2021_sb3], and RLlib [@liang_2018_rllib] — for Q-learning
+coverage, organized by the eight axes of §IV. The full coverage matrix
+(supplementary material) records each method against each repository;
+here we report the structure it reveals.
 
-### A. Scope of this analysis
+**Coverage findings.** Coverage is sharply skewed toward the early-era
+families. Overestimation methods ([§IV.A](#sec-iv-a), via Double and
+Dueling DQN) and distributional methods ([§IV.D](#sec-iv-d), via C51,
+QR-DQN, IQN, FQF) are the best-supported axes, an artifact of the
+2016–2019 deep-RL boom during which most of these repositories were
+architected. Sample-efficiency ([§IV.B](#sec-iv-b)) and exploration
+([§IV.C](#sec-iv-c)) are patchy — prioritized replay and HER appear in
+roughly half, NoisyNet in only one. The newer axes are largely absent:
+offline RL ([§IV.E](#sec-iv-e)) is implemented natively by none of the
+six (practitioners defer to d3rlpy and similar), and multi-agent value
+decomposition ([§IV.F](#sec-iv-f)) and distributed-scale methods
+([§IV.G](#sec-iv-g)) have no native VDN/QMIX/QPLEX or Ape-X/R2D2/Agent57
+implementations — a structural gap, since these demand infrastructure
+beyond single-machine scope. Most pointed: nine methods surveyed in §IV
+— DRQN, CBDQ, DQfD, MeDQN, Bootstrapped DQN, UCB Q-Ensemble, EBQL,
+Posterior Sampling DQN, and PQN — are absent from *all six*
+repositories. This set overlaps heavily with the directions §IV flags as
+most promising, indicating that implementation availability is itself a
+bottleneck on adoption — the central motivation for the
+community-repository proposal in [§VIII](#sec-viii).
 
-This paper's repository analysis is *taxonomic*: we report which
-algorithms each repository implements, with brief commentary on the
-design choices that shape coverage. We do *not* benchmark the
-repositories' implementations against one another; that question is
-addressed empirically by Hundal et al. [@hundal_2025_interchangeable], whose
-controlled comparison of PPO across five repositories shows
-substantial reproducibility variance even for a single algorithm
-under nominally equivalent configurations. Hundal et al.'s work sits
-in a broader reproducibility-crisis literature: Henderson et al.
-2018 [*Deep Reinforcement Learning That Matters*] showed that
-hyperparameter sensitivity and seed variance in deep RL can rival
-the gap between published baselines and proposed methods; Engstrom
-et al. 2020 attributed several headline performance claims in
-policy-gradient methods to implementation details rather than
-algorithmic substance. Hundal et al.'s empirical-reproducibility
-audit and the taxonomic-coverage analysis here are complementary:
-practitioners selecting a repository care both *whether their
-algorithm is supported* (this paper's question) and *whether the
-implementation reproduces published results* (Hundal et al.'s
-question, against the standards of the reproducibility-crisis
-literature).
+**Non-interchangeability.** Coverage is necessary but not sufficient.
+Hundal et al. [@hundal_2025_interchangeable] show that different
+implementations of the *same* algorithm diverge materially in measured
+performance, because silent code-level choices — gradient clipping,
+observation and reward normalization, weight initialization — vary
+across repositories without appearing in the algorithm's name. A "Double
+DQN" cell in one repository is therefore not directly comparable to the
+same cell in another. Cross-repository comparison consequently requires
+controlling for these implementation details rather than trusting
+nominal algorithm labels.
 
-**Audit methodology and date.** The repository coverage matrix in
-Table VII reflects the state of each repository as of 2026-05-01.
-Specifically, the audited versions were Tianshou 0.5.x,
-XuanCe 1.x, CleanRL master (commit-pinned during the audit),
-DQN Zoo (current head), Stable Baselines3 2.x, and RLlib 2.x.
-Repository state changes quickly; readers consulting this paper
-after 2026 should treat Table VII as a snapshot. We have not
-pinned commit hashes for each cell in the matrix because the
-matrix is intended to characterize *general availability* of
-algorithms rather than reproducibility-grade implementation
-fidelity; for the latter purpose, audit-with-commit-hash methodology
-in the style of Hundal et al. 2025 is the appropriate framework.
+**Named-algorithm vs. feature-equivalent support.** Our audit marks a
+method supported only when a repository ships it as a *named* algorithm
+with exposed hyperparameters — the strictest reading. Feature-equivalent
+availability is higher: RLlib's `DQNConfig`, for instance, exposes noisy,
+distributional, and prioritized-replay flags that compose into a
+Rainbow-like agent the matrix does not credit as a named-Rainbow
+implementation, an effect also present to a lesser degree in Tianshou
+and XuanCe.
 
-**Named-algorithm support vs. feature-equivalent support.** The
-matrix marks a method as *supported* if the repository implements
-it as a named algorithm with appropriate hyperparameter exposure.
-This is the strictest interpretation of "supported" and may
-*under-state* practical availability in two ways. First, several
-repositories expose component features that can be combined to
-reproduce a method without naming it: RLlib's `DQNConfig`, for
-example, accepts flags for `noisy: True`, `categorical:
-distributional_n_atoms`, and similar that together can
-configure a Rainbow-like agent without the matrix counting RLlib
-as a named-Rainbow implementation. Second, some repositories
-maintain experimental branches or community PRs that implement
-recent methods but have not been merged to master; we excluded
-these from the matrix to keep the audit reproducible. The
-practical implication is that Table VII reflects what users will
-find by searching repository documentation for an algorithm by
-name; the *feature-equivalent* availability of compound methods
-(Rainbow components, ensemble variants, distributional
-configurations) is consistently higher than the matrix indicates,
-particularly in RLlib and to a lesser extent in Tianshou and
-XuanCe.
+**Design trade-offs.** The repositories occupy distinct points on a
+Pareto frontier rather than dominating one another. CleanRL
+[@huang_2022_cleanrl] optimizes single-file readability, which limits
+modularity and makes compositional agents such as Rainbow awkward to
+express; DQN Zoo [@quan_2020_dqnzoo] optimizes reproduction fidelity at
+the cost of scope. At the other end, RLlib [@liang_2018_rllib] optimizes
+distributed scale at the cost of debuggability and per-algorithm
+transparency, while Stable Baselines3 [@raffin_2021_sb3] optimizes API
+stability and broad adoption at the cost of Q-learning-variant breadth.
+Tianshou [@weng_2022_tianshou] and XuanCe [@liu_2023_xuance] trade
+single-method depth for coverage breadth. Repository selection is thus
+itself an axis decision, and no single repository serves the Q-learning
+community comprehensively.
 
-### B. Axis-aware coverage
-
-Reading Table VII through the eight axis-sections of §IV reveals
-patterns invisible in the method-type organization of the original
-matrix:
-
-**Well-supported axes.** §IV.A (overestimation, via Double DQN /
-Dueling DQN) and §IV.D (distributional, via C51 / QR-DQN / IQN /
-FQF) are the best-covered axes across repositories. Tianshou alone
-implements all six method-level entries in these axes; XuanCe and
-RLlib follow. The bias toward overestimation- and
-distributional-method coverage reflects the empirical strength of
-these families during the 2016–2019 deep-RL boom, when most of the
-repositories were architected.
-
-**Patchily-supported axes.** §IV.B (sample inefficiency) is covered
-unevenly: PER is in three of six repositories, MeDQN in zero, DQfD
-in zero, HER in three of six (but typically only as part of
-goal-conditioned baselines, not as a Q-learning enhancement). §IV.C
-(exploration) is similarly patchy: NoisyNet is in one of six
-repositories (RLlib), Bootstrapped DQN in zero, UCB Q-Ensemble in
-zero. The patchiness reflects the rapid evolution of these axes
-and the difficulty of integrating per-method changes into
-production-grade architectures.
-
-**Entirely-absent axes.** §IV.F (multi-agent value decomposition)
-and §IV.G (distributed-scale methods) are functionally absent from
-the surveyed Q-learning repositories. RLlib supports multi-agent
-RL via its actor framework but does not implement VDN, QMIX, QPLEX,
-or QTRAN as native Q-learning methods. Ape-X, R2D2, and Agent57
-have no implementations in any of the six repositories at the time
-of writing. The absence is structural: these methods require
-distributed infrastructure beyond the single-machine scope of
-most repositories.
-
-**§IV.E (offline RL)** is in transition. None of the six surveyed
-repositories implement CQL, IQL, BCQ, or EDAC natively as of the
-draft's evaluation cutoff. Practitioners use d3rlpy, Clean-Offline-RL,
-or repository forks for these methods. The gap between
-mainstream-DRL repository coverage and the offline-RL practical
-landscape is one of the larger inconsistencies the axis-aware view
-exposes.
-
-### C. Methods absent from all six repositories
-
-Nine methods covered in §IV are absent from *every* surveyed
-repository:
-
-| Method | Axis | §IV reference |
+| Repository | Strength | Trade-off |
 |---|---|---|
-| Deep Recurrent Q (DRQN) | W7, scaling/adaptation | §IV.G.B.4 |
-| Cognitive Belief-Driven Q (CBDQ) | W3, brittle exploration | §IV.C.B.3 |
-| DQfD | W2, sample inefficiency | §IV.B.B.2 |
-| Memory-Efficient DQN | W2, sample inefficiency | §IV.B.B.3 |
-| Bootstrapped DQN | W3, brittle exploration | §IV.C.B.2 |
-| UCB Q-Ensemble | W3, brittle exploration | §IV.C.B.2 |
-| Ensemble Bootstrapping (EBQL) | W1, overestimation | §IV.A.B.2 |
-| Posterior Sampling DQN | W3, brittle exploration | §IV.C.B.3 |
-| Parallel Q-Learning (PQN) | W8, function-approx stability | §IV.H.B.3 |
+| Tianshou | Broad coverage; best distributional/overestimation support | Reproducibility unverified across full suite |
+| XuanCe | Modular YAML config; high code reuse | Defaults diverge from papers; steep curve |
+| CleanRL | Single-file readability; easy to audit | Low modularity; compositional agents awkward |
+| Stable Baselines3 | Stable API; widely adopted | Few Q-learning variants beyond DQN |
+| RLlib | Distributed scale out-of-the-box | Heavyweight; hard to debug per-algorithm |
+| DQN Zoo | High reproduction fidelity to DeepMind | Scope limited to the DQN family |
 
-The list overlaps substantially with the methods identified in §IV
-as productive directions for future work, suggesting that
-*implementation availability* is itself a bottleneck on practical
-adoption of methodological advances. This observation motivates
-the future-work proposal in §VIII for a community-maintained
-Q-learning–specific repository.
+: Per-repository strengths and the trade-offs they accept.
 
-### D. Tables VII and VIII — coverage and design trade-offs
-
-\footnotesize
-
-Table: **Repository support for deep Q-learning algorithms, grouped by category.** $\bullet$ = implemented; $\circ$ = not implemented.
-
-| Category | Method (year) | Tianshou | XuanCe | CleanRL | SB3 | RLlib | DQN Zoo |
-|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| Statistical | Param Space Noise (2017) | $\circ$ | $\bullet$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Statistical | C51 (2017) | $\bullet$ | $\bullet$ | $\bullet$ | $\circ$ | $\bullet$ | $\bullet$ |
-| Statistical | NoisyNet (2018) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\bullet$ | $\circ$ |
-| Statistical | QR-DQN (2018) | $\bullet$ | $\bullet$ | $\circ$ | $\bullet$ | $\circ$ | $\bullet$ |
-| Statistical | IQN (2018) | $\bullet$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\bullet$ |
-| Statistical | FQF (2019) | $\bullet$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Q-Func. Comp. | Nature DQN (2015) | $\bullet$ | $\bullet$ | $\bullet$ | $\bullet$ | $\bullet$ | $\bullet$ |
-| Q-Func. Comp. | DRQN (2015) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Q-Func. Comp. | Double DQN (2016) | $\bullet$ | $\bullet$ | $\circ$ | $\circ$ | $\bullet$ | $\bullet$ |
-| Q-Func. Comp. | Dueling DQN (2016) | $\bullet$ | $\bullet$ | $\circ$ | $\bullet$ | $\bullet$ | $\circ$ |
-| Q-Func. Comp. | Rainbow DQN (2018) | $\bullet$ | $\circ$ | $\circ$ | $\circ$ | $\bullet$ | $\bullet$ |
-| Q-Func. Comp. | CBDQ (2025) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Memory/Replay | DQN (2013) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Memory/Replay | Prioritized ER (2016) | $\circ$ | $\bullet$ | $\circ$ | $\circ$ | $\bullet$ | $\bullet$ |
-| Memory/Replay | DQfD (2018) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Memory/Replay | MeDQN (2023) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Ensemble | Bootstrapped DQN (2016) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Ensemble | UCB Q-Ensemble (2018) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Ensemble | Ensemble Bootstrapping (2021) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Model-Based | Posterior Sampling DQN (2023) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Pure Q | Parallel Q (PQN, 2024) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-
-\normalsize
-
-Table: **Comparison of popular Deep RL repositories — design pros and cons.**
-
-| Repository | Pros | Cons |
-|---|---|---|
-| **Tianshou** | Dual API (high-level and low-level); emphasis on reproducibility with agent-level tests; native TensorBoard support | Logs/results not available for all algorithms; reproducibility guarantees not empirically verified across full benchmark suite |
-| **XuanCe** | Modular YAML config files; W&B integration for hyperparameter tuning; high modularity for code reuse | Default hyperparameters often diverge from original papers; incomplete support across environments; steep learning curve |
-| **CleanRL** | Single-file implementations; easy to audit and understand; lightweight and minimal dependencies | Limited support for large-scale experiments; less modular, harder to extend |
-| **Stable Baselines3** | Clean API with sklearn-style interface; well-maintained and widely adopted; compatible with VecEnv, Gym, etc. | Focused more on policy-gradient methods; limited Q-learning variants beyond DQN |
-| **RLlib** | Distributed training out-of-the-box; Ray Tune integration; production-grade scalability | High complexity and heavyweight; harder to debug or customize individual components |
-| **DQN Zoo** | Faithful reimplementation of DQN variants; reproducibility aligned with DeepMind practices; highly organized training logs and configs | Focused exclusively on DQN family; less beginner-friendly |
-
-Reading Table VIII, the design priorities of each repository emerge:
-
-- **Tianshou** and **XuanCe** prioritize coverage breadth across
-  methods at the cost of single-method depth or reproducibility
-  guarantees.
-- **CleanRL** prioritizes single-file readability at the cost of
-  modularity, which limits coverage of compositional methods
-  (Rainbow, for instance, is harder to express in CleanRL's
-  single-file architecture).
-- **Stable Baselines3** prioritizes API stability and broad user
-  adoption, with the cost of slower integration of new methods.
-- **RLlib** prioritizes distributed scalability and production
-  use, with the cost of complexity and difficulty in debugging
-  individual algorithms.
-- **DQN Zoo** prioritizes reproduction fidelity to DeepMind's
-  published results, with the cost of restricted scope (DQN
-  family only).
-
-The design priorities are not in conflict but represent different
-positions on a Pareto frontier: a repository optimizing for one
-property necessarily relaxes another. The practitioner-side
-implication is that selection of a repository is itself an axis
-decision: a researcher exploring overestimation methods is well-
-served by Tianshou; a practitioner deploying at scale is well-served
-by RLlib; an educator demonstrating algorithms is well-served by
-CleanRL. No single repository serves the field optimally — and the
-axis-aware coverage gaps reported above suggest that no repository
-currently serves the Q-learning research community comprehensively.
-
-### E. Toward a Q-learning–specific repository
-
-The axis-aware analysis above motivates a specific deliverable:
-**a community-maintained repository focused exclusively on Q-learning
-and its deep variants**, providing unified training scripts,
-standardized benchmarks, modular algorithm implementations, and
-shared logging tools. Such a repository would prioritize coverage of
-the methods identified in §VII.C as absent from all existing
-repositories, with empirical reproducibility audits in the style of
-Hundal et al. as a release-quality gate.
-
-Section VIII discusses this proposal as the paper's principal
-forward-looking deliverable.
+This audit is a dated snapshot, reflecting repository state as of
+2026-05-01 (Tianshou 0.5.x, XuanCe 1.x, CleanRL master, DQN Zoo head,
+Stable Baselines3 2.x, RLlib 2.x); coverage evolves quickly and should
+be re-checked against current releases.
