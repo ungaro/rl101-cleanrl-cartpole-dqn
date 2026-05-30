@@ -50,7 +50,7 @@ pages of IEEE-format entries auto-generated from the 96 keys cited
 in the body (and only those — uncited bib entries are dropped by
 pandoc-citeproc).
 
-Commit: TBD
+Commit: `2111728`
 
 ---
 
