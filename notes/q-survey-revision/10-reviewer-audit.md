@@ -1,16 +1,14 @@
 # Reviewer-Feedback Audit Against Current Draft
 
 A structured comparison of the IEEE TAI reviewer asks (extracted from
-`RL_Project_Pitch_Q_Survey.pdf`, pages 17–24) against what the current
-draft delivers.
+`RL_Project_Pitch_Q_Survey.pdf`, pages 17–24) against what the
+current draft delivers, including the three closing sessions and the
+late-2025 / 2026 paper sweep.
 
 Legend:
-- ✓ covered well
-- ◐ partial / needs strengthening
+- ✓ covered
+- ◐ partial
 - ✗ gap
-
-For each item: what the reviewers asked, where the draft addresses it
-(if at all), and what concrete improvement would close the gap.
 
 ---
 
@@ -22,17 +20,18 @@ Reviewer sub-asks (pitch deck p.18):
 |---|---|---|
 | Stronger cross-method comparisons | ✓ | Per-section F. Comparison summary tables (uniform 6-column format across §IV.A–H); 2D positioning grids in §IV.A, IV.C, IV.D, IV.E, IV.H; axis × mechanism-family matrix in §IV overview |
 | Identify shared design principles | ✓ | Axis × mechanism-family matrix in §IV overview (decoupling / ensembles / architectural / behavior / distributed); mechanism families recur as subsection labels (B.1, B.2, …) across axis-sections |
-| Explain trade-offs between methods | ✓ | Every axis-section §IV.X.C "Trade-offs" subsection enumerates them as named axes (bias↔variance, expressiveness↔trainability, etc.) |
-| Unify algorithm families conceptually | ✓ | Genealogy figure (§IV overview); cross-references between sections (Rainbow appears in §IV.B primary + cross-refs from §IV.A, IV.C, IV.D, IV.H); legacy ↔ axis mapping in Appendix A |
+| Explain trade-offs between methods | ✓ | Every axis-section §IV.X.C "Trade-offs" subsection |
+| Unify algorithm families conceptually | ✓ | Genealogy figure (§IV overview); cross-references between sections (Rainbow appears in §IV.B primary + cross-refs from §IV.A, IV.C, IV.D, IV.H); legacy vs. axis mapping in Appendix A |
 
-**Verdict:** all four sub-asks are addressed.
+**Verdict:** all four sub-asks covered.
 
-**Possible polish:** explicit cross-axis comparisons. Right now the
-ensemble mechanism is discussed in §IV.A (EBQL for bias control),
+**Remaining polish (optional):** explicit cross-axis comparisons.
+The ensemble mechanism appears in §IV.A (EBQL for bias control),
 §IV.C (Bootstrapped DQN, UCB Q-Ensemble for exploration), and §IV.E
-(EDAC for offline RL) — same architectural primitive, three different
-axes. A short callout box in §IV overview ("when one mechanism serves
-multiple axes") would make this connective tissue more visible.
+(EDAC for offline RL) — same architectural primitive, three
+different axes. A short callout in §IV overview ("when one mechanism
+serves multiple axes") would make this connective tissue more
+visible.
 
 ---
 
@@ -50,9 +49,9 @@ Reviewer sub-asks (pitch deck p.19):
 **Verdict:** the conceptual layer is the central re-framing of the
 revision. All four sub-asks land directly against it.
 
-**Possible polish:** the reviewers' "less cataloging, more synthesis"
-framing could be made even more explicit in §I. Adding a paragraph
-that contrasts the problem-first frame against the typical
+**Remaining polish (optional):** the "less cataloging, more
+synthesis" framing could be made more explicit in §I. One paragraph
+contrasting the problem-first frame against the typical
 catalogue-style survey would inoculate against any reviewer reading
 the matrix or genealogy as a different kind of catalogue.
 
@@ -60,249 +59,173 @@ the matrix or genealogy as a different kind of catalogue.
 
 ## Feedback 3 — Atari is not enough
 
+**Closed in Session 2.**
+
 Reviewer sub-asks (pitch deck p.20):
 
 | Sub-ask | Status | Where in draft |
 |---|---|---|
-| Benchmark limitations | ◐ | §V.E "Reporting gaps as evidence" treats *reporting* limitations well; Atari's *inherent* limitations as a deep-RL benchmark (deterministic by default, no continuous control, no real-world physics, fixed environments) are not directly cataloged |
-| Reproducibility issues | ◐ | §VII.A introduces Hundal et al. (2025) and distinguishes our taxonomic analysis from their empirical PPO audit; §V.G refrains from leaderboards on protocol-divergence grounds; deeper engagement with the reproducibility crisis (Engstrom et al. 2020, Henderson et al. 2018) is absent |
+| Benchmark limitations | ✓ | New §V.H "Limitations of Atari as a Q-learning benchmark" catalogs six inherent limits (determinism, discrete action space, single-task per episode, fixed environments, compute scale, visual-only observations); each tied to the axis it prevents Atari from diagnosing |
+| Reproducibility issues | ✓ | §VII.A strengthened with one sentence citing Henderson et al. 2018 (*Deep RL That Matters*) and Engstrom et al. 2020; Hundal et al. 2025 now situated in the broader reproducibility-crisis literature |
 | Comparability across papers | ✓ | §V.G discusses protocol divergence (training-frame budgets, seed counts, no-op starts, sticky-action settings) |
-| Benchmark-specific improvements | ✗ | No discussion of newer Atari variants (Atari-100k sample-efficiency benchmark; ALE-stochastic; sticky-action standardization). No mention of ProcGen, NetHack, BSuite as Q-learning-relevant alternatives. |
-| Real-world generalization challenges | ✗ | No section on sim-to-real, robustness, deployment-distribution shift. Distribution shift is treated in §IV.E (offline RL) but only as a training-data regime, not a deployment regime. |
+| Benchmark-specific improvements | ✓ | New §V.I "Newer benchmarks for Q-learning evaluation" surveys Atari-100k (sample efficiency), ALE-stochastic (sticky-action standard), ProcGen (procedural generalization), NetHack (long-horizon stochastic), BSuite (axis-stratified by design — natural fit for the eight-weakness structure); cross-references D4RL (§IV.E) and SMAC (§IV.F) |
+| Real-world generalization challenges | ✓ | New §VIII.C fourth open direction "Q-learning under real-world distribution shift" — positions deployment-side distribution shift as natural extension of §IV.E's training-data treatment; calls out sim-to-real, OOD robustness, online policy correction; references ProcGen / CARL / RLBench as evaluation infrastructure |
 
-**Verdict:** the strongest unmet feedback area on the original five.
-Three of the five sub-asks are partial or missing.
-
-**Concrete improvements to close gaps:**
-
-1. Add a new §V.D subsection (between current §V.C and §V.D)
-   titled **"Limitations of Atari as a Q-learning benchmark."** One
-   page covering: determinism (sticky actions vs. no-op starts);
-   discrete action space (no continuous control); single-task per
-   episode (no transfer signal); fixed environments (no procedural
-   variation, OOD evaluation); compute regime (Agent57's 78B frames is
-   inaccessible to most researchers).
-
-2. Add a §V.H or §V.I subsection (probably at the end of §V)
-   titled **"Newer benchmarks for Q-learning evaluation."** Half a page
-   covering: Atari-100k (sample-efficiency cut), ALE-stochastic
-   variants, ProcGen (procedural generation tests generalization),
-   NetHack (long-horizon decision-making), BSuite (axis-stratified
-   capability tests). Tie each to which of the eight weaknesses it
-   most directly diagnoses.
-
-3. Add to §VIII.C (open directions) a fourth bullet on
-   **"Q-learning under real-world distribution shift."** Half a page
-   covering: sim-to-real transfer with Q-functions; OOD robustness
-   beyond offline-RL distribution shift; deployment-time policy
-   correction (online adaptation of pretrained Q).
-
-4. Strengthen §VII.A's Hundal et al. paragraph with a one-sentence
-   acknowledgment of the broader reproducibility crisis in deep RL
-   (Engstrom 2020, Henderson 2018) and how the taxonomic-coverage
-   analysis here complements rather than replaces empirical audits.
+**Verdict:** all five sub-asks now covered. This was the largest
+unmet area pre-Session-2.
 
 ---
 
 ## Feedback 4 — Too much derivation
 
+**Closed in Session 3.**
+
 Reviewer sub-asks (pitch deck p.21):
 
 | Sub-ask | Status | Where in draft |
 |---|---|---|
-| Reduce mathematical repetition | ✓ | §II.C Notation conventions removes the need for each §IV section to redefine $\theta, \theta^-, \alpha, \gamma, \pi, \mathcal{D}$ |
-| Shorten low-level derivations | ◐ | Per-method paragraphs in §IV are keyed to the *key equation* rather than full derivation, but no audit has been done against the original-draft prose to confirm a net reduction |
+| Reduce mathematical repetition | ✓ | §II.C Notation conventions removes the need for each §IV section to redefine $\theta, \theta^-, \alpha, \gamma, \pi, \mathcal{D}$; consolidated notation table now in Appendix B.1 |
+| Shorten low-level derivations | ✓ | Heavy derivations moved to Appendix B: max-of-noisy-estimators bound (B.2), categorical distributional projection (B.3), Wasserstein contraction proof sketch (B.4), pessimism LCB argument (B.5), QPLEX IGM completeness (B.6), Watkins & Dayan tabular convergence (B.7). §IV body now keyed to mechanism-defining equations only |
 | Allocate more space to interpretation | ✓ | Every §IV section has C. Trade-offs, D. Empirical evidence, and E. Open questions subsections that are entirely interpretive |
-| Improve readability and flow | ◐ | Five-part subsection structure (A weakness → B families → C trade-offs → D evidence → E open questions) gives consistent flow within each axis; the inter-section transitions are mostly cross-references rather than narrative arc |
+| Improve readability and flow | ✓ | Five-part subsection structure (A weakness → B families → C trade-offs → D evidence → E open questions) gives consistent flow; new "Reading guide" paragraph in §I tells readers that §IV bodies focus on mechanism + trade-off, with derivations concentrated in Appendix B and skippable on first read |
 
-**Verdict:** notation centralization addresses repetition; derivation
-density is unverified.
-
-**Concrete improvements to close gaps:**
-
-1. **Stand up Appendix B** ("Notation and proofs") — currently
-   listed as pending in `03-new-outline.md`. Move heavy derivations
-   into it:
-   - Parameter-noise likelihood-ratio expansion (§IV.C)
-   - Distributional KL-projection operator (§IV.D)
-   - Quantile-regression Huber loss (§IV.D)
-   - Tabular Q-learning convergence proof sketch (§V)
-   - Bellman-operator contraction in the off-policy regime (relevant
-     to §IV.E and §IV.H)
-
-2. **Per-section derivation density audit.** A pass through each
-   §IV.X.B Solution Families with the question: "is this equation
-   load-bearing for the trade-off in §C, or is it ornament?" Equations
-   that are not referenced downstream within the section are
-   candidates for trimming to one-sentence summaries.
-
-3. **Add a "Reading guide" callout in §I or §II.C** indicating that
-   derivations are concentrated in Appendix B and §IV bodies focus on
-   mechanism + trade-off. Sets reader expectation.
+**Verdict:** all four sub-asks covered.
 
 ---
 
 ## Feedback 5 — Need more modern RL
+
+**Closed in Session 1 plus the late-2025 / 2026 sweep.**
 
 Reviewer sub-asks (pitch deck p.22):
 
 | Sub-ask | Status | Where in draft |
 |---|---|---|
 | Distributed reinforcement learning | ✓ | §IV.G — Ape-X, R2D2, Agent57, PQN; compute-scaling story; bandit-controlled exploration meta-policy |
-| Offline reinforcement learning | ✓ | §IV.E — full axis section covering BCQ, BRAC, AWAC, CQL, IQL, EDAC across four mechanism families; D4RL benchmarks; decision tree |
-| Multi-agent coordination | ✓ | §IV.F — full axis section covering VDN, QMIX, QPLEX, QTRAN; IGM framing; SMAC benchmarks; cross-axis open question on multi-agent offline |
-| Meta-learning integration | ◐ | §IV.G.B.3 — three paragraphs on MAML / Reptile-Q applied to Q-learning, plus a contrast with Agent57's "implicit meta-learning." No coverage of PEARL, ProMP, MQL, context-conditioned approaches, in-context Q-learning. |
-| Recent theoretical advances | ✗ | No dedicated treatment. Scattered theoretical content: §II.B eight-weakness formalism, §IV.H deadly triad, §IV.A bias-variance discussion, per-axis E. Open Questions. No section on convergence theory of distributional RL, pessimistic value iteration for offline RL, NTK analyses, finite-time bounds, or the recent stability-theory literature. |
+| Offline reinforcement learning | ✓ | §IV.E — full axis section covering BCQ, BRAC, AWAC, CQL, IQL, EDAC across four mechanism families; new B.5 adds flow-matching policy with Q-learning (FQL, ICML 2025); D4RL benchmarks; decision tree |
+| Multi-agent coordination | ✓ | §IV.F — full axis section covering VDN, QMIX, QPLEX, QTRAN; IGM framing; new B.5 adds QFIX (Baisero et al. 2025) residual-correction layer; SMAC benchmarks; cross-axis open question on multi-agent offline |
+| Meta-learning integration | ✓ | §IV.G.B.3 expanded into a full mechanism survey across three families: optimization-based (MAML, Reptile-Q, ProMP), context-based (PEARL, MQL), and forward-pass / in-context (AdA, Algorithm Distillation, SICQL ICLR 2026, ICQL ICLR 2026); implicit vs. explicit meta-learning given its own subsection |
+| Recent theoretical advances | ✓ | New §IV.I "Theoretical Foundations and Recent Advances" — foundational results (Watkins-Dayan 1992, deadly triad, GTD/TDC), recent advances (distributional Wasserstein contraction Bellemare 2017 / Rowland 2018, finite-time bounds Yang 2019 / Fan 2020, offline pessimism Jin et al. 2021, stability theory Lyle 2023 + Nikishin 2022 + Klein 2026 plasticity-loss survey, QPLEX IGM completeness), evidence-theory interaction patterns, six open theoretical questions, results-by-year table |
 
-**Verdict:** three out of five solid; two are gaps. Identified in the
-previous analysis turn.
-
-**Concrete improvements to close gaps:**
-
-1. **Strengthen §IV.G.B.3 (meta-learning).** Expand from three
-   paragraphs to ~1 full page. Add:
-   - PEARL [Rakelly et al. 2019] — context-conditioned Q-functions
-     with probabilistic context inference
-   - ProMP [Rothfuss et al. 2019] — proximal meta-policy search
-   - Meta-Q-Learning (MQL) [Fakoor et al. 2020] — multi-task off-policy
-     meta-RL with propensity estimation
-   - In-context Q-learning via transformer architectures (recent
-     post-2023 work)
-   - Discuss the *explicit* vs. *implicit* meta-learning distinction
-     more thoroughly (currently one paragraph) — this is the
-     conceptually load-bearing claim
-
-2. **Add §IV.I "Theoretical Foundations and Recent Advances"** as a
-   ninth axis-section, or alternatively as a §III.C "Theoretical
-   background" subsection. Covers:
-   - Q-learning convergence in the tabular case [Watkins & Dayan 1992;
-     Tsitsiklis 1994] — concise restatement
-   - Convergence under linear function approximation; the deadly-triad
-     formal account [Sutton & Barto 2018, ch. 11]
-   - Distributional RL convergence: contraction properties of the
-     distributional Bellman operator [Bellemare et al. 2017;
-     Rowland et al. 2018]
-   - Offline-RL pessimism theory [Jin et al. 2021 — *Is Pessimism
-     Provably Efficient?*]; CQL's theoretical lower-bound guarantee
-   - Finite-time bounds for deep Q-learning [Yang et al. 2019; Fan et
-     al. 2020 *Theoretical Analysis of DQN*]
-   - Recent stability theory: layer-normalization compatibility with
-     the deadly triad [Lyle et al. 2023]
-
-   Format would follow the eight axis-sections (A weakness as
-   "theoretical gap" / B solution families / C trade-offs / D evidence
-   / E open questions). This brings the §IV count to nine, breaking
-   the 8-axis symmetry — alternative: tuck this content into §III as
-   a "C. Theoretical background" subsection and weave per-axis
-   citations into each §IV.X.E.
+**Verdict:** all five sub-asks now covered, including the late-2025
+/ 2026 additions (DDQL, SICQL, ICQL, QFIX, FQL, Klein plasticity
+survey).
 
 ---
 
 ## Other suggestions from the deck
 
-Pitch deck p.23 ("Concrete Team Tasks") lists:
+Pitch deck p.23 ("Concrete Team Tasks"):
 
 | Task | Status |
 |---|---|
-| Strengthen comparative analysis | ✓ Done (axis matrix, comparison tables, positioning grids) |
-| Improve conceptual organization | ✓ Done (problem-first reorganization is the whole revision) |
-| Verify benchmark interpretation | ◐ Partial (Atari-limitations gap above) |
-| Identify modern RL additions | ◐ Partial (meta-learning thin, theory missing) |
-| Reduce redundant derivations | ◐ Unverified (Appendix B pending) |
-| Improve figures/tables | ✓ Done (genealogy, axis matrix, per-section tables + 2D grids, decision tree; Tables I–VIII inline) |
-| Strengthen future directions section | ✓ Done (§VIII.B repository spin-off as named deliverable; §VIII.C three cross-axis open directions) |
+| Strengthen comparative analysis | ✓ (axis matrix, comparison tables, positioning grids) |
+| Improve conceptual organization | ✓ (problem-first reorganization is the whole revision) |
+| Verify benchmark interpretation | ✓ (Session 2 — §V.H limits + §V.I newer benchmarks) |
+| Identify modern RL additions | ✓ (Session 1 + late-2025/2026 sweep) |
+| Reduce redundant derivations | ✓ (Session 3 — Appendix B + reading guide) |
+| Improve figures/tables | ✓ (genealogy, axis matrix, per-section tables + 2D grids, decision tree; Tables I–VIII inline) |
+| Strengthen future directions section | ✓ (§VIII.B repository spin-off as named deliverable; §VIII.C four cross-axis open directions including real-world distribution shift) |
+
+All seven Concrete Team Tasks now ✓.
 
 ---
 
-## Cross-cutting concerns not on the reviewer list but worth surfacing
+## Cross-cutting concerns — still open
+
+These are not on the reviewer-feedback list but remain unfinished as
+the team approaches submission.
 
 1. **No References / bibliography section** in the markdown. The
-   prose cites [1]–[55] and named-year authors, but there's no
-   References list at the end. The team's existing `.bib` file will
-   need to be referenced via pandoc-citeproc (`--citeproc`,
-   `--bibliography`, `--csl`) or pasted in as a final markdown
-   section.
+   prose cites [1]–[55] and named-year authors, but no References
+   list is generated yet. The team's existing `.bib` file will need
+   to be referenced via `pandoc --citeproc --bibliography refs.bib
+   --csl ieee.csl`, or pasted in as a final markdown section.
 
-2. **Author block is empty.** The YAML metadata has `title` and
-   `abstract` but no `author`. Needs to be filled in before
-   submission.
+2. **Author block is empty.** The YAML metadata in
+   `draft/0-metadata.md` has `title` and `abstract` but no `author`.
+   Needs to be filled in before submission.
 
 3. **Two contested re-interpretations** that may invite reviewer
-   pushback and need defensible framing:
+   pushback and warrant explicit defense:
    - Distributional RL relocated from "Statistical" (uncertainty) to
      §IV.D (credit assignment). Argued in §IV.D.A and reinforced in
      §IV.D.E.
    - Dueling DQN relocated from "Q-Function Computation" to §IV.H
-     (stability mechanism). Argued in §IV.H.B.2 with Rainbow ablation
-     evidence.
+     (stability mechanism). Argued in §IV.H.B.2 with Rainbow
+     ablation evidence.
 
    Both are defensible but reviewers may resist on the basis of
    convention. Possible mitigation: a "Re-interpretation rationale"
-   appendix or footnote.
+   footnote at first mention of each.
 
 4. **Q-learning repository spin-off** (§VIII.B) is named as a
-   deliverable but the repo is not stood up. Reviewers reading §VIII
-   may ask for the URL. Either stand it up before submission or
-   reframe as future commitment.
+   deliverable but the repo itself is not stood up. Reviewers
+   reading §VIII may ask for the URL. Either stand it up before
+   submission or reframe as a future commitment.
 
-5. **No claims-evidence chain audit.** Strong claims like "the first
-   multi-axis problem-first treatment of Q-learning" (§I) depend on
-   the prior-art sweep in `07-prior-art-sweep.md`. Worth a final
-   verification before submission.
+5. **Two-column layout.** Reverted in the current build because
+   pandoc's default `\begin{longtable}` for markdown tables conflicts
+   with the twocolumn class. Real two-column requires either
+   converting every markdown table to raw LaTeX `\begin{table*}` or
+   switching `documentclass=IEEEtran`. Deferred.
 
----
-
-## Recommended prioritization
-
-If the team has bandwidth for **three more sessions** before
-submission:
-
-**Session 1 — Modern-RL gaps (closes Feedback 5):**
-- Expand §IV.G.B.3 meta-learning subsection to a full page
-- Add §IV.I (or §III.C) "Theoretical Foundations and Recent Advances"
-
-**Session 2 — Atari limitations (closes Feedback 3):**
-- Add §V.D "Limitations of Atari as a Q-learning benchmark"
-- Add §V.H "Newer benchmarks for Q-learning evaluation"
-- Add §VIII.C bullet on real-world distribution shift
-
-**Session 3 — Derivation audit + appendix (closes Feedback 4):**
-- Stand up Appendix B "Notation and proofs"
-- Per-section derivation-density pass
-- Add reading guide to §I or §II.C
-
-Two strong-but-cosmetic items remain after that: the bibliography
-generation and the repository spin-off URL.
+6. **Final visual polish on tables and figures.** Some tables still
+   wrap awkwardly; TikZ rendering of the master genealogy is pending
+   (mermaid versions are in the PDF as PNG placeholders).
 
 ---
 
-## Post-audit additions — late-2025 / early-2026 coverage sweep
+## Completed work — three sessions and a late-2025 / 2026 sweep
 
-A May 2026 sweep of arXiv cs.LG / cs.AI for post-2025 Q-learning
-work (conducted after the three audit sessions above) surfaced five
-papers that merit inclusion. They have been integrated into the
-draft:
+The original audit recommended three sessions to close the open
+sub-asks. All three are done, plus a follow-on sweep.
 
-| Paper | Where in draft | Why it matters |
-|---|---|---|
-| Nagarajan, White & Machado 2026 — Deep Double Q-Learning (DDQL) | §IV.A.B.1 | Revises a foundational citation: argues Double DQN is not equivalent to classical Double Q-learning; DDQL trains two genuinely independent networks; beats DDQN on 47/57 Atari games |
-| Liu et al. 2026 — Scalable In-Context Q-Learning (SICQL), ICLR 2026 | §IV.G.B.3 | Multi-head transformer with separate policy and Q-value heads, preserves DP-bootstrap structure inside ICRL |
-| Xu et al. 2026 — In-Context Compositional Q-Learning (ICQL), ICLR 2026 | §IV.G.B.3 | Linear-attention transformer infers local Q from retrieved transitions; theoretical bounds; substantial gains on Meta-World compositional subsets |
-| Baisero et al. 2025 — QFIX (Fixing Incomplete Value Function Decomposition) | §IV.F.B.5 (new) | Residual-correction layer on VDN/QMIX/QPLEX that recovers full IGM-completeness; simpler than QPLEX, consistent gains on SMACv2 + Overcooked |
-| Park, Li & Levine 2025 — Flow Q-Learning (FQL), ICML 2025 | §IV.E.B.5 (new) | One-step flow-matching policy with Q-learning; avoids recursive backprop through diffusion chains; strong across 73 D4RL/OGBench tasks |
-| Klein et al. 2026 — Plasticity Loss in DRL: A Survey | §IV.I.C.4 | Organizes 50+ mitigation strategies; the natural successor citation to Lyle 2023 / Nikishin 2022 for the modern stability-theory thread |
+**Session 1 — Modern-RL gaps (Feedback 5).**
+- Expanded §IV.G.B.3 meta-learning subsection from ~3 paragraphs to
+  a full mechanism survey: optimization-based (MAML, Reptile-Q,
+  ProMP), context-based (PEARL, MQL), forward-pass (AdA, Algorithm
+  Distillation)
+- Created §IV.I "Theoretical Foundations and Recent Advances" —
+  ~2300-word ninth-section with foundational results, recent
+  advances, evidence-theory interaction, open questions, and
+  results-by-year table
 
-The five primary additions cover the late-2025 / 2026 window the
-sweep identified as a real gap. Title updated to 2026; methodology
-end-date updated to "early 2026."
+**Session 2 — Atari limitations (Feedback 3).**
+- §V.H "Limitations of Atari as a Q-learning benchmark" — six
+  inherent limits tied to the axes Atari cannot diagnose
+- §V.I "Newer benchmarks for Q-learning evaluation" — Atari-100k,
+  ALE-stochastic, ProcGen, NetHack, BSuite
+- §VII.A reproducibility-crisis citation paragraph
+- §VIII.C fourth open direction on real-world distribution shift
+
+**Session 3 — Derivation audit and Appendix B (Feedback 4).**
+- Appendix B "Notation and Selected Derivations" stood up —
+  consolidated notation table + six selected derivations the §IV
+  body references rather than works through
+- §I "Reading guide" paragraph telling readers Appendix B is the
+  home of longer derivations
+
+**Late-2025 / 2026 sweep.** A May 2026 arXiv sweep for post-2025
+Q-learning work added five method citations:
+
+| Paper | Where in draft |
+|---|---|
+| Nagarajan, White & Machado 2026 — Deep Double Q-Learning (DDQL) | §IV.A.B.1 |
+| Liu et al. 2026 — Scalable In-Context Q-Learning (SICQL), ICLR 2026 | §IV.G.B.3 |
+| Xu et al. 2026 — In-Context Compositional Q-Learning (ICQL), ICLR 2026 | §IV.G.B.3 |
+| Baisero et al. 2025 — QFIX | §IV.F.B.5 (new) |
+| Park, Li & Levine 2025 — Flow Q-Learning (FQL), ICML 2025 | §IV.E.B.5 (new) |
+| Klein et al. 2026 — Plasticity Loss in DRL: A Survey | §IV.I.C.4 + §IV.I.F results table |
+
+Title updated to 2026; methodology end-date updated to "early 2026."
 
 **Honest negatives from the sweep:** no significant new value-based
-distributed system to add as a post-Agent57 successor; the
-benchmark / reproducibility-audit literature is quiet since Hundal
-2025; no breakthrough non-asymptotic theoretical result for deep
-Q-learning in this window beyond the plasticity-loss thread above.
-The field has consolidated post-2024 rather than opened new
-directions.
+distributed system as a post-Agent57 successor; benchmark /
+reproducibility literature is quiet since Hundal 2025; no breakthrough
+non-asymptotic theoretical result for deep Q-learning in this window
+beyond the plasticity-loss thread. The field has consolidated
+post-2024 rather than opened new directions.
 
 ---
 
