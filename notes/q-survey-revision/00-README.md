@@ -41,6 +41,10 @@ notes/q-survey-revision/
 ├── 06-genealogy-figure.md  ← genealogy figure design (ASCII + mermaid)
 ├── 07-prior-art-sweep.md   ← 2024–2026 competing-surveys check
 ├── 08-figure-proposals.md  ← figure / comparison artifact catalogue
+├── 09-section-notes.md     ← per-section bibliography / scope notes
+├── 10-reviewer-audit.md    ← first-round IEEE TAI reviewer audit (post-execution status)
+├── 11-changelog.md         ← versioned history of draft changes
+├── 12-second-review-audit.md ← second-round reviewer audit + Sessions 4-6 plan
 └── draft/
     ├── 1-introduction.md       (§I)
     ├── 2-background.md         (§II + 8 weaknesses)

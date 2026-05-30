@@ -8,9 +8,9 @@ P, \gamma, d_0 \rangle$, where $\mathcal{S}$ denotes the set of all
 possible states, and $\mathcal{A}$ the set of possible actions. The
 reward function $R : \mathcal{S} \times \mathcal{A} \to \mathbb{R}$
 assigns a real-valued reward to each state-action pair. The
-transition function $P(s' \mid s, a, \theta)$ specifies the
-probability of transitioning to state $s'$ from state $s$ after
-taking action $a$, parameterized by $\theta$. The discount factor
+transition function $P(s' \mid s, a)$ specifies the probability of
+transitioning to state $s'$ from state $s$ after taking action $a$.
+The discount factor
 $\gamma \in [0,1)$ determines the importance of future rewards, and
 $d_0$ denotes the initial state distribution.
 

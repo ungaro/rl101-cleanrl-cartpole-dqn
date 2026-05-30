@@ -225,7 +225,7 @@ admit multiple interpretations; this is one.
 | Target Network (Nature DQN, 2015) | Q-Function Comp. | Frozen copy of $Q$ for bootstrap target | Target staleness ($C$ steps) | Foundational deep-RL stability | Atari DQN baseline |
 | Dueling DQN (2016)* | Q-Function Comp. | $V(s) + (A(s,a) - \bar A)$ decomposition | Architectural complexity | Many-action states | Rainbow ablation: smallest impact |
 | MeDQN consolidation (2023) | Memory/Replay | Past-$Q$ distillation loss | $\lambda$ hyperparameter | Catastrophic forgetting | + memory efficiency |
-| PQN (2025) | Pure Q-Learning | LayerNorm + $n$-step + parallel envs; no target net | Compute structure shift | Modern stability recipe | 50× wall-clock, matches Rainbow |
+| PQN (2024) | Pure Q-Learning | LayerNorm + $n$-step + parallel envs; no target net | Compute structure shift | Modern stability recipe | 50× wall-clock, matches Rainbow |
 | Munchausen DQN (2020) | Q-Function Comp. | $\tilde r_t = r_t + \alpha \tau \log \pi(a_t \mid s_t)$ | $\tau$ hyperparameter | Implicit KL regularization | Atari competitive |
 
 **2D positioning (classical → modern recipe × sample efficiency):**

@@ -74,7 +74,7 @@ Table: **Reported Atari benchmark performance (raw per-game scores), Part I.** R
 | UCB Q-Ensemble (2018) | Ensemble | 411 | 2,627 | 3,425 | 14,198 | 4 | -1 | 98 | 2,753 |
 | Ensemble Bootstrapping (2021) | Ensemble | 406 | — | — | 14,384 | — | — | — | — |
 | Posterior Sampling DQN (2023) | Model-Based | 46 | 511 | 1,824 | 4,245 | 0 | -44 | 79 | 363 |
-| Parallel Q (PQN, 2025) | Pure Q | 515 | 18,451 | 5,568 | 31,717 | 0 | -89 | 100 | 2,349 |
+| Parallel Q (PQN, 2024) | Pure Q | 515 | 18,451 | 5,568 | 31,717 | 0 | -89 | 100 | 2,349 |
 
 \normalsize
 
@@ -100,7 +100,7 @@ Table: **Reported Atari benchmark performance, Part II.** Large Observation Spac
 | UCB Q-Ensemble (2018) | Ensemble | 15,622 | 1,252 | 1,903 | — | 3,695 | — |
 | Ensemble Bootstrapping (2021) | Ensemble | — | 100 | — | — | — | — |
 | Posterior Sampling DQN (2023) | Model-Based | 3,858 | 68 | 929 | 7,965 | 4,413 | 386 |
-| Parallel Q (PQN, 2025) | Pure Q | 28,764 | 100 | 7,314 | 26,099 | 23,538 | 18,542 |
+| Parallel Q (PQN, 2024) | Pure Q | 28,764 | 100 | 7,314 | 26,099 | 23,538 | 18,542 |
 
 \normalsize
 

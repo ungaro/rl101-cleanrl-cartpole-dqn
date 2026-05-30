@@ -64,7 +64,7 @@ For each method covered in §IV, the table below shows:
 | SARSA (1994) | Pure Q-Learning | §V foundations | — |
 | Multi-Step Q-Learning (1996) | Pure Q-Learning | §IV.D (W4) | §V foundations |
 | Neural Fitted Q (NFQ, 2005) | Pure Q-Learning | §V foundations | §IV.B (batch updates) |
-| Parallel Q Learning (PQN, 2025) | Pure Q-Learning | §IV.H (W8) | §IV.G (parallelism) |
+| Parallel Q Learning (PQN, 2024) | Pure Q-Learning | §IV.H (W8) | §IV.G (parallelism) |
 
 ## A.2. Methods outside the legacy six-category structure
 

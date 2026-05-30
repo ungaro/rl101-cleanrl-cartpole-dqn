@@ -76,7 +76,7 @@ exposes.
 
 ### C. Methods absent from all six repositories
 
-Eight methods covered in §IV are absent from *every* surveyed
+Nine methods covered in §IV are absent from *every* surveyed
 repository:
 
 | Method | Axis | §IV reference |
@@ -126,7 +126,7 @@ Table: **Repository support for deep Q-learning algorithms, grouped by category.
 | Ensemble | UCB Q-Ensemble (2018) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
 | Ensemble | Ensemble Bootstrapping (2021) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
 | Model-Based | Posterior Sampling DQN (2023) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
-| Pure Q | Parallel Q (PQN, 2025) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
+| Pure Q | Parallel Q (PQN, 2024) | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ | $\circ$ |
 
 \normalsize
 

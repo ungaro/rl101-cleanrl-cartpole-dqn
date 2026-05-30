@@ -350,7 +350,7 @@ Atari-scale benchmarks has not occurred.
 | R2D2 (2019) | Distributed + Recurrent | Ape-X + LSTM + replay burn-in | Recurrent replay infrastructure | Memory-demanding tasks | 1920% median Atari HNS |
 | Agent57 (2020) | Distributed + Meta-policy | R2D2 + NGU + bandit policy portfolio | Massive compute (78B frames) | All 57 Atari at human level | 4766% median Atari HNS |
 | MAML-Q / Meta-Q (2017+) | Meta-RL | Meta-train initialization across task distribution | Inner + outer-loop compute | Few-shot transfer | MetaWorld benchmarks |
-| PQN (2025) | Pure Q-Learning (cross-ref to §IV.H) | Synchronous vectorized envs + LayerNorm | Single-machine compute structure | Compute-efficient Atari | 220% median at 200M frames |
+| PQN (2024) | Pure Q-Learning (cross-ref to §IV.H) | Synchronous vectorized envs + LayerNorm | Single-machine compute structure | Compute-efficient Atari | 220% median at 200M frames |
 
 **Compute–performance positioning (log frames × performance):**
 
