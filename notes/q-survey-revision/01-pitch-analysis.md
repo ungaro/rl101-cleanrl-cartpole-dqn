@@ -281,21 +281,66 @@ Full findings, borderline cases, and follow-up checks in
 ## Status snapshot (suggestion-by-suggestion)
 
 - **Suggestion A — problem-first structural pivot:** Drafted in full.
-  See `draft/1-introduction.md`, `draft/2-background.md`, all eight
-  `draft/4*.md` axis-sections, `draft/4-overview.md`,
-  `draft/5-atari-benchmarks.md`, `draft/6-tabular-empirical.md`,
-  `draft/7-repositories.md`, `draft/8-conclusion.md`, and
-  `draft/A-legacy-indexer.md`. Differentiation against 2024–2026
-  prior art confirmed in `07-prior-art-sweep.md`.
-- **Suggestion B — centerpiece figure:** Genealogy figure design
-  drafted in `06-genealogy-figure.md`; mermaid renderings inserted
-  into `draft/4-overview.md` (master genealogy + modern-RL branches)
-  and `draft/4c-brittle-exploration.md` (exploration branch). Mermaid
-  `quadrantChart` 2D positioning grids inserted per-section in §IV.A,
-  §IV.C, §IV.D, §IV.E, §IV.H. Final TikZ/PGF rendering for the paper
-  itself is pending.
+  Nine §IV subsections (§IV.A–H axis-sections plus §IV.I theoretical
+  advances), plus §I introduction, §II background + 8 weaknesses,
+  §III methodology with Table I, §IV overview with master genealogy
+  + axis × mechanism-family matrix, §V Atari benchmarks (now
+  including §V.H limitations and §V.I newer benchmarks), §VI tabular
+  empirical, §VII repositories, §VIII conclusion (with four
+  cross-axis open directions including real-world distribution
+  shift), Appendix A legacy indexer, Appendix B notation and
+  selected derivations. Differentiation against 2024–2026 prior art
+  confirmed in `07-prior-art-sweep.md`.
+- **Suggestion B — centerpiece figure:** Genealogy figure design in
+  `06-genealogy-figure.md`; mermaid renderings inserted into
+  `draft/4-overview.md` (master genealogy + modern-RL branches) and
+  `draft/4c-brittle-exploration.md` (exploration branch). Mermaid
+  `quadrantChart` 2D positioning grids inserted in §IV.A, §IV.C,
+  §IV.D, §IV.E, §IV.H. Final TikZ/PGF rendering for the IEEE
+  template is pending.
 - **Suggestion C — Q-learning repo spin-off:** Promoted to a named
   deliverable in `draft/8-conclusion.md` with four design priorities
   and a prioritized roadmap (nine methods absent from all six
   surveyed repositories per Table VII). Repository stub not yet
   stood up — outstanding action item.
+
+## Reviewer-feedback coverage (after Sessions 1–3)
+
+Full audit in `10-reviewer-audit.md`. All five reviewer-feedback
+areas from the pitch deck now satisfy every sub-ask:
+
+- **Feedback 1 (algorithms feel isolated)** ✓ — per-section
+  comparison tables, 2D positioning grids, axis × mechanism-family
+  matrix, genealogy figure, cross-references
+- **Feedback 2 (need conceptual insight)** ✓ — eight-weakness spine,
+  per-section "A. The Weakness", "C. Trade-offs"
+- **Feedback 3 (Atari is not enough)** ✓ — §V.H limitations + §V.I
+  newer benchmarks (Atari-100k, ALE-stochastic, ProcGen, NetHack,
+  BSuite) + §VII.A reproducibility-crisis citations + §VIII.C
+  real-world distribution-shift bullet (Session 2)
+- **Feedback 4 (too much derivation)** ✓ — Appendix B notation +
+  selected derivations; §I reading guide; §II.C notation conventions
+  removes per-section redefinition burden (Session 3)
+- **Feedback 5 (need more modern RL)** ✓ — §IV.E offline, §IV.F
+  multi-agent, §IV.G distributed and meta (expanded with PEARL,
+  ProMP, MQL, in-context Q-learning), §IV.I theoretical advances
+  (Session 1)
+
+## Outstanding items (independent of reviewer feedback)
+
+- **Bibliography / References section** at the end of the paper.
+  Body cites [1]–[55] and named-year authors but no References list
+  is generated yet. Wire up with pandoc-citeproc + `.bib` file
+  before submission.
+- **Author block.** YAML metadata `title` and `abstract` set; no
+  authors yet.
+- **Q-learning repository stub** (Suggestion C). Roadmap defined in
+  §VIII.B but the GitHub repo itself is not stood up.
+- **Two-column layout.** Reverted in the build because pandoc's
+  default `\begin{longtable}` for markdown tables conflicts with
+  twocolumn class. Real two-column would require either converting
+  every markdown table to raw LaTeX `\begin{table*}` or switching to
+  `documentclass=IEEEtran`.
+- **Final visual polish on tables and figures** including any
+  remaining table-overflow issues and TikZ rendering of the master
+  genealogy.

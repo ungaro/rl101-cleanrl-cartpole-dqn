@@ -77,11 +77,16 @@ Totals: ~15,500 words of paper prose across 16 draft files;
 | §III Methodology | drafted |
 | §IV Overview (genealogy + axis × family matrix) | drafted (`draft/4-overview.md`) |
 | §IV.A–H (all eight axis-sections) | drafted (with per-section comparison artifacts) |
+| §IV.G.B.3 meta-learning expansion (PEARL, ProMP, MQL, in-context) | drafted (Session 1) |
+| §IV.I Theoretical Foundations and Recent Advances | drafted (`draft/4i-theoretical-advances.md`, Session 1) |
 | §V Atari benchmarks | drafted (preserves legacy row grouping) |
+| §V.H Atari limitations + §V.I newer benchmarks | drafted (Session 2) |
 | §VI Tabular empirical | drafted (preserves Tables IV–VI) |
-| §VII Repositories | drafted (preserves Tables VII/VIII + Hundal 2025 positioning) |
-| §VIII Conclusion | drafted (promotes repo spin-off to named deliverable) |
-| Appendix A — legacy ↔ axis indexer | drafted |
+| §VII Repositories + reproducibility-crisis citations | drafted (Session 2) |
+| §VIII Conclusion + real-world distribution-shift bullet | drafted (Session 2) |
+| Appendix A — legacy vs. axis indexer | drafted |
+| Appendix B — notation and selected derivations | drafted (`draft/B-notation-and-proofs.md`, Session 3) |
+| §I reading guide | drafted (Session 3) |
 | Per-section comparison tables (Part A.1) | drafted in each axis-section |
 | Per-section 2D positioning grids (Part A.2) | drafted in mermaid for §IV.A, §IV.C, §IV.D, §IV.E, §IV.H |
 | Decision tree for §IV.E | drafted in mermaid |
