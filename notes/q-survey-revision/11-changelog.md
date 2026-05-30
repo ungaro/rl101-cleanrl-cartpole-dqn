@@ -41,7 +41,7 @@ Sourced and curated from `draft-monograph/` and the working notes:
 Supplement: 10 pages, clean build, zero undefined citations, no "legacy"
 or identifying strings. Main paper unchanged at 19 pages.
 
-Commit: TBD
+Commit: `c0d916a`
 
 ---
 
