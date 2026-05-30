@@ -107,15 +107,15 @@ conventionalized.
 
 The matrix below summarizes which mechanism families address which
 axis. Filled cells indicate a primary contribution; open cells
-(◯) indicate an incidental or secondary contribution; blanks
+($\circ$) indicate an incidental or secondary contribution; blanks
 indicate the axis is not addressed by that mechanism family.
 
 | Axis                       | Decoupling      | Ensembles       | Architectural decomposition | Behavior / loss modulation | Distributed / parallel |
 |---|---|---|---|---|---|
-| **W1 Overestimation** (§IV.A) | DoubleQ, DDQN   | EBQL, REDQ      | Dueling (rel.) ◯           | —                          | —                      |
-| **W2 Sample inefficiency** (§IV.B) | —              | —               | —                           | PER, DQfD, MeDQN, HER      | Ape-X (replay) ◯       |
+| **W1 Overestimation** (§IV.A) | DoubleQ, DDQN   | EBQL, REDQ      | Dueling (rel.) $\circ$           | —                          | —                      |
+| **W2 Sample inefficiency** (§IV.B) | —              | —               | —                           | PER, DQfD, MeDQN, HER      | Ape-X (replay) $\circ$       |
 | **W3 Brittle exploration** (§IV.C) | —              | Bootstrapped, UCB-Q | NoisyNet, ParSpaceNoise | CBDQ, PSDQN, RND, Go-Explore | Agent57 (portfolio)  |
-| **W4 Reward sparsity** (§IV.D) | —              | —               | Distributional family       | n-step, λ-returns          | —                      |
+| **W4 Reward sparsity** (§IV.D) | —              | —               | Distributional family       | n-step, $\lambda$-returns          | —                      |
 | **W5 Distribution shift** (§IV.E) | BCQ            | EDAC            | —                           | CQL, IQL, BRAC, AWAC       | —                      |
 | **W6 Multi-agent coord.** (§IV.F) | —              | —               | VDN, QMIX, QPLEX, QTRAN     | —                          | —                      |
 | **W7 Scaling / adaptation** (§IV.G) | —              | —               | DRQN, R2D2                  | —                          | Ape-X, Agent57, Meta-Q |
