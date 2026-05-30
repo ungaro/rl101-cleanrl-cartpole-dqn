@@ -43,7 +43,7 @@ Reaches the TAI 21-page cap.
 Page count: **27 → 21** (target met). Clean build, zero undefined
 citations.
 
-Commit: TBD
+Commit: `6986b45`
 
 ---
 
