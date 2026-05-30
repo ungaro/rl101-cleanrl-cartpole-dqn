@@ -48,7 +48,7 @@ distilled sections no longer have. Fixes:
 Page count: 19 (unchanged). Clean build, zero undefined citations, no
 dangling cross-references.
 
-Commit: TBD
+Commit: `097a86e`
 
 ---
 
