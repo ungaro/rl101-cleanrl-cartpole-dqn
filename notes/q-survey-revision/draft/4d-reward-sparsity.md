@@ -11,6 +11,22 @@ in the per-method paragraphs and the open-questions subsection.
 
 ### A. The Weakness
 
+**A note on framing.** This section's placement of distributional
+Q-learning (C51, QR-DQN, IQN, FQF) under the credit-assignment axis
+is an *interpretive choice* rather than a canonical classification.
+The original distributional-RL papers [Bellemare et al. 2017;
+Dabney et al. 2018] motivate the family primarily as
+uncertainty-modeling or learning-signal-richness contributions; the
+prior surveys [12]–[15] place these methods under "Statistical
+Methods" or similar uncertainty-focused groupings. We re-frame them
+as credit-assignment mechanisms because the empirical strength of
+the family — and especially the standalone Rainbow-comparable
+performance of IQN — is dominated by the richer return-distribution
+signal's effect on long-horizon backup propagation, not by acting on
+uncertainty. The defense for this re-classification is developed in
+subsections B and D; readers preferring the conventional grouping
+can navigate via Appendix A.
+
 The one-step Q-learning update propagates reward signal by exactly one
 Bellman backup per environment step. When reward is received only at
 the end of a long trajectory, the signal must traverse the full

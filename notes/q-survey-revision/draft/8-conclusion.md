@@ -129,7 +129,81 @@ Q-learning's value-based perspective could productively engage with
 robotics, control, and operations-research literature that has
 developed parallel tools.
 
-### D. Closing
+### D. Limitations and Ethics
+
+This is a survey rather than a deployed system, so the relevant
+considerations are scholarly and community-facing rather than
+direct model-harm concerns. We surface five limitations explicitly.
+
+**Benchmark monoculture.** Tables II–III's reliance on Atari and
+§VI's tabular Gymnasium environments reflects the field's
+historical convention. As documented in §V.H, Atari is a strong
+benchmark for a specific set of weaknesses (exploration, credit
+assignment, function-approximation stability) and a weak one for
+others (sample efficiency at small budgets, generalization across
+procedural variation, continuous control, real-world deployment).
+A survey that elevates Atari evidence to load-bearing status
+inherits these gaps. We have partly mitigated this through §V.I's
+coverage of ProcGen, NetHack, BSuite, D4RL, and SMAC and through
+§IV.E and §IV.F's adoption of D4RL and SMAC respectively, but the
+breadth of evaluation evidence remains uneven across the eight
+axes.
+
+**Compute inequality.** Several of the methods covered (Agent57's
+78B training frames, R2D2's 10B, large in-context Q-learning
+agents) require compute budgets accessible to only a handful of
+industrial labs. By including these methods alongside academically
+reproducible alternatives without flagging the gap, a survey
+risks implicitly endorsing a research culture where frontier work
+is structurally inaccessible to most readers. §IV.G's discussion of
+the compute-versus-algorithmic trade-off and §V.H.5 on compute
+scale begin to address this, but the field-wide tension between
+*algorithmic discovery* and *compute-driven discovery* is
+underdeveloped here and warrants explicit treatment in future
+surveys.
+
+**Citation bias in narrative reviews.** Any narrative survey that
+reduces a large field to "canonical methods" can inadvertently
+erase negative results, replication studies, and less-publicized
+alternatives — even when, as here, the source selection criteria
+are documented (§III.A). We cite the prior-art sweep in
+`07-prior-art-sweep.md` as the audit trail for our differentiation
+claim, and Appendix A's legacy indexer to allow navigation through
+the conventional taxonomy, but we cannot eliminate the bias
+inherent in narrative selection. Readers seeking a more systematic
+review-of-reviews should consult the Springer NCAA 2026 offline-RL
+distribution-shift survey and the broader-RL surveys of Ghasemi
+2024/2025 and Murphy 2024/2025 as complementary navigations of
+overlapping terrain.
+
+**Stale tooling comparisons.** The repository comparison of §VII
+is pinned to repository state as of early 2026. Implementation
+landscapes shift quickly; readers consulting this paper in 2027 or
+later should treat Table VII as a snapshot rather than current
+ground truth. The proposed Q-learning–specific repository (§VIII.B)
+is intended in part as a mechanism for maintained tooling
+comparison rather than as a one-shot artifact.
+
+**Frontier methods overstated relative to settled techniques.**
+This paper devotes substantial space to in-context Q-learning
+(§IV.G.B.3), flow-matching policies (§IV.E.B.5), and recent
+theoretical advances (§IV.I.C) — all subject to ongoing community
+consensus formation. Some claims in those subsections may be
+revised as the field consolidates. We have flagged the relevant
+sections with explicit "active research area" language where
+applicable, but readers should treat any specific claim about
+post-2024 work as more uncertain than the well-established results
+in §IV.A–D and §IV.H.
+
+A small note on broader ethical considerations: Q-learning's
+expanding role in robotics, recommender systems, and language-model
+alignment carries downstream policy implications that this survey
+does not address. A reader interested in the responsible deployment
+of value-based RL methods should consult the broader RL-safety and
+RL-policy literature (Saunders et al. 2023, Anderljung et al.
+2024) as complementary material.
+
+### E. Closing
 
 Q-learning's longevity as a foundational paradigm rests on its
 combination of conceptual simplicity and methodological extensibility.

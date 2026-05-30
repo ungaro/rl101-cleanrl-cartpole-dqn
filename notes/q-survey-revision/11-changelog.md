@@ -12,6 +12,50 @@ commit hash that introduced it.
 
 ---
 
+## v0.11 — 2026-05-30 — Session 4: scholarly apparatus
+
+Closes most of Reviewer 2's scholarly-apparatus and methodological
+asks. Six landings:
+
+- §IV.D.A — interpretive-lens paragraph explicitly framing the
+  distributional-RL placement under credit assignment as an
+  argued re-classification rather than canonical (one of the two
+  contested re-interpretations called out in 10-reviewer-audit)
+- §III "Source selection" rewritten as a PRISMA-flavored review
+  protocol: databases (Google Scholar, arXiv, Semantic Scholar),
+  search-string strategy, date cutoff (2026-05-15), inclusion vs
+  exclusion criteria, screening flow (~200 → ~120 → ~80), axis-
+  assignment protocol, per-paper extraction template. Honest
+  about the iterative non-PRISMA character: this is "narrative
+  review with empirical add-ons," not a pre-registered
+  systematic review
+- §III prior-art-sweep pointer for "first multi-axis problem-
+  first treatment of Q-learning" claim — names the supporting
+  audit so reviewers can independently verify
+- §V.G — Agarwal et al. 2021 (rliable / Statistical Precipice) and
+  Castro et al. 2020 / Obando-Ceron et al. 2021 (Revisiting
+  Rainbow) engagements added to the no-leaderboard discussion
+- §VI.E new — statistical reporting and limitations subsection
+  acknowledging the five-seed convention is insufficient by
+  rliable standards; soft-claim framing for the tabular results.
+  Also planning baselines (VI/PI/MPI/CVPI/MCTS) explicitly
+  reframed as planning oracles rather than learning peers, with
+  CVPI/MPI now defined on first use
+- §VIII.D new — Limitations and Ethics subsection covering
+  benchmark monoculture, compute inequality, citation bias in
+  narrative reviews, stale tooling, and overstating frontier
+  methods relative to settled techniques. §VIII closing renamed
+  to §VIII.E
+- New `draft/9-references.md` — first hand-curated References
+  section combining the numbered [1]–[55] inherited refs and the
+  ~50 named-year additions made during the revision. Will be
+  superseded by pandoc-citeproc + .bib wiring when that lands;
+  provides a visible References section in the PDF now
+
+Commit pending at time of writing.
+
+---
+
 ## v0.10 — 2026-05-30 — Second-review quick fixes + audit
 
 Three verifiable inconsistencies flagged by the second reviewer

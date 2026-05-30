@@ -220,6 +220,34 @@ best-results in Tables II/III; the axis-stratified narrative above
 substitutes evaluation against the *diagnostic categories* for the
 weaker comparison against per-game best.
 
+Two recent methodological contributions inform this decision and
+should be read alongside Tables II/III. [Agarwal et al. 2021,
+*Deep Reinforcement Learning at the Edge of the Statistical
+Precipice*] documents how the field's standard reporting practice —
+mean scores over three to five seeds, no confidence intervals —
+systematically misrepresents algorithmic performance. They introduce
+the *rliable* framework, which substitutes robust aggregate metrics
+(interquartile mean, optimality gap, probability of improvement)
+and stratified bootstrap confidence intervals for the point-estimate
+comparisons that have dominated Atari reporting since DQN [1]. Where
+the original-paper numbers we extract in Tables II/III are
+point-estimate scores under heterogeneous protocols, rliable
+provides the standard against which future Q-learning reports
+should be held. [Castro et al. 2020, *Revisiting Rainbow: Promoting
+More Insightful and Inclusive Deep Reinforcement Learning Research*]
+makes a complementary methodological case: small-scale,
+insight-oriented evaluation on the four-game ALE subset chosen to
+exercise distinct algorithmic dimensions can outperform full 57-game
+sweeps for understanding *which* mechanism in a compound agent
+matters. Castro et al.'s framework is methodologically aligned with
+the axis-stratified evaluation philosophy of this paper: their
+"insight-oriented" dimensions and our weakness axes both substitute
+mechanism-targeted evidence for breadth-by-default reporting. The
+limitations we discuss in §V.H below should be read in this
+context: not as Atari is bad, but as Atari is one evidence stream
+among several, and the conventions for reporting Atari results have
+themselves been updated since the period covered by Tables II/III.
+
 ### H. Limitations of Atari as a Q-learning benchmark
 
 The preceding subsections treat Atari as the evidence stream against

@@ -10,14 +10,35 @@ eight weakness axes introduced in §II.B — methods that respond to a
 recognizable weakness of vanilla Q-learning with a distinct
 mechanism.
 
-### A. Source selection
+### A. Source selection and review protocol
 
-We surveyed the value-based RL literature published between 1989 and
-early 2026, with primary attention to peer-reviewed venues (NeurIPS,
-ICML,
-ICLR, JMLR, *Nature*, IEEE journals) and to widely-cited preprints
-that have demonstrably shaped subsequent work. Five inclusion
-criteria were applied:
+This paper is best characterized as a *narrative review with
+empirical add-ons* rather than a strictly systematic review in the
+PRISMA sense: the synthesis is interpretive (each axis carries an
+argued reading of the methods it surveys), and the eight-axis
+framework was developed iteratively with the literature rather than
+applied as a pre-registered classification. We document the search
+and selection protocol here so that the resulting axis assignments,
+benchmark extractions, and repository comparisons can be
+independently audited.
+
+**Databases and search strategy.** Source candidates were
+identified from three databases: Google Scholar (broad coverage,
+citation-graph traversal), arXiv (cs.LG and cs.AI listings, primary
+source for preprints), and Semantic Scholar (citation-relationship
+analysis). The search ran from December 2025 through May 2026 with
+a cutoff date of 2026-05-15 for the late-2025 / 2026 paper sweep
+documented separately. Searches combined topical anchors
+("Q-learning", "deep Q-network", "DQN") with axis-specific terms
+("overestimation bias", "prioritized replay", "exploration bonus",
+"distributional reinforcement learning", "offline reinforcement
+learning", "value decomposition", "distributed reinforcement
+learning", "meta-reinforcement learning", "function approximation
+stability") and recency filters (publication date 2018-onward for
+deep-RL methods; full historical range for foundational results).
+
+**Inclusion and exclusion criteria.** Five inclusion criteria were
+applied:
 
 1. **Method centrality** — the work introduces a methodological
    contribution to the Q-learning family rather than applying
@@ -26,17 +47,66 @@ criteria were applied:
    distinguishable from prior work along at least one of the eight
    axes of §II.B.
 3. **Empirical validation** — the work reports results on a
-   recognized benchmark (Atari, classic control, D4RL, SMAC, or
-   equivalent).
-4. **Cross-reference impact** — the work is cited as foundational by
-   subsequent methods in the same axis-family.
-5. **Reproducibility** — code is publicly available or the algorithm
-   is sufficiently specified to be independently re-implemented.
+   recognized benchmark (Atari, classic control, D4RL, SMAC,
+   ProcGen, or equivalent).
+4. **Cross-reference impact** — the work is cited as foundational
+   by subsequent methods in the same axis-family, *or* the work was
+   published within the previous twelve months and represents an
+   active research thread.
+5. **Reproducibility** — code is publicly available or the
+   algorithm is sufficiently specified to be independently
+   re-implemented.
 
-Methods satisfying all five criteria received per-paper treatment.
-Methods satisfying a subset received compact treatment as part of a
-family (e.g. the dueling-mixing family in §IV.F is treated through
-its canonical members VDN, QMIX, QPLEX, QTRAN).
+Exclusion criteria removed: (a) application-domain papers using
+Q-learning as a black-box tool without methodological contribution;
+(b) workshop-only or non-archival preprints lacking subsequent
+follow-up; (c) methods that have been demonstrably superseded by
+equivalent-effort alternatives (e.g., we cover Maximin Q-Learning
+but not all of its precursors). Methods satisfying all five
+inclusion criteria received per-paper treatment. Methods satisfying
+a subset received compact treatment as part of a family (e.g., the
+value-decomposition family in §IV.F is treated through its
+canonical members VDN, QMIX, QPLEX, QTRAN, with QFIX added on the
+basis of criterion 4's twelve-month clause).
+
+**Screening flow.** Initial candidate identification produced
+approximately 200 papers; first-pass title/abstract screening
+narrowed this to approximately 120. A subsequent full-text
+screening against the five inclusion criteria produced
+approximately 80 papers receiving full per-method treatment, with
+an additional 20 cited at family or cross-reference level. We do
+not publish a strict PRISMA flow diagram here because the
+search-and-iterate process was non-linear: as the eight-axis
+framework crystallized, several methods that initially appeared
+incidental were promoted to per-paper status, and conversely some
+once-canonical entries were demoted to family-level mention. We
+treat this iteration as a methodological *limitation* rather than a
+defect (and surface it explicitly in §VIII.D); a strictly
+systematic review would have required pre-registering the axis
+framework before the literature search, which we did not.
+
+**Axis-assignment protocol.** Each method covered in §IV is
+assigned to a *primary axis* — the weakness whose response motivated
+the method's introduction — and zero or more *secondary axes* —
+additional weaknesses the method incidentally addresses or
+partially mitigates. Primary assignment is made on the basis of the
+method's stated motivation in its original publication and the
+predominant mechanism of its contribution. Where the original
+publication's motivation differs from our axis assignment (notably
+for distributional methods in §IV.D and Dueling DQN in §IV.H), the
+re-interpretation is argued explicitly within the section. The
+complete per-method mapping, including secondary axes and
+cross-references, appears in Appendix A.
+
+**Per-paper extraction template.** For methods receiving per-paper
+treatment, we extracted: (i) the formal weakness statement the
+method addresses (§IV.X.A reference); (ii) the key mechanism-
+defining equation; (iii) the primary empirical evidence reported in
+the original publication; (iv) trade-offs explicitly discussed by
+the authors; (v) any subsequent ablations or follow-up evaluations
+relevant to the trade-off discussion. This extraction template is
+not published as supplementary material in the current version, but
+the per-method writeups in §IV reflect its structure consistently.
 
 ### B. Comparison with prior surveys
 
@@ -49,10 +119,15 @@ Atari benchmarks, classic control benchmarks from controlled
 re-implementation, and per-paper review organized around mechanism
 and axis. Where prior surveys focus on chronological or method-type
 organization, this paper's problem-first axis structure (§IV) is, to
-our knowledge, the first such treatment of Q-learning specifically.
-The closest prior art is the single-axis problem-first organization
-of [Springer NCAA 2026], which addresses distribution shift in
-offline RL only.
+our knowledge, the first multi-axis problem-first treatment of
+Q-learning specifically. This claim is supported by a documented
+2024-2026 sweep across Google Scholar, arXiv (cs.LG and cs.AI), and
+Semantic Scholar that surveyed every recent Q-learning, DQN, and
+broad-RL survey we could identify; the closest prior art is the
+single-axis problem-first organization of [Springer NCAA 2026],
+which addresses distribution shift in offline RL only. Search
+strings, dates, and per-survey notes are recorded as supplementary
+material so the claim can be independently audited.
 
 \begin{table*}[t]
 \centering

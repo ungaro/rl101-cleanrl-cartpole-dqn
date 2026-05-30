@@ -147,3 +147,39 @@ discussion in the deep setting — but in the tabular setting it can
 be observed cleanly. The convergence of tabular and deep evidence on
 the same mechanistic claims, when present, is one of the stronger
 methodological supports for the problem-first organization.
+
+### E. Statistical reporting and limitations
+
+The five-seed mean ± standard-deviation reporting of Tables IV–VI
+is the standard convention for tabular Q-learning studies but is
+itself insufficient by the standards of [Agarwal et al. 2021,
+*Deep RL at the Edge of the Statistical Precipice*], which
+demonstrates that endpoint-only point-estimate comparisons
+substantially overstate the strength of conclusions drawn from
+small-seed RL experiments. We treat the §VI numbers as *indicative*
+of mechanism-driven trends rather than as statistically conclusive
+comparisons. A reproducibility-grade follow-up would adopt rliable's
+robust aggregate metrics (interquartile mean and probability of
+improvement with stratified bootstrap confidence intervals) over at
+least twenty seeds per algorithm-environment pair, and would
+publish learning curves alongside endpoint scores. We mark this as
+a methodological limitation rather than fixing it inside this
+section: the tabular results in §VI are not the load-bearing
+empirical evidence for the §IV axis claims (the Atari extraction of
+§V and the per-axis empirical-evidence subsections of §IV play that
+role); §VI primarily isolates algorithmic mechanism from
+architectural confound on small environments and is useful in
+proportion to that limited goal.
+
+The MCTS and Value/Policy/Modified-Policy/Combined-Value-Policy
+Iteration entries in Tables IV–VI deserve a framing note: they are
+*planning oracles*, not learning peers. Value Iteration (VI),
+Policy Iteration (PI), Modified Policy Iteration (MPI), and
+Combined Value-Policy Iteration (CVPI) require known transition
+dynamics and reward functions, which the Q-learning methods
+discover by interaction. Including them in the same table simplifies
+presentation but invites a comparison they were not designed for.
+Readers should interpret the planning-method entries as performance
+upper bounds reachable when dynamics are fully known, and the gap
+between learning methods and planning oracles as the cost of
+solving the unknown-dynamics problem.
