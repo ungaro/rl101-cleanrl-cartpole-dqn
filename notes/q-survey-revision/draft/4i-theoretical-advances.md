@@ -134,7 +134,16 @@ Concurrent work [Nikishin et al. 2022; *The Primacy Bias in Deep
 Reinforcement Learning*] identifies a related pathology — early
 training trajectories receive disproportionate optimization
 attention — and propose periodic reset of network parameters as a
-provable remedy under specific assumptions. These results begin to
+provable remedy under specific assumptions. The Lyle and Nikishin
+threads have since converged into a recognized sub-area; [Klein et
+al. 2026, *Plasticity Loss in Deep Reinforcement Learning: A
+Survey*] organizes over fifty mitigation strategies — periodic
+resets, regularization-to-initialization, weight-norm projections,
+auxiliary tasks, replay-rate manipulation — into a unified
+framework, classifying them by which neural-network failure mode
+each targets. The survey makes clear that plasticity loss is now
+treated as a first-class subject of deep-RL stability theory rather
+than a peripheral curiosity. Together these results begin to
 formalize the empirical observation that *what makes deep Q-learning
 work is not what classical theory predicts*.
 
@@ -222,6 +231,7 @@ the frontier.
 | Jin, Yang, Wang (2021) | Offline | Pessimism-based suboptimality bounds | Established | CQL/IQL/PCQ (§IV.E) |
 | Lyle et al. (2023) | Neural FA | Capacity-loss formalization | Active | PQN, modern stability recipes (§IV.H) |
 | Nikishin et al. (2022) | Neural FA | Primacy-bias identification and reset remedy | Active | Continual stability (§IV.H) |
+| Klein et al. (2026) | Neural FA | Plasticity-loss survey; >50 mitigation strategies organized | Active | Modern stability recipes (§IV.H) |
 | Wang et al. (2020, QPLEX) | Multi-agent | Complete IGM-compatible representation theorem | Established | QMIX/QPLEX (§IV.F) |
 
 The table makes the central asymmetry visible: the **classical**

@@ -1,5 +1,5 @@
 ---
-title: "Understanding Q-Learning and Deep Q-Learning in 2025: A Methodological and Empirical Survey"
+title: "Understanding Q-Learning and Deep Q-Learning in 2026: A Methodological and Empirical Survey"
 abstract: |
   Q-learning remains a cornerstone of Reinforcement Learning (RL),
   underpinning many state-of-the-art deep RL algorithms. Yet, despite

@@ -159,6 +159,23 @@ context window and a sufficiently diverse task distribution, a
 transformer-based Q-function can match or exceed MAML's few-shot
 adaptation performance without any explicit meta-update.
 
+The in-context line has consolidated since 2023 into a recognizable
+subfamily. Scalable In-Context Q-Learning (SICQL) [Liu et al. 2026,
+ICLR 2026] decouples policy and value into separate transformer
+heads, with a pretrained world model producing compact prompts that
+preserve the dynamic-programming structure of Q-bootstrapping inside
+the in-context computation. In-Context Compositional Q-Learning
+(ICQL) [Xu et al. 2026, ICLR 2026] takes a different angle: it casts
+Q-learning as contextual inference, with a linear-attention
+transformer inferring local Q-functions from retrieved transitions,
+and admits theoretical bounds on the inferred Q's accuracy under
+mild assumptions on the trajectory distribution. Both achieve
+substantial gains over AdA on the compositional-task subsets of
+Meta-World; together they establish in-context Q-learning as a
+distinct meta-RL family with its own emerging design space (prompt
+construction, value-head architecture, attention pattern) rather
+than as an opportunistic application of transformers.
+
 **Implicit vs. explicit meta-learning.** A central tension across
 these approaches is whether meta-learning should be *explicit* — a
 distinct outer-loop objective with hyperparameters governing

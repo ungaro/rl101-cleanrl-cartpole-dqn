@@ -276,6 +276,36 @@ generation and the repository spin-off URL.
 
 ---
 
+## Post-audit additions — late-2025 / early-2026 coverage sweep
+
+A May 2026 sweep of arXiv cs.LG / cs.AI for post-2025 Q-learning
+work (conducted after the three audit sessions above) surfaced five
+papers that merit inclusion. They have been integrated into the
+draft:
+
+| Paper | Where in draft | Why it matters |
+|---|---|---|
+| Nagarajan, White & Machado 2026 — Deep Double Q-Learning (DDQL) | §IV.A.B.1 | Revises a foundational citation: argues Double DQN is not equivalent to classical Double Q-learning; DDQL trains two genuinely independent networks; beats DDQN on 47/57 Atari games |
+| Liu et al. 2026 — Scalable In-Context Q-Learning (SICQL), ICLR 2026 | §IV.G.B.3 | Multi-head transformer with separate policy and Q-value heads, preserves DP-bootstrap structure inside ICRL |
+| Xu et al. 2026 — In-Context Compositional Q-Learning (ICQL), ICLR 2026 | §IV.G.B.3 | Linear-attention transformer infers local Q from retrieved transitions; theoretical bounds; substantial gains on Meta-World compositional subsets |
+| Baisero et al. 2025 — QFIX (Fixing Incomplete Value Function Decomposition) | §IV.F.B.5 (new) | Residual-correction layer on VDN/QMIX/QPLEX that recovers full IGM-completeness; simpler than QPLEX, consistent gains on SMACv2 + Overcooked |
+| Park, Li & Levine 2025 — Flow Q-Learning (FQL), ICML 2025 | §IV.E.B.5 (new) | One-step flow-matching policy with Q-learning; avoids recursive backprop through diffusion chains; strong across 73 D4RL/OGBench tasks |
+| Klein et al. 2026 — Plasticity Loss in DRL: A Survey | §IV.I.C.4 | Organizes 50+ mitigation strategies; the natural successor citation to Lyle 2023 / Nikishin 2022 for the modern stability-theory thread |
+
+The five primary additions cover the late-2025 / 2026 window the
+sweep identified as a real gap. Title updated to 2026; methodology
+end-date updated to "early 2026."
+
+**Honest negatives from the sweep:** no significant new value-based
+distributed system to add as a post-Agent57 successor; the
+benchmark / reproducibility-audit literature is quiet since Hundal
+2025; no breakthrough non-asymptotic theoretical result for deep
+Q-learning in this window beyond the plasticity-loss thread above.
+The field has consolidated post-2024 rather than opened new
+directions.
+
+---
+
 *Audit grounded in: pitch deck pages 17–24 (five-point feedback +
 team tasks), draft files in `draft/`, planning files in this
-directory.*
+directory, plus a May 2026 arXiv sweep for late-2025/2026 work.*

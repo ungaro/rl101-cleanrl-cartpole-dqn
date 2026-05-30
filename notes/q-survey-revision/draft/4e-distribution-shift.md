@@ -125,6 +125,24 @@ a)$, becomes pessimistic at points where ensemble members disagree
 ensemble methods of §IV.A and §IV.C, using the same architectural
 mechanism for a different axis.
 
+**B.5. Flow-matching policies with Q-learning.** A recent line of
+work integrates *flow matching* — a continuous-time generative-
+modeling technique adjacent to diffusion — with Q-learning. Flow
+Q-Learning (FQL) [Park, Li & Levine 2025, ICML 2025] trains a
+one-step flow-matching policy network conditioned on a Q-function,
+avoiding the recursive-backprop-through-diffusion-chain issue of
+earlier Diffusion-QL approaches. The policy generates actions in a
+single forward pass; the Q-function is trained with a standard
+TD-style loss against actions sampled from the flow policy. The
+method achieves consistent improvements across 73 D4RL and OGBench
+tasks in both pure-offline and offline-to-online settings, and the
+single-step generation removes the inference-time overhead that has
+limited diffusion-policy methods in deployment. FQL identifies
+flow-matching as a tractable alternative to diffusion for
+Q-learning-compatible policies and points toward a broader family
+of continuous-time generative policies that the offline RL
+community has begun to develop.
+
 ### C. Trade-offs
 
 - **Policy constraint vs. improvement bound.** BCQ, BRAC, AWAC

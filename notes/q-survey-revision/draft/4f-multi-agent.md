@@ -122,6 +122,22 @@ QTRAN represents the full IGM-compatible function class but is
 empirically harder to train than QMIX or QPLEX. Its expressiveness
 gain is not consistently realized in practice.
 
+**B.5. Completion via residual correction.** A recent line of work
+revisits the expressiveness-trainability tension by adding a
+*correction layer* on top of existing mixers rather than redesigning
+them. QFIX [Baisero et al. 2025, *Fixing Incomplete Value Function
+Decomposition*] introduces a small per-agent network that produces a
+residual correction to VDN, QMIX, or QPLEX outputs, with the
+correction trained to close the gap between the base mixer's
+representation and the full IGM-compatible class. The result is a
+single architecture that recovers the QPLEX expressiveness ceiling
+with simpler training dynamics, achieving consistent gains over both
+QMIX and QPLEX on the SMACv2 benchmark and on Overcooked. The
+contribution identifies the *base-plus-correction* pattern as a
+viable alternative to monolithic mixer redesign and offers a
+practical path to closing the expressiveness-trainability gap
+identified in §C below.
+
 ### C. Trade-offs
 
 - **Expressiveness vs. trainability.** The progression VDN → QMIX

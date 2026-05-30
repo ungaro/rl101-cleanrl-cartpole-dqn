@@ -13,7 +13,8 @@ mechanism.
 ### A. Source selection
 
 We surveyed the value-based RL literature published between 1989 and
-2025, with primary attention to peer-reviewed venues (NeurIPS, ICML,
+early 2026, with primary attention to peer-reviewed venues (NeurIPS,
+ICML,
 ICLR, JMLR, *Nature*, IEEE journals) and to widely-cited preprints
 that have demonstrably shaped subsequent work. Five inclusion
 criteria were applied:

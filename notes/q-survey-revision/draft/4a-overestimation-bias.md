@@ -60,6 +60,20 @@ This adds no additional networks beyond the target network DQN already
 maintains, which is a substantial part of its adoption: the cost is
 near-zero.
 
+A recent re-examination of this design — Deep Double Q-Learning (DDQL)
+[Nagarajan, White & Machado 2026] — argues that the Double DQN trick
+of using online and target networks as a decoupled pair is *not*
+equivalent to the original tabular Double Q-learning [31], which
+trains two genuinely independent estimators. Substituting a target
+network for the second estimator introduces a stale-bootstrap bias
+that Double Q-learning does not have. DDQL trains two independent
+$Q$-networks jointly, alternating which one updates at each step in
+the spirit of the tabular algorithm. The result is reduced
+overestimation and improved performance on 47 of 57 Atari games
+relative to Double DQN under matched compute. The result revisits a
+foundational citation of this section and identifies a long-overlooked
+gap between two methods often treated as equivalent in the literature.
+
 **B.2. Ensemble-mediated bias control (EBQL, REDQ).** Ensemble
 methods generalize the two-estimator idea to $K$ Q-estimators
 and tune the bias-variance trade-off explicitly.
