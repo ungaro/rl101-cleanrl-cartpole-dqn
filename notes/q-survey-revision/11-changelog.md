@@ -12,6 +12,25 @@ commit hash that introduced it.
 
 ---
 
+## v0.12 — 2026-05-30 — References-section meta-prose cleanup
+
+The Session 4 references file (`draft/9-references.md`) opened with
+a paragraph saying the list "combines the numbered references
+inherited from the original draft [1]–[55] with the named-year
+additions made during the 2026 revision." Reviewer-facing prose in
+the paper draft shouldn't reference an earlier version of itself.
+Rewritten to describe the list structure without the meta-history.
+Section headers updated: "Numbered references (carried over from
+prior draft)" → "Numbered references"; "Named-year references
+(added in revision)" → "Additional references." Wider sweep across
+the draft confirms no other "original draft" references remain.
+
+paper.pdf: 1.50 MB.
+
+Commit: `76d641d`
+
+---
+
 ## v0.11 — 2026-05-30 — Session 4: scholarly apparatus
 
 Closes most of Reviewer 2's scholarly-apparatus and methodological
@@ -47,12 +66,13 @@ asks. Six landings:
   methods relative to settled techniques. §VIII closing renamed
   to §VIII.E
 - New `draft/9-references.md` — first hand-curated References
-  section combining the numbered [1]–[55] inherited refs and the
-  ~50 named-year additions made during the revision. Will be
-  superseded by pandoc-citeproc + .bib wiring when that lands;
-  provides a visible References section in the PDF now
+  section. Will be superseded by pandoc-citeproc + .bib wiring
+  when that lands; provides a visible References section in the
+  PDF now
 
-Commit pending at time of writing.
+paper.pdf: 1.50 MB.
+
+Commit: `579e69a`
 
 ---
 
@@ -75,7 +95,9 @@ remaining content gaps and methodological asks.
   (24 asks; 7 already covered, 3 quick-fixed this turn, ~14 needing
   new content sessions, ~5 cross-cutting)
 
-(Commit pending at time of writing this entry.)
+paper.pdf: 1.46 MB.
+
+Commit: `d64302b`
 
 ---
 
@@ -319,3 +341,9 @@ To add an entry, append a new `## v0.N+1 — DATE — short title`
 section at the top of the file (after this introduction). Keep
 entries skimmable; longer rationale belongs in the audit files or
 commit messages.
+
+**Update cadence:** after every commit that rebuilds `paper.pdf`,
+add or amend a version entry recording (a) what changed, (b) the
+new PDF size, (c) the commit hash. Multi-commit sessions can be
+bundled under a single version when the intermediate commits don't
+each ship a PDF; the version entry then names the final commit.
