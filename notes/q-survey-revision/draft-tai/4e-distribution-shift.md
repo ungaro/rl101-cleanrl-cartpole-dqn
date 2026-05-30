@@ -17,7 +17,7 @@ penalty; and AWAC [@nair_2020_awac] uses an advantage-weighted update
 $\pi(a\mid s)\propto\pi_b(a\mid s)\exp(A(s,a)/\beta)$ that bridges to online
 fine-tuning. (ii) *Value penalty* — CQL [@kumar_2020_cql] adds a regularizer that
 pushes $Q$ down at OOD actions and up on in-distribution ones, yielding a
-lower bound on $V^\pi$. (iii) *Avoiding the max* — IQL [@kostrikov_2021_iql] drops
+lower bound on $V^\pi$. (iii) *Avoiding the max* — IQL [@kostrikov_2022_iql] drops
 the $\max$ entirely, learning a state value via expectile regression and backing
 up $Q(s,a)\leftarrow r+\gamma V(s')$, so extrapolation error is structurally
 prevented. (iv) *Ensemble diversification* — EDAC [@an_2021_edac] takes a

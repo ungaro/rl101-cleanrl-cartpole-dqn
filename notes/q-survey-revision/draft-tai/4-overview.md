@@ -97,12 +97,11 @@ the credit-assignment weakness (W4).
 
 ### B. Branches outside the conventional taxonomy
 
-Figure 2 below shows three Q-learning branches that emerged outside
-the conventional six-category mechanism taxonomy — families that
-respond to weaknesses (distribution shift, multi-agent coordination,
-distributed scale and meta-adaptation) that the method-type taxonomy has
-no category to hold. These are the methods that motivate §IV.E,
-§IV.F, and §IV.G.
+Figure 2 traces the lineage of the three post-DQN branches that
+motivate §IV.E, §IV.F, and §IV.G — offline RL, multi-agent value
+decomposition, and distributed/meta methods. The method-type table
+above already noted that these families postdate the six-category
+taxonomy; the figure shows where they split from the DQN trunk.
 
 ```mermaid
 %% caption: Q-learning branches outside the conventional six-category mechanism taxonomy — offline RL (§IV.E), multi-agent value decomposition (§IV.F), and distributed / meta-learning (§IV.G).
@@ -189,8 +188,8 @@ complement to the mechanism view above.
 
 : Each weakness, its origin, the axis it most strongly interacts with,
 and the symptom that signals it in deployment. Most interaction paths
-lead back to W8 (function-approximation stability), which the matrix
-above already shows as the field's central failure mode.
+lead back to W8 (function-approximation stability), the field's
+recurring failure mode.
 
 ### E. Section roadmap
 

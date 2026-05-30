@@ -30,9 +30,9 @@ compatible with the KL-regularized objective and removing the
 online rollouts that policy-gradient RLHF requires. A third,
 Q-sharp (Q♯), targets provable behavior by guiding the reference
 policy with a *distributional* Q-function, trading lower KL for a
-given reward gain. In-context variants — SICQL and ICQL — fit
-transformer Q-functions that adapt at inference time with no
-gradient updates, and reward-shaping approaches such as Q-shaping
+given reward gain. In-context variants — SICQL and ICQL, also discussed
+under adaptation in [§IV.G](#sec-iv-g) — fit transformer Q-functions
+that adapt at inference time with no gradient updates, and reward-shaping approaches such as Q-shaping
 inject value estimates as auxiliary shaping signal rather than as
 the optimization target.
 

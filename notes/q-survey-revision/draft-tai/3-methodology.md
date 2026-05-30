@@ -54,7 +54,7 @@ ledger is supplementary material.
 **Comparison with prior surveys.** Table I positions this paper
 against five prior Q-learning–focused surveys
 [@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey]
-and [@ghasemi_2024_rlsurvey] along five distinguishing dimensions.
+and [@ghasemi_2024_rlsurvey] along six distinguishing dimensions.
 Where those surveys organize chronologically or by method type, this
 paper's problem-first axis structure ([§IV](#sec-iv)) is, to our
 knowledge, the first multi-axis problem-first treatment of Q-learning;

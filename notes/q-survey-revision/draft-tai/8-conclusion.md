@@ -36,6 +36,11 @@ For each weakness, §IV surveys the families of methods that respond:
   architectural decomposition (Dueling), normalization recipes (PQN),
   and consolidation losses (MeDQN, Munchausen DQN).
 
+Two further subsections round out §IV: **§IV.I** synthesizes the
+theoretical foundations underlying these axes (convergence, offline
+pessimism, stability, and IGM results), and **§IV.J** surveys the
+emerging use of Q-learning for foundation-model alignment.
+
 Sections V and VI present axis-stratified empirical evidence,
 showing that methods targeting weakness $W_i$ excel on the task
 categories that diagnose $W_i$ and remain near baseline elsewhere.
@@ -74,7 +79,7 @@ The repository would have four design priorities:
    style of Hundal et al. [@hundal_2025_interchangeable].
 
 The repository's initial roadmap would prioritize the nine methods
-in §VII.C as the first implementation targets, followed by the
+in §VII as the first implementation targets, followed by the
 offline-RL family (CQL, IQL, EDAC), the multi-agent value-
 decomposition family (QMIX, QPLEX, VDN), and the
 distributed-Q family (Ape-X, R2D2, Agent57). Cross-references
@@ -85,8 +90,8 @@ sections would let practitioners navigate from "I face problem $X$"
 
 ### C. Open research directions, by axis
 
-The "Open Questions" subsections (E) of each §IV axis-section
-collectively summarize the field's frontier. We highlight four
+The "Open questions" paragraph closing each §IV axis-section
+collectively summarizes the field's frontier. We highlight four
 cross-axis directions of particular promise:
 
 **The compute-vs.-algorithmic tradeoff.** The empirical pattern in
@@ -119,11 +124,12 @@ analog — the learned policy meets a state distribution different
 from the one it was trained on — is largely unaddressed. Sim-to-real
 transfer in robotic Q-learning, OOD robustness against perturbations,
 and online policy correction at deployment time all live in this
-regime. The newer benchmarks of §V.I (ProcGen for procedural
-variation, CARL for context generalization, RLBench for
-sim-to-real) begin to provide evaluation infrastructure, but no
-unified Q-learning treatment of *deployment* distribution shift
-exists. This is the axis where the gap between Atari-evaluated
+regime. The newer benchmarks surveyed in §V (ProcGen, NetHack,
+BSuite, D4RL, SMAC) provide partial infrastructure, but dedicated
+context-generalization and sim-to-real suites such as CARL
+[@benjamins_2021_carl] and RLBench [@james_2020_rlbench] sit largely
+outside current Q-learning evaluation, and no unified Q-learning
+treatment of *deployment* distribution shift exists. This is the axis where the gap between Atari-evaluated
 methods and real-world deployment is most visible, and where
 Q-learning's value-based perspective could productively engage with
 robotics, control, and operations-research literature that has
@@ -137,13 +143,13 @@ direct model-harm concerns. We surface five limitations explicitly.
 
 **Benchmark monoculture.** Tables II–III's reliance on Atari and
 §VI's tabular Gymnasium environments reflects the field's
-historical convention. As documented in §V.H, Atari is a strong
+historical convention. As documented in §V, Atari is a strong
 benchmark for a specific set of weaknesses (exploration, credit
 assignment, function-approximation stability) and a weak one for
 others (sample efficiency at small budgets, generalization across
 procedural variation, continuous control, real-world deployment).
 A survey that elevates Atari evidence to load-bearing status
-inherits these gaps. We have partly mitigated this through §V.I's
+inherits these gaps. We have partly mitigated this through §V's
 coverage of ProcGen, NetHack, BSuite, D4RL, and SMAC and through
 §IV.E and §IV.F's adoption of D4RL and SMAC respectively, but the
 breadth of evaluation evidence remains uneven across the eight
@@ -156,7 +162,7 @@ industrial labs. By including these methods alongside academically
 reproducible alternatives without flagging the gap, a survey
 risks implicitly endorsing a research culture where frontier work
 is structurally inaccessible to most readers. §IV.G's discussion of
-the compute-versus-algorithmic trade-off and §V.H.5 on compute
+the compute-versus-algorithmic trade-off and §V on compute
 scale begin to address this, but the field-wide tension between
 *algorithmic discovery* and *compute-driven discovery* is
 underdeveloped here and warrants explicit treatment in future
@@ -186,8 +192,8 @@ comparison rather than as a one-shot artifact.
 
 **Frontier methods overstated relative to settled techniques.**
 This paper devotes substantial space to in-context Q-learning
-(§IV.G.B.3), flow-matching policies (§IV.E.B.5), and recent
-theoretical advances (§IV.I.C) — all subject to ongoing community
+(§IV.G), flow-matching policies (§IV.E), and recent
+theoretical advances (§IV.I) — all subject to ongoing community
 consensus formation. Some claims in those subsections may be
 revised as the field consolidates. We have flagged the relevant
 sections with explicit "active research area" language where

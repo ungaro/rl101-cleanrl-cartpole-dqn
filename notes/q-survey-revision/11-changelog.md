@@ -12,6 +12,46 @@ commit hash that introduced it.
 
 ---
 
+## v0.23 — 2026-05-30 — Coherence pass (fix distillation seams)
+
+A read-only end-to-end coherence review surfaced seams left by the
+section-by-section distillation — mostly the conclusion and intro still
+pointing into the *old* lettered/sub-subsection structure that the
+distilled sections no longer have. Fixes:
+
+- **Dangling references repaired.** The conclusion referenced
+  subsections that no longer exist — `§VII.C`, `§V.H`, `§V.I`,
+  `§V.H.5`, `§IV.G.B.3`, `§IV.E.B.5`, `§IV.I.C`, and "Open Questions
+  subsections (E)" — all repointed to the flat section anchors that
+  exist (`§VII`, `§V`, `§IV.G`, etc.).
+- **Conclusion summary completed.** §VIII.A enumerated only §IV.A–H;
+  added §IV.I (theory) and §IV.J (alignment), which it had silently
+  dropped.
+- **Broken citation fixed.** `@kostrikov_2021_iql` (not in refs.bib) →
+  `@kostrikov_2022_iql` in the offline-RL section.
+- **CARL / RLBench** were attributed to §V but appear nowhere in it;
+  the conclusion now cites them properly
+  ([@benjamins_2021_carl], [@james_2020_rlbench]) as the
+  context-generalization / sim-to-real gap, and credits §V only with
+  the benchmarks it actually surveys.
+- **Table I double-binding fixed.** §I no longer claims the five
+  contributions are "summarized in Table I" (Table I is the
+  prior-survey comparison); §III's "five distinguishing dimensions"
+  corrected to "six" to match the table's six rows.
+- **Abstract** weakness list: "slow adaptation" → "scaling and slow
+  adaptation" to match the composite W7 axis used in the body.
+- **§IV.J** now cross-links SICQL/ICQL to §IV.G instead of
+  re-introducing them; **VDN** year made consistent (2017); §IV
+  overview redundancy trimmed (branches figure reframed around lineage;
+  duplicate "W8 is central" restatement removed).
+
+Page count: 19 (unchanged). Clean build, zero undefined citations, no
+dangling cross-references.
+
+Commit: TBD
+
+---
+
 ## v0.22 — 2026-05-30 — Front-matter cleanup + compression → 19 pages
 
 Stale-reference cleanup and front-matter distillation; opens headroom

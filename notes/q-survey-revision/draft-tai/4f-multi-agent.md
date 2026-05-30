@@ -54,7 +54,7 @@ behavior — remain among the cleanest cross-axis open problems.
 
 | Method (year) | Representational capacity | Training stability | Core mechanism |
 |---|---|---|---|
-| VDN (2018) | Lowest (additive only) | Highest | $Q_\text{tot}=\sum_i Q_i$ |
+| VDN (2017) | Lowest (additive only) | Highest | $Q_\text{tot}=\sum_i Q_i$ |
 | QMIX (2018) | Medium (monotonic) | High | State-conditioned monotonic hypernetwork mixer |
 | QPLEX (2020) | High (full IGM class) | Medium | Duplex dueling on advantage streams |
 | QTRAN (2019) | Maximum (unconstrained) | Lowest | Unconstrained joint $Q$ + auxiliary IGM losses |

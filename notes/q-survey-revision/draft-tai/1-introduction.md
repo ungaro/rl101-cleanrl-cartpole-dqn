@@ -66,8 +66,7 @@ form an explicit map of the field's connective tissue.
 
 This organization preserves all of the paper's empirical and
 bibliographic contributions while reframing the surrounding analysis.
-Five distinguishing contributions, summarized in Table I, support the
-reframing:
+Five distinguishing contributions support the reframing:
 
 1. A unified problem-axis taxonomy that integrates tabular Q-learning,
    classical deep Q-learning, and modern Q-based methods (offline RL,
