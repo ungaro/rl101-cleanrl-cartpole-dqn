@@ -12,6 +12,34 @@ commit hash that introduced it.
 
 ---
 
+## v0.19 — 2026-05-30 — Terminology: "method-type taxonomy" defined once, up front
+
+Reviewer-driven clarity fix. The conventional method-organization scheme
+was referred to three inconsistent ways — "legacy taxonomy", "method-type
+taxonomy", "conventional six-category taxonomy" — with "legacy" wrongly
+implying it was the authors' own deprecated scheme, and the actual
+category↔axis mapping deferred to an end-of-paper appendix.
+
+- **One term everywhere: "method-type taxonomy."** All "legacy"
+  phrasing removed from the manuscript.
+- **Defined once, up front (start of §IV), with a table** listing the
+  six method-type categories (Statistical, Q-Function Computation,
+  Memory/Replay, Ensemble-Based, Model-Based, Pure Q-Learning), what
+  each groups, example methods, and *which problem axes each category's
+  methods land in*. The reader meets the concept together with its
+  mapping; every later mention is just the term.
+- **Appendix A removed from the core** (the deferred per-method index);
+  full per-method mapping → supplementary. All dangling "Appendix A/B"
+  references (intro, methodology, conclusion, §VII) now point to
+  supplementary material.
+
+Page count: 26 (unchanged — clarity, not compression). Clean build,
+zero undefined citations.
+
+Commit: TBD
+
+---
+
 ## v0.18 — 2026-05-30 — TAI distillation: §IV.I/J demoted + appendices to supplementary
 
 - **§IV.I (theoretical advances)** distilled 1893 → 250 words: a

@@ -32,10 +32,10 @@ FILES=(
   4g-scaling-adaptation.md 4h-stability.md 4i-theoretical-advances.md
   4j-foundation-model-alignment.md
   5-atari-benchmarks.md 6-tabular-empirical.md 7-repositories.md 8-conclusion.md
-  A-legacy-indexer.md
 )
-# Appendix B (notation & selected proofs) lives in Supplementary Materials,
-# sourced from draft-monograph/B-notation-and-proofs.md — not built into the core.
+# Supplementary Materials (not built into the core), sourced from
+# draft-monograph/: Appendix A (full per-method method-type index;
+# the §IV table covers the summary) and Appendix B (notation & proofs).
 
 TMP="$(mktemp -t q-tai-XXXXXX.md)"
 trap 'rm -f "$TMP"' EXIT

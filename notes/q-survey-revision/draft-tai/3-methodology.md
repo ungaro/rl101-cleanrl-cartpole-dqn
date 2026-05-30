@@ -96,7 +96,7 @@ publication's motivation differs from our axis assignment (notably
 for distributional methods in §IV.D and Dueling DQN in §IV.H), the
 re-interpretation is argued explicitly within the section. The
 complete per-method mapping, including secondary axes and
-cross-references, appears in Appendix A.
+cross-references, is provided as supplementary material.
 
 **Per-paper extraction template.** For methods receiving per-paper
 treatment, we extracted: (i) the formal weakness statement the
@@ -164,10 +164,10 @@ section.
 Cross-references between axis-sections — e.g., Rainbow appearing in
 §IV.B (primary) and being cross-referenced from §IV.A, §IV.C, §IV.D,
 and §IV.H — surface the connective tissue that catalogue-style
-surveys obscure. Appendix A provides a legacy indexer mapping each
-method to both the problem-first axis assignment and the prior
-method-type taxonomy, supporting readers who arrive expecting the
-older organization.
+surveys obscure. The method-type taxonomy table in §IV gives the
+category-level mapping; a full per-method index supporting readers who
+arrive expecting the older organization is provided as supplementary
+material.
 
 ### D. Empirical evidence sources
 

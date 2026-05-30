@@ -166,11 +166,11 @@ surveys.
 reduces a large field to "canonical methods" can inadvertently
 erase negative results, replication studies, and less-publicized
 alternatives — even when, as here, the source selection criteria
-are documented (§III.A). We provide the prior-art sweep as
-supplementary material — the audit trail for our differentiation
-claim — and Appendix A's legacy indexer to allow navigation through
-the conventional taxonomy, but we cannot eliminate the bias
-inherent in narrative selection. Readers seeking a more systematic
+are documented (§III.A). We provide the prior-art sweep and a full
+per-method method-type index as supplementary material — the audit
+trail for our differentiation claim and a bridge to the older
+organization — but we cannot eliminate the bias inherent in narrative
+selection. Readers seeking a more systematic
 review-of-reviews should consult the Springer NCAA 2026 offline-RL
 distribution-shift survey and the broader-RL surveys of Ghasemi
 2024/2025 and Murphy 2024/2025 as complementary navigations of

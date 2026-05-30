@@ -52,7 +52,7 @@ with their reading.
 
 Table: **Reported Atari benchmark performance (raw per-game scores), Part I.** Reaction-Time Control / Strategic Planning / Sparse Rewards / Dense Rewards. "—" indicates the original paper did not report a score for that game.
 
-| Method (year) | Legacy category | Breakout | Sp. Inv. | Ms. Pac-Man | Q*bert | Montezuma | Pitfall! | Boxing | Enduro |
+| Method (year) | Method type | Breakout | Sp. Inv. | Ms. Pac-Man | Q*bert | Montezuma | Pitfall! | Boxing | Enduro |
 |---|---|---|---|---|---|---|---|---|---|
 | Param Space Noise (2017) | Statistical | 390 | 1,205 | — | 7,525 | 0 | -100 | — | 1,672 |
 | C51 (2017) | Statistical | 748 | 5,747 | 3,415 | 23,784 | 0 | 0 | 98 | 3,454 |
@@ -82,7 +82,7 @@ Table: **Reported Atari benchmark performance (raw per-game scores), Part I.** R
 
 Table: **Reported Atari benchmark performance, Part II.** Large Observation Space / Partially Observable / Stochastic Environments.
 
-| Method (year) | Legacy category | River Raid | Priv. Eye | Frostbite | Hero | Zaxxon | Berzerk |
+| Method (year) | Method type | River Raid | Priv. Eye | Frostbite | Hero | Zaxxon | Berzerk |
 |---|---|---|---|---|---|---|---|
 | Param Space Noise (2017) | Statistical | — | 100 | 1,310 | — | 8,050 | — |
 | C51 (2017) | Statistical | 17,322 | 15,095 | 3,965 | 38,874 | 10,513 | 1,645 |

@@ -9,7 +9,35 @@ problem-first: each subsection corresponds to one weakness,
 groups responses by mechanism, and compares them on the trade-offs
 they introduce.
 
-This subsection orients the reader through three artifacts: a
+**The method-type taxonomy.** Prior Q-learning surveys
+[@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey]
+organize methods by *type* — what kind of mechanism a method is. We
+call this the *method-type taxonomy* and use that term throughout.
+The table below lists its six categories and, crucially, shows where
+each category's methods fall among the eight problem axes. The categories
+cut *across* the axes: statistical methods split between exploration
+(§IV.C) and credit assignment (§IV.D), and ensemble methods between
+overestimation control (§IV.A) and exploration (§IV.C). A problem-first
+organization regroups exactly these cross-cutting cases by the weakness
+each method addresses rather than by what the method is. (The full
+per-method mapping is provided as supplementary material.)
+
+| Method-type category | Groups methods that… | Examples | Problem axes |
+|---|---|---|---|
+| Statistical | model the return distribution or inject parameter noise | C51, QR-DQN, NoisyNet | §IV.C, §IV.D |
+| Q-Function Computation | alter how the bootstrap target is computed | Double DQN, Dueling, Rainbow | §IV.A, §IV.B, §IV.H |
+| Memory / Replay | change what experience is stored and replayed | DQN, PER, DQfD, HER | §IV.B |
+| Ensemble-Based | maintain several Q-estimators | Bootstrapped DQN, EBQL, REDQ | §IV.A, §IV.C |
+| Model-Based | use a model or a posterior over values | Bayesian Q, Posterior-Sampling DQN | §IV.C, §V |
+| Pure Q-Learning | tabular or minimal value iteration | Q-learning, SARSA, NFQ | §V, §IV.H |
+
+: The method-type taxonomy used by prior Q-learning surveys — its six
+categories and where each category's methods fall among this paper's
+eight problem axes. Families that postdate this taxonomy (offline RL
+§IV.E, multi-agent §IV.F, distributed/meta §IV.G) have no method-type
+category at all.
+
+This subsection orients the reader through three further artifacts: a
 method genealogy showing the inheritance relationships between
 Q-learning's variants, a companion figure showing the modern-RL
 branches that have emerged outside the conventional taxonomy, and
@@ -73,7 +101,7 @@ the credit-assignment weakness (W4).
 Figure 2 below shows three Q-learning branches that emerged outside
 the conventional six-category mechanism taxonomy — families that
 respond to weaknesses (distribution shift, multi-agent coordination,
-distributed scale and meta-adaptation) that the legacy taxonomy has
+distributed scale and meta-adaptation) that the method-type taxonomy has
 no category to hold. These are the methods that motivate §IV.E,
 §IV.F, and §IV.G.
 
@@ -97,7 +125,7 @@ flowchart TD
 
 The visual absence of these branches from prior Q-learning surveys
 [@urtans_2018_pygame; @jang_2019_qsurvey; @boppiniti_2021_evolution; @hafiz_2023_dqnsurvey] is one of the most direct empirical arguments for the
-structural pivot of §IV. The legacy taxonomy classifies methods by
+structural pivot of §IV. The method-type taxonomy classifies methods by
 mechanism type; these branches require new mechanism categories
 (constrained policies, value decomposition, distributed actors,
 meta-learning) that did not exist when the original taxonomy was
