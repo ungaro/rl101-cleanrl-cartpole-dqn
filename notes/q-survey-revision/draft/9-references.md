@@ -1,15 +1,10 @@
 # References {#sec-references}
 
-This list combines the numbered references inherited from the
-original draft [1]–[55] with the named-year additions made during
-the 2026 revision. Entries are presented in IEEE format. For
-pandoc-citeproc–driven auto-generation against a `.bib` file, the
-build script's `--citeproc --bibliography refs.bib --csl ieee.csl`
-flags can be enabled once the bibliography file is finalized; the
-hand-curated list below serves as the canonical bibliography until
-that wiring is in place.
+Entries are presented in IEEE format. The numbered references
+[1]–[55] correspond to the bracketed in-text citations; named-year
+references appear in alphabetical order below.
 
-## Numbered references (carried over from prior draft)
+## Numbered references
 
 [1] V. Mnih, K. Kavukcuoglu, D. Silver, A. A. Rusu, J. Veness, M. G.
 Bellemare, A. Graves, M. Riedmiller, A. K. Fidjeland, G. Ostrovski,
@@ -236,7 +231,7 @@ International Conf. Neural Networks*, 1993.
 Foerster, and M. Martin, "Simplifying deep temporal difference
 learning," arXiv:2407.04811, 2024.
 
-## Named-year references (added in revision)
+## Additional references
 
 C. Watkins, "Learning from delayed rewards," Ph.D. dissertation,
 King's College, Cambridge, U.K., 1989.
