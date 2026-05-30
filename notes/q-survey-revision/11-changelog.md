@@ -76,7 +76,7 @@ Closes Reviewer 1's four largest content-addition asks
 paper.pdf: 1.53 MB. Math-mode wrapping applied to ♯ (Q$^\sharp$) and ✓
 ($\checkmark$) glyphs not in Latin Modern Roman.
 
-Commit: pending push.
+Commit: `351b985`
 
 ---
 
