@@ -54,6 +54,7 @@ notes/q-survey-revision/
     ├── 4f-multi-agent.md          (§IV.F, W6) ← new multi-agent
     ├── 4g-scaling-adaptation.md   (§IV.G, W7) ← new distributed/meta
     ├── 4h-stability.md            (§IV.H, W8)
+    ├── 4i-theoretical-advances.md (§IV.I — theory)
     ├── 5-atari-benchmarks.md      (§V)
     ├── 6-tabular-empirical.md     (§VI)
     ├── 7-repositories.md          (§VII)

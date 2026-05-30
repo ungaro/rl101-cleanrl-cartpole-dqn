@@ -103,29 +103,78 @@ the dominant pattern in frontier distributed agents and points
 toward a hybrid taxonomy that the problem-first organization
 explicitly supports.
 
-**B.3. Meta-learning on the Q-function.** MAML [Finn et al. 2017]
-applied to Q-learning [Mendonca et al. 2019, related work] trains
-across a task distribution $p(\mathcal{T})$ to find an
-initialization $\theta_0$ from which a few gradient steps on any
-sampled task produce a good task-specific Q-function. The
-meta-objective is
+**B.3. Meta-learning on the Q-function.** Methods in this family
+train across a *distribution* of tasks $p(\mathcal{T})$ rather than a
+single task, with the goal of producing agents that adapt to a new
+sampled task in a small number of episodes. Three mechanisms recur,
+distinguished by *what is meta-learned*: an initialization, a context
+embedding, or a forward-pass update rule.
+
+*Optimization-based meta-learning.* MAML [Finn et al. 2017] applied
+to Q-learning [Mendonca et al. 2019] trains an initialization
+$\theta_0$ from which a few gradient steps on any sampled task
+produce a good task-specific Q-function:
 
 $$
 \theta_0^\ast = \arg\min_{\theta_0} \mathbb{E}_{\mathcal{T} \sim p(\mathcal{T})}\bigl[\mathcal{L}_{\mathcal{T}}(\theta_0 - \alpha \nabla_{\theta_0} \mathcal{L}_{\mathcal{T}}(\theta_0))\bigr],
 $$
 
 requiring second-order gradients through the inner-loop adaptation.
-Reptile-Q [Nichol et al. 2018, RL extension] proposes a first-order
-approximation that retains most of the empirical performance at
-substantially lower compute.
+Reptile-Q [Nichol et al. 2018] proposes a first-order approximation
+that retains most of the empirical performance at substantially
+lower compute. ProMP [Rothfuss et al. 2019] introduces a proximal
+constraint on the inner-loop update — a low-variance estimator that
+substantially stabilizes meta-policy gradient computation and was
+adopted by several subsequent meta-RL works.
 
-Meta-RL on the Q-function has produced strong results on small-scale
-benchmarks (MetaWorld, Meta-MuJoCo) but has not transferred to
-Atari-scale evaluation. The compute cost of meta-training on a
-distribution of Atari games approaches prohibitive scales; the more
-productive path has been the *implicit* meta-learning of Agent57
-(a single agent trained to handle the entire Atari distribution at
-once) rather than the *explicit* meta-learning of MAML.
+*Context-based meta-learning.* PEARL [Rakelly et al. 2019] takes a
+different approach: rather than learning an initialization that
+adapts via gradient steps, PEARL learns a *context inference network*
+$q_\phi(z \mid c)$ that infers a low-dimensional task embedding $z$
+from a context buffer $c$ of recent transitions. The Q-function is
+then conditioned on the inferred context, $Q(s, a, z; \theta)$. At
+deployment, the agent samples $z$ from $q_\phi$ and acts greedily
+with respect to $Q(\cdot, \cdot, z)$ — no gradient adaptation
+required. The approach decouples meta-training (expensive,
+distribution-wide) from meta-deployment (cheap, single forward pass).
+
+Meta-Q-Learning (MQL) [Fakoor et al. 2020] extends PEARL's context
+approach to off-policy multi-task settings. MQL maintains a single
+shared Q-network plus a multi-task replay buffer, using
+*propensity-score weighting* to correct for the differing visitation
+distributions across training tasks. The approach achieves
+state-of-the-art on the Meta-World benchmark with substantially less
+inner-loop compute than MAML-Q variants.
+
+*Forward-pass / in-context meta-learning.* A more recent line of
+work treats meta-RL as a sequence-modeling problem: a transformer
+network is trained on trajectories from many tasks, and at
+deployment the agent's transformer "reads" the recent trajectory and
+predicts the next action without any parameter updates. The Q-value
+estimation becomes a forward-pass computation rather than an
+optimization. AdA / In-Context Learning approaches [Team Adaptable
+Agents 2023; Laskin et al. 2023, *In-Context Reinforcement Learning
+with Algorithm Distillation*] demonstrate that, given a sufficient
+context window and a sufficiently diverse task distribution, a
+transformer-based Q-function can match or exceed MAML's few-shot
+adaptation performance without any explicit meta-update.
+
+**Implicit vs. explicit meta-learning.** A central tension across
+these approaches is whether meta-learning should be *explicit* — a
+distinct outer-loop objective with hyperparameters governing
+inner-loop adaptation (MAML, ProMP) — or *implicit* — a single
+agent trained across the entire task distribution at once, with no
+meta-objective at all (Agent57, AdA). Empirically, the implicit path
+has been more productive at scale: Agent57's bandit-controlled
+policy portfolio matches or exceeds explicit meta-learners on
+within-distribution Atari tasks, and AdA achieves few-shot
+adaptation on 3D-world tasks without an explicit MAML-style outer
+loop. The explicit approaches retain advantages on *narrow* task
+distributions where the inductive bias of a fast-adaptation objective
+helps, and on settings where context windows are insufficient to
+encode the task implicitly. The right framework remains an open
+question that the cross-axis composition of Agent57 (§IV.C, §IV.B,
+this section) makes especially visible.
 
 **B.4. Recurrent architectures for partial observability.** Deep
 Recurrent Q-Network (DRQN) [Hausknecht & Stone 2015] introduces an

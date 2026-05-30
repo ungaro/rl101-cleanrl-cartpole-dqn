@@ -164,9 +164,15 @@ The remainder of §IV proceeds axis by axis:
 - **§IV.H** Function-approximation instability — target networks,
   architectural decomposition, normalization recipes, consolidation
   losses.
+- **§IV.I** Theoretical foundations and recent advances —
+  convergence theory, finite-time bounds, pessimism in offline RL,
+  stability theory, and IGM theorems. A meta-section that surveys
+  the theoretical landscape underlying the eight axes above.
 
-Each subsection ends with **F. Comparison summary**: a uniform
-six-column table (method / mechanism category / mechanism / cost /
-best-at / empirical anchor) and, where the trade-off is naturally
-two-dimensional, a 2D positioning grid. §IV.E additionally provides
-a method-selection decision tree for practitioner use.
+Each axis subsection (A–H) ends with **F. Comparison summary**: a
+uniform six-column table (method / mechanism category / mechanism /
+cost / best-at / empirical anchor) and, where the trade-off is
+naturally two-dimensional, a 2D positioning grid. §IV.E additionally
+provides a method-selection decision tree for practitioner use.
+§IV.I substitutes a results-by-year theoretical-status table for the
+comparison grid since its entries are theorems rather than methods.

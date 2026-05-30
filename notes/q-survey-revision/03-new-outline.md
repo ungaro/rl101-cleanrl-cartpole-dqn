@@ -152,6 +152,16 @@ The eight sections:
 - This is where the foundational *deep RL* recipe lives, separated from
   the more exotic enhancements
 
+**IV.I. Theoretical Foundations and Recent Advances** ✓ — [`draft/4i-theoretical-advances.md`](draft/4i-theoretical-advances.md)
+- Watkins & Dayan 1992 tabular convergence; Tsitsiklis & Van Roy
+  1997 deadly-triad counterexamples; Baird 1995; GTD/TDC line
+- Distributional Bellman contraction (Bellemare 2017, Rowland 2018);
+  finite-time bounds (Yang 2019, Fan 2020); pessimism in offline RL
+  (Jin et al. 2021); stability theory (Lyle 2023, Nikishin 2022);
+  QPLEX IGM completeness theorem (Wang 2020)
+- Meta-section over the eight axes — addresses the "recent
+  theoretical advances" reviewer ask directly
+
 ### V. Atari Benchmark Analysis ✓ — [`draft/5-atari-benchmarks.md`](draft/5-atari-benchmarks.md)
 *Tables II/III kept structurally*, with the legacy six-category row
 grouping preserved (§V.A — dual-view organization). Surrounding
