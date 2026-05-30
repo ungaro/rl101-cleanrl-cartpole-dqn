@@ -27,7 +27,7 @@ items routed to supplementary rather than the page-limited core.
 
 Page count: 26 → 27 (clawed back in the pending §V/§VII distillation).
 
-Commit: TBD
+Commit: `feb0e07`
 
 ---
 
