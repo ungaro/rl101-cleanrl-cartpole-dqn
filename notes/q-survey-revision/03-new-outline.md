@@ -212,10 +212,14 @@ reverse view (each legacy category → distribution across axes), and
 treatment of the 18 new methods that have no row in the original
 taxonomy. The reverse view is the data backing the structural pivot.
 
-**B. Notation and proofs.** ⊘ pending. Pull heavy derivations
-(parameter-noise likelihood-ratio expansion, distributional
-projections, convergence analysis) into the appendix. This is the
-single biggest answer to "too much derivation."
+**B. Notation and Selected Derivations.** ✓ — [`draft/B-notation-and-proofs.md`](draft/B-notation-and-proofs.md)
+Notation reference table consolidated from §II.C, plus selected
+derivations the §IV body references rather than works through:
+maximum-of-noisy-estimators bound (Smith & Winkler), categorical
+distributional projection, Wasserstein contraction proof sketch,
+pessimism LCB argument for offline RL, QPLEX IGM completeness, and
+the Watkins & Dayan 1992 tabular convergence proof. Reading guide
+in §I points readers here.
 
 **C. Repository support matrix.** ⊘ pending. Table VII expanded with
 axis annotations, complementing §VII.

@@ -59,7 +59,8 @@ notes/q-survey-revision/
     ├── 6-tabular-empirical.md     (§VI)
     ├── 7-repositories.md          (§VII)
     ├── 8-conclusion.md            (§VIII)
-    └── A-legacy-indexer.md        (Appendix A — legacy ↔ axis map)
+    ├── A-legacy-indexer.md        (Appendix A — legacy vs. axis map)
+    └── B-notation-and-proofs.md   (Appendix B — notation + selected derivations)
 ```
 
 Totals: ~15,500 words of paper prose across 16 draft files;

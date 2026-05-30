@@ -93,9 +93,22 @@ The remainder of the paper is organized as follows. Section II
 introduces the MDP formalism and formally states the eight
 weaknesses that structure the Related Works. Section III describes
 the methodology. Section IV — the bulk of the paper — presents the
-problem-first review across the eight axes. Sections V and VI
-report tabular and Atari benchmark analyses. Section VII presents
-the repository comparison. Section VIII concludes with future
-directions, including a planned community-maintained Q-learning
-repository whose roadmap is informed by the gaps identified in
-Section VII.
+problem-first review across the eight axes (§IV.A–H), followed by a
+ninth subsection §IV.I covering recent theoretical advances.
+Sections V and VI report Atari and tabular benchmark analyses.
+Section VII presents the repository comparison. Section VIII
+concludes with future directions, including a planned
+community-maintained Q-learning repository whose roadmap is informed
+by the gaps identified in Section VII. Appendix A maps every method
+to both the problem-first axis taxonomy used in §IV and the
+conventional method-type taxonomy used by prior surveys; Appendix B
+consolidates notation conventions and supplies selected derivations.
+
+**Reading guide.** The §IV body is written for mechanism and
+trade-off: each axis-section names the weakness, surveys the
+solution families that respond, and compares them on the costs they
+introduce. Equations in §IV are mechanism-defining rather than
+fully derived; longer derivations and proof sketches are
+concentrated in Appendix B and may be skipped on a first read
+without losing the structural argument. §IV.I revisits the same
+ground theoretically and references Appendix B throughout.
