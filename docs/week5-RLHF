@@ -1,0 +1,13 @@
+## HUD.ai Overview
+HUD.ai is an AI agent evaluation and RL (Reinforcement Learning) environment platform that turns test results into training data for fine-tuning models. It specializes in RFT (Reinforcement Fine-Tuning) to boost agent performance on custom tasks using eval trajectories and rewards. [docs.hud](https://docs.hud.ai/reference/cli/rft)
+
+## Core Functionality
+- **RFT Training**: Run via CLI (`hud rft run tasks.json`) on JSONL tasks from HUD evals; integrates with OpenAI/Tinker backends for 2x gains (e.g., 13% success on hard benchmarks). [docs.hud](https://docs.hud.ai/reference/cli/rft)
+- **Environments**: Isolated setups for agent testing, supporting remote MCP configs but no vision yet. [hud](https://www.hud.ai/resources/platforms-agent-evals-rl-training-data)
+- **Pricing**: $0.25+/env hour; free credits available. [docs.hud](https://docs.hud.ai/reference/cli/rft)
+
+## Study Materials
+- **Official Docs**: [CLI RFT Guide](https://docs.hud.ai/reference/cli/rft) – Setup, commands, examples. [docs.hud](https://docs.hud.ai/reference/cli/rft)
+- **Resources Page**: [Platforms for RL Data](https://www.hud.ai/resources/platforms-agent-evals-rl-training-data) – Case studies with 3K+ traces. [hud](https://www.hud.ai/resources/platforms-agent-evals-rl-training-data)
+- **Best Practices**: [HUD Guides](https://docs.hud.ai/guides/best-practices) – Eval-to-RL workflows. [docs.hud](https://docs.hud.ai/guides/best-practices)
+- **Case Studies**: [HUD Examples](https://www.hud.ai/case-studies) – Real performance lifts. [hud](https://www.hud.ai/case-studies)

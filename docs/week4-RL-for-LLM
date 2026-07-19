@@ -1,0 +1,30 @@
+
+# MiniMax RL Breakdown: How They Build Effective Models
+
+**Overview**: MiniMax, a leading Chinese AI lab, uses reinforcement learning (RL) to create powerful models like M2.5. Their Forge framework scales RL across 200k+ environments, achieving high throughput and stability.[web:4][web:6]
+
+## Top Articles & URLs
+- **Forge Framework** (Apr 2026): Details scalable agent RL for M2.5. https://www.minimax.io/news/forge-scalable-agent-rl-framework-and-algorithm [web:4]
+- **MiniMax Lab Insights** (Feb 2026): Interview on RL debugging. https://turingpost.substack.com/p/inside-a-chinese-ai-lab-how-minimax [web:2]
+- **M2.5 Release** (Apr 2026): RL for productivity. https://www.minimax.io/news/minimax-m25 [web:6]
+
+## How MiniMax Uses RL
+MiniMax solves the RL 'trilemma' (throughput, stability, flexibility) with **Forge**:
+
+### Architecture
+- **Middleware Decoupling**: Agents integrate via 4 interfaces (reprocess, run, postprocess, reward). Supports black-box agents, arbitrary tools.[web:4]
+- **Engines**: Rollout for inference, Train for policy updates, Data Pool for samples.
+- **Scheduling**: Windowed FIFO balances off-policyness; prefix-tree merging for 40x speedup on trajectories.[web:4]
+
+### Algorithms
+- **CISPO**: Stable RL for MoE models; early stopping prevents reward hacking.[web:4]
+- **Rewards**: Process rewards for long-context quality; task completion time alignment.[web:6]
+- **Unified Training**: Mixes reasoning/QA/agent domains to avoid negative transfer.[web:4]
+
+### Results in M2.5
+- Trained on 100k+ scaffolds, 200k context, millions of daily samples.
+- SOTA in coding (80.2% SWE-Bench), agents; 100 tokens/sec speed.[web:14]
+- Generalizes across scaffolds/tools without modifications.[web:4]
+
+**Sources**: Compiled from MiniMax blogs and analyses (Apr 2026).[web:4][web:6][web:2]
+
